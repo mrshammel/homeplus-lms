@@ -318,7 +318,26 @@ function checkGate(lesson) {
     btn.style.opacity = '1';
     btn.style.cursor = 'pointer';
     if (msg) { msg.innerHTML = '✅ All activities complete! You may now take the quiz.'; msg.style.color = 'var(--accent)'; }
+    // Set localStorage flag so lockMap can unlock the quiz page
+    const unitKey = document.body.dataset.unitKey || document.body.dataset.unit || 'a';
+    localStorage.setItem(`g7-unit${unitKey}-l${lesson}-gate`, 'true');
+    updateLock();
   }
+}
+
+/** Update sidebar nav items locked/unlocked state based on lockMap + localStorage */
+function updateLock() {
+  if (typeof lockMap === 'undefined') return;
+  document.querySelectorAll('.nav-item[data-page]').forEach(nav => {
+    const page = nav.dataset.page;
+    if (lockMap[page]) {
+      if (localStorage.getItem(lockMap[page])) {
+        nav.classList.remove('locked');
+      } else {
+        nav.classList.add('locked');
+      }
+    }
+  });
 }
 
 // ===== PAGE NAVIGATION (within a unit) =====
@@ -338,6 +357,7 @@ function goTo(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (window.innerWidth <= 900) { const sb = document.getElementById('sidebar'); const ov = document.getElementById('overlay'); if (sb) sb.classList.remove('open'); if (ov) ov.classList.remove('show'); }
   // Fire page-specific init via custom callback
+
   if (typeof onPageLoad === 'function') onPageLoad(page);
 }
 
@@ -507,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkSignIn();
   loadSavedText();
   initReadToMe();
+  if (typeof updateLock === 'function') updateLock();
   // Shift+T reveals teacher nav
   document.addEventListener('keydown', e => {
     if (e.shiftKey && e.key === 'T') {

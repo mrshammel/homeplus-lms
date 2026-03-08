@@ -38,7 +38,7 @@
       <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')">
         <div class="nav-num"><span>1</span></div> Plant Survival
       </div>
-      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')">
+      <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')">
         <div class="nav-num"><span>📝</span></div> Lesson 1 Quiz
       </div>
       <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')">
@@ -1205,7 +1205,20 @@
     };
 
     // ===== LOCK MAP =====
-    const lockMap = {};
+        const lockMap = {
+      'lesson1-quiz': 'g7-unitb-l1-gate',
+      'lesson2': 'g7-unitb-lesson1-passed',
+      'lesson2-quiz': 'g7-unitb-l2-gate',
+      'lesson3': 'g7-unitb-lesson2-passed',
+      'lesson3-quiz': 'g7-unitb-l3-gate',
+      'lesson4': 'g7-unitb-lesson3-passed',
+      'lesson4-quiz': 'g7-unitb-l4-gate',
+      'lesson5': 'g7-unitb-lesson4-passed',
+      'lesson5-quiz': 'g7-unitb-l5-gate',
+      'lesson6': 'g7-unitb-lesson5-passed',
+      'lesson6-quiz': 'g7-unitb-l6-gate',
+      'lesson7': 'g7-unitb-lesson6-passed'
+    };
 
     // ===== ACTIVITY 1: Plant Part Matcher =====
     const partsData = [
@@ -1408,7 +1421,7 @@
     function pickGrowth(idx) {
       const sc = growthData[growthIdx], ok = idx === sc.ans;
       if (ok) growthOk++;
-      document.querySelectorAll('#growthArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; o.classList.add(i === sc.ans ? 'correct' : (i === idx && !ok ? 'wrong' : '')); });
+      document.querySelectorAll('#growthArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; if (i === sc.ans) o.classList.add('correct'); else if (i === idx && !ok) o.classList.add('wrong'); });
       document.getElementById('growthFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
       setTimeout(() => { growthIdx++; renderGrowthQ(); }, 1800);
     }

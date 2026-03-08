@@ -18,7 +18,7 @@
       <div class="logo"><div class="logo-icon">🏗️</div><div><h2>Structures & Forces</h2><span>Unit D</span></div></div>
       <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Home</div>
       <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Types of Structures</div>
-      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+      <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
       <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Forces & Stability</div>
       <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
       <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> External Forces</div>
@@ -581,7 +581,22 @@
       }
     };
 
-    const lockMap = {};
+        const lockMap = {
+      'lesson1-quiz': 'g7-unitd-l1-gate',
+      'lesson2': 'g7-unitd-lesson1-passed',
+      'lesson2-quiz': 'g7-unitd-l2-gate',
+      'lesson3': 'g7-unitd-lesson2-passed',
+      'lesson3-quiz': 'g7-unitd-l3-gate',
+      'lesson4': 'g7-unitd-lesson3-passed',
+      'lesson4-quiz': 'g7-unitd-l4-gate',
+      'lesson5': 'g7-unitd-lesson4-passed',
+      'lesson5-quiz': 'g7-unitd-l5-gate',
+      'lesson6': 'g7-unitd-lesson5-passed',
+      'lesson6-quiz': 'g7-unitd-l6-gate',
+      'lesson7': 'g7-unitd-lesson6-passed',
+      'lesson7-quiz': 'g7-unitd-l7-gate',
+      'lesson8': 'g7-unitd-lesson7-passed'
+    };
 
     // ===== ACTIVITY 1: Structure Type Classifier =====
     const typeData = [

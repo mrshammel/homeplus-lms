@@ -18,7 +18,7 @@
       <div class="logo"><div class="logo-icon">🌿</div><div><h2>Interactions & Ecosystems</h2><span>Unit A</span></div></div>
       <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Home</div>
       <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Ecosystems</div>
-      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> L1 Quiz</div>
+      <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> L1 Quiz</div>
       <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Interdependence</div>
       <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> L2 Quiz</div>
       <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Food Webs</div>
@@ -986,7 +986,22 @@
       }
     };
 
-    const lockMap = {};
+    const lockMap = {
+      'lesson1-quiz': 'g7-unita-l1-gate',
+      'lesson2': 'g7-unita-lesson1-passed',
+      'lesson2-quiz': 'g7-unita-l2-gate',
+      'lesson3': 'g7-unita-lesson2-passed',
+      'lesson3-quiz': 'g7-unita-l3-gate',
+      'lesson4': 'g7-unita-lesson3-passed',
+      'lesson4-quiz': 'g7-unita-l4-gate',
+      'lesson5': 'g7-unita-lesson4-passed',
+      'lesson5-quiz': 'g7-unita-l5-gate',
+      'lesson6': 'g7-unita-lesson5-passed',
+      'lesson6-quiz': 'g7-unita-l6-gate',
+      'lesson7': 'g7-unita-lesson6-passed',
+      'lesson7-quiz': 'g7-unita-l7-gate',
+      'lesson8': 'g7-unita-lesson7-passed'
+    };
 
     // ===== ACTIVITY 1: Biotic vs Abiotic Sorting =====
     const sortData = [
@@ -1083,7 +1098,7 @@
     function pickWhatif(idx) {
       const sc = whatifData[whatifIdx], ok = idx === sc.ans;
       if (ok) whatifOk++;
-      document.querySelectorAll('#whatifArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; o.classList.add(i === sc.ans ? 'correct' : (i === idx && !ok ? 'wrong' : '')); });
+      document.querySelectorAll('#whatifArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; if (i === sc.ans) o.classList.add('correct'); else if (i === idx && !ok) o.classList.add('wrong'); });
       document.getElementById('whatifFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
       setTimeout(() => { whatifIdx++; renderWhatifQ(); }, 1800);
     }
