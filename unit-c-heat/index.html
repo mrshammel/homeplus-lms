@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit C: Heat & Temperature — Grade 7 Science</title>
+  <meta name="description" content="Grade 7 Science — Heat & Temperature. Learn about thermal energy, the particle model, heat vs temperature, and sources of heat.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+</head>
+<body data-unit-key="c" data-unit="c">
+
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">🔥</div>
+      <h2>Welcome, Scientist!</h2>
+      <p>Enter your name and email to save your progress.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="app">
+    <nav class="sidebar" id="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🔥</div>
+        <div>
+          <h2>Heat & Temperature</h2>
+          <span>Unit C</span>
+        </div>
+      </div>
+      <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Home</div>
+      <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> What is Heat?</div>
+      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+      <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Heat Transfer</div>
+      <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+      <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Thermal Expansion</div>
+      <div class="nav-item locked" data-page="lesson3-quiz" onclick="goTo('lesson3-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 3 Quiz</div>
+      <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Heat Technologies</div>
+      <div class="nav-item locked" data-page="lesson4-quiz" onclick="goTo('lesson4-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 4 Quiz</div>
+      <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Energy & Sustainability</div>
+      <div class="nav-item locked" data-page="lesson5-quiz" onclick="goTo('lesson5-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 5 Quiz</div>
+      <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Performance Task</div>
+      <div class="nav-item" id="teacherNav" data-page="teacher" onclick="goTo('teacher')" style="display:none"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div>
+    </nav>
+
+    <div class="main">
+      <div class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <a href="../index.html" class="back-to-units">← All Units</a>
+        <div class="top-actions">
+          <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+          <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+        </div>
+      </div>
+
+      <!-- HOME -->
+      <div class="lesson-page active" id="page-home">
+        <div class="welcome">
+          <h1>🔥 Heat & Temperature</h1>
+          <p>Explore what heat really is, how particles move, and the technologies we use to capture and control thermal energy.</p>
+        </div>
+        <div class="home-grid">
+          <div class="lesson-card" id="homeCard1" onclick="goTo('lesson1')">
+            <span class="card-icon">🌡️</span>
+            <h3>Lesson 1: What is Heat?</h3>
+            <p>Thermal energy, the particle model, and heat vs temperature</p>
+            <div class="card-btn">Start Lesson →</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard2" onclick="goTo('lesson2')">
+            <span class="card-icon">🔥</span>
+            <h3>Lesson 2: Heat Transfer</h3>
+            <p>Conduction, convection, radiation & insulation</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard3" onclick="goTo('lesson3')">
+            <span class="card-icon">🌡️</span>
+            <h3>Lesson 3: Thermal Expansion</h3>
+            <p>Effects of heating/cooling on materials & measurement</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard4" onclick="goTo('lesson4')">
+            <span class="card-icon">⚙️</span>
+            <h3>Lesson 4: Heat Technologies</h3>
+            <p>Historical & modern devices that use thermal energy</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard5" onclick="goTo('lesson5')">
+            <span class="card-icon">⚡</span>
+            <h3>Lesson 5: Energy & Sustainability</h3>
+            <p>Energy sources, choices & environmental impacts</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard6" onclick="goTo('lesson6')">
+            <span class="card-icon">🏆</span>
+            <h3>Lesson 6: Performance Task</h3>
+            <p>Design an energy-efficient shelter</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 1 -->
+      <div class="lesson-page" id="page-lesson1">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 1</div>
+          <h1 class="lesson-title">What is Heat? Thermal Energy & the Particle Model</h1>
+          <p class="lesson-subtitle">Understand the difference between heat and temperature, how particles behave, and where heat comes from.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px">
+            <span class="outcome-tag">7-C.1</span>
+            <span class="outcome-tag">7-C.2</span>
+          </div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can explain the difference between heat and temperature.</li>
+            <li>I can describe thermal energy using the particle model of matter.</li>
+            <li>I can identify different sources of heat energy.</li>
+            <li>I can explain how adding or removing heat affects particle movement and states of matter.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">By the end of this lesson, you should be able to check off all of these:</p>
+          <ul class="success-criteria">
+            <li>I can explain that heat is a transfer of energy, not a thing.</li>
+            <li>I can describe how particles behave in solids, liquids, and gases.</li>
+            <li>I can give the bathtub vs. boiling water example to show heat ≠ temperature.</li>
+            <li>I can name at least 4 sources of heat energy.</li>
+          </ul>
+        </div>
+
+        <!-- KEY VOCABULARY -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">Hover over each term to see its definition.</p>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">🔥 Heat<span class="vocab-def"><strong>Heat:</strong> The transfer of thermal energy from a warmer object to a cooler one. Measured in joules (J).</span></span>
+            <span class="vocab-chip">🌡️ Temperature<span class="vocab-def"><strong>Temperature:</strong> A measure of the average kinetic energy (speed) of particles in a substance. Measured in °C or K.</span></span>
+            <span class="vocab-chip">⭐ Thermal Energy<span class="vocab-def"><strong>Thermal Energy:</strong> The total kinetic energy of all particles in a substance. Depends on temperature AND amount of matter.</span></span>
+            <span class="vocab-chip">⚡ Kinetic Energy<span class="vocab-def"><strong>Kinetic Energy:</strong> The energy of motion. Faster particles = more kinetic energy = higher temperature.</span></span>
+            <span class="vocab-chip">⚙️ Particle Model<span class="vocab-def"><strong>Particle Model:</strong> A scientific model explaining that all matter is made of tiny particles that are always moving.</span></span>
+            <span class="vocab-chip">🔥 Combustion<span class="vocab-def"><strong>Combustion:</strong> A chemical reaction (burning) that releases heat and light energy. Example: burning wood or gas.</span></span>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🤔</span> Heat vs. Temperature — What's the Difference?</h3>
+          <p>Many people use "heat" and "temperature" interchangeably, but in science, they mean very different things!</p>
+          <table class="compare-table">
+            <thead><tr><th>Concept</th><th>Heat</th><th>Temperature</th></tr></thead>
+            <tbody>
+              <tr><td><strong>What is it?</strong></td><td>The <strong>transfer</strong> of thermal energy from a warmer object to a cooler one</td><td>A <strong>measure</strong> of the average kinetic energy of particles</td></tr>
+              <tr><td><strong>Units</strong></td><td>Joules (J) or calories</td><td>Degrees Celsius (°C) or Kelvin (K)</td></tr>
+              <tr><td><strong>Analogy</strong></td><td>Like pouring water from one cup to another</td><td>Like checking the water level in a cup</td></tr>
+              <tr><td><strong>Key idea</strong></td><td>Heat always flows from hot → cold</td><td>Temperature tells you how hot or cold something is</td></tr>
+            </tbody>
+          </table>
+          <div class="key-point">
+            <p>💡 <strong>Key Distinction:</strong> A bathtub of warm water has MORE thermal energy (heat) than a cup of boiling water, even though the boiling water has a HIGHER temperature. Heat depends on both temperature AND the amount of matter.</p>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 1 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <p>Before moving on, can you answer these?</p>
+          <ul>
+            <li>What is the difference between heat and temperature?</li>
+            <li>A lake at 10°C has more thermal energy than a cup of tea at 80°C. Why?</li>
+            <li>In which direction does heat always flow?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Heat is energy transfer; temperature is a measurement · The lake has far more particles · From hot to cold</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⚛️</span> The Particle Model of Matter</h3>
+          <p>The <span class="vocab" title="A theory that explains matter is made of tiny particles that are always moving">particle model of matter</span> helps us understand heat and temperature at a microscopic level.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🧊</span><h4>Solid</h4><p>Particles vibrate in fixed positions. Closely packed. Low kinetic energy.</p></div>
+            <div class="info-box"><span class="emoji">💧</span><h4>Liquid</h4><p>Particles slide past each other. More space. Moderate kinetic energy.</p></div>
+            <div class="info-box"><span class="emoji">💨</span><h4>Gas</h4><p>Particles move freely and rapidly. Spread apart. High kinetic energy.</p></div>
+          </div>
+          <div class="expandable">
+            <button class="expand-btn" onclick="toggleExpand(this)">🤔 What happens when you add heat to particles? <span class="arrow">▼</span></button>
+            <div class="expand-content">
+              <p>Adding heat <strong>increases the kinetic energy</strong> of particles — they move faster and spread further apart. This is why solids melt into liquids and liquids evaporate into gases. Removing heat does the opposite: particles slow down and move closer together.</p>
+            </div>
+          </div>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Outcome 7-C.2:</strong> Describe the nature of thermal energy and its effects on different forms of matter, using the particle model.</p>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Heat vs Temperature</h3>
+          <div class="video-label">🎬 Video 1 — Crash Course Physics: Temperature</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/WGFbh5lMlco" title="Crash Course Physics - Temperature" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔋</span> Sources of Heat Energy</h3>
+          <p>Heat energy comes from many sources. Humans have developed technologies to capture and control heat from these sources.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">☀️</span><h4>Solar (Sun)</h4><p>The Sun is Earth's primary heat source. Solar panels convert it to electricity.</p></div>
+            <div class="info-box"><span class="emoji">🔥</span><h4>Chemical (Combustion)</h4><p>Burning wood, gas, or coal releases stored chemical energy as heat.</p></div>
+            <div class="info-box"><span class="emoji">⚡</span><h4>Electrical</h4><p>Electric heaters, stoves, and toasters convert electrical energy to heat.</p></div>
+            <div class="info-box"><span class="emoji">🤲</span><h4>Friction (Mechanical)</h4><p>Rubbing hands together or braking a car converts motion to heat.</p></div>
+            <div class="info-box"><span class="emoji">🌋</span><h4>Geothermal</h4><p>Heat from Earth's interior — used for heating homes in Iceland!</p></div>
+            <div class="info-box"><span class="emoji">⚛️</span><h4>Nuclear</h4><p>Splitting atoms releases enormous amounts of thermal energy.</p></div>
+          </div>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Outcome 7-C.1:</strong> Illustrate and explain how human needs have led to technologies for obtaining and controlling thermal energy.</p>
+          </div>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Connection:</strong> Alberta uses multiple heat sources. Natural gas (chemical energy) heats most homes. Solar panels are growing in southern Alberta. Some communities near the Rocky Mountain foothills are exploring geothermal heating systems.</p>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 2 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Name 3 different sources of heat energy.</li>
+            <li>What happens to particles when you heat a solid?</li>
+            <li>Why does a balloon shrink when placed in a freezer?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Solar, chemical, electrical, friction, geothermal, nuclear · They vibrate faster, gain energy, may break free (melt) · Gas particles lose energy and slow down, taking up less space</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: States of Matter & Particle Motion</h3>
+          <div class="video-label">🎬 Video 2 — Amoeba Sisters: States of Matter</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/s-KvoVzukHo" title="Amoeba Sisters - States of Matter" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- ACTIVITY 1: Heat vs Temperature Sorter -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-hvt">
+            <div class="activity-header">
+              <span class="act-num">Activity 1</span>
+              <span style="font-weight:700;color:var(--text)">Heat vs Temperature Sorter</span>
+              <span class="outcome-tag">7-C.2</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Classify each statement: does it describe <strong style="color:#f97316">HEAT</strong> or <strong style="color:#38bdf8">TEMPERATURE</strong>? Click a statement, then click the zone.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Ask yourself: is this about TRANSFERRING energy, or MEASURING how hot/cold something is?</div>
+            <div id="hvtItems" class="sort-items"></div>
+            <div class="sort-zones">
+              <div class="sort-zone" id="zoneHeat" onclick="dropHvt('heat')" style="border-color:rgba(249,115,22,.25)">
+                <div class="zone-title" style="color:#f97316">🔥 Heat</div>
+                <div class="zone-items" id="heatItems"></div>
+              </div>
+              <div class="sort-zone" id="zoneTemp" onclick="dropHvt('temp')" style="border-color:rgba(56,189,248,.25)">
+                <div class="zone-title" style="color:#38bdf8">🌡️ Temperature</div>
+                <div class="zone-items" id="tempItems"></div>
+              </div>
+            </div>
+            <div id="hvtScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Particle Speed Simulator -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-particles">
+            <div class="activity-header">
+              <span class="act-num">Activity 2</span>
+              <span style="font-weight:700;color:var(--text)">Particle Behaviour Predictor</span>
+              <span class="outcome-tag">7-C.2</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Read each scenario and predict what happens to the particles.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Remember: adding heat = particles move FASTER. Removing heat = particles SLOW DOWN. Heat flows from hot → cold.</div>
+            <div id="particleArea"></div>
+            <div id="particleScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Heat Source Classifier -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-sources">
+            <div class="activity-header">
+              <span class="act-num">Activity 3</span>
+              <span style="font-weight:700;color:var(--text)">Heat Source Classifier</span>
+              <span class="outcome-tag">7-C.1</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Classify each example by its heat source type.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think about WHERE the energy comes from: the Sun? Burning? Electricity? Motion? Earth's interior? Atoms?</div>
+            <div id="sourceArea"></div>
+            <div id="sourceScore"></div>
+          </div>
+        </div>
+
+        <!-- CONSTRUCTED RESPONSE -->
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">In 2–4 sentences, explain why a bathtub full of warm water has more thermal energy than a small cup of boiling water. Use the terms "particles," "kinetic energy," and "thermal energy" in your answer.</p>
+          <textarea id="crResponse" placeholder="Write your explanation here…" oninput="saveCR()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I used correct science vocabulary (e.g., thermal energy, kinetic energy, particles)</label></li>
+            <li><label><input type="checkbox"> I explained my thinking clearly</label></li>
+            <li><label><input type="checkbox"> I connected the idea to the particle model</label></li>
+          </ul>
+        </div>
+
+        <!-- QUIZ GATE -->
+        <div class="glass-card content" id="l1-gate" style="text-align:center;padding:24px">
+          <p id="l1-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l1-quiz-btn" onclick="goTo('lesson1-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <!-- REFLECTION -->
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about what you learned. What was the most surprising thing about heat and temperature? Can you think of a real-life example where understanding heat vs. temperature matters?</p>
+          <textarea id="reflectionText" placeholder="Type your reflection here…" oninput="saveReflection()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 1 QUIZ -->
+      <div class="lesson-page" id="page-lesson1-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 1 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review your success criteria. Make sure you know the difference between heat and temperature, how particles behave, and the sources of heat.</div>
+        <div id="quiz1-area"></div>
+      </div>
+
+      <!-- LESSON 2: Heat Transfer -->
+      <div class="lesson-page" id="page-lesson2">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 2</div>
+          <h1 class="lesson-title">Heat Transfer: Conduction, Convection & Radiation</h1>
+          <p class="lesson-subtitle">Learn the three ways heat moves and how we use insulation to control it.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">7-C.3</span><span class="outcome-tag">7-C.4</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can describe conduction, convection, and radiation as three methods of heat transfer.</li>
+            <li>I can explain how conductors and insulators differ.</li>
+            <li>I can give real-world examples of each heat transfer method.</li>
+            <li>I can explain how insulation reduces heat loss in homes.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <ul class="success-criteria">
+            <li>I can sort examples into conduction, convection, or radiation.</li>
+            <li>I can predict which materials make good conductors or insulators.</li>
+            <li>I can explain why a metal spoon heats up in soup (conduction).</li>
+            <li>I can describe how convection currents move heat in air and water.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">🔧 Conduction<span class="vocab-def"><strong>Conduction:</strong> Heat transfer through direct contact between particles. Particles vibrate and pass energy to neighbours.</span></span>
+            <span class="vocab-chip">🌀 Convection<span class="vocab-def"><strong>Convection:</strong> Heat transfer through the movement of fluids (liquids/gases). Hot fluid rises, cool fluid sinks, creating currents.</span></span>
+            <span class="vocab-chip">☀️ Radiation<span class="vocab-def"><strong>Radiation:</strong> Heat transfer through electromagnetic waves. Doesn't need particles — can travel through empty space.</span></span>
+            <span class="vocab-chip">🚧 Conductor<span class="vocab-def"><strong>Conductor:</strong> A material that transfers heat easily (metals like copper, aluminum). Particles are tightly packed.</span></span>
+            <span class="vocab-chip">🧤 Insulator<span class="vocab-def"><strong>Insulator:</strong> A material that slows heat transfer (wood, plastic, air, foam). Particles are far apart or loosely bonded.</span></span>
+            <span class="vocab-chip">🌀 Convection Current<span class="vocab-def"><strong>Convection Current:</strong> The circular flow pattern created when warm fluid rises and cool fluid sinks, transferring heat.</span></span>
+          </div>
+        </div>
+
+        <!-- CONDUCTION -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔧</span> Conduction: Heat Through Touch</h3>
+          <p><strong>Conduction</strong> is heat transfer through direct contact. When fast-vibrating particles bump into slower neighbours, they pass energy along — like a chain of dominoes.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🍳</span><h4>Example</h4><p>A metal pan on a stove — heat travels from burner to pan to food</p></div>
+            <div class="info-box"><span class="emoji">🦿</span><h4>Conductors</h4><p>Metals (copper, aluminum, steel) transfer heat quickly</p></div>
+            <div class="info-box"><span class="emoji">🧤</span><h4>Insulators</h4><p>Wood, plastic, rubber, air — slow down heat transfer</p></div>
+          </div>
+          <div class="key-point"><p>💡 <strong>Key Idea:</strong> Conduction works best in solids because particles are packed closely together. That’s why a metal spoon in hot soup gets hot fast, but a wooden spoon stays cool.</p></div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Why does a metal spoon heat up faster than a wooden one in hot soup?</li>
+            <li>In conduction, do the particles themselves move to a new location?</li>
+            <li>Name two good conductors and two good insulators.</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Metal has tightly packed particles that transfer vibrations quickly · No — particles vibrate in place and pass energy along · Conductors: copper, aluminum; Insulators: wood, plastic</em></p></div>
+        </div>
+
+        <!-- CONVECTION -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌀</span> Convection: Heat Through Movement</h3>
+          <p><strong>Convection</strong> occurs in fluids (liquids and gases). When a fluid is heated, particles move faster and spread apart — the warm fluid <strong>rises</strong>. Cooler, denser fluid <strong>sinks</strong> to replace it, creating circular <strong>convection currents</strong>.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🌬️</span><h4>Air</h4><p>Radiators heat air nearby → warm air rises → cool air sinks → room warms evenly</p></div>
+            <div class="info-box"><span class="emoji">🌊</span><h4>Water</h4><p>Boiling water — hot water at the bottom rises, cool water sinks to be heated</p></div>
+          </div>
+          <div class="key-point"><p>💡 <strong>Alberta Connection:</strong> During Alberta’s cold winters (−40°C!), homes rely on forced-air furnaces and baseboard heaters that use convection. Hot air from vents rises and circulates around rooms, warming the entire house. Understanding convection helps Albertans design energy-efficient heating systems to reduce natural gas use.</p></div>
+        </div>
+
+        <!-- RADIATION -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">☀️</span> Radiation: Heat Without Contact</h3>
+          <p><strong>Radiation</strong> is heat transfer through electromagnetic waves. Unlike conduction and convection, radiation does NOT need particles — it can travel through the vacuum of space. That’s how the Sun’s heat reaches Earth!</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">☀️</span><h4>The Sun</h4><p>Solar radiation travels 150 million km through space to warm Earth</p></div>
+            <div class="info-box"><span class="emoji">🔥</span><h4>Campfire</h4><p>You feel warmth from a fire without touching it — infrared radiation</p></div>
+            <div class="info-box"><span class="emoji">🖤</span><h4>Dark Colours</h4><p>Dark surfaces absorb more radiation; light surfaces reflect it</p></div>
+          </div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Which type of heat transfer does NOT need particles?</li>
+            <li>Why does warm air rise in a room?</li>
+            <li>Why would a black car feel hotter than a white car on a sunny day?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Radiation — it uses electromagnetic waves that travel through empty space · Warm air particles spread apart, making the air less dense — it floats up · Dark colours absorb more radiation than light colours, which reflect it</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Heat Transfer</h3>
+          <div class="video-label">🎬 Video — Conduction, Convection, Radiation</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/UhIwMAhBR9g" title="Heat Transfer" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- ACTIVITY 1: Transfer Type Classifier -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-transfer">
+            <div class="activity-header"><span class="act-num">Activity 1</span><span style="font-weight:700;color:var(--text)">Transfer Type Classifier</span><span class="outcome-tag">7-C.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Classify each scenario as conduction, convection, or radiation.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Ask: Is there direct contact (conduction)? Is fluid moving (convection)? Are waves carrying energy through space or air (radiation)?</div>
+            <div id="transferArea"></div>
+            <div id="transferScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Conductor vs Insulator -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-insul">
+            <div class="activity-header"><span class="act-num">Activity 2</span><span style="font-weight:700;color:var(--text)">Conductor or Insulator?</span><span class="outcome-tag">7-C.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Sort each material as a conductor or insulator.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Metals are usually conductors. Non-metals (wood, plastic, foam, air) are usually insulators.</div>
+            <div id="insulArea"></div>
+            <div id="insulScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Home Heat Audit -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-audit">
+            <div class="activity-header"><span class="act-num">Activity 3</span><span style="font-weight:700;color:var(--text)">Home Heat Audit</span><span class="outcome-tag">7-C.4</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Identify the type of heat transfer AND a solution for each scenario.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think: How is the heat escaping? What could slow it down?</div>
+            <div id="auditArea"></div>
+            <div id="auditScore"></div>
+          </div>
+        </div>
+
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">An Alberta family wants to reduce their heating bill in winter. In 3–4 sentences, explain how heat escapes a house through conduction, convection, and radiation, and suggest one solution for each. Use at least 3 vocabulary words.</p>
+          <textarea id="crResponse2" placeholder="Write your explanation here…" oninput="saveCR2()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I described all 3 types of heat transfer</label></li>
+            <li><label><input type="checkbox"> I suggested solutions (insulation, sealing, reflective barriers)</label></li>
+            <li><label><input type="checkbox"> I used at least 3 vocabulary words correctly</label></li>
+          </ul>
+        </div>
+
+        <div class="glass-card content" id="l2-gate" style="text-align:center;padding:24px">
+          <p id="l2-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l2-quiz-btn" onclick="goTo('lesson2-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Look around the room you’re in. Can you spot examples of conduction, convection, or radiation happening right now? What insulating materials can you see?</p>
+          <textarea id="reflectionText2" placeholder="Type your reflection here…" oninput="saveReflection2()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 2 QUIZ -->
+      <div class="lesson-page" id="page-lesson2-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 2 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review conduction, convection, radiation, and the difference between conductors and insulators.</div>
+        <div id="quiz2-area"></div>
+      </div>
+
+      <!-- LESSON 3: THERMAL EXPANSION & MEASUREMENT -->
+      <div class="lesson-page" id="page-lesson3">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 3</div>
+          <h1 class="lesson-title">Thermal Expansion & Measurement</h1>
+          <p class="lesson-subtitle">Discover how materials change size when heated or cooled, and how we use this knowledge in everyday technology.</p>
+        </div>
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">C.K.2</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can explain thermal expansion and contraction using the particle model.</li>
+            <li>I can compare how solids, liquids, and gases respond to temperature changes.</li>
+            <li>I can describe real-world applications of thermal expansion.</li>
+          </ul>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Thermal Expansion</strong><span class="vocab-def">: Materials increase in volume when heated — particles move faster and spread apart</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Contraction</strong><span class="vocab-def">: Materials decrease in volume when cooled — particles slow down and move closer</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Expansion Joint</strong><span class="vocab-def">: Gap built into bridges and sidewalks to allow for expansion without cracking</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Bimetallic Strip</strong><span class="vocab-def">: Two metals bonded together that bend when heated because they expand at different rates</span></div>
+          </div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: Thermal Expansion</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/4fuHzC9aTik" title="Thermal Expansion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> Why do gases expand more than solids when heated?</div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔬</span> How Thermal Expansion Works</h3>
+          <p>When you add thermal energy to a substance, its particles vibrate faster and push apart → the material <strong>expands</strong>.</p>
+          <table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">State</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Expansion Amount</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Why?</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Solid</td><td style="padding:8px;border:1px solid var(--border)">Least</td><td style="padding:8px;border:1px solid var(--border)">Particles tightly packed, strong bonds</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Liquid</td><td style="padding:8px;border:1px solid var(--border)">Moderate</td><td style="padding:8px;border:1px solid var(--border)">Particles can slide apart more easily</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Gas</td><td style="padding:8px;border:1px solid var(--border)">Most</td><td style="padding:8px;border:1px solid var(--border)">Particles already far apart, free to spread</td></tr>
+          </table>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌉</span> Real-World Applications</h3>
+          <div class="need-help"><strong>🌉 Expansion Joints:</strong> Bridges have gaps (expansion joints) so the metal can expand in summer heat without buckling. Alberta's Walterdale Bridge in Edmonton has these built in.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌡️ Thermometers:</strong> Liquid in a thermometer expands as temperature rises, pushing up the tube — thermal expansion makes measurement possible.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🎈 Hot Air Balloons:</strong> Heating air makes it expand and become less dense → the balloon rises. Cooling air contracts → the balloon descends.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🔧 Bimetallic Strips:</strong> Two different metals bonded together bend when heated because they expand at different rates. Used in thermostats and fire alarms.</div>
+        </div>
+        <!-- L3 ACTIVITY 1: Expansion Predictor -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔬</span> Activity 1: Expansion Predictor</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Predict what happens when different materials are heated or cooled.</p>
+          <div id="l3ExpArea"></div><div id="l3ExpScore"></div>
+        </div>
+        <!-- L3 ACTIVITY 2: Application Matcher -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌉</span> Activity 2: Application Matcher</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each thermal expansion application to its explanation.</p>
+          <div id="l3AppArea"></div><div id="l3AppScore"></div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Explain why telephone wires sag more in summer than winter. Use the particle model in your explanation.</p>
+          <textarea id="crResponse3" placeholder="Type your answer here…" oninput="saveCR3()"></textarea>
+        </div>
+        <div class="glass-card content" id="l3-gate" style="text-align:center;padding:24px">
+          <p id="l3-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+          <div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson2-quiz')">← Previous</button><button class="nav-btn primary" id="l3-quiz-btn" onclick="goTo('lesson3-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div>
+        </div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Look around your home or school. Can you find any examples of thermal expansion in action? Think about doors, pipes, sidewalks, or windows.</p><textarea id="reflectionText3" placeholder="Type your reflection here…" oninput="saveReflection3()"></textarea></div>
+      </div>
+      <!-- LESSON 3 QUIZ -->
+      <div class="lesson-page" id="page-lesson3-quiz">
+        <div class="lesson-header"><div class="lesson-num">Lesson 3 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p></div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review thermal expansion, contraction, and real-world applications.</div>
+        <div id="quiz3-area"></div>
+      </div>
+
+      <!-- LESSON 4: HEAT TECHNOLOGIES PAST & PRESENT -->
+      <div class="lesson-page" id="page-lesson4">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 4</div>
+          <h1 class="lesson-title">Heat Technologies Past & Present</h1>
+          <p class="lesson-subtitle">Explore how humans have harnessed heat throughout history, from fire to solar panels.</p>
+        </div>
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">C.K.1</span><span class="outcome-tag">C.K.3</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can describe historical and modern heat technologies and their purposes.</li>
+            <li>I can explain how devices generate, transfer, or control thermal energy.</li>
+            <li>I can compare passive and active solar heating systems.</li>
+          </ul>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Passive Solar</strong><span class="vocab-def">: Capturing sun's heat without mechanical devices — south-facing windows, thermal mass</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Active Solar</strong><span class="vocab-def">: Using mechanical systems (pumps, fans) to collect and distribute solar heat</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Thermostat</strong><span class="vocab-def">: Device that regulates temperature by turning heating/cooling on and off</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Combustion</strong><span class="vocab-def">: Chemical reaction (burning) that releases thermal energy from fuel</span></div>
+          </div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: History of Heat Technology</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/FrzKGXM3JA0" title="Heat Technology" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⏳</span> Heat Technology Through History</h3>
+          <div class="need-help"><strong>🔥 Ancient:</strong> Fire (100,000+ years ago) — cooking, warmth, protection. First controlled heat technology.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🏛️ Roman:</strong> Hypocaust — underfloor heating system using hot air. First central heating!</div>
+          <div class="need-help" style="margin-top:8px"><strong>🚂 Industrial:</strong> Steam engine — converting heat to motion. Powered the Industrial Revolution.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🏠 Modern:</strong> Furnaces, heat pumps, thermostats, solar panels — precise heat control.</div>
+          <div class="need-help" style="margin-top:8px"><strong>☀️ Future:</strong> Geothermal energy, hydrogen fuel cells, smart home heating with AI control.</div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">☀️</span> Solar Heating: Passive vs Active</h3>
+          <table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Feature</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">☀️ Passive Solar</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">⚙️ Active Solar</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">How it works</td><td style="padding:8px;border:1px solid var(--border)">Design captures heat naturally</td><td style="padding:8px;border:1px solid var(--border)">Mechanical devices collect & move heat</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Examples</td><td style="padding:8px;border:1px solid var(--border)">South-facing windows, concrete floors</td><td style="padding:8px;border:1px solid var(--border)">Solar water heaters, solar panels</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Cost</td><td style="padding:8px;border:1px solid var(--border)">Low (built into design)</td><td style="padding:8px;border:1px solid var(--border)">Higher (equipment needed)</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Maintenance</td><td style="padding:8px;border:1px solid var(--border)">Almost none</td><td style="padding:8px;border:1px solid var(--border)">Regular</td></tr>
+          </table>
+        </div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">⚙️</span> Activity 1: Technology Timeline</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Put these heat technologies in chronological order.</p><div id="l4TimeArea"></div><div id="l4TimeScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">☀️</span> Activity 2: Solar Sorter</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Classify each technology as passive solar, active solar, or neither.</p><div id="l4SolarArea"></div><div id="l4SolarScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Choose a heat technology from any era and explain HOW it works using your knowledge of heat transfer (conduction, convection, or radiation).</p><textarea id="crResponse4" placeholder="Type your answer here…" oninput="saveCR4()"></textarea></div>
+        <div class="glass-card content" id="l4-gate" style="text-align:center;padding:24px"><p id="l4-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson3-quiz')">← Previous</button><button class="nav-btn primary" id="l4-quiz-btn" onclick="goTo('lesson4-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">How does your home or school building use heat technology? Think about heating systems, insulation, and windows.</p><textarea id="reflectionText4" placeholder="Type your reflection here…" oninput="saveReflection4()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson4-quiz">
+        <div class="lesson-header"><div class="lesson-num">Lesson 4 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p></div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review heat technologies, passive vs active solar, and combustion.</div>
+        <div id="quiz4-area"></div>
+      </div>
+
+      <!-- LESSON 5: ENERGY SOURCES, CHOICES & SUSTAINABILITY -->
+      <div class="lesson-page" id="page-lesson5">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 5</div>
+          <h1 class="lesson-title">Energy Sources, Choices & Sustainability</h1>
+          <p class="lesson-subtitle">Compare energy sources, evaluate their impacts, and make informed choices about Alberta's energy future.</p>
+        </div>
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">C.K.4</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can compare fossil fuels with renewable energy sources for heating.</li>
+            <li>I can evaluate environmental impacts of different energy choices.</li>
+            <li>I can propose personal and societal energy solutions.</li>
+          </ul>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Fossil Fuel</strong><span class="vocab-def">: Coal, oil, natural gas — formed from ancient organisms, release CO₂ when burned</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Renewable Energy</strong><span class="vocab-def">: Solar, wind, geothermal, hydro — naturally replenished and sustainable</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Greenhouse Effect</strong><span class="vocab-def">: CO₂ and other gases trap heat in Earth's atmosphere, warming the planet</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Energy Efficiency</strong><span class="vocab-def">: Using less energy to achieve the same result — reduces waste and cost</span></div>
+          </div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: Energy Sources Explained</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/1kUE0BZtTRc" title="Energy Sources" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⛽</span> Energy Sources Compared</h3>
+          <table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Source</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Type</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Pros</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Cons</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Natural Gas</td><td style="padding:8px;border:1px solid var(--border)">Fossil</td><td style="padding:8px;border:1px solid var(--border)">Efficient, widely available in Alberta</td><td style="padding:8px;border:1px solid var(--border)">CO₂ emissions, non-renewable</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Solar</td><td style="padding:8px;border:1px solid var(--border)">Renewable</td><td style="padding:8px;border:1px solid var(--border)">Free fuel, clean</td><td style="padding:8px;border:1px solid var(--border)">Intermittent, expensive setup</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Geothermal</td><td style="padding:8px;border:1px solid var(--border)">Renewable</td><td style="padding:8px;border:1px solid var(--border)">Constant, reliable</td><td style="padding:8px;border:1px solid var(--border)">Location-limited, high initial cost</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Biomass</td><td style="padding:8px;border:1px solid var(--border)">Renewable</td><td style="padding:8px;border:1px solid var(--border)">Uses waste, carbon neutral-ish</td><td style="padding:8px;border:1px solid var(--border)">Emissions, land use</td></tr>
+          </table>
+          <div class="need-help" style="margin-top:12px"><strong>🇨🇦 Alberta Context:</strong> Alberta is Canada's largest oil and gas producer but is also rapidly growing its solar and wind capacity. The province now generates over 20% of its electricity from renewables.</div>
+        </div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">⚡</span> Activity 1: Energy Decision Maker</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">A family is choosing how to heat their home. Evaluate each option's trade-offs.</p><div id="l5EnergyArea"></div><div id="l5EnergyScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🌍</span> Activity 2: Impact Evaluator</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Sort each statement as a positive or negative environmental impact.</p><div id="l5ImpactArea"></div><div id="l5ImpactScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Should Alberta transition away from fossil fuels for home heating? Discuss at least 2 advantages and 2 challenges, then give your evidence-based opinion.</p><textarea id="crResponse5" placeholder="Type your answer here…" oninput="saveCR5()"></textarea></div>
+        <div class="glass-card content" id="l5-gate" style="text-align:center;padding:24px"><p id="l5-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson4-quiz')">← Previous</button><button class="nav-btn primary" id="l5-quiz-btn" onclick="goTo('lesson5-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">What changes could your family make to use energy more sustainably? Think about heating, cooling, and everyday choices.</p><textarea id="reflectionText5" placeholder="Type your reflection here…" oninput="saveReflection5()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson5-quiz">
+        <div class="lesson-header"><div class="lesson-num">Lesson 5 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p></div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review fossil fuels, renewables, the greenhouse effect, and energy efficiency.</div>
+        <div id="quiz5-area"></div>
+      </div>
+
+      <!-- LESSON 6: PERFORMANCE TASK -->
+      <div class="lesson-page" id="page-lesson6">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 6 — Performance Task</div>
+          <h1 class="lesson-title">🏆 Energy-Efficient Shelter Design Challenge</h1>
+          <p class="lesson-subtitle">Apply everything you've learned to design a shelter that uses heat transfer, insulation, and sustainable energy.</p>
+        </div>
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">C.K.1</span><span class="outcome-tag">C.K.2</span><span class="outcome-tag">C.K.3</span><span class="outcome-tag">C.K.4</span></div>
+          <h3 class="section-title"><span class="icon">📋</span> Your Task</h3>
+          <p>You are an energy consultant designing a shelter that stays warm in Alberta's -30°C winters using minimal energy. Complete all 5 sections below.</p>
+        </div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">1️⃣</span> Shelter Design & Materials</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Describe your shelter's shape, size, and materials. Explain how each material choice relates to heat transfer (conduction, convection, or radiation).</p><textarea id="ptc1" placeholder="Describe your shelter design…" oninput="savePTc(1)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">2️⃣</span> Insulation Strategy</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What insulation will you use and why? Explain how your insulation minimizes each type of heat transfer.</p><textarea id="ptc2" placeholder="Explain your insulation strategy…" oninput="savePTc(2)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">3️⃣</span> Heating System</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What energy source(s) will heat your shelter? Include at least one renewable option. Explain how each heating method works using heat transfer concepts.</p><textarea id="ptc3" placeholder="Describe your heating system…" oninput="savePTc(3)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">4️⃣</span> Thermal Expansion Considerations</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">How will you account for thermal expansion in your design? Think about pipes, joints, and temperature swings in Alberta.</p><textarea id="ptc4" placeholder="Explain your thermal expansion plan…" oninput="savePTc(4)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">5️⃣</span> Sustainability & Efficiency</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">How does your shelter minimize environmental impact? What trade-offs did you make between cost, comfort, and sustainability?</p><textarea id="ptc5" placeholder="Reflect on sustainability…" oninput="savePTc(5)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content" style="text-align:center;padding:24px">
+          <h3 class="section-title"><span class="icon">🏆</span> Submit Your Design</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:16px">Make sure all 5 sections are complete.</p>
+          <button class="activity-btn" id="ptSubmitBtnC" onclick="submitPTc()" style="font-size:1rem;padding:14px 32px">📨 Submit Performance Task</button>
+        </div>
+      </div>
+
+      <!-- TEACHER DASHBOARD -->
+      <div class="lesson-page" id="page-teacher">
+        <div class="lesson-header">
+          <div class="lesson-num">📊 Teacher</div>
+          <h1 class="lesson-title">Dashboard & Grades</h1>
+        </div>
+        <div class="glass-card content">
+          <div id="teacherGrades"><p style="color:var(--text3)">No grade data yet.</p></div>
+          <div class="export-btns">
+            <button class="activity-btn" onclick="exportCSV()">📥 CSV</button>
+            <button class="activity-btn secondary" onclick="exportJSON()">📥 JSON</button>
+            <button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script>
+    // ===== QUIZ BANKS =====
+    const quizBanks = {
+      quiz1: {
+        primary: [
+          { q: "Heat is best defined as:", opts: ["The temperature of an object", "The transfer of thermal energy from warmer to cooler objects", "The speed of particles", "A measure of cold"], ans: 1, outcome: "7-C.2", explain: "Heat is the TRANSFER of thermal energy — it flows from hot to cold." },
+          { q: "Temperature measures:", opts: ["Total thermal energy", "The average kinetic energy of particles", "How much heat is being transferred", "The number of particles"], ans: 1, outcome: "7-C.2", explain: "Temperature reflects average particle motion (kinetic energy)." },
+          { q: "In the particle model, adding heat to a solid causes particles to:", opts: ["Stop moving", "Vibrate faster and eventually break free", "Shrink in size", "Become heavier"], ans: 1, outcome: "7-C.2", explain: "More heat → more kinetic energy → particles vibrate faster → eventually melt." },
+          { q: "A bathtub of warm water has MORE thermal energy than a cup of boiling water because:", opts: ["It's hotter", "It has more particles", "Its particles move faster", "It's a bigger container"], ans: 1, outcome: "7-C.2", explain: "More water = more particles = more total thermal energy, even at lower temperature." },
+          { q: "Which is a source of chemical heat energy?", opts: ["The Sun", "Burning wood", "Rubbing hands together", "A nuclear reactor"], ans: 1, outcome: "7-C.1", explain: "Burning (combustion) releases stored chemical energy as heat." },
+          { q: "Heat always flows from:", opts: ["Cold to hot", "Hot to cold", "Equal to equal", "Big to small"], ans: 1, outcome: "7-C.2", explain: "Thermal energy naturally moves from warmer to cooler objects." },
+          { q: "Which technology converts solar energy into electricity?", opts: ["A fireplace", "A solar panel", "A bicycle brake", "A nuclear plant"], ans: 1, outcome: "7-C.1", explain: "Solar panels capture sunlight and convert it to electrical energy." },
+          { q: "In a gas, particles:", opts: ["Vibrate in fixed positions", "Slide past each other slowly", "Move freely and rapidly in all directions", "Don't move at all"], ans: 2, outcome: "7-C.2", explain: "Gas particles have the most kinetic energy — they move fast and spread apart." }
+        ],
+        replacement: [
+          { q: "Heat is NOT:", opts: ["A transfer of energy", "A type of energy flow", "The same as temperature", "Measured in joules"], ans: 2, outcome: "7-C.2", explain: "Heat and temperature are different concepts." },
+          { q: "If particles are vibrating in fixed positions, the matter is a:", opts: ["Gas", "Liquid", "Solid", "Plasma"], ans: 2, outcome: "7-C.2", explain: "Solids have particles locked in position, just vibrating." },
+          { q: "Removing heat from a liquid causes it to:", opts: ["Evaporate", "Freeze", "Stay the same", "Melt"], ans: 1, outcome: "7-C.2", explain: "Removing heat slows particles → liquid solidifies (freezes)." },
+          { q: "A large, cold lake has MORE thermal energy than a tiny hot spark because:", opts: ["The spark is hotter", "The lake has far more particles", "Cold has more energy", "Sparks have no energy"], ans: 1, outcome: "7-C.2", explain: "Total thermal energy depends on BOTH temperature AND number of particles." },
+          { q: "Friction produces heat through:", opts: ["Chemical reactions", "Mechanical energy conversion", "Nuclear reactions", "Solar absorption"], ans: 1, outcome: "7-C.1", explain: "Friction converts kinetic (motion) energy into heat." },
+          { q: "An ice cube in a warm room melts because:", opts: ["Cold flows out of the ice", "Heat flows from the warm air INTO the ice", "Ice just falls apart", "Room temperature doesn't matter"], ans: 1, outcome: "7-C.2", explain: "Heat always flows from warm (air) to cold (ice)." },
+          { q: "Geothermal energy comes from:", opts: ["The Sun", "Earth's hot interior", "Burning coal", "Wind"], ans: 1, outcome: "7-C.1", explain: "Geothermal = heat from inside the Earth." },
+          { q: "Liquid particles have ___ kinetic energy than solid particles:", opts: ["Less", "More", "The same", "Zero"], ans: 1, outcome: "7-C.2", explain: "Liquid particles move more freely = more kinetic energy than solid." }
+        ],
+        remediation: {
+          "7-C.2": {
+            video: "https://www.youtube.com/embed/WGFbh5lMlco",
+            questions: [
+              { q: "Heat is the ___ of thermal energy:", opts: ["Storage", "Transfer", "Destruction", "Creation"], ans: 1, explain: "Heat = transfer of energy from hot to cold." },
+              { q: "Temperature measures:", opts: ["Total energy", "Average particle speed (kinetic energy)", "Number of particles", "Mass of object"], ans: 1, explain: "Temperature = average kinetic energy of particles." },
+              { q: "Adding heat to ice makes particles:", opts: ["Stop", "Move faster", "Disappear", "Get smaller"], ans: 1, explain: "More heat = more energy = faster particle movement." }
+            ]
+          },
+          "7-C.1": {
+            video: "https://www.youtube.com/embed/s-KvoVzukHo",
+            questions: [
+              { q: "Burning fuel is what type of heat source?", opts: ["Solar", "Chemical", "Electrical", "Nuclear"], ans: 1, explain: "Combustion releases chemical energy as heat." },
+              { q: "A toaster converts ___ energy to heat:", opts: ["Solar", "Chemical", "Electrical", "Geothermal"], ans: 2, explain: "Toasters use electricity to generate heat." },
+              { q: "Humans developed heat technologies because:", opts: ["For fun", "To meet needs for warmth, cooking, and industry", "They had nothing else to do", "Heat isn't useful"], ans: 1, explain: "Heat technologies serve essential human needs." }
+            ]
+          }
+        }
+      }
+    };
+
+    const lockMap = {};
+
+    // ===== ACTIVITY 1: Heat vs Temperature Sorter =====
+    const hvtData = [
+      { name: '🌊 Energy transferred from hot soup to a cold bowl', type: 'heat' },
+      { name: '🌡️ The thermometer reads 37°C', type: 'temp' },
+      { name: '❄️ Ice absorbs energy from the warm air around it', type: 'heat' },
+      { name: '📏 The average kinetic energy of water molecules', type: 'temp' },
+      { name: '☕ A hot mug warms your cold hands', type: 'heat' },
+      { name: '🔢 Measured in degrees Celsius', type: 'temp' },
+      { name: '⚡ Measured in joules', type: 'heat' },
+      { name: '🧊 It is -15°C outside today', type: 'temp' }
+    ];
+    let hvtSel = null, hvtOk = 0, hvtN = 0;
+
+    function initHvt() {
+      hvtSel = null; hvtOk = 0; hvtN = 0;
+      const sh = [...hvtData].sort(() => Math.random() - .5);
+      document.getElementById('hvtItems').innerHTML = sh.map(h => `<div class="sort-item" data-type="${h.type}" onclick="selectHvt(this)">${h.name}</div>`).join('');
+      document.getElementById('heatItems').innerHTML = '';
+      document.getElementById('tempItems').innerHTML = '';
+      document.getElementById('hvtScore').innerHTML = '';
+    }
+    function selectHvt(el) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#hvtItems .sort-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected'); hvtSel = el;
+    }
+    function dropHvt(zone) {
+      if (!hvtSel) return;
+      const t = hvtSel.dataset.type, ok = t === zone;
+      hvtN++; if (ok) hvtOk++;
+      const tgt = document.getElementById(zone === 'heat' ? 'heatItems' : 'tempItems');
+      const tag = document.createElement('div');
+      tag.className = 'sorted-item ' + (ok ? 'correct' : 'wrong');
+      tag.textContent = (ok ? '✓ ' : '✗ ') + hvtSel.textContent;
+      tgt.appendChild(tag);
+      hvtSel.classList.remove('selected'); hvtSel.classList.add('placed'); hvtSel = null;
+      if (hvtN === hvtData.length) {
+        document.getElementById('hvtScore').innerHTML = `<div class="activity-score"><div class="score-number">${hvtOk}/${hvtData.length}</div><p>${hvtOk === hvtData.length ? '🎉 Perfect!' : '📖 Remember: Heat = transfer of energy. Temperature = measurement of particle speed.'}</p><button class="activity-btn secondary" onclick="initHvt()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'hvt', hvtOk, hvtData.length);
+      }
+    }
+
+    // ===== ACTIVITY 2: Particle Behaviour Predictor =====
+    const particleScenarios = [
+      { text: "🧊 An ice cube is placed on a hot plate.", q: "What happens to the ice particles?", opts: ["They slow down", "They vibrate faster, then break free and slide (melt)", "They freeze more", "Nothing changes"], ans: 1, explain: "Heat transfers from the hot plate → particles gain energy → ice melts." },
+      { text: "💨 A balloon is placed in a freezer overnight.", q: "What happens to the gas particles inside?", opts: ["They move faster and expand", "They slow down, lose energy, and the balloon shrinks", "They escape the balloon", "They turn into liquid"], ans: 1, explain: "Removing heat → particles slow → gas contracts → balloon shrinks." },
+      { text: "☕ You pour boiling water into a cold ceramic mug.", q: "In which direction does heat flow?", opts: ["From the mug to the water", "From the water to the mug", "Heat doesn't flow", "In both directions equally"], ans: 1, explain: "Heat always flows from warmer (water) to cooler (mug)." },
+      { text: "🫧 A pot of water is heated from 20°C to 100°C.", q: "How do the water particles change?", opts: ["They slow down as water heats", "They move faster and spread further apart", "They don't change until boiling", "They become heavier"], ans: 1, explain: "As temperature rises, particles gain kinetic energy and move faster." }
+    ];
+    let partIdx = 0, partOk = 0;
+
+    function initParticles() { partIdx = 0; partOk = 0; renderPartQ(); document.getElementById('particleScore').innerHTML = ''; }
+    function renderPartQ() {
+      if (partIdx >= particleScenarios.length) {
+        document.getElementById('particleScore').innerHTML = `<div class="activity-score"><div class="score-number">${partOk}/${particleScenarios.length}</div><p>${partOk === particleScenarios.length ? '🎉 Particle expert!' : '📖 Review the particle model above.'}</p><button class="activity-btn secondary" onclick="initParticles()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'particles', partOk, particleScenarios.length);
+        return;
+      }
+      const sc = particleScenarios[partIdx];
+      document.getElementById('particleArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;font-weight:700;margin-bottom:8px">${sc.text}</p><p style="font-size:.9rem;color:var(--text2);margin-bottom:16px">${sc.q}</p>${sc.opts.map((o, i) => `<div class="whatif-option" onclick="pickParticle(${i})">${o}</div>`).join('')}<div id="partFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">Scenario ${partIdx + 1} of ${particleScenarios.length}</p>`;
+    }
+    function pickParticle(idx) {
+      const sc = particleScenarios[partIdx], ok = idx === sc.ans;
+      if (ok) partOk++;
+      document.querySelectorAll('#particleArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; o.classList.add(i === sc.ans ? 'correct' : (i === idx && !ok ? 'wrong' : '')); });
+      document.getElementById('partFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { partIdx++; renderPartQ(); }, 1800);
+    }
+
+    // ===== ACTIVITY 3: Heat Source Classifier =====
+    const sourceScenarios = [
+      { text: "☀️ Solar panels on a rooftop generating electricity", type: "solar", explain: "Solar panels capture the Sun's energy." },
+      { text: "🪵 A campfire warming marshmallows", type: "chemical", explain: "Burning wood is a chemical reaction releasing heat." },
+      { text: "🤲 Rubbing your hands together on a cold day", type: "friction", explain: "Friction converts mechanical energy into heat." },
+      { text: "🔌 An electric space heater warming a room", type: "electrical", explain: "Electric heaters convert electrical energy to heat." },
+      { text: "🌋 Hot springs heated by underground magma", type: "geothermal", explain: "Geothermal energy comes from Earth's hot interior." },
+      { text: "⚛️ A nuclear power plant producing steam for turbines", type: "nuclear", explain: "Nuclear reactions release enormous thermal energy." }
+    ];
+    const sourceMap = { solar: '☀️ Solar', chemical: '🔥 Chemical', friction: '🤲 Friction', electrical: '⚡ Electrical', geothermal: '🌋 Geothermal', nuclear: '⚛️ Nuclear' };
+    let srcIdx = 0, srcOk = 0;
+
+    function initSources() { srcIdx = 0; srcOk = 0; renderSrcQ(); document.getElementById('sourceScore').innerHTML = ''; }
+    function renderSrcQ() {
+      if (srcIdx >= sourceScenarios.length) {
+        document.getElementById('sourceScore').innerHTML = `<div class="activity-score"><div class="score-number">${srcOk}/${sourceScenarios.length}</div><p>${srcOk === sourceScenarios.length ? '🎉 Heat source master!' : '📖 Review the 6 sources of heat energy.'}</p><button class="activity-btn secondary" onclick="initSources()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'sources', srcOk, sourceScenarios.length);
+        return;
+      }
+      const sc = sourceScenarios[srcIdx];
+      const keys = Object.keys(sourceMap).sort(() => Math.random() - .5);
+      document.getElementById('sourceArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickSource('${k}')" style="flex:1;min-width:100px;font-size:.8rem">${sourceMap[k]}</button>`).join('')}</div><div id="srcFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${srcIdx + 1} of ${sourceScenarios.length}</p>`;
+    }
+    function pickSource(ans) {
+      const sc = sourceScenarios[srcIdx], ok = ans === sc.type;
+      if (ok) srcOk++;
+      document.getElementById('srcFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { srcIdx++; renderSrcQ(); }, 1500);
+    }
+
+    // ===== QUIZ BANK 2 =====
+    quizBanks.quiz2 = {
+      primary: [
+        { q: "Conduction transfers heat through:", opts: ["Moving fluids", "Electromagnetic waves", "Direct contact between particles", "Empty space"], ans: 2, outcome: "7-C.3", explain: "Conduction passes energy through direct particle-to-particle contact." },
+        { q: "Which type of heat transfer does NOT need particles?", opts: ["Conduction", "Convection", "Radiation", "All need particles"], ans: 2, outcome: "7-C.3", explain: "Radiation uses electromagnetic waves and can travel through empty space." },
+        { q: "Warm air rises because:", opts: ["It is pushed up", "It weighs more", "Its particles spread apart, making it less dense", "Cold air is lighter"], ans: 2, outcome: "7-C.3", explain: "Heated particles move faster and spread apart, reducing density so the air rises." },
+        { q: "A metal spoon heats up in soup. This is:", opts: ["Convection", "Radiation", "Conduction", "Insulation"], ans: 2, outcome: "7-C.3", explain: "The spoon is in direct contact with the soup — heat transfers through conduction." },
+        { q: "Which is the best insulator?", opts: ["Copper", "Aluminum", "Styrofoam", "Steel"], ans: 2, outcome: "7-C.4", explain: "Styrofoam traps air, which is a poor conductor — making it an excellent insulator." },
+        { q: "You feel warmth from a campfire without touching it. This is:", opts: ["Conduction", "Convection", "Radiation", "Insulation"], ans: 2, outcome: "7-C.3", explain: "Infrared radiation carries heat through the air without needing direct contact." },
+        { q: "Dark-coloured surfaces:", opts: ["Reflect radiation", "Absorb more radiation than light surfaces", "Block all heat", "Are always colder"], ans: 1, outcome: "7-C.4", explain: "Dark colours absorb more radiant energy, which is why dark cars feel hotter in the sun." },
+        { q: "In Alberta, homes use forced-air furnaces. The warm air circulates by:", opts: ["Conduction", "Convection", "Radiation", "Magnetism"], ans: 1, outcome: "7-C.3", explain: "Hot air from vents rises and circulates in convection currents, warming the room." }
+      ],
+      replacement: [
+        { q: "In conduction, particles:", opts: ["Move to a new location", "Vibrate and pass energy to neighbours", "Disappear", "Stop moving"], ans: 1, outcome: "7-C.3", explain: "Particles vibrate in place and transfer kinetic energy to adjacent particles." },
+        { q: "Convection currents form because:", opts: ["Hot fluid sinks", "Cold fluid rises", "Hot fluid rises and cold fluid sinks", "Fluids don’t move"], ans: 2, outcome: "7-C.3", explain: "Hot fluid expands and rises; cool fluid contracts, sinks, and gets heated — creating a cycle." },
+        { q: "The Sun heats Earth through:", opts: ["Conduction", "Convection", "Radiation", "All three"], ans: 2, outcome: "7-C.3", explain: "Solar radiation travels 150M km through space — no particles needed." },
+        { q: "Wood is an insulator because:", opts: ["It has loosely-bonded particles that transfer heat slowly", "It has no particles", "It is heavy", "It is dark"], ans: 0, outcome: "7-C.4", explain: "Wood’s loosely-bonded particles don’t transfer vibrations efficiently." },
+        { q: "Double-pane windows reduce heat loss by:", opts: ["Being thicker", "Trapping air (an insulator) between panes", "Being coloured", "Using convection"], ans: 1, outcome: "7-C.4", explain: "The trapped air layer is an insulator that slows conduction through the glass." },
+        { q: "A boiling pot of water has convection because:", opts: ["The pot is metal", "Hot water at the bottom rises, cool water sinks", "Steam is radiation", "The lid is on"], ans: 1, outcome: "7-C.3", explain: "Heated water at the bottom expands, rises, and is replaced by cooler, denser water." },
+        { q: "A thermos keeps drinks hot by:", opts: ["Being heavy", "Reducing conduction, convection, and radiation", "Using electricity", "Generating heat"], ans: 1, outcome: "7-C.4", explain: "A thermos uses vacuum (no conduction/convection) and reflective surfaces (reduce radiation)." },
+        { q: "A white roof in summer helps because:", opts: ["It’s pretty", "White reflects radiation, keeping the building cooler", "White absorbs heat", "It has no effect"], ans: 1, outcome: "7-C.4", explain: "Light colours reflect solar radiation, reducing heat absorption." }
+      ],
+      remediation: {
+        "7-C.3": {
+          video: "https://www.youtube.com/embed/UhIwMAhBR9g",
+          questions: [
+            { q: "Conduction requires:", opts: ["Empty space", "Moving wind", "Direct particle contact", "Light"], ans: 2, explain: "Conduction works through direct contact between vibrating particles." },
+            { q: "Convection happens in:", opts: ["Solids only", "Liquids and gases", "Empty space", "Rocks"], ans: 1, explain: "Fluids (liquids and gases) allow particles to move and create convection currents." },
+            { q: "Radiation can travel through:", opts: ["Only water", "Only air", "Empty space (vacuum)", "Only metal"], ans: 2, explain: "Radiation uses electromagnetic waves that don’t need particles." }
+          ]
+        },
+        "7-C.4": {
+          video: "https://www.youtube.com/embed/UhIwMAhBR9g",
+          questions: [
+            { q: "A conductor transfers heat:", opts: ["Slowly", "Quickly", "Not at all", "Only in space"], ans: 1, explain: "Conductors like metals have tightly packed particles that transfer energy quickly." },
+            { q: "Insulators are used to:", opts: ["Speed up heat transfer", "Slow down heat transfer", "Create heat", "Destroy heat"], ans: 1, explain: "Insulators like foam and air reduce heat flow." },
+            { q: "Fiberglass insulation in walls works by:", opts: ["Creating heat", "Trapping air pockets that slow conduction", "Reflecting light", "Being heavy"], ans: 1, explain: "Air trapped in fiberglass is a poor conductor, slowing heat escape." }
+          ]
+        }
+      }
+    };
+
+    // ===== L2 ACTIVITY 1: Transfer Type Classifier =====
+    const transferData = [
+      { text: '🍳 A metal frying pan gets hot on the stove', type: 'conduction', explain: 'Direct contact between burner and pan — conduction.' },
+      { text: '🌬️ Warm air from a heater rises to the ceiling', type: 'convection', explain: 'Warm air rises and cool air sinks — convection current.' },
+      { text: '☀️ You feel the Sun\'s warmth on your face', type: 'radiation', explain: 'Solar energy travels through space as electromagnetic waves.' },
+      { text: '🪨 An ice cube melts in your hand', type: 'conduction', explain: 'Heat transfers from your warm hand to the cold ice through direct contact.' },
+      { text: '🌊 Boiling water circulates in a pot', type: 'convection', explain: 'Hot water rises, cool water sinks — convection current.' },
+      { text: '🔥 Warming your hands near (not touching) a campfire', type: 'radiation', explain: 'Infrared radiation carries heat through the air without contact.' }
+    ];
+    const transferMap = { conduction: '🔧 Conduction', convection: '🌀 Convection', radiation: '☀️ Radiation' };
+    let trIdx = 0, trOk = 0;
+    function initTransfer() { trIdx = 0; trOk = 0; renderTrQ(); document.getElementById('transferScore').innerHTML = ''; }
+    function renderTrQ() {
+      if (trIdx >= transferData.length) {
+        document.getElementById('transferScore').innerHTML = `<div class="activity-score"><div class="score-number">${trOk}/${transferData.length}</div><p>${trOk === transferData.length ? '🎉 Heat transfer expert!' : '📖 Remember: contact=conduction, fluid movement=convection, waves=radiation.'}</p><button class="activity-btn secondary" onclick="initTransfer()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'transfer', trOk, transferData.length); return;
+      }
+      const sc = transferData[trIdx];
+      const keys = Object.keys(transferMap).sort(() => Math.random() - .5);
+      document.getElementById('transferArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickTransfer('${k}')" style="flex:1;min-width:100px">${transferMap[k]}</button>`).join('')}</div><div id="trFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${trIdx + 1} of ${transferData.length}</p>`;
+    }
+    function pickTransfer(ans) {
+      const sc = transferData[trIdx], ok = ans === sc.type;
+      if (ok) trOk++;
+      document.getElementById('trFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { trIdx++; renderTrQ(); }, 1500);
+    }
+
+    // ===== L2 ACTIVITY 2: Conductor or Insulator =====
+    const insulData = [
+      { material: '🪨 Copper wire', type: 'conductor', explain: 'Copper is a metal with tightly packed particles — excellent conductor.' },
+      { material: '🧱 Styrofoam cup', type: 'insulator', explain: 'Styrofoam traps air pockets — great insulator.' },
+      { material: '🪓 Wooden spoon', type: 'insulator', explain: 'Wood has loosely bonded particles — poor heat conductor.' },
+      { material: '🍔 Aluminum foil', type: 'conductor', explain: 'Aluminum is a metal — transfers heat quickly.' },
+      { material: '🧤 Wool mittens', type: 'insulator', explain: 'Wool traps air between fibres — slows heat loss from your hands.' },
+      { material: '🔩 Steel nail', type: 'conductor', explain: 'Steel is a metal alloy — conducts heat well.' }
+    ];
+    let insIdx = 0, insOk = 0;
+    function initInsul() { insIdx = 0; insOk = 0; renderInsQ(); document.getElementById('insulScore').innerHTML = ''; }
+    function renderInsQ() {
+      if (insIdx >= insulData.length) {
+        document.getElementById('insulScore').innerHTML = `<div class="activity-score"><div class="score-number">${insOk}/${insulData.length}</div><p>${insOk === insulData.length ? '🎉 Spot on!' : '📖 Metals = conductors, non-metals = usually insulators.'}</p><button class="activity-btn secondary" onclick="initInsul()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'insul', insOk, insulData.length); return;
+      }
+      const sc = insulData[insIdx];
+      document.getElementById('insulArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px;text-align:center"><p style="font-size:1.2rem;margin-bottom:16px">${sc.material}</p><div style="display:flex;gap:12px;justify-content:center"><button class="activity-btn" onclick="pickInsul('conductor')" style="min-width:140px">🚧 Conductor</button><button class="activity-btn secondary" onclick="pickInsul('insulator')" style="min-width:140px">🧤 Insulator</button></div><div id="insFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${insIdx + 1} of ${insulData.length}</p>`;
+    }
+    function pickInsul(ans) {
+      const sc = insulData[insIdx], ok = ans === sc.type;
+      if (ok) insOk++;
+      document.getElementById('insFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { insIdx++; renderInsQ(); }, 1500);
+    }
+
+    // ===== L2 ACTIVITY 3: Home Heat Audit =====
+    const auditData = [
+      { text: '🪟 Heat escapes through thin glass windows in winter.', type: 'conduction', fix: 'Double-pane windows trap air between layers.', explain: 'Heat conducts through the glass — double panes add an insulating air layer.' },
+      { text: '🌬️ Warm air leaks out from gaps under doors.', type: 'convection', fix: 'Weather stripping seals gaps.', explain: 'Warm air escapes through gaps — sealing them prevents convection loss.' },
+      { text: '☀️ A dark roof absorbs summer heat, making the attic very hot.', type: 'radiation', fix: 'Light-coloured or reflective roofing.', explain: 'Dark surfaces absorb radiation — reflective surfaces bounce it away.' },
+      { text: '🧱 Heat travels through uninsulated walls to the cold outside.', type: 'conduction', fix: 'Add fiberglass or spray-foam insulation.', explain: 'Heat conducts through wall materials — insulation traps air to slow it.' }
+    ];
+    let audIdx = 0, audOk = 0;
+    function initAudit() { audIdx = 0; audOk = 0; renderAudQ(); document.getElementById('auditScore').innerHTML = ''; }
+    function renderAudQ() {
+      if (audIdx >= auditData.length) {
+        document.getElementById('auditScore').innerHTML = `<div class="activity-score"><div class="score-number">${audOk}/${auditData.length}</div><p>${audOk === auditData.length ? '🎉 Home energy expert!' : '📖 Think about how each type of heat transfer causes heat loss.'}</p><button class="activity-btn secondary" onclick="initAudit()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'audit', audOk, auditData.length); return;
+      }
+      const sc = auditData[audIdx];
+      const keys = ['conduction','convection','radiation'].sort(() => Math.random() - .5);
+      document.getElementById('auditArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:12px">${sc.text}</p><p style="font-size:.82rem;color:var(--text3);margin-bottom:12px">🛠️ Suggested fix: ${sc.fix}</p><div style="display:flex;gap:8px">${keys.map(k => `<button class="activity-btn secondary" onclick="pickAudit('${k}')" style="flex:1">${transferMap[k]}</button>`).join('')}</div><div id="audFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${audIdx + 1} of ${auditData.length}</p>`;
+    }
+    function pickAudit(ans) {
+      const sc = auditData[audIdx], ok = ans === sc.type;
+      if (ok) audOk++;
+      document.getElementById('audFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { audIdx++; renderAudQ(); }, 1500);
+    }
+
+    // ===== L2 SAVE HELPERS =====
+    function saveCR2() { localStorage.setItem('g7-unitc-l2-cr', document.getElementById('crResponse2')?.value || ''); }
+    function saveReflection2() { localStorage.setItem('g7-unitc-l2-reflect', document.getElementById('reflectionText2')?.value || ''); }
+    function loadSavedText2() {
+      const cr = document.getElementById('crResponse2'), rf = document.getElementById('reflectionText2');
+      if (cr) cr.value = localStorage.getItem('g7-unitc-l2-cr') || '';
+      if (rf) rf.value = localStorage.getItem('g7-unitc-l2-reflect') || '';
+    }
+
+    // ===== QUIZ BANKS 3-5 =====
+    quizBanks.quiz3 = {primary:[{q:"Thermal expansion occurs because:",opts:["Particles get bigger","Particles move faster and spread apart","New particles are created","Material gets heavier"],ans:1,outcome:"C.K.2-EXP",explain:"Adding heat increases kinetic energy — particles vibrate faster and push apart."},{q:"Which state of matter expands the MOST when heated?",opts:["Solid","Liquid","Gas","All expand equally"],ans:2,outcome:"C.K.2-EXP",explain:"Gas particles are already far apart with weak bonds — they spread out the most."},{q:"Expansion joints on bridges allow for:",opts:["Cars to turn","Metal to expand in summer without buckling","Water drainage","Decoration"],ans:1,outcome:"C.K.2-APP",explain:"Without joints, metal bridges would buckle and crack from thermal expansion."},{q:"A bimetallic strip works because:",opts:["Both metals expand the same amount","Two different metals expand at different rates, causing bending","It's magnetic","It uses electricity"],ans:1,outcome:"C.K.2-APP",explain:"Different expansion rates cause the strip to curl when heated."},{q:"In winter, telephone wires:",opts:["Expand and sag","Contract and become tighter","Stay the same","Melt"],ans:1,outcome:"C.K.2-EXP",explain:"Cold → particles slow down → metal contracts → wires tighten."},{q:"A liquid thermometer works because:",opts:["Mercury is magnetic","Liquid expands as temperature rises, pushing up the tube","Glass changes colour","Air pressure changes"],ans:1,outcome:"C.K.2-APP",explain:"Thermal expansion of the liquid column indicates temperature."},{q:"Concrete sidewalks have gaps because:",opts:["They ran out of concrete","Concrete expands in heat — gaps prevent cracking","It's cheaper","For drainage only"],ans:1,outcome:"C.K.2-APP",explain:"Without expansion gaps, concrete would buckle and crack in summer."},{q:"Contraction happens when:",opts:["Material is heated","Material is cooled — particles slow down and move closer","Material is stirred","Pressure increases"],ans:1,outcome:"C.K.2-EXP",explain:"Removing heat → less kinetic energy → particles move closer together."}],replacement:[{q:"A hot air balloon rises because:",opts:["The basket pushes it up","Heated air expands, becomes less dense, and rises","The balloon is filled with helium","Wind pushes it up"],ans:1,outcome:"C.K.2-APP",explain:"Hot air expands → less dense → buoyant → balloon rises."},{q:"If you heat a metal ring:",opts:["The hole gets smaller","The hole gets bigger — all parts expand","Nothing changes","It melts immediately"],ans:1,outcome:"C.K.2-EXP",explain:"The entire ring expands, including the hole — everything gets bigger."},{q:"In Alberta, potholes form partly because:",opts:["Cars are too heavy","Water freezes, expands in cracks, then melts — repeatedly","The sun is too hot","Wind erosion"],ans:1,outcome:"C.K.2-APP",explain:"Freeze-thaw cycles cause water to expand in pavement cracks."},{q:"Solids expand the least because:",opts:["They have no particles","Particles are tightly packed with strong bonds","They are cold","They don't contain energy"],ans:1,outcome:"C.K.2-EXP",explain:"Strong bonds in solids restrict how far particles can move apart."},{q:"Train tracks have small gaps to:",opts:["Save metal","Allow for thermal expansion without bending","Let water through","Make clicking sounds"],ans:1,outcome:"C.K.2-APP",explain:"Rails expand in heat — gaps prevent dangerous buckling."},{q:"Liquids expand ___ than solids but ___ than gases:",opts:["Less, more","More, less","More, more","Less, less"],ans:1,outcome:"C.K.2-EXP",explain:"Liquids are between solids (tight) and gases (loose) in expansion amount."},{q:"A jar lid stuck tight can be loosened by:",opts:["Freezing it","Running hot water on the metal lid — it expands more than glass","Hitting it harder","Using oil"],ans:1,outcome:"C.K.2-APP",explain:"Metal expands more than glass — hot water loosens the seal."},{q:"The particle model explains expansion by showing:",opts:["Particles getting bigger","Particles moving faster and needing more space","New particles forming","Particles changing type"],ans:1,outcome:"C.K.2-EXP",explain:"Particles don't change size — they just need more space when moving faster."}],remediation:{"C.K.2-EXP":{video:"https://www.youtube.com/embed/4fuHzC9aTik",questions:[{q:"Thermal expansion means particles:",opts:["Get bigger","Move faster and spread apart"],ans:1,explain:"Particles stay the same size but move apart when heated."},{q:"Which expands most when heated?",opts:["Solids","Gases"],ans:1,explain:"Gas particles have the weakest bonds and spread the most."}]},"C.K.2-APP":{video:"https://www.youtube.com/embed/4fuHzC9aTik",questions:[{q:"Expansion joints on bridges prevent:",opts:["Rust","Buckling from heat expansion"],ans:1,explain:"Gaps absorb expansion, preventing structural damage."},{q:"A bimetallic strip bends because:",opts:["Both metals expand equally","Metals expand at different rates"],ans:1,explain:"Unequal expansion causes the bonded metals to curl."}]}}};
+
+    quizBanks.quiz4 = {primary:[{q:"The first controlled heat technology was:",opts:["Solar panels","Fire","Steam engine","Furnace"],ans:1,outcome:"C.K.3-HIST",explain:"Humans controlled fire over 100,000 years ago for cooking and warmth."},{q:"A Roman hypocaust was:",opts:["A type of weapon","An underfloor heating system using hot air","A cold bath","A road"],ans:1,outcome:"C.K.3-HIST",explain:"Romans circulated hot air under raised floors — early central heating."},{q:"Passive solar heating uses:",opts:["Pumps and fans","Building design like south-facing windows","Batteries","Natural gas"],ans:1,outcome:"C.K.3-SOLAR",explain:"Passive solar captures heat naturally through design — no mechanical parts."},{q:"Active solar uses:",opts:["Only building orientation","Mechanical systems like pumps to distribute solar heat","No technology","Wind power"],ans:1,outcome:"C.K.3-SOLAR",explain:"Active solar requires equipment to collect, store, and distribute heat."},{q:"A thermostat regulates temperature by:",opts:["Producing heat","Turning heating/cooling on and off at set temperatures","Insulating walls","Blocking radiation"],ans:1,outcome:"C.K.3-TECH",explain:"Thermostats sense temperature and control heating systems automatically."},{q:"The steam engine powered:",opts:["Ancient Rome","The Industrial Revolution","The Space Age","Only boats"],ans:1,outcome:"C.K.3-HIST",explain:"Converting heat to motion revolutionized industry and transportation."},{q:"Combustion is:",opts:["Freezing","A chemical reaction that releases heat by burning fuel","Melting","Evaporation"],ans:1,outcome:"C.K.3-TECH",explain:"Burning fuel releases stored chemical energy as thermal energy."},{q:"A solar water heater is an example of:",opts:["Passive solar","Active solar","Fossil fuel","Nuclear"],ans:1,outcome:"C.K.3-SOLAR",explain:"Solar water heaters use panels and pumps — active solar technology."}],replacement:[{q:"A fireplace heats a room mainly by:",opts:["Conduction","Radiation and convection","Sound","Magnetism"],ans:1,outcome:"C.K.3-TECH",explain:"Fireplaces radiate heat outward and create convection currents of warm air."},{q:"South-facing windows in Alberta homes capture:",opts:["Moonlight","Maximum winter sunlight for passive heating","Wind","Sound"],ans:1,outcome:"C.K.3-SOLAR",explain:"In the northern hemisphere, south-facing windows get the most direct sun."},{q:"A heat pump works by:",opts:["Creating heat from nothing","Moving existing heat from outside to inside","Burning fuel","Using candles"],ans:1,outcome:"C.K.3-TECH",explain:"Heat pumps transfer thermal energy from cooler outdoor air to warm your home."},{q:"Concrete floors in passive solar homes serve as:",opts:["Decoration","Thermal mass that absorbs and slowly releases heat","Insulation","Conductors"],ans:1,outcome:"C.K.3-SOLAR",explain:"Dense materials absorb daytime solar heat and release it at night."},{q:"The biggest advantage of passive over active solar is:",opts:["It produces more energy","Low cost and almost no maintenance","It works at night","It's louder"],ans:1,outcome:"C.K.3-SOLAR",explain:"Passive solar is built into the home design — no equipment to maintain."},{q:"Wood stoves were common in pioneer Alberta because:",opts:["Electricity was available","Wood was abundant and could be burned for heat","They preferred cold","Gas was cheap"],ans:1,outcome:"C.K.3-HIST",explain:"Early settlers used local wood for combustion heating."},{q:"A radiator heats a room by:",opts:["Only radiation","Primarily convection — warming air that rises and circulates","Only conduction","Burning fuel inside it"],ans:1,outcome:"C.K.3-TECH",explain:"Despite its name, radiators mainly use convection to circulate warm air."},{q:"Geothermal energy taps into:",opts:["Solar power","Earth's internal heat","Wind","Tides"],ans:1,outcome:"C.K.3-TECH",explain:"Geothermal systems use the Earth's constant underground temperature."}],remediation:{"C.K.3-HIST":{video:"https://www.youtube.com/embed/FrzKGXM3JA0",questions:[{q:"The first heat technology was:",opts:["Solar panels","Fire"],ans:1,explain:"Controlled fire was humanity's first heat technology."},{q:"The steam engine was important because:",opts:["It cooled things","It converted heat to motion, powering industry"],ans:1,explain:"Steam engines transformed manufacturing and transportation."}]},"C.K.3-SOLAR":{video:"https://www.youtube.com/embed/FrzKGXM3JA0",questions:[{q:"Passive solar uses:",opts:["Mechanical equipment","Building design to capture heat naturally"],ans:1,explain:"Passive = no moving parts, just smart design."},{q:"Active solar uses:",opts:["Only window placement","Pumps and panels to collect and move heat"],ans:1,explain:"Active solar requires mechanical equipment."}]},"C.K.3-TECH":{video:"https://www.youtube.com/embed/FrzKGXM3JA0",questions:[{q:"A thermostat:",opts:["Produces heat","Controls when heating turns on and off"],ans:1,explain:"Thermostats regulate temperature automatically."},{q:"Combustion releases:",opts:["Cold","Thermal energy from burning fuel"],ans:1,explain:"Burning fuel converts chemical energy to heat."}]}}};
+
+    quizBanks.quiz5 = {primary:[{q:"Fossil fuels are considered non-renewable because:",opts:["They are expensive","They take millions of years to form","They don't produce heat","They are renewable"],ans:1,outcome:"C.K.4-FOSSIL",explain:"Coal, oil, and gas formed over millions of years — we use them far faster than they form."},{q:"The greenhouse effect is caused by:",opts:["Greenhouses","CO₂ and other gases trapping heat in the atmosphere","Oxygen","Water"],ans:1,outcome:"C.K.4-CLIMATE",explain:"Greenhouse gases trap outgoing heat radiation, warming Earth's surface."},{q:"Alberta's main source of home heating is:",opts:["Solar","Natural gas","Coal","Geothermal"],ans:1,outcome:"C.K.4-FOSSIL",explain:"Most Alberta homes are heated by natural gas furnaces."},{q:"Solar energy is intermittent, meaning:",opts:["It's always available","It's only available when the sun is shining","It's too strong","It's free"],ans:1,outcome:"C.K.4-RENEW",explain:"Solar production depends on sunlight — less in winter, none at night."},{q:"Energy efficiency means:",opts:["Using more energy","Using less energy to achieve the same result","Having no energy","Producing energy"],ans:1,outcome:"C.K.4-EFFIC",explain:"Efficiency reduces waste — same comfort with less energy consumption."},{q:"Which produces zero direct CO₂ emissions?",opts:["Natural gas","Coal","Wind turbine","Oil furnace"],ans:2,outcome:"C.K.4-RENEW",explain:"Wind power generates electricity with no combustion emissions."},{q:"Burning fossil fuels contributes to:",opts:["Cleaner air","Climate change through CO₂ emissions","Renewable energy","Cooling the planet"],ans:1,outcome:"C.K.4-CLIMATE",explain:"Fossil fuel combustion is the #1 source of human-caused greenhouse gases."},{q:"R-value measures:",opts:["Temperature","Insulation's ability to resist heat flow","Weight","Colour"],ans:1,outcome:"C.K.4-EFFIC",explain:"Higher R-value = better insulation = less heat loss = more efficient."}],replacement:[{q:"Geothermal energy is reliable because:",opts:["It uses the sun","Earth's underground temperature is constant","It burns fuel","It's cheap"],ans:1,outcome:"C.K.4-RENEW",explain:"Unlike solar or wind, geothermal provides constant, predictable heat."},{q:"A carbon footprint measures:",opts:["Your shoe size","The total CO₂ produced by your activities","How far you walk","Your weight"],ans:1,outcome:"C.K.4-CLIMATE",explain:"Carbon footprint = total greenhouse gases from your energy use."},{q:"LED bulbs are more efficient than incandescent because:",opts:["They're brighter","They convert more electricity to light instead of heat","They're bigger","They use more power"],ans:1,outcome:"C.K.4-EFFIC",explain:"LEDs waste far less energy as heat — more light per watt."},{q:"Natural gas is cleaner than coal because:",opts:["It produces no emissions","It produces less CO₂ per unit of energy","It's renewable","It's not burned"],ans:1,outcome:"C.K.4-FOSSIL",explain:"Gas releases roughly half the CO₂ of coal per unit of energy."},{q:"A challenge of renewable energy in Alberta is:",opts:["Too much sunlight","Cold winters reduce solar output, and wind is variable","No wind","No technology"],ans:1,outcome:"C.K.4-RENEW",explain:"Alberta's long, cold winters and variable wind present storage challenges."},{q:"Triple-pane windows improve energy efficiency by:",opts:["Letting in more cold air","Adding insulating air layers that reduce heat loss","Blocking all light","Being thicker glass"],ans:1,outcome:"C.K.4-EFFIC",explain:"Multiple glass panes with air gaps resist heat transfer."},{q:"The Paris Agreement aims to:",opts:["Increase fossil fuel use","Limit global warming by reducing greenhouse gas emissions","Build more coal plants","Remove all energy"],ans:1,outcome:"C.K.4-CLIMATE",explain:"Countries pledged to reduce emissions to limit warming."},{q:"Biomass energy comes from:",opts:["Wind","Burning organic material like wood and agricultural waste","Nuclear reactions","Geothermal vents"],ans:1,outcome:"C.K.4-RENEW",explain:"Biomass converts organic material to thermal energy."}],remediation:{"C.K.4-FOSSIL":{video:"https://www.youtube.com/embed/1kUE0BZtTRc",questions:[{q:"Fossil fuels formed from:",opts:["Rocks","Ancient organisms over millions of years"],ans:1,explain:"Coal, oil, and gas are the compressed remains of ancient life."},{q:"Natural gas is:",opts:["Renewable","Non-renewable but relatively cleaner"],ans:1,explain:"Gas is a fossil fuel, but produces less CO₂ than coal."}]},"C.K.4-RENEW":{video:"https://www.youtube.com/embed/1kUE0BZtTRc",questions:[{q:"Solar energy is renewable because:",opts:["It runs out","The sun continuously provides energy"],ans:1,explain:"The sun's energy is practically infinite on human timescales."},{q:"A challenge of wind energy is:",opts:["It's renewable","Wind doesn't blow constantly"],ans:1,explain:"Variable wind speed means variable electricity production."}]},"C.K.4-CLIMATE":{video:"https://www.youtube.com/embed/1kUE0BZtTRc",questions:[{q:"The greenhouse effect traps:",opts:["Water","Heat in Earth's atmosphere"],ans:1,explain:"CO₂ and other gases trap heat radiation from escaping to space."},{q:"Burning fossil fuels increases:",opts:["Oxygen","Atmospheric CO₂"],ans:1,explain:"Combustion converts carbon in fuel to CO₂ gas."}]},"C.K.4-EFFIC":{video:"https://www.youtube.com/embed/1kUE0BZtTRc",questions:[{q:"Energy efficiency means:",opts:["Using more energy","Same result with less energy"],ans:1,explain:"Efficiency = reducing waste, not reducing comfort."},{q:"Higher R-value insulation:",opts:["Lets more heat escape","Blocks more heat from escaping"],ans:1,explain:"R-value measures resistance to heat flow — higher is better."}]}}};
+
+    // ===== L3 ACTIVITIES =====
+    const l3ExpData=[{text:"🌉 Steel bridge beam on a hot summer day",ans:"expand",explain:"Steel expands in heat — that's why bridges have expansion joints."},{text:"❄️ Mercury in a thermometer placed outdoors in -30°C",ans:"contract",explain:"Mercury contracts in cold — the column drops to show lower temperature."},{text:"🎈 Air inside a balloon heated by a hair dryer",ans:"expand",explain:"Heated gas particles move faster and push out — balloon expands."},{text:"🧊 Iron railroad track in a Canadian winter",ans:"contract",explain:"Cold → particles slow down → metal contracts. Tracks can develop gaps."},{text:"🔥 Water in a pot being heated on a stove",ans:"expand",explain:"Liquid water expands when heated — that's why pots overflow if too full."}];
+    let l3ExpIdx=0,l3ExpOk=0;
+    function initL3Exp(){l3ExpIdx=0;l3ExpOk=0;renderL3Exp();document.getElementById('l3ExpScore').innerHTML='';}
+    function renderL3Exp(){if(l3ExpIdx>=l3ExpData.length){document.getElementById('l3ExpScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3ExpOk}/${l3ExpData.length}</div><p>${l3ExpOk>=4?'🎉 Expansion expert!':'📖 Review thermal expansion & contraction.'}</p><button class="activity-btn secondary" onclick="initL3Exp()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'exp',l3ExpOk,l3ExpData.length);return;}const d=l3ExpData[l3ExpIdx];document.getElementById('l3ExpArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;justify-content:center"><button class="activity-btn secondary" onclick="pickL3Exp('expand')">📈 Expand</button><button class="activity-btn secondary" onclick="pickL3Exp('contract')">📉 Contract</button></div><div id="l3ExpFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3ExpIdx+1} of ${l3ExpData.length}</p>`;}
+    function pickL3Exp(ans){const d=l3ExpData[l3ExpIdx],ok=ans===d.ans;if(ok)l3ExpOk++;document.getElementById('l3ExpFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3ExpIdx++;renderL3Exp();},1500);}
+
+    const l3AppData=[{text:"🌉 Gaps between sections of a highway bridge",ans:"joint",explain:"Expansion joints absorb thermal expansion to prevent cracking."},{text:"🌡️ Red liquid rising in a glass tube",ans:"therm",explain:"Liquid thermal expansion in a thermometer indicates temperature."},{text:"🎈 A balloon rising over a campfire",ans:"balloon",explain:"Heated air expands, becomes less dense, and lifts the balloon."},{text:"🔧 Two metals bonded together that curl when heated",ans:"bimetal",explain:"A bimetallic strip bends because the metals expand at different rates."},{text:"🏠 Gaps between sidewalk slabs",ans:"joint",explain:"Concrete needs room to expand in summer heat without buckling."}];
+    let l3AppIdx=0,l3AppOk=0;
+    function initL3App(){l3AppIdx=0;l3AppOk=0;renderL3App();document.getElementById('l3AppScore').innerHTML='';}
+    function renderL3App(){if(l3AppIdx>=l3AppData.length){document.getElementById('l3AppScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3AppOk}/${l3AppData.length}</div><p>${l3AppOk>=4?'🎉 Application ace!':'📖 Review applications of thermal expansion.'}</p><button class="activity-btn secondary" onclick="initL3App()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'app',l3AppOk,l3AppData.length);return;}const d=l3AppData[l3AppIdx];document.getElementById('l3AppArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${[{k:'joint',l:'🌉 Expansion Joint'},{k:'therm',l:'🌡️ Thermometer'},{k:'balloon',l:'🎈 Hot Air Balloon'},{k:'bimetal',l:'🔧 Bimetallic Strip'}].map(o=>`<button class="activity-btn secondary" onclick="pickL3App('${o.k}')" style="flex:1;min-width:100px;font-size:.8rem">${o.l}</button>`).join('')}</div><div id="l3AppFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3AppIdx+1} of ${l3AppData.length}</p>`;}
+    function pickL3App(ans){const d=l3AppData[l3AppIdx],ok=ans===d.ans;if(ok)l3AppOk++;document.getElementById('l3AppFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3AppIdx++;renderL3App();},1500);}
+
+    // ===== L4 ACTIVITIES =====
+    const l4TimeData=[{tech:"🔥 Controlled fire",era:0},{tech:"🏛️ Roman Hypocaust",era:1},{tech:"🏠 Fireplace / Chimney",era:2},{tech:"🚂 Steam Engine",era:3},{tech:"🌡️ Central Furnace",era:4},{tech:"☀️ Solar Panels",era:5}];
+    let l4TimeStep=0,l4TimeOk=0,l4TimePicked=[];
+    function initL4Time(){l4TimeStep=0;l4TimeOk=0;l4TimePicked=[];renderL4Time();document.getElementById('l4TimeScore').innerHTML='';}
+    function renderL4Time(){if(l4TimeStep>=l4TimeData.length){document.getElementById('l4TimeScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4TimeOk}/${l4TimeData.length}</div><p>${l4TimeOk>=5?'🎉 Timeline master!':'📖 Review the history of heat technologies.'}</p><button class="activity-btn secondary" onclick="initL4Time()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'time',l4TimeOk,l4TimeData.length);return;}const avail=l4TimeData.filter((_,i)=>!l4TimePicked.includes(i)).sort(()=>Math.random()-.5);document.getElementById('l4TimeArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-weight:600;margin-bottom:12px">Pick technology #${l4TimeStep+1} in chronological order (oldest first):</p><div style="display:flex;gap:8px;flex-wrap:wrap">${avail.map(t=>`<button class="activity-btn secondary" onclick="pickL4Time(${l4TimeData.indexOf(t)})" style="flex:1;min-width:120px;font-size:.8rem">${t.tech}</button>`).join('')}</div><div id="l4TimeFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4TimeStep+1} of ${l4TimeData.length}</p>`;}
+    function pickL4Time(idx){const ok=idx===l4TimeStep;if(ok)l4TimeOk++;l4TimePicked.push(idx);document.getElementById('l4TimeFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅ Correct!':'❌ Not quite'}</strong> — ${l4TimeData[l4TimeStep].tech} was #${l4TimeStep+1}.</div>`;setTimeout(()=>{l4TimeStep++;renderL4Time();},1500);}
+
+    const l4SolarData=[{text:"☀️ South-facing windows in an Alberta home",ans:"passive",explain:"Windows capture sunlight naturally — passive solar."},{text:"⚙️ Rooftop solar water heater with a pump",ans:"active",explain:"Pumps and panels = active solar technology."},{text:"🔥 Natural gas furnace",ans:"neither",explain:"Gas furnace burns fossil fuel — not solar at all."},{text:"🧱 Concrete floor absorbing daytime heat",ans:"passive",explain:"Thermal mass stores heat passively — no mechanical parts."},{text:"⚡ Photovoltaic panels converting sunlight to electricity",ans:"active",explain:"PV panels are active solar — equipment converts sunlight."},{text:"🌬️ Wind turbine",ans:"neither",explain:"Wind power ≠ solar — driven by atmospheric pressure differences."}];
+    let l4SolarIdx=0,l4SolarOk=0;
+    function initL4Solar(){l4SolarIdx=0;l4SolarOk=0;renderL4Solar();document.getElementById('l4SolarScore').innerHTML='';}
+    function renderL4Solar(){if(l4SolarIdx>=l4SolarData.length){document.getElementById('l4SolarScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4SolarOk}/${l4SolarData.length}</div><p>${l4SolarOk>=5?'🎉 Solar savvy!':'📖 Review passive vs active solar.'}</p><button class="activity-btn secondary" onclick="initL4Solar()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'solar',l4SolarOk,l4SolarData.length);return;}const d=l4SolarData[l4SolarIdx];document.getElementById('l4SolarArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px"><button class="activity-btn secondary" onclick="pickL4Solar('passive')">☀️ Passive</button><button class="activity-btn secondary" onclick="pickL4Solar('active')">⚙️ Active</button><button class="activity-btn secondary" onclick="pickL4Solar('neither')">❌ Neither</button></div><div id="l4SolarFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4SolarIdx+1} of ${l4SolarData.length}</p>`;}
+    function pickL4Solar(ans){const d=l4SolarData[l4SolarIdx],ok=ans===d.ans;if(ok)l4SolarOk++;document.getElementById('l4SolarFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l4SolarIdx++;renderL4Solar();},1500);}
+
+    // ===== L5 ACTIVITIES =====
+    const l5EnergyData=[{text:"💰 Budget is tight, need cheapest long-term option",ans:"gas",explain:"Natural gas is currently the cheapest heating fuel in Alberta."},{text:"🌍 Want zero emissions for home heating",ans:"geo",explain:"Geothermal heat pumps produce zero direct emissions."},{text:"☀️ New home build — want low maintenance and free heat",ans:"solar",explain:"Passive solar design = free heat with almost no maintenance."},{text:"🏚️ Older home, easy retrofit, reliable heat",ans:"gas",explain:"Gas furnace is the simplest retrofit for existing homes."},{text:"🌲 Rural Alberta — off the gas grid",ans:"biomass",explain:"Biomass (wood) is available locally where gas lines don't reach."}];
+    let l5EnergyIdx=0,l5EnergyOk=0;
+    function initL5Energy(){l5EnergyIdx=0;l5EnergyOk=0;renderL5Energy();document.getElementById('l5EnergyScore').innerHTML='';}
+    function renderL5Energy(){if(l5EnergyIdx>=l5EnergyData.length){document.getElementById('l5EnergyScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5EnergyOk}/${l5EnergyData.length}</div><p>${l5EnergyOk>=4?'🎉 Energy advisor!':'📖 Review each energy source pros and cons.'}</p><button class="activity-btn secondary" onclick="initL5Energy()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'energy',l5EnergyOk,l5EnergyData.length);return;}const d=l5EnergyData[l5EnergyIdx];document.getElementById('l5EnergyArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${[{k:'gas',l:'⛽ Natural Gas'},{k:'solar',l:'☀️ Solar'},{k:'geo',l:'🌍 Geothermal'},{k:'biomass',l:'🌲 Biomass'}].map(o=>`<button class="activity-btn secondary" onclick="pickL5Energy('${o.k}')" style="flex:1;min-width:90px;font-size:.8rem">${o.l}</button>`).join('')}</div><div id="l5EnergyFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5EnergyIdx+1} of ${l5EnergyData.length}</p>`;}
+    function pickL5Energy(ans){const d=l5EnergyData[l5EnergyIdx],ok=ans===d.ans;if(ok)l5EnergyOk++;document.getElementById('l5EnergyFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5EnergyIdx++;renderL5Energy();},1500);}
+
+    const l5ImpactData=[{text:"☀️ Solar panels reduce dependence on fossil fuels",ans:true,explain:"Positive ✅ — Reduces CO₂ emissions and fossil fuel demand."},{text:"🏭 Burning coal releases mercury into the atmosphere",ans:false,explain:"Negative ❌ — Mercury pollution harms ecosystems and human health."},{text:"🌬️ Wind farms provide jobs in rural Alberta communities",ans:true,explain:"Positive ✅ — Economic benefits for rural areas."},{text:"🛢️ Oil spills contaminate waterways and soil",ans:false,explain:"Negative ❌ — Environmental damage from fossil fuel extraction."},{text:"🔋 Electric vehicles reduce tailpipe emissions",ans:true,explain:"Positive ✅ — Even with grid power, EVs are cleaner overall."},{text:"⛏️ Mining lithium for batteries damages ecosystems",ans:false,explain:"Negative ❌ — Even renewables have environmental costs in production."}];
+    let l5ImpactIdx=0,l5ImpactOk=0;
+    function initL5Impact(){l5ImpactIdx=0;l5ImpactOk=0;renderL5Impact();document.getElementById('l5ImpactScore').innerHTML='';}
+    function renderL5Impact(){if(l5ImpactIdx>=l5ImpactData.length){document.getElementById('l5ImpactScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5ImpactOk}/${l5ImpactData.length}</div><p>${l5ImpactOk>=5?'🎉 Impact evaluator!':'📖 Review the environmental impacts of energy sources.'}</p><button class="activity-btn secondary" onclick="initL5Impact()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'impact',l5ImpactOk,l5ImpactData.length);return;}const d=l5ImpactData[l5ImpactIdx];document.getElementById('l5ImpactArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;justify-content:center"><button class="activity-btn secondary" onclick="pickL5Impact(true)">✅ Positive</button><button class="activity-btn secondary" onclick="pickL5Impact(false)">❌ Negative</button></div><div id="l5ImpactFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5ImpactIdx+1} of ${l5ImpactData.length}</p>`;}
+    function pickL5Impact(ans){const d=l5ImpactData[l5ImpactIdx],ok=ans===d.ans;if(ok)l5ImpactOk++;document.getElementById('l5ImpactFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5ImpactIdx++;renderL5Impact();},1500);}
+
+    // ===== SAVE/LOAD for L3-L6 =====
+    function saveCR3(){localStorage.setItem('g7-unitc-l3-cr',document.getElementById('crResponse3').value);}
+    function saveReflection3(){localStorage.setItem('g7-unitc-l3-reflect',document.getElementById('reflectionText3').value);}
+    function saveCR4(){localStorage.setItem('g7-unitc-l4-cr',document.getElementById('crResponse4').value);}
+    function saveReflection4(){localStorage.setItem('g7-unitc-l4-reflect',document.getElementById('reflectionText4').value);}
+    function saveCR5(){localStorage.setItem('g7-unitc-l5-cr',document.getElementById('crResponse5').value);}
+    function saveReflection5(){localStorage.setItem('g7-unitc-l5-reflect',document.getElementById('reflectionText5').value);}
+    function savePTc(step){localStorage.setItem('g7-unitc-pt'+step,document.getElementById('ptc'+step).value);}
+    function loadLTextC(n){
+      const cr=document.getElementById('crResponse'+n);if(cr)cr.value=localStorage.getItem('g7-unitc-l'+n+'-cr')||'';
+      const rf=document.getElementById('reflectionText'+n);if(rf)rf.value=localStorage.getItem('g7-unitc-l'+n+'-reflect')||'';
+    }
+    function loadPTc(){for(let i=1;i<=5;i++){const el=document.getElementById('ptc'+i);if(el)el.value=localStorage.getItem('g7-unitc-pt'+i)||'';}}
+    function submitPTc(){
+      for(let i=1;i<=5;i++){savePTc(i);}
+      localStorage.setItem('g7-unitc-lesson6-passed','true');
+      document.getElementById('ptSubmitBtnC').textContent='✅ Submitted!';
+      document.getElementById('ptSubmitBtnC').disabled=true;
+      updateLock();updateProgress();
+      alert('🏆 Congratulations! Your Energy-Efficient Shelter Design has been submitted. Your teacher will review it.');
+    }
+
+    // ===== ACTIVITY GATE =====
+    actComplete = {
+      l1: { hvt: false, particles: false, sources: false },
+      l2: { transfer: false, insul: false, audit: false },
+      l3: { exp: false, app: false },
+      l4: { time: false, solar: false },
+      l5: { energy: false, impact: false }
+    };
+
+    // ===== PAGE LOAD CALLBACK =====
+    function onPageLoad(page) {
+      if (page === 'lesson1') { initHvt(); initParticles(); initSources(); loadSavedText(); }
+      if (page === 'lesson1-quiz') initQuiz('quiz1', quizBanks);
+      if (page === 'lesson2') { initTransfer(); initInsul(); initAudit(); loadSavedText2(); }
+      if (page === 'lesson2-quiz') initQuiz('quiz2', quizBanks);
+      if (page === 'lesson3') { initL3Exp(); initL3App(); loadLTextC(3); }
+      if (page === 'lesson3-quiz') initQuiz('quiz3', quizBanks);
+      if (page === 'lesson4') { initL4Time(); initL4Solar(); loadLTextC(4); }
+      if (page === 'lesson4-quiz') initQuiz('quiz4', quizBanks);
+      if (page === 'lesson5') { initL5Energy(); initL5Impact(); loadLTextC(5); }
+      if (page === 'lesson5-quiz') initQuiz('quiz5', quizBanks);
+      if (page === 'lesson6') loadPTc();
+      if (page === 'teacher') renderTeacherDashboard();
+    }
+
+    // ===== PROGRESS =====
+    function updateLock() {
+      const totalLessons = 6;
+      for (let i = 1; i <= totalLessons; i++) {
+        const passed = localStorage.getItem(`g7-unitc-lesson${i}-passed`);
+        if (passed) {
+          document.querySelectorAll('.nav-item').forEach(n => {
+            if (n.dataset.page === `lesson${i}` || n.dataset.page === `lesson${i}-quiz`) n.classList.add('completed');
+          });
+          const card = document.getElementById(`homeCard${i}`);
+          if (card) { card.classList.remove('locked'); card.classList.add('completed'); const btn = card.querySelector('.card-btn'); if (btn) btn.textContent = 'Review ✓'; }
+          const next = i + 1;
+          if (next <= totalLessons) {
+            document.querySelectorAll('.nav-item').forEach(n => {
+              if (n.dataset.page === `lesson${next}` || n.dataset.page === `lesson${next}-quiz`) n.classList.remove('locked');
+            });
+            const nc = document.getElementById(`homeCard${next}`);
+            if (nc) { nc.classList.remove('locked'); const btn = nc.querySelector('.card-btn'); if (btn && btn.textContent.includes('Locked')) btn.textContent = 'Start Lesson →'; }
+          }
+        }
+      }
+    }
+    function updateProgress() {
+      let passed = 0;
+      for (let i = 1; i <= 6; i++) { if (localStorage.getItem(`g7-unitc-lesson${i}-passed`)) passed++; }
+      const fill = document.getElementById('progressFill');
+      if (fill) fill.style.width = Math.round(passed / 6 * 100) + '%';
+    }
+    document.addEventListener('DOMContentLoaded', () => { updateLock(); updateProgress(); });
+  </script>
+</body>
+</html>
+

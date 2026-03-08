@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit D: Structures & Forces — Grade 7 Science</title>
+  <meta name="description" content="Grade 7 Science — Structures & Forces. Learn about shell, frame, and solid structures, materials, and the forces that act on them.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+</head>
+<body data-unit-key="d" data-unit="d">
+
+  <div class="signin-overlay" id="signinOverlay"><div class="signin-card"><div style="font-size:3rem;margin-bottom:12px">🏗️</div><h2>Welcome, Scientist!</h2><p>Enter your name and email to save your progress.</p><button class="signin-btn" onclick="googleSignIn()">Get Started →</button></div></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="app">
+    <nav class="sidebar" id="sidebar">
+      <div class="logo"><div class="logo-icon">🏗️</div><div><h2>Structures & Forces</h2><span>Unit D</span></div></div>
+      <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Home</div>
+      <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Types of Structures</div>
+      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+      <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Forces & Stability</div>
+      <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+      <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> External Forces</div>
+      <div class="nav-item locked" data-page="lesson3-quiz" onclick="goTo('lesson3-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 3 Quiz</div>
+      <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Materials</div>
+      <div class="nav-item locked" data-page="lesson4-quiz" onclick="goTo('lesson4-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 4 Quiz</div>
+      <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Joints & Connections</div>
+      <div class="nav-item locked" data-page="lesson5-quiz" onclick="goTo('lesson5-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 5 Quiz</div>
+      <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Design Process</div>
+      <div class="nav-item locked" data-page="lesson6-quiz" onclick="goTo('lesson6-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 6 Quiz</div>
+      <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')"><div class="nav-num"><span>7</span></div> Structural Failure</div>
+      <div class="nav-item locked" data-page="lesson7-quiz" onclick="goTo('lesson7-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 7 Quiz</div>
+      <div class="nav-item locked" data-page="lesson8" onclick="goTo('lesson8')"><div class="nav-num"><span>8</span></div> Performance Task</div>
+      <div class="nav-item" id="teacherNav" data-page="teacher" onclick="goTo('teacher')" style="display:none"><div class="nav-num"><span>📊</span></div> Dashboard</div>
+    </nav>
+
+    <div class="main">
+      <div class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <a href="../index.html" class="back-to-units">← All Units</a>
+        <div class="top-actions">
+          <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+          <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+        </div>
+      </div>
+
+      <!-- HOME -->
+      <div class="lesson-page active" id="page-home">
+        <div class="welcome"><h1>🏗️ Structures & Forces</h1><p>Discover how structures are built, what forces act on them, and why some designs are stronger than others.</p></div>
+        <div class="home-grid">
+          <div class="lesson-card" id="homeCard1" onclick="goTo('lesson1')"><span class="card-icon">🏛️</span><h3>Lesson 1: Types of Structures</h3><p>Shell, frame & solid structures, form, function, materials</p><div class="card-btn">Start Lesson →</div></div>
+          <div class="lesson-card locked" id="homeCard2" onclick="goTo('lesson2')"><span class="card-icon">⚖️</span><h3>Lesson 2: Forces & Stability</h3><p>Loads, stress, centre of gravity, structural failure & design</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard3" onclick="goTo('lesson3')"><span class="card-icon">🌪️</span><h3>Lesson 3: External Forces</h3><p>Wind, earthquakes, snow loads & environmental design factors</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard4" onclick="goTo('lesson4')"><span class="card-icon">🧪</span><h3>Lesson 4: Properties of Materials</h3><p>Strength, flexibility, hardness & material selection</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard5" onclick="goTo('lesson5')"><span class="card-icon">🔩</span><h3>Lesson 5: Joints & Connections</h3><p>Fixed vs flexible joints, fasteners & structural integrity</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard6" onclick="goTo('lesson6')"><span class="card-icon">📐</span><h3>Lesson 6: The Design Process</h3><p>Engineering design cycle, testing & improving structures</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard7" onclick="goTo('lesson7')"><span class="card-icon">🚨</span><h3>Lesson 7: Structural Failure</h3><p>Why structures fail, real-world analysis & prevention</p><div class="card-btn">🔒 Locked</div></div>
+          <div class="lesson-card locked" id="homeCard8" onclick="goTo('lesson8')"><span class="card-icon">🏆</span><h3>Lesson 8: Performance Task</h3><p>Design & analyze a structure for a specific purpose</p><div class="card-btn">🔒 Locked</div></div>
+        </div>
+      </div>
+
+      <!-- LESSON 1 -->
+      <div class="lesson-page" id="page-lesson1">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 1</div>
+          <h1 class="lesson-title">Types of Structures: Form, Function & Materials</h1>
+          <p class="lesson-subtitle">Learn to identify different structural types, understand why materials matter, and compare natural and human-made structures.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">7-D.1</span><span class="outcome-tag">7-D.2</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can describe and classify structures as shell, frame, or solid.</li>
+            <li>I can identify materials used in structures and explain why they were chosen.</li>
+            <li>I can compare natural structures with human-made structures.</li>
+            <li>I can explain how form follows function in structure design.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">By the end of this lesson, you should be able to check off all of these:</p>
+          <ul class="success-criteria">
+            <li>I can name the 3 types of structures and give an example of each.</li>
+            <li>I can explain why a specific material was chosen for a given structure.</li>
+            <li>I can match a natural structure to a human-made equivalent.</li>
+            <li>I can explain what "form follows function" means with an example.</li>
+          </ul>
+        </div>
+
+        <!-- KEY VOCABULARY -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">Hover over each term to see its definition.</p>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">🏗️ Structure<span class="vocab-def"><strong>Structure:</strong> Something with a definite shape, designed to support a load. Examples: bridges, buildings, skeletons.</span></span>
+            <span class="vocab-chip">🥚 Shell<span class="vocab-def"><strong>Shell Structure:</strong> A hollow structure with a thin outer layer for both shape and strength. Examples: eggshell, helmet, dome.</span></span>
+            <span class="vocab-chip">🏗️ Frame<span class="vocab-def"><strong>Frame Structure:</strong> A skeleton of connected parts (beams, bars) with open spaces between. Examples: bicycle, skeleton, crane.</span></span>
+            <span class="vocab-chip">🧱 Solid<span class="vocab-def"><strong>Solid (Mass) Structure:</strong> Made entirely of material throughout. Strength comes from bulk. Examples: dam, brick wall, mountain.</span></span>
+            <span class="vocab-chip">⚖️ Load<span class="vocab-def"><strong>Load:</strong> The forces acting on a structure. Dead load = its own weight. Live load = additional forces (people, wind, snow).</span></span>
+            <span class="vocab-chip">🔩 Compression<span class="vocab-def"><strong>Compression:</strong> A pushing force that squeezes a material. Concrete is strong in compression.</span></span>
+            <span class="vocab-chip">🧵 Tension<span class="vocab-def"><strong>Tension:</strong> A pulling force that stretches a material. Steel cables are strong in tension.</span></span>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🏛️</span> What is a Structure?</h3>
+          <p>A <span class="vocab" title="Something that has a definite shape and is designed to support a load">structure</span> is anything that has a definite size and shape and is designed to support a load. Structures are everywhere — from bridges to bones, eggshells to skyscrapers.</p>
+          <div class="key-point"><p>💡 All structures must <strong>support their own weight</strong> (dead load) plus any additional <strong>forces</strong> placed on them (live load).</p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📐</span> Three Types of Structures</h3>
+          <table class="compare-table">
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td>🥚 <strong>Shell</strong></td><td>A hollow structure with a thin outer layer that provides both shape and strength. No internal framework.</td><td>Eggshell, igloo, helmet, turtle shell, airplane fuselage, dome</td></tr>
+              <tr><td>🏗️ <strong>Frame</strong></td><td>A skeleton of connected parts (beams, bars, columns) that supports loads. Open spaces between parts.</td><td>Bicycle frame, house framing, crane, spider web, human skeleton</td></tr>
+              <tr><td>🧱 <strong>Solid (Mass)</strong></td><td>Made of solid material throughout — strength comes from the bulk of the material itself.</td><td>Brick wall, dam, mountain, sandcastle, concrete barrier</td></tr>
+            </tbody>
+          </table>
+          <div class="expandable">
+            <button class="expand-btn" onclick="toggleExpand(this)">🤔 Can a structure be a combination of types? <span class="arrow">▼</span></button>
+            <div class="expand-content">
+              <p>Yes! Many real-world structures combine types. A house has a <strong>frame</strong> (wood studs), covered with a <strong>shell</strong> (drywall/siding), sitting on a <strong>solid</strong> foundation (concrete). Understanding each type helps engineers design better, stronger, and more efficient structures.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 1 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <p>Before moving on, can you answer these?</p>
+          <ul>
+            <li>What are the 3 types of structures?</li>
+            <li>What is a "load" and what are the 2 types?</li>
+            <li>Is a bicycle a shell, frame, or solid structure?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Shell, frame, solid · Forces on a structure — dead load (own weight), live load (added forces) · Frame (connected bars with open spaces)</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Structural Types Explained</h3>
+          <div class="video-label">🎬 Video 1 — Types of Structures: Shell, Frame, and Solid</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/VU3P6SXJLPY" title="Types of Structures" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔩</span> Structural Materials & Properties</h3>
+          <p>The choice of material depends on what the structure needs to do. Each material has unique <span class="vocab" title="Characteristics of a material that affect how it performs">properties</span>.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🪨</span><h4>Concrete</h4><p><strong>Strong in compression.</strong> Heavy, durable, fireproof. Used for foundations and dams.</p></div>
+            <div class="info-box"><span class="emoji">🔩</span><h4>Steel</h4><p><strong>Strong in tension & compression.</strong> Flexible, can rust. Used for bridges and skyscrapers.</p></div>
+            <div class="info-box"><span class="emoji">🪵</span><h4>Wood</h4><p><strong>Light and easy to shape.</strong> Burns, can rot. Used for houses and furniture.</p></div>
+            <div class="info-box"><span class="emoji">🪟</span><h4>Glass</h4><p><strong>Transparent, hard, brittle.</strong> Breaks under impact. Used for windows and displays.</p></div>
+            <div class="info-box"><span class="emoji">🧪</span><h4>Plastic</h4><p><strong>Light, flexible, waterproof.</strong> Not heat-resistant. Used for containers and toys.</p></div>
+            <div class="info-box"><span class="emoji">🦴</span><h4>Bone</h4><p><strong>Light but strong (nature!).</strong> Living tissue that heals. Used by animals for internal frames.</p></div>
+          </div>
+          <div class="key-point"><p>💡 <strong>Alberta Outcome 7-D.2:</strong> Identify materials used in structures and relate their properties to function.</p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌿</span> Natural vs Human-Made Structures</h3>
+          <p>Nature is the original structural engineer! Many human designs are inspired by natural structures.</p>
+          <table class="compare-table">
+            <thead><tr><th>Natural Structure</th><th>Type</th><th>Human Equivalent</th></tr></thead>
+            <tbody>
+              <tr><td>🥚 Eggshell</td><td>Shell</td><td>🏟️ Dome stadium</td></tr>
+              <tr><td>🕷️ Spider web</td><td>Frame</td><td>🌉 Suspension bridge</td></tr>
+              <tr><td>🦴 Skeleton</td><td>Frame</td><td>🏗️ Steel building frame</td></tr>
+              <tr><td>🐚 Seashell</td><td>Shell</td><td>⛑️ Helmet</td></tr>
+              <tr><td>🪵 Tree trunk</td><td>Solid/Frame</td><td>🏛️ Stone column</td></tr>
+              <tr><td>🦫 Beaver dam</td><td>Solid</td><td>🫗 Hydroelectric dam</td></tr>
+            </tbody>
+          </table>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Connection:</strong> Calgary's Peace Bridge is a stunning example of "form follows function" — its helical frame structure distributes weight evenly across the Bow River while creating an iconic red design. The steel frame resists both tension and compression from wind and traffic.</p>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 2 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Why is steel a good choice for skyscrapers but not eggshells?</li>
+            <li>Name a natural frame structure and its human-made equivalent.</li>
+            <li>What does "form follows function" mean?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Steel is strong in tension & compression, but would be too heavy for an eggshell · Skeleton → steel building frame, spider web → suspension bridge · A structure's shape is designed to suit its purpose</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Forces on Structures</h3>
+          <div class="video-label">🎬 Video 2 — Forces & Loads on Structures</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/nk2bVnE2GCE" title="Forces on Structures" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- ACTIVITY 1: Structure Type Classifier -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-types">
+            <div class="activity-header"><span class="act-num">Activity 1</span><span style="font-weight:700;color:var(--text)">Structure Type Classifier</span><span class="outcome-tag">7-D.1</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Classify each structure as <strong>Shell</strong>, <strong>Frame</strong>, or <strong>Solid</strong>.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Shell = hollow with a thin outer layer. Frame = connected parts with open spaces. Solid = strength from the bulk of material.</div>
+            <div id="typeArea"></div>
+            <div id="typeScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Material Property Matcher -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-materials">
+            <div class="activity-header"><span class="act-num">Activity 2</span><span style="font-weight:700;color:var(--text)">Material Property Matcher</span><span class="outcome-tag">7-D.2</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">For each scenario, choose the best material based on the required properties.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think about each material's strengths: concrete resists compression, steel handles tension, wood is light, glass is transparent, plastic is waterproof.</div>
+            <div id="matArea"></div>
+            <div id="matScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Nature vs Human -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-nature">
+            <div class="activity-header"><span class="act-num">Activity 3</span><span style="font-weight:700;color:var(--text)">Nature vs Human Structures</span><span class="outcome-tag">7-D.1</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Match each natural structure to its human-made equivalent.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Look at the comparison table above. Think about what shape/function the natural structure shares with its human equivalent.</div>
+            <div id="natStructures" class="sort-items"></div>
+            <div id="natHuman" class="match-needs"></div>
+            <div id="natResults" class="match-scenarios"></div>
+            <div id="natScore"></div>
+          </div>
+        </div>
+
+        <!-- CONSTRUCTED RESPONSE -->
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Choose a structure you see every day (e.g., your school, a bridge, a bicycle). In 2–4 sentences, explain what type of structure it is, what materials it is made from, and why those materials were chosen.</p>
+          <textarea id="crResponse" placeholder="Write your explanation here…" oninput="saveCR()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I identified the structure type (shell, frame, or solid)</label></li>
+            <li><label><input type="checkbox"> I named at least one material and its key property</label></li>
+            <li><label><input type="checkbox"> I explained why the material suits the structure's function</label></li>
+          </ul>
+        </div>
+
+        <div class="glass-card content" id="l1-gate" style="text-align:center;padding:24px">
+          <p id="l1-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l1-quiz-btn" onclick="goTo('lesson1-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <!-- REFLECTION -->
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about the structures around you right now. What type are they? If you could design a new structure, what type would you choose and why?</p>
+          <textarea id="reflectionText" placeholder="Type your reflection here…" oninput="saveReflection()"></textarea>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="lesson-page" id="page-lesson1-quiz">
+        <div class="lesson-header"><div class="lesson-num">Lesson 1 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p></div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review your success criteria. Make sure you can classify structure types, explain material choices, and match natural structures to human equivalents.</div>
+        <div id="quiz1-area"></div>
+      </div>
+
+      <!-- LESSON 2: Forces on Structures -->
+      <div class="lesson-page" id="page-lesson2">
+        <div class="lesson-header"><div class="lesson-num">Lesson 2</div><h1 class="lesson-title">Forces on Structures: Loads, Stress & Stability</h1><p class="lesson-subtitle">Understand what forces act on structures, how stress affects materials, and what makes structures stable or unstable.</p></div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">7-D.3</span><span class="outcome-tag">7-D.4</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can describe the forces that act on structures (tension, compression, shear, torsion).</li>
+            <li>I can distinguish between dead loads and live loads.</li>
+            <li>I can explain how the centre of gravity affects stability.</li>
+            <li>I can identify causes of structural failure and how engineers prevent them.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <ul class="success-criteria">
+            <li>I can classify forces as tension, compression, shear, or torsion.</li>
+            <li>I can calculate which loads are dead vs. live on a structure.</li>
+            <li>I can explain why a wider base makes a structure more stable.</li>
+            <li>I can predict which design changes would strengthen a weak structure.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">↗️ Tension<span class="vocab-def"><strong>Tension:</strong> A pulling force that stretches a material — like pulling a rope from both ends.</span></span>
+            <span class="vocab-chip">↙️ Compression<span class="vocab-def"><strong>Compression:</strong> A pushing/squeezing force that shortens a material — like standing on a sponge.</span></span>
+            <span class="vocab-chip">↔️ Shear<span class="vocab-def"><strong>Shear:</strong> A sliding force that pushes parts of a material in opposite directions — like cutting with scissors.</span></span>
+            <span class="vocab-chip">🔄 Torsion<span class="vocab-def"><strong>Torsion:</strong> A twisting force — like wringing out a towel.</span></span>
+            <span class="vocab-chip">⚖️ Centre of Gravity<span class="vocab-def"><strong>Centre of Gravity:</strong> The point where an object's mass is balanced. Lowering it increases stability.</span></span>
+            <span class="vocab-chip">📦 Dead Load<span class="vocab-def"><strong>Dead Load:</strong> The permanent weight of a structure itself — walls, floors, roof.</span></span>
+          </div>
+        </div>
+
+        <!-- FORCES -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">💪</span> Internal Forces on Structures</h3>
+          <p>Every structure has forces acting on it. Engineers must design structures to resist four main types of internal force:</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">↗️</span><h4>Tension</h4><p>Pulling apart — cables on a suspension bridge are under tension</p></div>
+            <div class="info-box"><span class="emoji">↙️</span><h4>Compression</h4><p>Squeezing together — pillars supporting a roof are under compression</p></div>
+            <div class="info-box"><span class="emoji">↔️</span><h4>Shear</h4><p>Sliding in opposite directions — scissors cutting paper use shear force</p></div>
+            <div class="info-box"><span class="emoji">🔄</span><h4>Torsion</h4><p>Twisting — wringing a towel or a drill bit turning applies torsion</p></div>
+          </div>
+        </div>
+
+        <!-- LOADS -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📦</span> Loads: Dead Load vs. Live Load</h3>
+          <p>The <strong>load</strong> is the total force acting on a structure. There are two types:</p>
+          <table class="compare-table">
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Dead Load</strong></td><td>Permanent weight of the structure itself</td><td>Walls, floor, roof, beams</td></tr>
+              <tr><td><strong>Live Load</strong></td><td>Temporary forces that change</td><td>People, furniture, snow, wind, vehicles</td></tr>
+            </tbody>
+          </table>
+          <div class="key-point"><p>💡 <strong>Key Idea:</strong> Engineers must calculate both dead and live loads to design structures that won’t collapse. A bridge must support its own weight PLUS the cars, trucks, and people crossing it.</p></div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Name the 4 internal forces that act on structures.</li>
+            <li>What’s the difference between a dead load and a live load?</li>
+            <li>Give an example of tension in a real structure.</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Tension, compression, shear, torsion · Dead = permanent structure weight, live = temporary changing forces · The cables on a suspension bridge are pulled tight (tension)</em></p></div>
+        </div>
+
+        <!-- STABILITY -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⚖️</span> Stability & Centre of Gravity</h3>
+          <p>A structure is <strong>stable</strong> when it resists tipping over. Stability depends on:</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">⬇️</span><h4>Low Centre of Gravity</h4><p>The lower the centre of mass, the harder it is to tip over (e.g., race cars are low to the ground)</p></div>
+            <div class="info-box"><span class="emoji">↔️</span><h4>Wide Base</h4><p>A wider base gives more support area (e.g., the Eiffel Tower’s wide base)</p></div>
+            <div class="info-box"><span class="emoji">⚖️</span><h4>Symmetry</h4><p>Balanced weight distribution prevents tipping</p></div>
+          </div>
+          <div class="key-point"><p>💡 <strong>Alberta Connection:</strong> Calgary’s Bow Tower is a 236m skyscraper designed to resist Alberta’s strong Chinook winds. Engineers used a triangular bracing system and ensured the centre of gravity stays low through weighted foundations, allowing it to flex slightly in high winds without structural damage.</p></div>
+        </div>
+
+        <!-- STRUCTURAL FAILURE -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⚠️</span> Structural Failure</h3>
+          <p>Structures fail when forces exceed what they were designed to handle. Common causes:</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">📈</span><h4>Overloading</h4><p>Too much weight or force applied beyond the design limit</p></div>
+            <div class="info-box"><span class="emoji">🔧</span><h4>Material Fatigue</h4><p>Repeated stress weakens materials over time (like bending a paperclip)</p></div>
+            <div class="info-box"><span class="emoji">🌧️</span><h4>Environmental Forces</h4><p>Wind, earthquakes, flooding, ice can exceed design specifications</p></div>
+          </div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>How does lowering the centre of gravity improve stability?</li>
+            <li>Name 3 causes of structural failure.</li>
+            <li>Why is a triangular shape often used in structural design?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: A lower centre of gravity means the structure is harder to tip because weight is concentrated near the base · Overloading, material fatigue, environmental forces · Triangles distribute force evenly and can’t be deformed without breaking a side</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Forces on Structures</h3>
+          <div class="video-label">🎬 Video — Structural Forces & Engineering</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/w_2cdR4TDgc" title="Structural Forces" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- ACTIVITY 1: Force Direction Predictor -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-forces">
+            <div class="activity-header"><span class="act-num">Activity 1</span><span style="font-weight:700;color:var(--text)">Force Type Classifier</span><span class="outcome-tag">7-D.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Identify the main force acting in each scenario.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Pulling = tension, pushing/squeezing = compression, sliding = shear, twisting = torsion.</div>
+            <div id="forceArea"></div>
+            <div id="forceScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Centre of Gravity Challenge -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-cog">
+            <div class="activity-header"><span class="act-num">Activity 2</span><span style="font-weight:700;color:var(--text)">Stability Challenge</span><span class="outcome-tag">7-D.4</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Which structure design is more stable? Pick the better option.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Look for: wide base, low centre of gravity, symmetrical shape.</div>
+            <div id="cogArea"></div>
+            <div id="cogScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Failure Analysis -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-fail">
+            <div class="activity-header"><span class="act-num">Activity 3</span><span style="font-weight:700;color:var(--text)">Design Failure Analysis</span><span class="outcome-tag">7-D.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem">Identify the cause of failure and suggest a fix.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think: Was it too much weight? Wrong material? Environmental force?</div>
+            <div id="failArea"></div>
+            <div id="failScore"></div>
+          </div>
+        </div>
+
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">A school wants to build a new outdoor stage. In 3–4 sentences, explain what forces the stage would need to resist, what types of loads it would experience, and how the design could be made stable. Use at least 3 vocabulary words.</p>
+          <textarea id="crResponse2" placeholder="Write your explanation here…" oninput="saveCR2()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I described forces (tension, compression, etc.)</label></li>
+            <li><label><input type="checkbox"> I explained dead and live loads</label></li>
+            <li><label><input type="checkbox"> I suggested stability features (wide base, bracing)</label></li>
+          </ul>
+        </div>
+
+        <div class="glass-card content" id="l2-gate" style="text-align:center;padding:24px">
+          <p id="l2-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l2-quiz-btn" onclick="goTo('lesson2-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about the structures around you — your chair, the building you’re in, a bridge. What forces are acting on them right now? How do you think they were designed to handle those forces?</p>
+          <textarea id="reflectionText2" placeholder="Type your reflection here…" oninput="saveReflection2()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 2 QUIZ -->
+      <div class="lesson-page" id="page-lesson2-quiz">
+        <div class="lesson-header"><div class="lesson-num">Lesson 2 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p></div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review the 4 forces, load types, centre of gravity, and structural failure causes.</div>
+        <div id="quiz2-area"></div>
+      </div>
+
+      <!-- LESSON 3: EXTERNAL FORCES & ENVIRONMENTAL FACTORS -->
+      <div class="lesson-page" id="page-lesson3">
+        <div class="lesson-header"><div class="lesson-num">Lesson 3</div><h1 class="lesson-title">External Forces & Environmental Factors</h1><p class="lesson-subtitle">Explore how wind, earthquakes, snow, and water challenge structures — and how engineers design for them.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.2</span></div><h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3><ul class="styled-list"><li>I can identify external forces that act on structures (wind, gravity, seismic, snow, water).</li><li>I can explain how environmental factors influence structural design.</li><li>I can describe how friction helps and hinders structures.</li></ul></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3><div class="vocab-grid"><div class="vocab-chip" tabindex="0"><strong>External Force</strong><span class="vocab-def">: Forces from outside the structure — wind, gravity, earthquakes, snow, water</span></div><div class="vocab-chip" tabindex="0"><strong>Dynamic Load</strong><span class="vocab-def">: Forces that change over time — wind gusts, traffic, earthquakes</span></div><div class="vocab-chip" tabindex="0"><strong>Seismic Force</strong><span class="vocab-def">: Ground shaking from earthquakes that can topple structures</span></div><div class="vocab-chip" tabindex="0"><strong>Friction</strong><span class="vocab-def">: Force that resists sliding between surfaces — can help (grip) or hinder (wear)</span></div></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🎬</span> Watch: Forces on Structures</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/aZV1UclLPhk" title="Forces on Structures" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🌪️</span> External Forces in Alberta</h3><div class="need-help"><strong>❄️ Snow Load:</strong> Alberta's heavy snowfalls create massive loads on roofs. Steep pitched roofs allow snow to slide off; flat roofs must be engineered for weight.</div><div class="need-help" style="margin-top:8px"><strong>🌬️ Wind:</strong> Chinook winds in Southern Alberta can gust up to 160 km/h. Buildings need wind bracing and deep foundations.</div><div class="need-help" style="margin-top:8px"><strong>🌍 Seismic:</strong> Western Alberta has moderate earthquake risk. The 1985 Rocky Mountain House earthquake was 4.6 magnitude.</div><div class="need-help" style="margin-top:8px"><strong>💧 Water/Ice:</strong> Freeze-thaw cycles crack foundations and roads. Proper drainage and waterproofing are critical.</div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🌪️</span> Activity 1: Force Identifier</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Identify the external force acting in each scenario.</p><div id="l3ForceArea"></div><div id="l3ForceScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🏗️</span> Activity 2: Design Defender</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each design feature to the external force it defends against.</p><div id="l3DefendArea"></div><div id="l3DefendScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">You are designing a bus shelter for a location in Lethbridge, Alberta, which experiences strong Chinook winds and heavy winter snow. What external forces must you consider, and how would you design the shelter to resist them?</p><textarea id="crResponse3" placeholder="Type your answer here…" oninput="saveCR3()"></textarea></div>
+        <div class="glass-card content" id="l3-gate" style="text-align:center;padding:24px"><p id="l3-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson2-quiz')">← Previous</button><button class="nav-btn primary" id="l3-quiz-btn" onclick="goTo('lesson3-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><textarea id="reflectionText3" placeholder="What external forces act on your home? How is your home designed to handle them?" oninput="saveReflection3()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson3-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 3 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">You need 80% to pass!</p></div><div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review external forces, environmental factors, and design adaptations.</div><div id="quiz3-area"></div></div>
+
+      <!-- LESSON 4: PROPERTIES OF MATERIALS -->
+      <div class="lesson-page" id="page-lesson4">
+        <div class="lesson-header"><div class="lesson-num">Lesson 4</div><h1 class="lesson-title">Properties of Materials</h1><p class="lesson-subtitle">Compare materials by strength, flexibility, hardness, and durability to understand why engineers choose specific materials.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.3</span></div><h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3><ul class="styled-list"><li>I can describe properties that make materials suitable for structures (strength, flexibility, hardness, durability).</li><li>I can compare natural and synthetic materials.</li><li>I can explain why engineers choose specific materials for specific purposes.</li></ul></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3><div class="vocab-grid"><div class="vocab-chip" tabindex="0"><strong>Tensile Strength</strong><span class="vocab-def">: How well a material resists being pulled apart (stretched)</span></div><div class="vocab-chip" tabindex="0"><strong>Compressive Strength</strong><span class="vocab-def">: How well a material resists being crushed (squeezed)</span></div><div class="vocab-chip" tabindex="0"><strong>Flexibility</strong><span class="vocab-def">: Ability to bend without breaking</span></div><div class="vocab-chip" tabindex="0"><strong>Composite</strong><span class="vocab-def">: Material made from two or more substances combined — e.g., fibreglass, reinforced concrete</span></div></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🎬</span> Watch: Materials in Engineering</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/aNk2CAkwkCo" title="Materials" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🧪</span> Material Properties Compared</h3><table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse"><tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Material</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Strength</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Flexibility</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Best Used For</th></tr><tr><td style="padding:8px;border:1px solid var(--border)">Steel</td><td style="padding:8px;border:1px solid var(--border)">Very high (tension + compression)</td><td style="padding:8px;border:1px solid var(--border)">Moderate</td><td style="padding:8px;border:1px solid var(--border)">Beams, bridges, skyscrapers</td></tr><tr><td style="padding:8px;border:1px solid var(--border)">Concrete</td><td style="padding:8px;border:1px solid var(--border)">High compression, weak tension</td><td style="padding:8px;border:1px solid var(--border)">Very low</td><td style="padding:8px;border:1px solid var(--border)">Foundations, dams, floors</td></tr><tr><td style="padding:8px;border:1px solid var(--border)">Wood</td><td style="padding:8px;border:1px solid var(--border)">Moderate</td><td style="padding:8px;border:1px solid var(--border)">Moderate</td><td style="padding:8px;border:1px solid var(--border)">Houses, furniture, fences</td></tr><tr><td style="padding:8px;border:1px solid var(--border)">Carbon Fibre</td><td style="padding:8px;border:1px solid var(--border)">Extremely high</td><td style="padding:8px;border:1px solid var(--border)">Some</td><td style="padding:8px;border:1px solid var(--border)">Aircraft, sports equipment</td></tr></table></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🧪</span> Activity 1: Material Matcher</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Pick the best material for each structural challenge.</p><div id="l4MatArea"></div><div id="l4MatScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🔬</span> Activity 2: Property Identifier</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Identify the key property being described.</p><div id="l4PropArea"></div><div id="l4PropScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Why is reinforced concrete (concrete with steel rebar inside) stronger than plain concrete? Explain using the concepts of tensile and compressive strength.</p><textarea id="crResponse4" placeholder="Type your answer here…" oninput="saveCR4()"></textarea></div>
+        <div class="glass-card content" id="l4-gate" style="text-align:center;padding:24px"><p id="l4-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson3-quiz')">← Previous</button><button class="nav-btn primary" id="l4-quiz-btn" onclick="goTo('lesson4-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><textarea id="reflectionText4" placeholder="Look at the room you are in. What materials were used and why?" oninput="saveReflection4()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson4-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 4 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">You need 80% to pass!</p></div><div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review material properties and composites.</div><div id="quiz4-area"></div></div>
+
+      <!-- LESSON 5: JOINTS & CONNECTIONS -->
+      <div class="lesson-page" id="page-lesson5">
+        <div class="lesson-header"><div class="lesson-num">Lesson 5</div><h1 class="lesson-title">Joints, Connections & Structural Systems</h1><p class="lesson-subtitle">Discover how parts are connected and why joints are critical to structural integrity.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.3</span><span class="outcome-tag">D.K.1</span></div><h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3><ul class="styled-list"><li>I can compare fixed and flexible joints in structures.</li><li>I can identify different fasteners and their purposes.</li><li>I can explain how joints relate to structural failure.</li></ul></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3><div class="vocab-grid"><div class="vocab-chip" tabindex="0"><strong>Fixed Joint</strong><span class="vocab-def">: Rigid connection that does not move — welding, rivets, glue</span></div><div class="vocab-chip" tabindex="0"><strong>Flexible Joint</strong><span class="vocab-def">: Connection that allows movement — hinges, ball-and-socket, pivots</span></div><div class="vocab-chip" tabindex="0"><strong>Gusset</strong><span class="vocab-def">: Triangular plate added to a joint to strengthen it</span></div><div class="vocab-chip" tabindex="0"><strong>Fastener</strong><span class="vocab-def">: Device used to connect parts — nails, screws, bolts, rivets, adhesives</span></div></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🎬</span> Watch: Joints in Structures</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/5i_rYbFnkwE" title="Joints" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🔩</span> Activity 1: Joint Selector</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Choose the right joint type for each structural scenario.</p><div id="l5JointArea"></div><div id="l5JointScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🔧</span> Activity 2: Fastener Expert</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each fastener to its best use case.</p><div id="l5FastArea"></div><div id="l5FastScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Why do many structural failures happen at joints rather than in the middle of a beam? Use the concepts of stress concentration and force transfer in your answer.</p><textarea id="crResponse5" placeholder="Type your answer here…" oninput="saveCR5()"></textarea></div>
+        <div class="glass-card content" id="l5-gate" style="text-align:center;padding:24px"><p id="l5-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson4-quiz')">← Previous</button><button class="nav-btn primary" id="l5-quiz-btn" onclick="goTo('lesson5-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><textarea id="reflectionText5" placeholder="Find a joint in the room you are in. What type is it? Why was that type chosen?" oninput="saveReflection5()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson5-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 5 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">You need 80% to pass!</p></div><div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review fixed/flexible joints, fasteners, and gussets.</div><div id="quiz5-area"></div></div>
+
+      <!-- LESSON 6: THE DESIGN PROCESS -->
+      <div class="lesson-page" id="page-lesson6">
+        <div class="lesson-header"><div class="lesson-num">Lesson 6</div><h1 class="lesson-title">The Design Process: Building & Testing</h1><p class="lesson-subtitle">Follow the engineering design cycle to develop, test, evaluate, and improve structures.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.4</span></div><h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3><ul class="styled-list"><li>I can describe the engineering design cycle and its key steps.</li><li>I can explain the importance of safety margins and testing.</li><li>I can identify and address points of failure before building.</li></ul></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3><div class="vocab-grid"><div class="vocab-chip" tabindex="0"><strong>Design Cycle</strong><span class="vocab-def">: Identify need → Research → Design → Build → Test → Evaluate → Improve → Repeat</span></div><div class="vocab-chip" tabindex="0"><strong>Safety Margin</strong><span class="vocab-def">: Extra strength built into a structure beyond minimum requirements — a built-in buffer</span></div><div class="vocab-chip" tabindex="0"><strong>Prototype</strong><span class="vocab-def">: A test model built before the final version to identify problems</span></div><div class="vocab-chip" tabindex="0"><strong>Constraint</strong><span class="vocab-def">: Limitations on a design — budget, materials, size, regulations</span></div></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🎬</span> Watch: The Engineering Design Process</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/fxJWin195kU" title="Design Process" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📐</span> Activity 1: Design Step Sequencer</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Put the design cycle steps in the correct order.</p><div id="l6StepArea"></div><div id="l6StepScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🔍</span> Activity 2: Failure Spotter</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Identify what could go wrong with each design decision.</p><div id="l6FailArea"></div><div id="l6FailScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Why do engineers build prototypes before constructing the real structure? Give at least two reasons and an example.</p><textarea id="crResponse6" placeholder="Type your answer here…" oninput="saveCR6()"></textarea></div>
+        <div class="glass-card content" id="l6-gate" style="text-align:center;padding:24px"><p id="l6-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson5-quiz')">← Previous</button><button class="nav-btn primary" id="l6-quiz-btn" onclick="goTo('lesson6-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><textarea id="reflectionText6" placeholder="Think of something you had to redesign or improve. How is that similar to the engineering design cycle?" oninput="saveReflection6()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson6-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 6 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">You need 80% to pass!</p></div><div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review the design cycle, safety margins, and prototyping.</div><div id="quiz6-area"></div></div>
+
+      <!-- LESSON 7: STRUCTURAL ANALYSIS & FAILURE -->
+      <div class="lesson-page" id="page-lesson7">
+        <div class="lesson-header"><div class="lesson-num">Lesson 7</div><h1 class="lesson-title">Structural Analysis & Failure</h1><p class="lesson-subtitle">Analyze real-world structural failures and learn how engineers prevent them.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.1</span><span class="outcome-tag">D.K.2</span><span class="outcome-tag">D.K.4</span></div><h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3><ul class="styled-list"><li>I can analyze real-world structural failures and identify causes.</li><li>I can describe modes of failure (fatigue, overload, foundation, corrosion).</li><li>I can explain how engineers prevent structural failure.</li></ul></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3><div class="vocab-grid"><div class="vocab-chip" tabindex="0"><strong>Fatigue</strong><span class="vocab-def">: Weakening caused by repeated stress cycles over time — like bending a paper clip back and forth</span></div><div class="vocab-chip" tabindex="0"><strong>Overload</strong><span class="vocab-def">: When forces exceed what a structure was designed to handle</span></div><div class="vocab-chip" tabindex="0"><strong>Corrosion</strong><span class="vocab-def">: Gradual chemical destruction of materials — rust on steel, acid rain on stone</span></div><div class="vocab-chip" tabindex="0"><strong>Resonance</strong><span class="vocab-def">: When vibrations match a structure's natural frequency, amplifying them dangerously</span></div></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🎬</span> Watch: Engineering Failures</h3><div class="video-container"><iframe src="https://www.youtube.com/embed/dMg4b6sAelg" title="Structural Failures" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🚨</span> Activity 1: Failure Detective</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Identify the mode of failure in each scenario.</p><div id="l7DetectArea"></div><div id="l7DetectScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">🛡️</span> Activity 2: Prevention Planner</h3><p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each prevention strategy to the failure type it addresses.</p><div id="l7PreventArea"></div><div id="l7PreventScore"></div></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">The Tacoma Narrows Bridge collapsed in 1940 due to wind-induced resonance. Using your knowledge of external forces, resonance, and the design process, explain what went wrong and how engineers could have prevented it.</p><textarea id="crResponse7" placeholder="Type your answer here…" oninput="saveCR7()"></textarea></div>
+        <div class="glass-card content" id="l7-gate" style="text-align:center;padding:24px"><p id="l7-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><div class="lesson-nav"><button class="nav-btn" onclick="goTo('lesson6-quiz')">← Previous</button><button class="nav-btn primary" id="l7-quiz-btn" onclick="goTo('lesson7-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button></div></div>
+        <div class="reflection-box"><h3>🪞 Lesson Reflection</h3><textarea id="reflectionText7" placeholder="Have you ever seen a structure that was damaged or failing? What do you think caused it?" oninput="saveReflection7()"></textarea></div>
+      </div>
+      <div class="lesson-page" id="page-lesson7-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 7 — Quiz</div><h1 class="lesson-title">Check Your Understanding</h1><p class="lesson-subtitle">You need 80% to pass!</p></div><div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review failure modes, prevention strategies, and real-world examples.</div><div id="quiz7-area"></div></div>
+
+      <!-- LESSON 8: PERFORMANCE TASK -->
+      <div class="lesson-page" id="page-lesson8">
+        <div class="lesson-header"><div class="lesson-num">Lesson 8 — Performance Task</div><h1 class="lesson-title">🏆 Structure Design & Analysis Report</h1><p class="lesson-subtitle">Apply everything you have learned to design, analyze, and defend a structure for a specific purpose.</p></div>
+        <div class="glass-card content"><div style="margin-bottom:8px"><span class="outcome-tag">D.K.1</span><span class="outcome-tag">D.K.2</span><span class="outcome-tag">D.K.3</span><span class="outcome-tag">D.K.4</span></div><h3 class="section-title"><span class="icon">📋</span> Your Task</h3><p>You are a structural engineer designing a new pedestrian bridge for a park in your Alberta community. Complete all 5 sections below.</p></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">1️⃣</span> Structure Type & Form</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What type of structure will your bridge be (shell, frame, solid, or combination)? Explain how its form follows its function.</p><textarea id="ptd1" placeholder="Describe your bridge design…" oninput="savePTd(1)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">2️⃣</span> Materials & Properties</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What materials will you use and why? Reference specific properties (strength, flexibility, durability, cost).</p><textarea id="ptd2" placeholder="Explain your material choices…" oninput="savePTd(2)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">3️⃣</span> Force Analysis</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What internal and external forces will act on your bridge? How does your design handle each one?</p><textarea id="ptd3" placeholder="Analyze the forces on your bridge…" oninput="savePTd(3)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">4️⃣</span> Joints & Connections</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What types of joints and fasteners will you use? Explain why each connection type was chosen.</p><textarea id="ptd4" placeholder="Describe your joints and connections…" oninput="savePTd(4)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content"><h3 class="section-title"><span class="icon">5️⃣</span> Safety & Improvement</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What safety margin did you build in? What potential failure points exist, and how would you test and improve your design?</p><textarea id="ptd5" placeholder="Discuss safety and improvements…" oninput="savePTd(5)" style="min-height:120px"></textarea></div>
+        <div class="glass-card content" style="text-align:center;padding:24px"><h3 class="section-title"><span class="icon">🏆</span> Submit Your Design Report</h3><p style="font-size:.9rem;color:var(--text2);margin-bottom:16px">Make sure all 5 sections are complete.</p><button class="activity-btn" id="ptSubmitBtnD" onclick="submitPTd()" style="font-size:1rem;padding:14px 32px">📨 Submit Performance Task</button></div>
+      </div>
+
+      <!-- TEACHER -->
+      <div class="lesson-page" id="page-teacher">
+        <div class="lesson-header"><div class="lesson-num">📊 Teacher</div><h1 class="lesson-title">Dashboard</h1></div>
+        <div class="glass-card content"><div id="teacherGrades"><p style="color:var(--text3)">No data yet.</p></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script>
+    const quizBanks = {
+      quiz1: {
+        primary: [
+          { q: "A structure that is hollow with a thin outer layer is a:", opts: ["Frame structure", "Solid structure", "Shell structure", "Combination structure"], ans: 2, outcome: "7-D.1", explain: "Shell structures use a thin outer layer for both shape and strength (e.g., eggshell, helmet)." },
+          { q: "A bicycle is an example of a:", opts: ["Shell structure", "Frame structure", "Solid structure", "Natural structure"], ans: 1, outcome: "7-D.1", explain: "A bicycle has connected bars forming a skeleton — it's a frame structure." },
+          { q: "Which material is best for a structure that must be transparent?", opts: ["Steel", "Concrete", "Glass", "Wood"], ans: 2, outcome: "7-D.2", explain: "Glass is the only common transparent structural material." },
+          { q: "A solid structure gets its strength from:", opts: ["Its thin outer shell", "Its connected framework", "The mass/bulk of its material", "Air inside it"], ans: 2, outcome: "7-D.1", explain: "Solid structures rely on the sheer bulk of material for strength." },
+          { q: "'Form follows function' means:", opts: ["All structures look the same", "A structure's shape is determined by what it needs to do", "Function doesn't matter", "Only natural structures have form"], ans: 1, outcome: "7-D.1", explain: "The shape (form) of a structure is designed to suit its purpose (function)." },
+          { q: "Steel is preferred for skyscrapers because it is:", opts: ["Transparent", "Light and brittle", "Strong in both tension and compression", "Waterproof only"], ans: 2, outcome: "7-D.2", explain: "Steel can resist both pulling (tension) and pushing (compression) forces." },
+          { q: "A human skeleton is most similar to:", opts: ["A steel building frame", "A concrete wall", "An eggshell", "A sandcastle"], ans: 0, outcome: "7-D.1", explain: "Both are internal frame structures providing shape and support." },
+          { q: "Concrete is strong in:", opts: ["Tension (stretching)", "Compression (pushing)", "Both equally", "Neither"], ans: 1, outcome: "7-D.2", explain: "Concrete excels at resisting compression but is weak in tension." }
+        ],
+        replacement: [
+          { q: "An igloo is an example of a:", opts: ["Frame structure", "Solid structure", "Shell structure", "Mass structure"], ans: 2, outcome: "7-D.1", explain: "An igloo is a hollow dome with a thin wall — a shell structure." },
+          { q: "A crane has beams connected together. It is a:", opts: ["Shell", "Frame", "Solid", "Combination"], ans: 1, outcome: "7-D.1", explain: "Connected beams with open spaces = frame structure." },
+          { q: "Wood is NOT ideal for structures that need to be:", opts: ["Light", "Easy to shape", "Fireproof", "Attractive"], ans: 2, outcome: "7-D.2", explain: "Wood burns — it's not suitable where fire resistance is critical." },
+          { q: "A concrete dam is a ___ structure:", opts: ["Shell", "Frame", "Solid", "None"], ans: 2, outcome: "7-D.1", explain: "A dam is a massive block of material — a solid structure." },
+          { q: "The purpose of a bridge determines its:", opts: ["Colour only", "Shape and materials used", "Nothing", "Location only"], ans: 1, outcome: "7-D.1", explain: "Form follows function — the bridge's design serves its purpose." },
+          { q: "Plastic is commonly used for containers because it is:", opts: ["Heavy and brittle", "Light, flexible, and waterproof", "Fireproof", "Very expensive"], ans: 1, outcome: "7-D.2", explain: "Plastic's lightness and waterproofing make it ideal for containers." },
+          { q: "A spider web is a natural ___ structure:", opts: ["Solid", "Shell", "Frame", "Mass"], ans: 2, outcome: "7-D.1", explain: "Connected threads forming a framework = natural frame structure." },
+          { q: "Glass is NOT used for floor beams because it is:", opts: ["Transparent", "Brittle — breaks under impact", "Too light", "Waterproof"], ans: 1, outcome: "7-D.2", explain: "Glass shatters under force — it cannot support structural loads." }
+        ],
+        remediation: {
+          "7-D.1": {
+            video: "https://www.youtube.com/embed/VU3P6SXJLPY",
+            questions: [
+              { q: "The three structural types are:", opts: ["Big, medium, small", "Shell, frame, solid", "Wood, steel, concrete", "Natural, artificial, hybrid"], ans: 1, explain: "Shell (hollow skin), frame (skeleton), solid (mass)." },
+              { q: "A helmet is a ___ structure:", opts: ["Frame", "Solid", "Shell", "None"], ans: 2, explain: "Helmets are hollow with a thin outer layer = shell." },
+              { q: "Connected beams with open spaces form a:", opts: ["Shell", "Solid", "Frame", "Mass"], ans: 2, explain: "Cross-connected parts with open spaces = frame structure." }
+            ]
+          },
+          "7-D.2": {
+            video: "https://www.youtube.com/embed/nk2bVnE2GCE",
+            questions: [
+              { q: "Choosing materials depends on:", opts: ["Colour only", "What the structure needs to do", "Cost only", "Smell"], ans: 1, explain: "Material choice depends on required properties like strength and weather resistance." },
+              { q: "Steel is strong in both:", opts: ["Heat and cold", "Tension and compression", "Light and dark", "Water and fire"], ans: 1, explain: "Steel resists both pulling and pushing forces." },
+              { q: "A bridge needs a material that is:", opts: ["Soft and flexible", "Strong and durable", "Transparent", "Brittle"], ans: 1, explain: "Bridges must withstand heavy loads and weather over time." }
+            ]
+          }
+        }
+      }
+    };
+
+    const lockMap = {};
+
+    // ===== ACTIVITY 1: Structure Type Classifier =====
+    const typeData = [
+      { name: '🥚 Eggshell', type: 'shell' }, { name: '🚲 Bicycle frame', type: 'frame' },
+      { name: '🧱 Brick wall', type: 'solid' }, { name: '⛑️ Helmet', type: 'shell' },
+      { name: '🕷️ Spider web', type: 'frame' }, { name: '🏔️ Mountain', type: 'solid' },
+      { name: '✈️ Airplane fuselage', type: 'shell' }, { name: '🦴 Skeleton', type: 'frame' },
+      { name: '🫗 Concrete dam', type: 'solid' }
+    ];
+    const typeMap = { shell: '🥚 Shell', frame: '🏗️ Frame', solid: '🧱 Solid' };
+    let typeIdx = 0, typeOk = 0;
+
+    function initTypes() { typeIdx = 0; typeOk = 0; renderTypeQ(); document.getElementById('typeScore').innerHTML = ''; }
+    function renderTypeQ() {
+      if (typeIdx >= typeData.length) {
+        document.getElementById('typeScore').innerHTML = `<div class="activity-score"><div class="score-number">${typeOk}/${typeData.length}</div><p>${typeOk >= 8 ? '🎉 Structural expert!' : '📖 Review the three types of structures.'}</p><button class="activity-btn secondary" onclick="initTypes()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'types', typeOk, typeData.length);
+        return;
+      }
+      const d = typeData[typeIdx];
+      const keys = Object.keys(typeMap).sort(() => Math.random() - .5);
+      document.getElementById('typeArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:1.1rem;font-weight:700;margin-bottom:16px">${d.name}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickType('${k}')" style="flex:1;min-width:100px">${typeMap[k]}</button>`).join('')}</div><div id="typeFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${typeIdx + 1} of ${typeData.length}</p>`;
+    }
+    function pickType(ans) {
+      const d = typeData[typeIdx], ok = ans === d.type;
+      if (ok) typeOk++;
+      document.getElementById('typeFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${d.name} is a <strong>${typeMap[d.type]}</strong> structure.</div>`;
+      setTimeout(() => { typeIdx++; renderTypeQ(); }, 1200);
+    }
+
+    // ===== ACTIVITY 2: Material Property Matcher =====
+    const matScenarios = [
+      { text: "🏗️ A skyscraper needs a material that is strong in tension AND compression, and can flex slightly in wind.", ans: "steel", explain: "Steel is strong in both tension and compression, and has some flexibility." },
+      { text: "🫗 A dam needs to resist enormous water pressure pushing against it.", ans: "concrete", explain: "Concrete excels at compression resistance — perfect for dams." },
+      { text: "🏠 A house frame needs a material that is light, easy to cut, and affordable.", ans: "wood", explain: "Wood is light, easy to work with, and cost-effective for residential frames." },
+      { text: "🪟 An office building needs walls that let natural light inside.", ans: "glass", explain: "Glass is the only common structural material that is transparent." },
+      { text: "🧴 A water bottle needs to be lightweight, flexible, and waterproof.", ans: "plastic", explain: "Plastic is light, moldable, and waterproof — ideal for containers." }
+    ];
+    const matMap = { steel: '🔩 Steel', concrete: '🪨 Concrete', wood: '🪵 Wood', glass: '🪟 Glass', plastic: '🧪 Plastic' };
+    let matIdx = 0, matOk = 0;
+
+    function initMats() { matIdx = 0; matOk = 0; renderMatQ(); document.getElementById('matScore').innerHTML = ''; }
+    function renderMatQ() {
+      if (matIdx >= matScenarios.length) {
+        document.getElementById('matScore').innerHTML = `<div class="activity-score"><div class="score-number">${matOk}/${matScenarios.length}</div><p>${matOk === matScenarios.length ? '🎉 Material master!' : '📖 Review material properties above.'}</p><button class="activity-btn secondary" onclick="initMats()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'materials', matOk, matScenarios.length);
+        return;
+      }
+      const sc = matScenarios[matIdx];
+      const keys = Object.keys(matMap).sort(() => Math.random() - .5);
+      document.getElementById('matArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickMat('${k}')" style="flex:1;min-width:100px;font-size:.82rem">${matMap[k]}</button>`).join('')}</div><div id="matFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${matIdx + 1} of ${matScenarios.length}</p>`;
+    }
+    function pickMat(ans) {
+      const sc = matScenarios[matIdx], ok = ans === sc.ans;
+      if (ok) matOk++;
+      document.getElementById('matFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { matIdx++; renderMatQ(); }, 1500);
+    }
+
+    // ===== ACTIVITY 3: Nature vs Human =====
+    const natData = [
+      { natural: '🥚 Eggshell', human: '🏟️ Dome Stadium', id: 'egg' },
+      { natural: '🕷️ Spider Web', human: '🌉 Suspension Bridge', id: 'web' },
+      { natural: '🦴 Skeleton', human: '🏗️ Steel Frame', id: 'bone' },
+      { natural: '🐚 Seashell', human: '⛑️ Helmet', id: 'shell' },
+      { natural: '🦫 Beaver Dam', human: '🫗 Hydro Dam', id: 'dam' }
+    ];
+    let natSel = null, natOk = 0, natN = 0;
+
+    function initNat() {
+      natSel = null; natOk = 0; natN = 0;
+      const sh = [...natData].sort(() => Math.random() - .5);
+      document.getElementById('natStructures').innerHTML = sh.map(n => `<div class="sort-item" data-id="${n.id}" onclick="selectNat(this)">${n.natural}</div>`).join('');
+      const hsh = [...natData].sort(() => Math.random() - .5);
+      document.getElementById('natHuman').innerHTML = hsh.map(n => `<div class="match-need" data-id="${n.id}" onclick="pickNat('${n.id}')">${n.human}</div>`).join('');
+      document.getElementById('natResults').innerHTML = '';
+      document.getElementById('natScore').innerHTML = '';
+    }
+    function selectNat(el) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#natStructures .sort-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected'); natSel = el;
+    }
+    function pickNat(id) {
+      if (!natSel) return;
+      const ok = natSel.dataset.id === id;
+      natN++; if (ok) natOk++;
+      const res = document.getElementById('natResults');
+      const div = document.createElement('div');
+      div.className = 'match-scenario done ' + (ok ? 'correct' : 'wrong');
+      div.textContent = `${natSel.textContent} → ${natData.find(n => n.id === id).human} ${ok ? '✓' : '✗'}`;
+      res.appendChild(div);
+      natSel.classList.remove('selected'); natSel.classList.add('placed'); natSel = null;
+      if (natN === natData.length) {
+        document.getElementById('natScore').innerHTML = `<div class="activity-score"><div class="score-number">${natOk}/${natData.length}</div><p>${natOk === natData.length ? '🎉 Perfect match!' : '📖 Review the natural vs human structures table.'}</p><button class="activity-btn secondary" onclick="initNat()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'nature', natOk, natData.length);
+      }
+    }
+
+    // ===== QUIZ BANK 2 =====
+    quizBanks.quiz2 = {
+      primary: [
+        { q: "Tension is a force that:", opts: ["Squeezes material together", "Pulls material apart", "Twists material", "Slides material"], ans: 1, outcome: "7-D.3", explain: "Tension is a pulling force that stretches a material." },
+        { q: "The permanent weight of a structure is called its:", opts: ["Live load", "Dead load", "Shear force", "Torsion"], ans: 1, outcome: "7-D.3", explain: "Dead load = the structure's own permanent weight (walls, floor, roof)." },
+        { q: "Lowering the centre of gravity makes a structure:", opts: ["Taller", "More stable", "Lighter", "Weaker"], ans: 1, outcome: "7-D.4", explain: "A lower centre of gravity makes a structure harder to tip over." },
+        { q: "Scissors cutting paper is an example of:", opts: ["Tension", "Compression", "Shear", "Torsion"], ans: 2, outcome: "7-D.3", explain: "Shear forces push parts of a material in opposite directions." },
+        { q: "Snow on a roof is an example of:", opts: ["Dead load", "Live load", "Tension", "Torsion"], ans: 1, outcome: "7-D.3", explain: "Snow is a temporary changing force — a live load." },
+        { q: "A wider base improves stability because:", opts: ["It looks better", "It provides more support area", "It adds more weight", "It uses less material"], ans: 1, outcome: "7-D.4", explain: "A wider base spreads the load and makes tipping more difficult." },
+        { q: "Material fatigue causes failure due to:", opts: ["Single heavy impact", "Repeated stress over time", "Freezing temperatures", "Being too light"], ans: 1, outcome: "7-D.3", explain: "Repeated bending/stress weakens materials over time until they break." },
+        { q: "Pillars supporting a roof experience mainly:", opts: ["Tension", "Compression", "Shear", "Torsion"], ans: 1, outcome: "7-D.3", explain: "Pillars are squeezed under the weight of the roof — compression." }
+      ],
+      replacement: [
+        { q: "Wringing a towel applies:", opts: ["Tension", "Compression", "Shear", "Torsion"], ans: 3, outcome: "7-D.3", explain: "Torsion is a twisting force." },
+        { q: "People in a building are examples of:", opts: ["Dead load", "Live load", "Shear", "Compression"], ans: 1, outcome: "7-D.3", explain: "People are temporary — they come and go — that’s a live load." },
+        { q: "A race car is designed low to the ground to:", opts: ["Go faster", "Lower its centre of gravity for stability", "Look cool", "Reduce weight"], ans: 1, outcome: "7-D.4", explain: "A low centre of gravity prevents tipping during high-speed turns." },
+        { q: "Suspension bridge cables are under:", opts: ["Compression", "Shear", "Tension", "Torsion"], ans: 2, outcome: "7-D.3", explain: "The cables are pulled tight supporting the deck — that’s tension." },
+        { q: "Triangles are used in structures because:", opts: ["They look nice", "They resist deformation — they can’t change shape without breaking", "They use less material", "They are easy to build"], ans: 1, outcome: "7-D.4", explain: "A triangle is the strongest shape — it distributes force across all three sides." },
+        { q: "A bridge collapses during a windstorm. The primary cause is:", opts: ["Dead load", "Material choice", "Environmental forces exceeding design", "Symmetry"], ans: 2, outcome: "7-D.3", explain: "Environmental forces (wind) exceeded what the bridge was designed to handle." },
+        { q: "The Eiffel Tower’s wide base helps it:", opts: ["Attract tourists", "Resist tipping by spreading load over a large area", "Block wind", "Reduce compression"], ans: 1, outcome: "7-D.4", explain: "The wide base provides stability by spreading the massive structure’s weight." },
+        { q: "Bending a paperclip back and forth until it breaks demonstrates:", opts: ["Compression", "Tension", "Material fatigue", "Shear"], ans: 2, outcome: "7-D.3", explain: "Repeated stress weakens the metal at the bend point — material fatigue." }
+      ],
+      remediation: {
+        "7-D.3": {
+          video: "https://www.youtube.com/embed/w_2cdR4TDgc",
+          questions: [
+            { q: "The 4 internal forces are:", opts: ["Push, pull, spin, slide", "Tension, compression, shear, torsion", "Gravity, friction, air, water", "Load, stress, strain, break"], ans: 1, explain: "The 4 structural forces are tension (pull), compression (push), shear (slide), torsion (twist)." },
+            { q: "Dead load is:", opts: ["Temporary weight", "The structure’s own permanent weight", "Wind force", "Live animals"], ans: 1, explain: "Dead load = permanent weight of walls, floors, roof — it never changes." },
+            { q: "What force acts on a rope in a tug-of-war?", opts: ["Compression", "Tension", "Shear", "Torsion"], ans: 1, explain: "Both sides pull the rope — that’s tension (pulling apart)." }
+          ]
+        },
+        "7-D.4": {
+          video: "https://www.youtube.com/embed/w_2cdR4TDgc",
+          questions: [
+            { q: "A structure is stable when:", opts: ["It’s tall and narrow", "It resists tipping due to wide base and low centre of gravity", "It’s very heavy", "It’s made of metal"], ans: 1, explain: "Stability comes from a wide base and low centre of gravity." },
+            { q: "Structural failure is caused by:", opts: ["Good engineering", "Forces exceeding design limits", "Using strong materials", "Low wind"], ans: 1, explain: "When forces (overloading, fatigue, environment) exceed design capacity, structures fail." },
+            { q: "Triangular bracing helps because:", opts: ["It’s decorative", "Triangles can’t be deformed without breaking a side", "It’s lighter", "It uses less material"], ans: 1, explain: "Triangles distribute forces evenly and maintain their shape under load." }
+          ]
+        }
+      }
+    };
+
+    // ===== L2 ACTIVITY 1: Force Type Classifier =====
+    const forceData = [
+      { text: '🧲 A rope is pulled tight in tug-of-war.', type: 'tension', explain: 'Both sides pull the rope apart — tension.' },
+      { text: '🏛️ A pillar supports a heavy roof.', type: 'compression', explain: 'The roof pushes down on the pillar — compression.' },
+      { text: '✂️ Scissors cut through cardboard.', type: 'shear', explain: 'The blades push in opposite directions — shear.' },
+      { text: '🧴 Wringing water out of a wet towel.', type: 'torsion', explain: 'Your hands twist the towel in opposite directions — torsion.' },
+      { text: '🌉 A suspension bridge cable holds up the deck.', type: 'tension', explain: 'The cable is pulled tight by the weight of the deck — tension.' },
+      { text: '🧱 A wall holds up a ceiling.', type: 'compression', explain: 'The ceiling pushes down on the wall — compression.' }
+    ];
+    const forceMap = { tension: '↗️ Tension', compression: '↙️ Compression', shear: '↔️ Shear', torsion: '🔄 Torsion' };
+    let fIdx = 0, fOk = 0;
+    function initForces() { fIdx = 0; fOk = 0; renderForceQ(); document.getElementById('forceScore').innerHTML = ''; }
+    function renderForceQ() {
+      if (fIdx >= forceData.length) {
+        document.getElementById('forceScore').innerHTML = `<div class="activity-score"><div class="score-number">${fOk}/${forceData.length}</div><p>${fOk === forceData.length ? '🎉 Force expert!' : '📖 Remember: pull=tension, push=compression, slide=shear, twist=torsion.'}</p><button class="activity-btn secondary" onclick="initForces()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'forces', fOk, forceData.length); return;
+      }
+      const sc = forceData[fIdx], keys = Object.keys(forceMap).sort(() => Math.random() - .5);
+      document.getElementById('forceArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickForce('${k}')" style="flex:1;min-width:100px">${forceMap[k]}</button>`).join('')}</div><div id="fFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${fIdx + 1} of ${forceData.length}</p>`;
+    }
+    function pickForce(ans) {
+      const sc = forceData[fIdx], ok = ans === sc.type;
+      if (ok) fOk++;
+      document.getElementById('fFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { fIdx++; renderForceQ(); }, 1500);
+    }
+
+    // ===== L2 ACTIVITY 2: Stability Challenge =====
+    const cogData = [
+      { text: 'Which is more stable?', a: '🗼 Tall, narrow tower', b: '🚧 Short, wide-base pyramid', ans: 'b', explain: 'The pyramid has a wider base AND lower centre of gravity — much more stable.' },
+      { text: 'Which shelf design is safer?', a: '📚 Heavy books on the top shelf', b: '📚 Heavy books on the bottom shelf', ans: 'b', explain: 'Heavy items on the bottom lower the centre of gravity, preventing tipping.' },
+      { text: 'Which shape resists deformation best?', a: '□ Square frame', b: '△ Triangular frame', ans: 'b', explain: 'Triangles can’t be pushed out of shape without breaking a side — they’re the strongest shape.' },
+      { text: 'Which wall is more stable in wind?', a: '🧱 Flat wall with no support', b: '🧱 Wall with angled buttresses', ans: 'b', explain: 'Buttresses provide extra support against lateral (sideways) forces like wind.' }
+    ];
+    let cogIdx = 0, cogOk = 0;
+    function initCog() { cogIdx = 0; cogOk = 0; renderCogQ(); document.getElementById('cogScore').innerHTML = ''; }
+    function renderCogQ() {
+      if (cogIdx >= cogData.length) {
+        document.getElementById('cogScore').innerHTML = `<div class="activity-score"><div class="score-number">${cogOk}/${cogData.length}</div><p>${cogOk === cogData.length ? '🎉 Stability expert!' : '📖 Remember: wide base + low centre of gravity = stable.'}</p><button class="activity-btn secondary" onclick="initCog()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'cog', cogOk, cogData.length); return;
+      }
+      const sc = cogData[cogIdx];
+      document.getElementById('cogArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;font-weight:700;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:12px"><button class="activity-btn" onclick="pickCog('a')" style="flex:1;font-size:.82rem">${sc.a}</button><button class="activity-btn secondary" onclick="pickCog('b')" style="flex:1;font-size:.82rem">${sc.b}</button></div><div id="cogFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${cogIdx + 1} of ${cogData.length}</p>`;
+    }
+    function pickCog(ans) {
+      const sc = cogData[cogIdx], ok = ans === sc.ans;
+      if (ok) cogOk++;
+      document.getElementById('cogFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { cogIdx++; renderCogQ(); }, 1800);
+    }
+
+    // ===== L2 ACTIVITY 3: Failure Analysis =====
+    const failData = [
+      { text: '🌨️ A flat roof collapses after heavy snowfall.', cause: 'overload', explain: 'Snow (live load) exceeded the roof’s design capacity — overloading.' },
+      { text: '🔩 A metal bridge joint breaks after 50 years of vehicle traffic.', cause: 'fatigue', explain: 'Decades of repeated vibration weakened the metal — material fatigue.' },
+      { text: '🌪️ A signpost snaps during a tornado.', cause: 'environment', explain: 'Wind forces far exceeded the sign’s design limits — environmental forces.' },
+      { text: '🚚 People pile too many boxes in a storage unit until shelves buckle.', cause: 'overload', explain: 'The weight exceeded the shelves’ load-bearing capacity — overloading.' }
+    ];
+    const failMap = { overload: '📦 Overloading', fatigue: '🔧 Material Fatigue', environment: '🌪️ Environmental Forces' };
+    let failIdx = 0, failOk = 0;
+    function initFail() { failIdx = 0; failOk = 0; renderFailQ(); document.getElementById('failScore').innerHTML = ''; }
+    function renderFailQ() {
+      if (failIdx >= failData.length) {
+        document.getElementById('failScore').innerHTML = `<div class="activity-score"><div class="score-number">${failOk}/${failData.length}</div><p>${failOk === failData.length ? '🎉 Failure analyst!' : '📖 Think: too much weight, repeated stress, or extreme weather?'}</p><button class="activity-btn secondary" onclick="initFail()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'fail', failOk, failData.length); return;
+      }
+      const sc = failData[failIdx], keys = Object.keys(failMap).sort(() => Math.random() - .5);
+      document.getElementById('failArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickFail('${k}')" style="flex:1">${failMap[k]}</button>`).join('')}</div><div id="failFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${failIdx + 1} of ${failData.length}</p>`;
+    }
+    function pickFail(ans) {
+      const sc = failData[failIdx], ok = ans === sc.cause;
+      if (ok) failOk++;
+      document.getElementById('failFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { failIdx++; renderFailQ(); }, 1500);
+    }
+
+    function saveCR2() { localStorage.setItem('g7-unitd-l2-cr', document.getElementById('crResponse2')?.value || ''); }
+    function saveReflection2() { localStorage.setItem('g7-unitd-l2-reflect', document.getElementById('reflectionText2')?.value || ''); }
+    function loadSavedText2() {
+      const cr = document.getElementById('crResponse2'), rf = document.getElementById('reflectionText2');
+      if (cr) cr.value = localStorage.getItem('g7-unitd-l2-cr') || '';
+      if (rf) rf.value = localStorage.getItem('g7-unitd-l2-reflect') || '';
+    }
+
+    // ===== QUIZ BANKS 3-7 =====
+    quizBanks.quiz3={primary:[{q:"Wind acting on a building is an example of:",opts:["Internal force","External force","Dead load","Compression"],ans:1,outcome:"D.K.2-EXT",explain:"Wind comes from outside the structure — it's an external force."},{q:"A dynamic load is one that:",opts:["Never changes","Changes over time (wind, traffic, earthquakes)","Only acts downward","Is the structure's own weight"],ans:1,outcome:"D.K.2-EXT",explain:"Dynamic loads vary — unlike static dead loads."},{q:"Alberta buildings must resist Chinook winds because:",opts:["Chinooks are cold","Chinook gusts can reach 160 km/h","Chinooks cause earthquakes","Chinooks only affect crops"],ans:1,outcome:"D.K.2-ENV",explain:"Southern Alberta Chinooks create extreme wind loads."},{q:"Freeze-thaw cycles damage structures by:",opts:["Melting steel","Water expanding as it freezes in cracks, widening them","Making concrete stronger","Reducing gravity"],ans:1,outcome:"D.K.2-ENV",explain:"Water expands ~9% when it freezes, cracking materials."},{q:"Friction in structures can:",opts:["Only cause damage","Both help (grip) and hinder (wear)","Only help","Have no effect"],ans:1,outcome:"D.K.2-EXT",explain:"Friction provides grip but also causes wear over time."},{q:"Steep roofs are common in snowy regions because:",opts:["They look nicer","Snow slides off, reducing snow load","They use less material","They block wind"],ans:1,outcome:"D.K.2-ENV",explain:"Angled roofs let gravity pull snow off."}],replacement:[{q:"Seismic forces come from:",opts:["Wind","Earthquakes shaking the ground","Rain","Sun"],ans:1,outcome:"D.K.2-EXT",explain:"Seismic = earthquake-related ground movement."},{q:"A foundation prevents a building from:",opts:["Getting too tall","Shifting, sinking, or toppling due to ground forces","Overheating","Rusting"],ans:1,outcome:"D.K.2-ENV",explain:"Foundations anchor structures to stable ground."},{q:"Water erosion weakens structures by:",opts:["Adding weight","Washing away soil supporting foundations","Cooling materials","Nothing"],ans:1,outcome:"D.K.2-ENV",explain:"Erosion undermines foundations and slopes."},{q:"Wind bracing in buildings prevents:",opts:["Rain damage","Lateral (sideways) movement from wind","Rust","Fire"],ans:1,outcome:"D.K.2-EXT",explain:"Cross-bracing resists horizontal wind forces."},{q:"Snow load is measured in:",opts:["Degrees","Force per area (Newtons per square metre)","Litres","Metres"],ans:1,outcome:"D.K.2-ENV",explain:"Load = force distributed over an area."},{q:"An earthquake-resistant building uses:",opts:["Only concrete","Flexible joints and base isolation","No foundations","Glass walls"],ans:1,outcome:"D.K.2-EXT",explain:"Flexibility absorbs seismic energy without cracking."}],remediation:{"D.K.2-EXT":{video:"https://www.youtube.com/embed/aZV1UclLPhk",questions:[{q:"External forces come from:",opts:["Inside the structure","Outside the structure"],ans:1,explain:"Wind, earthquakes, and gravity are external."},{q:"Dynamic loads:",opts:["Stay constant","Change over time"],ans:1,explain:"Traffic, wind gusts, and quakes are dynamic."}]},"D.K.2-ENV":{video:"https://www.youtube.com/embed/aZV1UclLPhk",questions:[{q:"Freeze-thaw damages structures by:",opts:["Heating them","Water expanding in cracks when frozen"],ans:1,explain:"Ice expansion widens cracks over time."},{q:"Steep roofs help with:",opts:["Wind resistance","Snow sliding off to reduce load"],ans:1,explain:"Gravity pulls snow off angled surfaces."}]}}};
+
+    quizBanks.quiz4={primary:[{q:"Tensile strength measures resistance to:",opts:["Crushing","Being pulled apart (stretched)","Bending","Twisting"],ans:1,outcome:"D.K.3-PROP",explain:"Tensile = resistance to stretching forces."},{q:"Concrete is strong in compression but weak in:",opts:["Compression","Tension","Colour","Weight"],ans:1,outcome:"D.K.3-PROP",explain:"Concrete cracks when pulled — rebar fixes this."},{q:"A composite material is:",opts:["A single pure substance","Two or more materials combined for better properties","Only natural","Only plastic"],ans:1,outcome:"D.K.3-MAT",explain:"Composites like fibreglass combine strengths."},{q:"Steel is used in skyscrapers because:",opts:["It's cheap","It has high strength in both tension and compression","It's light","It floats"],ans:1,outcome:"D.K.3-MAT",explain:"Steel resists both pulling and pushing forces."},{q:"Flexibility means a material can:",opts:["Break easily","Bend without breaking","Float","Conduct electricity"],ans:1,outcome:"D.K.3-PROP",explain:"Flexible materials deform without fracturing."},{q:"Reinforced concrete combines:",opts:["Wood and plastic","Concrete (compression) with steel rebar (tension)","Glass and metal","Sand and water only"],ans:1,outcome:"D.K.3-MAT",explain:"Rebar handles tension that concrete cannot."}],replacement:[{q:"Carbon fibre is used in aircraft because:",opts:["It is heavy","It is extremely strong yet lightweight","It is cheap","It rusts"],ans:1,outcome:"D.K.3-MAT",explain:"Carbon fibre has the best strength-to-weight ratio."},{q:"Hardness measures:",opts:["Flexibility","Resistance to scratching or denting","Weight","Colour"],ans:1,outcome:"D.K.3-PROP",explain:"Hard materials resist surface damage."},{q:"Wood is a good structural material because:",opts:["It is synthetic","It is moderately strong, flexible, and renewable","It never rots","It is fireproof"],ans:1,outcome:"D.K.3-MAT",explain:"Wood balances strength, workability, and sustainability."},{q:"Durability means a material:",opts:["Breaks easily","Lasts a long time under normal conditions","Is very heavy","Conducts heat well"],ans:1,outcome:"D.K.3-PROP",explain:"Durable materials resist wear, weather, and decay."},{q:"Glass is used in windows because:",opts:["It is flexible","It is transparent and weather-resistant","It is soft","It is cheap"],ans:1,outcome:"D.K.3-MAT",explain:"Transparency + hardness make glass ideal for windows."},{q:"A material with high compressive strength resists:",opts:["Stretching","Being crushed or squeezed","Bending","Twisting"],ans:1,outcome:"D.K.3-PROP",explain:"Compressive strength = resistance to squeezing forces."}],remediation:{"D.K.3-PROP":{video:"https://www.youtube.com/embed/aNk2CAkwkCo",questions:[{q:"Tensile strength resists:",opts:["Crushing","Stretching"],ans:1,explain:"Tensile = pulling apart."},{q:"Flexibility means:",opts:["Breaks easily","Bends without breaking"],ans:1,explain:"Flexible materials deform, not fracture."}]},"D.K.3-MAT":{video:"https://www.youtube.com/embed/aNk2CAkwkCo",questions:[{q:"Reinforced concrete adds:",opts:["More concrete","Steel rebar for tensile strength"],ans:1,explain:"Rebar handles tension that concrete cannot."},{q:"Carbon fibre is valued for:",opts:["Low cost","Extreme strength at low weight"],ans:1,explain:"Best strength-to-weight ratio."}]}}};
+
+    quizBanks.quiz5={primary:[{q:"A fixed joint:",opts:["Allows movement","Does not allow movement — rigid connection","Is always temporary","Uses no fasteners"],ans:1,outcome:"D.K.3-JNT",explain:"Fixed joints like welds are permanent and rigid."},{q:"A hinge is an example of a:",opts:["Fixed joint","Flexible joint","Gusset","Beam"],ans:1,outcome:"D.K.3-JNT",explain:"Hinges allow rotation — flexible joint."},{q:"A gusset plate strengthens joints by:",opts:["Adding weight","Adding a triangular plate that distributes force","Making them flexible","Removing material"],ans:1,outcome:"D.K.3-JNT",explain:"Triangles are the strongest shape — gussets use this."},{q:"Rivets are used instead of bolts when:",opts:["You need to remove the joint later","A permanent, vibration-resistant connection is needed","The joint must flex","Cost does not matter"],ans:1,outcome:"D.K.3-FAST",explain:"Rivets are permanent and resist loosening from vibration."},{q:"Most structural failures occur at:",opts:["The middle of beams","Joints and connection points","The foundation only","Nowhere — structures do not fail"],ans:1,outcome:"D.K.3-JNT",explain:"Joints are stress concentration points."},{q:"Adhesives (glue) are best for:",opts:["Heavy steel beams","Lightweight materials where even force distribution is needed","Earthquake zones","Temporary connections"],ans:1,outcome:"D.K.3-FAST",explain:"Adhesives spread load evenly across surfaces."}],replacement:[{q:"A ball-and-socket joint allows:",opts:["No movement","Movement in multiple directions","Only up-down movement","Only rotation"],ans:1,outcome:"D.K.3-JNT",explain:"Ball-and-socket joints allow the widest range of motion."},{q:"Screws hold better than nails because:",opts:["They are shinier","Thread grips material, resisting pull-out","They are longer","They cost more"],ans:1,outcome:"D.K.3-FAST",explain:"Screw threads create mechanical grip."},{q:"In nature, the human elbow is a:",opts:["Fixed joint","Hinge (flexible) joint","Ball-and-socket","Gusset"],ans:1,outcome:"D.K.3-JNT",explain:"Elbows allow rotation in one plane — like a door hinge."},{q:"Welding creates a joint by:",opts:["Using glue","Melting metals together permanently","Bolting parts","Wrapping with tape"],ans:1,outcome:"D.K.3-FAST",explain:"Welding fuses metals — strongest permanent joint."},{q:"Bolts are preferred when:",opts:["The joint is permanent","The joint may need to be disassembled later","Flexibility is needed","Appearance matters most"],ans:1,outcome:"D.K.3-FAST",explain:"Bolts can be unscrewed — unlike rivets or welds."},{q:"Stress concentration at joints means:",opts:["No stress exists","Forces are focused at connection points, increasing failure risk","Joints are always strong","Materials expand"],ans:1,outcome:"D.K.3-JNT",explain:"Force concentrates where parts connect."}],remediation:{"D.K.3-JNT":{video:"https://www.youtube.com/embed/5i_rYbFnkwE",questions:[{q:"Fixed joints are:",opts:["Moveable","Rigid and permanent"],ans:1,explain:"Welds, rivets, and adhesives make fixed joints."},{q:"Gussets strengthen joints using:",opts:["Circles","Triangular plates"],ans:1,explain:"Triangles distribute force effectively."}]},"D.K.3-FAST":{video:"https://www.youtube.com/embed/5i_rYbFnkwE",questions:[{q:"Screws hold better than nails because:",opts:["They are shiny","Threads grip the material"],ans:1,explain:"Thread = mechanical advantage."},{q:"Welding creates:",opts:["A temporary bond","A permanent fusion of metals"],ans:1,explain:"Melting metals together is the strongest bond."}]}}};
+
+    quizBanks.quiz6={primary:[{q:"The first step of the design cycle is:",opts:["Build","Identify the need or problem","Test","Improve"],ans:1,outcome:"D.K.4-CYCLE",explain:"You must understand the problem before designing."},{q:"A safety margin means:",opts:["The structure is exactly strong enough","Extra strength beyond minimum requirements","The structure is weak","No testing is needed"],ans:1,outcome:"D.K.4-SAFE",explain:"Safety margins provide a buffer against unexpected loads."},{q:"A prototype is:",opts:["The final product","A test model to find problems before building full-scale","A type of material","A safety regulation"],ans:1,outcome:"D.K.4-CYCLE",explain:"Prototypes reveal flaws cheaply before full construction."},{q:"A constraint in engineering is:",opts:["A force","A limitation like budget, size, or materials","A type of joint","A design success"],ans:1,outcome:"D.K.4-CYCLE",explain:"Constraints define the boundaries of a design."},{q:"Testing a structure helps engineers:",opts:["Waste time","Find weaknesses before real-world use","Make it weaker","Increase cost for no reason"],ans:1,outcome:"D.K.4-SAFE",explain:"Testing prevents catastrophic real-world failure."},{q:"The design cycle is iterative, meaning:",opts:["You do it once","You repeat and improve the design multiple times","You skip steps","It always fails"],ans:1,outcome:"D.K.4-CYCLE",explain:"Each cycle improves the design."}],replacement:[{q:"Evaluating a design means:",opts:["Ignoring problems","Assessing how well it meets requirements and identifying improvements","Building it immediately","Skipping testing"],ans:1,outcome:"D.K.4-CYCLE",explain:"Evaluation connects testing results to design improvements."},{q:"A bridge with a safety factor of 3 can hold:",opts:["Exactly its expected load","Three times its expected load before failure","Only half its load","Nothing"],ans:1,outcome:"D.K.4-SAFE",explain:"Safety factor 3 = designed for 3x the expected maximum load."},{q:"Wind tunnel testing is used for:",opts:["Cooking","Testing how designs respond to wind forces","Measuring temperature","Weighing materials"],ans:1,outcome:"D.K.4-SAFE",explain:"Wind tunnels simulate real wind loads on models."},{q:"After testing reveals a weakness, an engineer should:",opts:["Ignore it","Redesign to fix the weakness, then re-test","Ship it anyway","Add decoration"],ans:1,outcome:"D.K.4-CYCLE",explain:"The improve step addresses problems found in testing."},{q:"Building codes exist to:",opts:["Make buildings expensive","Ensure minimum safety standards are met","Slow down construction","Look official"],ans:1,outcome:"D.K.4-SAFE",explain:"Codes protect public safety with evidence-based rules."},{q:"Computer simulations in engineering:",opts:["Replace all physical testing","Allow testing many designs quickly before building prototypes","Are unreliable","Cost more than physical tests"],ans:1,outcome:"D.K.4-CYCLE",explain:"Simulations test ideas virtually before spending on materials."}],remediation:{"D.K.4-CYCLE":{video:"https://www.youtube.com/embed/fxJWin195kU",questions:[{q:"The design cycle starts with:",opts:["Building","Identifying the problem"],ans:1,explain:"Understanding the need comes first."},{q:"The cycle is iterative because:",opts:["You do it once","You repeat and improve each time"],ans:1,explain:"Each round makes the design better."}]},"D.K.4-SAFE":{video:"https://www.youtube.com/embed/fxJWin195kU",questions:[{q:"A safety margin provides:",opts:["Exact strength needed","Extra strength as a buffer"],ans:1,explain:"Margins protect against unexpected loads."},{q:"Prototypes help by:",opts:["Being the final product","Finding problems before full-scale building"],ans:1,explain:"Cheap failures on prototypes save lives."}]}}};
+
+    quizBanks.quiz7={primary:[{q:"Metal fatigue is caused by:",opts:["One large force","Repeated stress cycles over time","Corrosion","Overload"],ans:1,outcome:"D.K.4-FAIL",explain:"Repeated bending/vibration weakens metal gradually."},{q:"Overload failure happens when:",opts:["A structure rusts","Forces exceed design capacity","Joints are too strong","Materials expand"],ans:1,outcome:"D.K.4-FAIL",explain:"Beyond design limits = structural failure."},{q:"The Tacoma Narrows Bridge failed due to:",opts:["Overload","Wind-induced resonance","Corrosion","Bad materials"],ans:1,outcome:"D.K.4-PREV",explain:"Wind matched the bridge's natural frequency."},{q:"Corrosion weakens structures by:",opts:["Adding material","Chemically destroying material over time","Making them heavier","Strengthening joints"],ans:1,outcome:"D.K.4-FAIL",explain:"Rust, acid rain, and salt degrade materials."},{q:"Engineers prevent fatigue failure by:",opts:["Ignoring it","Regular inspections and replacing worn parts","Using more paint","Adding decoration"],ans:1,outcome:"D.K.4-PREV",explain:"Maintenance catches fatigue cracks before failure."},{q:"Foundation failure occurs when:",opts:["Paint peels","The ground beneath a structure shifts, sinks, or erodes","Wind is strong","It rains"],ans:1,outcome:"D.K.4-FAIL",explain:"Unstable ground undermines the entire structure."}],replacement:[{q:"Resonance is dangerous because:",opts:["It cools structures","Vibrations amplify until the structure breaks","It adds weight","It changes colour"],ans:1,outcome:"D.K.4-PREV",explain:"Matching frequency = catastrophic amplification."},{q:"Anti-corrosion coatings protect:",opts:["Against wind","Metal from rust and chemical damage","Foundations","Against earthquakes"],ans:1,outcome:"D.K.4-PREV",explain:"Coatings create barriers against corrosive agents."},{q:"A crack in a beam grows because of:",opts:["Temperature","Stress concentration at the crack tip","Gravity pulling it","Paint peeling"],ans:1,outcome:"D.K.4-FAIL",explain:"Stress concentrates at crack tips, propagating failure."},{q:"Structural health monitoring uses:",opts:["Paint","Sensors to detect strain, vibration, and cracks in real-time","Decoration","Extra weight"],ans:1,outcome:"D.K.4-PREV",explain:"Sensors provide early warning of problems."},{q:"Redundancy in structures means:",opts:["Wasted material","Multiple load paths so if one fails, others carry the load","Less strength","Lower cost"],ans:1,outcome:"D.K.4-PREV",explain:"Backup paths prevent total collapse."},{q:"The most common cause of bridge failure worldwide is:",opts:["Wind","Overloading and lack of maintenance","Earthquakes","Design flaws"],ans:1,outcome:"D.K.4-FAIL",explain:"Exceeding load limits and poor upkeep cause most failures."}],remediation:{"D.K.4-FAIL":{video:"https://www.youtube.com/embed/dMg4b6sAelg",questions:[{q:"Metal fatigue is caused by:",opts:["One big force","Repeated stress over time"],ans:1,explain:"Cyclic loading weakens materials gradually."},{q:"Overload means:",opts:["Normal use","Forces exceed what the structure was designed for"],ans:1,explain:"Beyond limits = failure."}]},"D.K.4-PREV":{video:"https://www.youtube.com/embed/dMg4b6sAelg",questions:[{q:"Engineers prevent fatigue by:",opts:["Ignoring cracks","Regular inspections and maintenance"],ans:1,explain:"Catching problems early prevents failure."},{q:"Redundancy means:",opts:["Waste","Backup load paths in case one fails"],ans:1,explain:"Multiple paths to carry load = safer."}]}}};
+
+    // ===== L3-L7 ACTIVITIES =====
+    const l3FData=[{text:"🌬️ A skyscraper swaying in a storm",ans:"wind",explain:"Wind creates lateral (sideways) force on tall structures."},{text:"🌍 Buildings shaking during an earthquake in BC",ans:"seismic",explain:"Seismic forces shake structures from the ground up."},{text:"❄️ A flat roof collapsing under heavy snowfall",ans:"snow",explain:"Snow accumulation = massive static load on the roof."},{text:"💧 A riverbank undermining a bridge's foundation",ans:"water",explain:"Water erosion removes supporting soil."},{text:"🚗 Rush hour traffic vibrating a highway bridge",ans:"traffic",explain:"Moving vehicles create dynamic loads."}];
+    let l3FIdx=0,l3FOk=0;
+    function initL3F(){l3FIdx=0;l3FOk=0;renderL3F();document.getElementById('l3ForceScore').innerHTML='';}
+    function renderL3F(){if(l3FIdx>=l3FData.length){document.getElementById('l3ForceScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3FOk}/${l3FData.length}</div><p>${l3FOk>=4?'🎉 Force expert!':'📖 Review external forces.'}</p><button class="activity-btn secondary" onclick="initL3F()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'force',l3FOk,l3FData.length);return;}const d=l3FData[l3FIdx];document.getElementById('l3ForceArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['wind','seismic','snow','water','traffic'].map(k=>`<button class="activity-btn secondary" onclick="pickL3F('${k}')" style="flex:1;min-width:70px;font-size:.78rem">${{wind:'🌬️ Wind',seismic:'🌍 Seismic',snow:'❄️ Snow',water:'💧 Water',traffic:'🚗 Traffic'}[k]}</button>`).join('')}</div><div id="l3FFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3FIdx+1} of ${l3FData.length}</p>`;}
+    function pickL3F(a){const d=l3FData[l3FIdx],ok=a===d.ans;if(ok)l3FOk++;document.getElementById('l3FFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3FIdx++;renderL3F();},1500);}
+
+    const l3DData=[{text:"🏠 Steep pitched roof",ans:"snow",explain:"Angled roof lets snow slide off — reduces snow load."},{text:"🏗️ Cross-bracing in walls",ans:"wind",explain:"Diagonal braces resist lateral wind forces."},{text:"🏢 Base isolation pads under a building",ans:"seismic",explain:"Isolation pads absorb earthquake vibrations."},{text:"🌊 Riprap (large rocks) along a riverbank",ans:"water",explain:"Rocks prevent water erosion of foundations."},{text:"🔩 Expansion joints in a highway",ans:"thermal",explain:"Joints allow road to expand/contract with temperature."}];
+    let l3DIdx=0,l3DOk=0;
+    function initL3D(){l3DIdx=0;l3DOk=0;renderL3D();document.getElementById('l3DefendScore').innerHTML='';}
+    function renderL3D(){if(l3DIdx>=l3DData.length){document.getElementById('l3DefendScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3DOk}/${l3DData.length}</div><p>${l3DOk>=4?'🎉 Design defender!':'📖 Review design features.'}</p><button class="activity-btn secondary" onclick="initL3D()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'defend',l3DOk,l3DData.length);return;}const d=l3DData[l3DIdx];document.getElementById('l3DefendArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['wind','seismic','snow','water','thermal'].map(k=>`<button class="activity-btn secondary" onclick="pickL3D('${k}')" style="flex:1;min-width:70px;font-size:.78rem">${{wind:'🌬️ Wind',seismic:'🌍 Seismic',snow:'❄️ Snow',water:'💧 Water',thermal:'🌡️ Thermal'}[k]}</button>`).join('')}</div><div id="l3DFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3DIdx+1} of ${l3DData.length}</p>`;}
+    function pickL3D(a){const d=l3DData[l3DIdx],ok=a===d.ans;if(ok)l3DOk++;document.getElementById('l3DFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3DIdx++;renderL3D();},1500);}
+
+    const l4MData=[{text:"🌉 A long-span bridge deck",ans:"steel",explain:"Steel has high tensile and compressive strength for spanning distances."},{text:"🏠 Foundation of a house",ans:"concrete",explain:"Concrete excels in compression — perfect for foundations."},{text:"✈️ Aircraft fuselage",ans:"carbon",explain:"Carbon fibre is extremely strong yet lightweight."},{text:"🏡 Backyard fence",ans:"wood",explain:"Wood is affordable, workable, and adequately strong."},{text:"🏗️ Skyscraper beams",ans:"steel",explain:"Steel handles the massive forces in tall buildings."}];
+    let l4MIdx=0,l4MOk=0;
+    function initL4M(){l4MIdx=0;l4MOk=0;renderL4M();document.getElementById('l4MatScore').innerHTML='';}
+    function renderL4M(){if(l4MIdx>=l4MData.length){document.getElementById('l4MatScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4MOk}/${l4MData.length}</div><p>${l4MOk>=4?'🎉 Material master!':'📖 Review material properties.'}</p><button class="activity-btn secondary" onclick="initL4M()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'mat',l4MOk,l4MData.length);return;}const d=l4MData[l4MIdx];document.getElementById('l4MatArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['steel','concrete','wood','carbon'].map(k=>`<button class="activity-btn secondary" onclick="pickL4M('${k}')" style="flex:1;min-width:80px;font-size:.8rem">${{steel:'🔩 Steel',concrete:'🧱 Concrete',wood:'🪵 Wood',carbon:'🏎️ Carbon Fibre'}[k]}</button>`).join('')}</div><div id="l4MFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4MIdx+1} of ${l4MData.length}</p>`;}
+    function pickL4M(a){const d=l4MData[l4MIdx],ok=a===d.ans;if(ok)l4MOk++;document.getElementById('l4MFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l4MIdx++;renderL4M();},1500);}
+
+    const l4PData=[{text:"A cable holding up a suspension bridge being pulled tight",ans:"tensile",explain:"The cable resists being stretched — tensile strength."},{text:"A concrete column supporting a heavy roof",ans:"compressive",explain:"The column resists being crushed — compressive strength."},{text:"A rubber gasket bending around a pipe joint",ans:"flexibility",explain:"The gasket bends without breaking — flexibility."},{text:"A diamond drill bit cutting through rock",ans:"hardness",explain:"Diamond resists scratching — extreme hardness."},{text:"A brick wall standing for 200 years",ans:"durability",explain:"Lasting through weather and time — durability."}];
+    let l4PIdx=0,l4POk=0;
+    function initL4P(){l4PIdx=0;l4POk=0;renderL4P();document.getElementById('l4PropScore').innerHTML='';}
+    function renderL4P(){if(l4PIdx>=l4PData.length){document.getElementById('l4PropScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4POk}/${l4PData.length}</div><p>${l4POk>=4?'🎉 Property pro!':'📖 Review material properties.'}</p><button class="activity-btn secondary" onclick="initL4P()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'prop',l4POk,l4PData.length);return;}const d=l4PData[l4PIdx];document.getElementById('l4PropArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['tensile','compressive','flexibility','hardness','durability'].map(k=>`<button class="activity-btn secondary" onclick="pickL4P('${k}')" style="flex:1;min-width:70px;font-size:.78rem">${k.charAt(0).toUpperCase()+k.slice(1)}</button>`).join('')}</div><div id="l4PFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4PIdx+1} of ${l4PData.length}</p>`;}
+    function pickL4P(a){const d=l4PData[l4PIdx],ok=a===d.ans;if(ok)l4POk++;document.getElementById('l4PFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l4PIdx++;renderL4P();},1500);}
+
+    const l5JData=[{text:"🚪 A door that needs to swing open and closed",ans:"flexible",explain:"Doors use hinges — flexible joints allowing rotation."},{text:"🌉 Connecting steel beams permanently in a bridge",ans:"fixed",explain:"Welded or riveted joints keep bridge beams rigid."},{text:"🦴 A human shoulder allowing arm movement in all directions",ans:"flexible",explain:"Ball-and-socket = flexible joint with multi-axis movement."},{text:"🏗️ Corner of a steel building frame",ans:"fixed",explain:"Building corners must be rigid — gusseted fixed joints."},{text:"🔧 A crane arm that needs to rotate",ans:"flexible",explain:"Crane arms use pivot joints for controlled rotation."}];
+    let l5JIdx=0,l5JOk=0;
+    function initL5J(){l5JIdx=0;l5JOk=0;renderL5J();document.getElementById('l5JointScore').innerHTML='';}
+    function renderL5J(){if(l5JIdx>=l5JData.length){document.getElementById('l5JointScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5JOk}/${l5JData.length}</div><p>${l5JOk>=4?'🎉 Joint genius!':'📖 Review fixed vs flexible joints.'}</p><button class="activity-btn secondary" onclick="initL5J()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'joint',l5JOk,l5JData.length);return;}const d=l5JData[l5JIdx];document.getElementById('l5JointArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px"><button class="activity-btn secondary" onclick="pickL5J('fixed')">🔒 Fixed</button><button class="activity-btn secondary" onclick="pickL5J('flexible')">🔄 Flexible</button></div><div id="l5JFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5JIdx+1} of ${l5JData.length}</p>`;}
+    function pickL5J(a){const d=l5JData[l5JIdx],ok=a===d.ans;if(ok)l5JOk++;document.getElementById('l5JFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5JIdx++;renderL5J();},1500);}
+
+    const l5FaData=[{text:"Joining two steel I-beams permanently on a bridge",ans:"weld",explain:"Welding fuses metal — strongest permanent connection."},{text:"Attaching a wooden fence board to a post",ans:"screw",explain:"Screws grip wood well and resist pull-out."},{text:"Connecting aircraft fuselage panels",ans:"rivet",explain:"Rivets are permanent, lightweight, and vibration-resistant."},{text:"Joining parts that may need disassembly for maintenance",ans:"bolt",explain:"Bolts can be removed and replaced."},{text:"Bonding a glass panel to a metal frame",ans:"adhesive",explain:"Adhesives bond different materials without drilling."}];
+    let l5FaIdx=0,l5FaOk=0;
+    function initL5Fa(){l5FaIdx=0;l5FaOk=0;renderL5Fa();document.getElementById('l5FastScore').innerHTML='';}
+    function renderL5Fa(){if(l5FaIdx>=l5FaData.length){document.getElementById('l5FastScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5FaOk}/${l5FaData.length}</div><p>${l5FaOk>=4?'🎉 Fastener pro!':'📖 Review fastener types.'}</p><button class="activity-btn secondary" onclick="initL5Fa()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'fast',l5FaOk,l5FaData.length);return;}const d=l5FaData[l5FaIdx];document.getElementById('l5FastArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['weld','screw','rivet','bolt','adhesive'].map(k=>`<button class="activity-btn secondary" onclick="pickL5Fa('${k}')" style="flex:1;min-width:70px;font-size:.78rem">${{weld:'🔥 Weld',screw:'🔩 Screw',rivet:'🔨 Rivet',bolt:'🔧 Bolt',adhesive:'🧴 Adhesive'}[k]}</button>`).join('')}</div><div id="l5FaFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5FaIdx+1} of ${l5FaData.length}</p>`;}
+    function pickL5Fa(a){const d=l5FaData[l5FaIdx],ok=a===d.ans;if(ok)l5FaOk++;document.getElementById('l5FaFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5FaIdx++;renderL5Fa();},1500);}
+
+    const l6Steps=[{s:"📋 Identify the Need",era:0},{s:"🔍 Research",era:1},{s:"✏️ Design",era:2},{s:"🔨 Build Prototype",era:3},{s:"🧪 Test",era:4},{s:"📊 Evaluate",era:5},{s:"🔧 Improve",era:6}];
+    let l6SIdx=0,l6SOk=0,l6SPicked=[];
+    function initL6S(){l6SIdx=0;l6SOk=0;l6SPicked=[];renderL6S();document.getElementById('l6StepScore').innerHTML='';}
+    function renderL6S(){if(l6SIdx>=l6Steps.length){document.getElementById('l6StepScore').innerHTML=`<div class="activity-score"><div class="score-number">${l6SOk}/${l6Steps.length}</div><p>${l6SOk>=6?'🎉 Design cycle master!':'📖 Review the design cycle steps.'}</p><button class="activity-btn secondary" onclick="initL6S()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(6,'step',l6SOk,l6Steps.length);return;}const avail=l6Steps.filter((_,i)=>!l6SPicked.includes(i)).sort(()=>Math.random()-.5);document.getElementById('l6StepArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-weight:600;margin-bottom:12px">Pick step #${l6SIdx+1} of the design cycle:</p><div style="display:flex;gap:8px;flex-wrap:wrap">${avail.map(t=>`<button class="activity-btn secondary" onclick="pickL6S(${l6Steps.indexOf(t)})" style="flex:1;min-width:100px;font-size:.78rem">${t.s}</button>`).join('')}</div><div id="l6SFb" style="margin-top:8px"></div></div>`;}
+    function pickL6S(idx){const ok=idx===l6SIdx;if(ok)l6SOk++;l6SPicked.push(idx);document.getElementById('l6SFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> Step ${l6SIdx+1} is: ${l6Steps[l6SIdx].s}</div>`;setTimeout(()=>{l6SIdx++;renderL6S();},1500);}
+
+    const l6FaData=[{text:"Using untested concrete mix in a dam",ans:"material",explain:"Untested materials may not meet strength requirements."},{text:"Building without checking local wind speed data",ans:"environmental",explain:"Ignoring wind loads = risk of lateral failure."},{text:"No safety margin — structure designed for exact expected load",ans:"margin",explain:"No buffer = failure at even slightly above expected loads."},{text:"Skipping the prototype stage",ans:"testing",explain:"No prototype = discovering problems in the final build."},{text:"Using the same bolt size for all connections",ans:"connection",explain:"Different joints need different fasteners for proper load handling."}];
+    let l6FaIdx=0,l6FaOk=0;
+    function initL6Fa(){l6FaIdx=0;l6FaOk=0;renderL6Fa();document.getElementById('l6FailScore').innerHTML='';}
+    function renderL6Fa(){if(l6FaIdx>=l6FaData.length){document.getElementById('l6FailScore').innerHTML=`<div class="activity-score"><div class="score-number">${l6FaOk}/${l6FaData.length}</div><p>${l6FaOk>=4?'🎉 Failure spotter!':'📖 Review design pitfalls.'}</p><button class="activity-btn secondary" onclick="initL6Fa()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(6,'fail2',l6FaOk,l6FaData.length);return;}const d=l6FaData[l6FaIdx];document.getElementById('l6FailArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['material','environmental','margin','testing','connection'].map(k=>`<button class="activity-btn secondary" onclick="pickL6Fa('${k}')" style="flex:1;min-width:80px;font-size:.75rem">${{material:'🧪 Material',environmental:'🌍 Environment',margin:'📏 No Margin',testing:'🚫 No Testing',connection:'🔩 Connection'}[k]}</button>`).join('')}</div><div id="l6FaFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l6FaIdx+1} of ${l6FaData.length}</p>`;}
+    function pickL6Fa(a){const d=l6FaData[l6FaIdx],ok=a===d.ans;if(ok)l6FaOk++;document.getElementById('l6FaFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l6FaIdx++;renderL6Fa();},1500);}
+
+    const l7DData=[{text:"🔧 A paper clip snaps after being bent back and forth 20 times",ans:"fatigue",explain:"Repeated stress cycles = metal fatigue."},{text:"🏗️ A balcony collapses when 50 people stand on it (designed for 20)",ans:"overload",explain:"Forces exceeded the design capacity."},{text:"🌊 A steel pier covered in orange rust crumbles",ans:"corrosion",explain:"Chemical degradation of metal over time."},{text:"🌉 A bridge sways wildly in wind matching its natural frequency",ans:"resonance",explain:"Resonance amplifies vibrations catastrophically."},{text:"🏠 A house tilts because the soil beneath it washed away",ans:"foundation",explain:"Foundation failure from erosion."}];
+    let l7DIdx=0,l7DOk=0;
+    function initL7D(){l7DIdx=0;l7DOk=0;renderL7D();document.getElementById('l7DetectScore').innerHTML='';}
+    function renderL7D(){if(l7DIdx>=l7DData.length){document.getElementById('l7DetectScore').innerHTML=`<div class="activity-score"><div class="score-number">${l7DOk}/${l7DData.length}</div><p>${l7DOk>=4?'🎉 Failure detective!':'📖 Review failure modes.'}</p><button class="activity-btn secondary" onclick="initL7D()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(7,'detect',l7DOk,l7DData.length);return;}const d=l7DData[l7DIdx];document.getElementById('l7DetectArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['fatigue','overload','corrosion','resonance','foundation'].map(k=>`<button class="activity-btn secondary" onclick="pickL7D('${k}')" style="flex:1;min-width:70px;font-size:.75rem">${k.charAt(0).toUpperCase()+k.slice(1)}</button>`).join('')}</div><div id="l7DFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l7DIdx+1} of ${l7DData.length}</p>`;}
+    function pickL7D(a){const d=l7DData[l7DIdx],ok=a===d.ans;if(ok)l7DOk++;document.getElementById('l7DFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l7DIdx++;renderL7D();},1500);}
+
+    const l7PData=[{text:"🔍 Regular inspections to find cracks early",ans:"fatigue",explain:"Inspections catch fatigue before catastrophic failure."},{text:"🎨 Anti-rust coating on steel bridges",ans:"corrosion",explain:"Coatings create barriers against chemical attack."},{text:"📏 Designing to hold 3x the expected maximum load",ans:"overload",explain:"Safety margins prevent overload failure."},{text:"🏗️ Adding dampers to reduce vibrations",ans:"resonance",explain:"Dampers absorb energy that would amplify vibrations."},{text:"🏠 Deep pilings driven into bedrock",ans:"foundation",explain:"Pilings anchor structures past unstable soil."}];
+    let l7PIdx=0,l7POk=0;
+    function initL7P(){l7PIdx=0;l7POk=0;renderL7P();document.getElementById('l7PreventScore').innerHTML='';}
+    function renderL7P(){if(l7PIdx>=l7PData.length){document.getElementById('l7PreventScore').innerHTML=`<div class="activity-score"><div class="score-number">${l7POk}/${l7PData.length}</div><p>${l7POk>=4?'🎉 Prevention pro!':'📖 Review prevention strategies.'}</p><button class="activity-btn secondary" onclick="initL7P()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(7,'prevent',l7POk,l7PData.length);return;}const d=l7PData[l7PIdx];document.getElementById('l7PreventArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['fatigue','corrosion','overload','resonance','foundation'].map(k=>`<button class="activity-btn secondary" onclick="pickL7P('${k}')" style="flex:1;min-width:70px;font-size:.75rem">${k.charAt(0).toUpperCase()+k.slice(1)}</button>`).join('')}</div><div id="l7PFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l7PIdx+1} of ${l7PData.length}</p>`;}
+    function pickL7P(a){const d=l7PData[l7PIdx],ok=a===d.ans;if(ok)l7POk++;document.getElementById('l7PFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l7PIdx++;renderL7P();},1500);}
+
+    // ===== SAVE/LOAD L3-L8 =====
+    function saveCR3(){localStorage.setItem('g7-unitd-l3-cr',document.getElementById('crResponse3').value);}
+    function saveReflection3(){localStorage.setItem('g7-unitd-l3-reflect',document.getElementById('reflectionText3').value);}
+    function saveCR4(){localStorage.setItem('g7-unitd-l4-cr',document.getElementById('crResponse4').value);}
+    function saveReflection4(){localStorage.setItem('g7-unitd-l4-reflect',document.getElementById('reflectionText4').value);}
+    function saveCR5(){localStorage.setItem('g7-unitd-l5-cr',document.getElementById('crResponse5').value);}
+    function saveReflection5(){localStorage.setItem('g7-unitd-l5-reflect',document.getElementById('reflectionText5').value);}
+    function saveCR6(){localStorage.setItem('g7-unitd-l6-cr',document.getElementById('crResponse6').value);}
+    function saveReflection6(){localStorage.setItem('g7-unitd-l6-reflect',document.getElementById('reflectionText6').value);}
+    function saveCR7(){localStorage.setItem('g7-unitd-l7-cr',document.getElementById('crResponse7').value);}
+    function saveReflection7(){localStorage.setItem('g7-unitd-l7-reflect',document.getElementById('reflectionText7').value);}
+    function savePTd(s){localStorage.setItem('g7-unitd-pt'+s,document.getElementById('ptd'+s).value);}
+    function loadLTextD(n){const cr=document.getElementById('crResponse'+n);if(cr)cr.value=localStorage.getItem('g7-unitd-l'+n+'-cr')||'';const rf=document.getElementById('reflectionText'+n);if(rf)rf.value=localStorage.getItem('g7-unitd-l'+n+'-reflect')||'';}
+    function loadPTd(){for(let i=1;i<=5;i++){const el=document.getElementById('ptd'+i);if(el)el.value=localStorage.getItem('g7-unitd-pt'+i)||'';}}
+    function submitPTd(){for(let i=1;i<=5;i++)savePTd(i);localStorage.setItem('g7-unitd-lesson8-passed','true');document.getElementById('ptSubmitBtnD').textContent='✅ Submitted!';document.getElementById('ptSubmitBtnD').disabled=true;updateLock();updateProgress();alert('🏆 Your Structure Design & Analysis Report has been submitted!');}
+
+    // ===== ACTIVITY GATE =====
+    actComplete = {
+      l1:{types:false,materials:false,nature:false},l2:{forces:false,cog:false,fail:false},
+      l3:{force:false,defend:false},l4:{mat:false,prop:false},l5:{joint:false,fast:false},
+      l6:{step:false,fail2:false},l7:{detect:false,prevent:false}
+    };
+
+    function onPageLoad(page){
+      if(page==='lesson1'){initTypes();initMats();initNat();loadSavedText();}
+      if(page==='lesson1-quiz')initQuiz('quiz1',quizBanks);
+      if(page==='lesson2'){initForces();initCog();initFail();loadSavedText2();}
+      if(page==='lesson2-quiz')initQuiz('quiz2',quizBanks);
+      if(page==='lesson3'){initL3F();initL3D();loadLTextD(3);}
+      if(page==='lesson3-quiz')initQuiz('quiz3',quizBanks);
+      if(page==='lesson4'){initL4M();initL4P();loadLTextD(4);}
+      if(page==='lesson4-quiz')initQuiz('quiz4',quizBanks);
+      if(page==='lesson5'){initL5J();initL5Fa();loadLTextD(5);}
+      if(page==='lesson5-quiz')initQuiz('quiz5',quizBanks);
+      if(page==='lesson6'){initL6S();initL6Fa();loadLTextD(6);}
+      if(page==='lesson6-quiz')initQuiz('quiz6',quizBanks);
+      if(page==='lesson7'){initL7D();initL7P();loadLTextD(7);}
+      if(page==='lesson7-quiz')initQuiz('quiz7',quizBanks);
+      if(page==='lesson8')loadPTd();
+      if(page==='teacher')renderTeacherDashboard();
+    }
+
+    function updateLock(){
+      const total=8;
+      for(let i=1;i<=total;i++){const passed=localStorage.getItem('g7-unitd-lesson'+i+'-passed');if(passed){document.querySelectorAll('.nav-item').forEach(n=>{if(n.dataset.page==='lesson'+i||n.dataset.page==='lesson'+i+'-quiz')n.classList.add('completed');});const card=document.getElementById('homeCard'+i);if(card){card.classList.remove('locked');card.classList.add('completed');const b=card.querySelector('.card-btn');if(b)b.textContent='Review ✓';}const nx=i+1;if(nx<=total){document.querySelectorAll('.nav-item').forEach(n=>{if(n.dataset.page==='lesson'+nx||n.dataset.page==='lesson'+nx+'-quiz')n.classList.remove('locked');});const nc=document.getElementById('homeCard'+nx);if(nc){nc.classList.remove('locked');const b=nc.querySelector('.card-btn');if(b&&b.textContent.includes('Locked'))b.textContent='Start Lesson →';}}}
+      }
+    }
+    function updateProgress(){let p=0;for(let i=1;i<=8;i++)if(localStorage.getItem('g7-unitd-lesson'+i+'-passed'))p++;const f=document.getElementById('progressFill');if(f)f.style.width=Math.round(p/8*100)+'%';}
+    document.addEventListener('DOMContentLoaded',()=>{updateLock();updateProgress();});
+  </script>
+</body>
+</html>
+

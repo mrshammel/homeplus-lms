@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit B: Plants for Food & Fibre — Grade 7 Science</title>
+  <meta name="description" content="Grade 7 Science — Plants for Food & Fibre. Learn about plant structures, photosynthesis, and the role of plants in ecosystems.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+</head>
+<body data-unit-key="b" data-unit="b">
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">🌱</div>
+      <h2>Welcome, Scientist!</h2>
+      <p>Enter your name and email to save your progress.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="app">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🌱</div>
+        <div>
+          <h2>Plants for Food & Fibre</h2>
+          <span>Unit B</span>
+        </div>
+      </div>
+      <div class="nav-item active" data-page="home" onclick="goTo('home')">
+        <div class="nav-num"><span>🏠</span></div> Home
+      </div>
+      <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')">
+        <div class="nav-num"><span>1</span></div> Plant Survival
+      </div>
+      <div class="nav-item" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 1 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')">
+        <div class="nav-num"><span>2</span></div> Growth & Reproduction
+      </div>
+      <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 2 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')">
+        <div class="nav-num"><span>3</span></div> Classification & Adaptations
+      </div>
+      <div class="nav-item locked" data-page="lesson3-quiz" onclick="goTo('lesson3-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 3 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')">
+        <div class="nav-num"><span>4</span></div> Growing Conditions
+      </div>
+      <div class="nav-item locked" data-page="lesson4-quiz" onclick="goTo('lesson4-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 4 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')">
+        <div class="nav-num"><span>5</span></div> Agriculture & Pest Control
+      </div>
+      <div class="nav-item locked" data-page="lesson5-quiz" onclick="goTo('lesson5-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 5 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')">
+        <div class="nav-num"><span>6</span></div> Plants, People & Sustainability
+      </div>
+      <div class="nav-item locked" data-page="lesson6-quiz" onclick="goTo('lesson6-quiz')">
+        <div class="nav-num"><span>📝</span></div> Lesson 6 Quiz
+      </div>
+      <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')">
+        <div class="nav-num"><span>7</span></div> Performance Task
+      </div>
+      <div class="nav-item" id="teacherNav" data-page="teacher" onclick="goTo('teacher')" style="display:none">
+        <div class="nav-num"><span>📊</span></div> Teacher Dashboard
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <div class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <a href="../index.html" class="back-to-units">← All Units</a>
+        <div class="top-actions">
+          <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+          <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+        </div>
+      </div>
+
+      <!-- HOME PAGE -->
+      <div class="lesson-page active" id="page-home">
+        <div class="welcome">
+          <h1>🌱 Plants for Food & Fibre</h1>
+          <p>Discover how plants survive, grow, and provide food, medicine, clothing, and shelter for all living things.</p>
+        </div>
+        <div class="home-grid">
+          <div class="lesson-card" id="homeCard1" onclick="goTo('lesson1')">
+            <span class="card-icon">🌿</span>
+            <h3>Lesson 1: Plant Survival</h3>
+            <p>Needs, structures & roles of plants in ecosystems</p>
+            <div class="card-btn">Start Lesson →</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard2" onclick="goTo('lesson2')">
+            <span class="card-icon">🌻</span>
+            <h3>Lesson 2: Growth & Reproduction</h3>
+            <p>Germination, pollination, seed dispersal & growth factors</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard3" onclick="goTo('lesson3')">
+            <span class="card-icon">🔬</span>
+            <h3>Lesson 3: Classification & Adaptations</h3>
+            <p>Vascular vs. non-vascular, flowering vs. non-flowering, Alberta plant ID</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard4" onclick="goTo('lesson4')">
+            <span class="card-icon">🌡️</span>
+            <h3>Lesson 4: Growing Conditions</h3>
+            <p>Soil, light, water, temperature, greenhouses & hydroponics</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard5" onclick="goTo('lesson5')">
+            <span class="card-icon">🐛</span>
+            <h3>Lesson 5: Agriculture & Pest Control</h3>
+            <p>Chemical vs. biological, monocultures, organic farming</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard6" onclick="goTo('lesson6')">
+            <span class="card-icon">🌍</span>
+            <h3>Lesson 6: Plants, People & Sustainability</h3>
+            <p>Selective breeding, Indigenous knowledge, forestry & food security</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+          <div class="lesson-card locked" id="homeCard7" onclick="goTo('lesson7')">
+            <span class="card-icon">🏆</span>
+            <h3>Lesson 7: Performance Task</h3>
+            <p>Design a sustainable school garden plan</p>
+            <div class="card-btn">🔒 Locked</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 1 -->
+      <div class="lesson-page" id="page-lesson1">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 1</div>
+          <h1 class="lesson-title">Plant Survival: Needs, Structures & Roles</h1>
+          <p class="lesson-subtitle">Explore what plants need to survive, how their structures work, and why they are essential to every ecosystem.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px">
+            <span class="outcome-tag">7-B.1</span>
+            <span class="outcome-tag">7-B.2</span>
+          </div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can explain the essential role of plants within ecosystems.</li>
+            <li>I can identify and describe plant structures and their functions.</li>
+            <li>I can describe the basic needs of plants for survival.</li>
+            <li>I can explain the process of photosynthesis in simple terms.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">By the end of this lesson, you should be able to check off all of these:</p>
+          <ul class="success-criteria">
+            <li>I can list at least 4 roles plants play in ecosystems.</li>
+            <li>I can name the 6 main plant structures and explain what each does.</li>
+            <li>I can describe what plants need to survive.</li>
+            <li>I can write the photosynthesis equation in simple terms.</li>
+          </ul>
+        </div>
+
+        <!-- KEY VOCABULARY -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">Hover over each term to see its definition. You'll encounter these throughout the lesson.</p>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">🔬 Photosynthesis<span class="vocab-def"><strong>Photosynthesis:</strong> The process by which plants convert light energy, water, and CO₂ into sugar (food) and oxygen.</span></span>
+            <span class="vocab-chip">🌿 Producer<span class="vocab-def"><strong>Producer:</strong> An organism that makes its own food using energy from the sun. Plants are the main producers in most ecosystems.</span></span>
+            <span class="vocab-chip">🧪 Nutrients<span class="vocab-def"><strong>Nutrients:</strong> Minerals and substances that living things need to grow and stay healthy. Plants absorb nutrients from soil.</span></span>
+            <span class="vocab-chip">🏗️ Structure<span class="vocab-def"><strong>Structure:</strong> A part of a plant that has a specific shape and purpose, like roots, stems, or leaves.</span></span>
+            <span class="vocab-chip">⚙️ Function<span class="vocab-def"><strong>Function:</strong> The job or purpose of a structure. For example, the function of roots is to absorb water.</span></span>
+            <span class="vocab-chip">🌬️ Stomata<span class="vocab-def"><strong>Stomata:</strong> Tiny pores (openings) on the surface of leaves that allow CO₂ in and O₂ out during photosynthesis.</span></span>
+            <span class="vocab-chip">💚 Chloroplast<span class="vocab-def"><strong>Chloroplast:</strong> The part of a plant cell where photosynthesis takes place. Contains the green pigment chlorophyll.</span></span>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌍</span> Why Do Plants Matter?</h3>
+          <p>Plants are the foundation of nearly every ecosystem on Earth. Without plants, life as we know it would not exist. They perform some of the most critical jobs in nature:</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🫁</span><h4>Oxygen Producers</h4><p>Plants produce the oxygen we breathe through photosynthesis.</p></div>
+            <div class="info-box"><span class="emoji">🍎</span><h4>Food Source</h4><p>All food chains begin with plants — they are the primary producers.</p></div>
+            <div class="info-box"><span class="emoji">🏠</span><h4>Habitat</h4><p>Forests, grasslands, and wetlands provide shelter for countless animals.</p></div>
+            <div class="info-box"><span class="emoji">🌡️</span><h4>Climate Regulators</h4><p>Plants absorb CO₂ and release O₂, helping regulate Earth's atmosphere.</p></div>
+            <div class="info-box"><span class="emoji">👕</span><h4>Fibre & Materials</h4><p>Cotton, wood, linen, and rubber all come from plants.</p></div>
+            <div class="info-box"><span class="emoji">💊</span><h4>Medicine</h4><p>Many medicines come from plants — aspirin was originally from willow bark!</p></div>
+          </div>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Outcome 7-B.1:</strong> Illustrate and explain the essential role of plants within the environment.</p>
+          </div>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Connection:</strong> Alberta's boreal forest is one of the largest intact forests on Earth, providing habitat for caribou, bears, and hundreds of bird species while absorbing millions of tonnes of CO₂ each year.</p>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 1 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <p>Before moving on, can you answer these?</p>
+          <ul>
+            <li>Name at least 3 roles that plants play in ecosystems.</li>
+            <li>Why are plants called "primary producers"?</li>
+            <li>What would happen to an ecosystem if all the plants disappeared?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Oxygen production, food source, habitat, climate regulation, fibre, medicine · They are the first organisms to make food from sunlight · Animals would lose food and oxygen; the ecosystem would collapse</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">💧</span> What Do Plants Need to Survive?</h3>
+          <p>Like all living organisms, plants have basic needs that must be met for survival. These needs are provided by both <span class="vocab" title="Non-living factors like water, sunlight, and temperature">abiotic</span> and <span class="vocab" title="Living factors like pollinators and decomposers">biotic</span> factors in the environment.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">☀️</span><h4>Sunlight</h4><p>Energy source for photosynthesis. Different plants need different amounts of light.</p></div>
+            <div class="info-box"><span class="emoji">💧</span><h4>Water</h4><p>Essential for transporting nutrients and for photosynthesis. Absorbed by roots.</p></div>
+            <div class="info-box"><span class="emoji">🌬️</span><h4>Carbon Dioxide</h4><p>Plants absorb CO₂ from the air through tiny pores called stomata in their leaves.</p></div>
+            <div class="info-box"><span class="emoji">🧱</span><h4>Soil Nutrients</h4><p>Minerals like nitrogen, phosphorus, and potassium are absorbed through roots.</p></div>
+            <div class="info-box"><span class="emoji">📐</span><h4>Space</h4><p>Room for roots to spread and leaves to capture sunlight without competition.</p></div>
+            <div class="info-box"><span class="emoji">🌡️</span><h4>Right Temperature</h4><p>Too hot or too cold can slow or stop growth. Each species has a preferred range.</p></div>
+          </div>
+        </div>
+
+        <!-- PAUSE AND CHECK 2 -->
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>Name 3 things plants need to survive.</li>
+            <li>Which part of the plant absorbs water? Which part does photosynthesis?</li>
+            <li>What are stomata and what do they do?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Sunlight, water, CO₂, nutrients, space, temperature · Roots absorb water; leaves do photosynthesis · Tiny pores in leaves that allow gas exchange (CO₂ in, O₂ out)</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Plant Structure & Function</h3>
+          <div class="video-label">🎬 Video 1 — Amoeba Sisters: Plant Cells & Structures</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/X3Wg-lMkpts" title="Amoeba Sisters - Parts of a Plant Cell" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌳</span> Plant Structures & Their Functions</h3>
+          <p>Every part of a plant has a specific job. Together, these structures keep the plant alive, help it grow, and allow it to reproduce.</p>
+          <table class="compare-table">
+            <thead><tr><th>Structure</th><th>Function</th><th>Details</th></tr></thead>
+            <tbody>
+              <tr><td>🌱 <strong>Roots</strong></td><td>Absorption & Anchor</td><td>Absorb water and minerals from soil; anchor the plant in place. Some roots store food (carrots, beets).</td></tr>
+              <tr><td>🪵 <strong>Stem</strong></td><td>Transport & Support</td><td>Carries water from roots to leaves and sugar from leaves to roots. Provides structural support.</td></tr>
+              <tr><td>🍃 <strong>Leaves</strong></td><td>Photosynthesis & Gas Exchange</td><td>Main site of photosynthesis. Stomata (tiny pores) allow CO₂ in and O₂ out.</td></tr>
+              <tr><td>🌸 <strong>Flowers</strong></td><td>Reproduction</td><td>Attract pollinators. Contain male (stamen) and female (pistil) reproductive parts.</td></tr>
+              <tr><td>🍇 <strong>Fruit</strong></td><td>Seed Protection & Dispersal</td><td>Protects developing seeds and helps spread them (animals eat fruit, carry seeds).</td></tr>
+              <tr><td>🌰 <strong>Seeds</strong></td><td>New Plant Growth</td><td>Contain an embryo plant and food supply. Can survive harsh conditions until ready to grow.</td></tr>
+            </tbody>
+          </table>
+          <div class="key-point">
+            <p>💡 <strong>Alberta Outcome 7-B.2:</strong> Investigate life processes and structures of plants, interpreting their characteristics and needs.</p>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔬</span> Photosynthesis: How Plants Make Food</h3>
+          <p><span class="vocab" title="The process by which plants convert light energy into chemical energy (sugar)">Photosynthesis</span> is the process plants use to make their own food. It happens mainly in the <strong>leaves</strong>, inside structures called <span class="vocab" title="Cell organelles containing chlorophyll that carry out photosynthesis">chloroplasts</span>.</p>
+          <div class="glass-card" style="background:var(--card2);text-align:center;padding:24px;margin:16px 0">
+            <p style="font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:8px">The Photosynthesis Equation</p>
+            <p style="font-size:1.3rem;font-weight:800;font-family:'Outfit';color:var(--text)">
+              ☀️ Light + 💧 Water + 🌬️ CO₂ → 🍬 Sugar + 🫁 O₂
+            </p>
+            <p style="font-size:.82rem;color:var(--text3);margin-top:8px">6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂</p>
+          </div>
+          <div class="expandable">
+            <button class="expand-btn" onclick="toggleExpand(this)">🤔 Why is photosynthesis so important? <span class="arrow">▼</span></button>
+            <div class="expand-content">
+              <p>Photosynthesis is the <strong>primary source of energy</strong> for almost all life on Earth. Plants capture the Sun's energy and convert it into sugar (chemical energy). This energy flows through the food chain when animals eat plants. Photosynthesis also produces the <strong>oxygen</strong> that most organisms need to breathe.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Photosynthesis Explained</h3>
+          <div class="video-label">🎬 Video 2 — Crash Course Biology: Photosynthesis</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/sQK3Yr4Sc_k" title="Crash Course Biology - Photosynthesis" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- ACTIVITY 1: Plant Part Matcher -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-parts">
+            <div class="activity-header">
+              <span class="act-num">Activity 1</span>
+              <span style="font-weight:700;color:var(--text)">Plant Part Matcher</span>
+              <span class="outcome-tag">7-B.2</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Match each plant structure to its main function. Click a structure, then click its function.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Look back at the Plant Structures table above. Each structure has a unique job!</div>
+            <div id="partsStructures" class="sort-items"></div>
+            <div id="partsFunctions" class="match-needs"></div>
+            <div id="partsResults" class="match-scenarios"></div>
+            <div id="partsScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Photosynthesis Equation Builder -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-photo">
+            <div class="activity-header">
+              <span class="act-num">Activity 2</span>
+              <span style="font-weight:700;color:var(--text)">Photosynthesis Equation Builder</span>
+              <span class="outcome-tag">7-B.1</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Sort each item as an <strong style="color:var(--accent)">Input</strong> or an <strong style="color:var(--info)">Output</strong> of photosynthesis. Click an item, then click the zone.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Remember the equation: Light + Water + CO₂ → Sugar + O₂. Items not part of the equation are tricks!</div>
+            <div id="photoItems" class="sort-items"></div>
+            <div class="sort-zones">
+              <div class="sort-zone" id="zoneInputs" onclick="dropPhoto('input')" style="border-color:rgba(74,222,128,.25)">
+                <div class="zone-title" style="color:var(--accent)">⬇️ Inputs (What goes IN)</div>
+                <div class="zone-items" id="inputItems"></div>
+              </div>
+              <div class="sort-zone" id="zoneOutputs" onclick="dropPhoto('output')" style="border-color:rgba(56,189,248,.25)">
+                <div class="zone-title" style="color:var(--info)">⬆️ Outputs (What comes OUT)</div>
+                <div class="zone-items" id="outputItems"></div>
+              </div>
+            </div>
+            <div id="photoScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Plant Role Identifier -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act1-roles">
+            <div class="activity-header">
+              <span class="act-num">Activity 3</span>
+              <span style="font-weight:700;color:var(--text)">Plant Role Identifier</span>
+              <span class="outcome-tag">7-B.1</span>
+            </div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Read each scenario and identify which role plants are playing.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think about the 6 roles: food source, oxygen producer, habitat, climate regulator, fibre/materials, medicine.</div>
+            <div id="roleArea"></div>
+            <div id="roleScore"></div>
+          </div>
+        </div>
+
+        <!-- CONSTRUCTED RESPONSE -->
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">In 2–4 sentences, explain why plants are considered the most important organisms in an ecosystem. Use at least two vocabulary words from this lesson.</p>
+          <textarea id="crResponse" placeholder="Write your explanation here…" oninput="saveCR()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I used correct science vocabulary (e.g., photosynthesis, producer, nutrients)</label></li>
+            <li><label><input type="checkbox"> I explained my thinking clearly</label></li>
+            <li><label><input type="checkbox"> I gave an example or evidence</label></li>
+          </ul>
+        </div>
+
+        <!-- QUIZ GATE -->
+        <div class="glass-card content" id="l1-gate" style="text-align:center;padding:24px">
+          <p id="l1-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l1-quiz-btn" onclick="goTo('lesson1-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <!-- REFLECTION -->
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about what you learned today. What surprised you most about plants? How would your daily life be different without them?</p>
+          <textarea id="reflectionText" placeholder="Type your reflection here…" oninput="saveReflection()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 1 QUIZ -->
+      <div class="lesson-page" id="page-lesson1-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 1 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review your learning targets and success criteria. Make sure you can name plant structures, explain photosynthesis, and describe the roles plants play.</div>
+        <div id="quiz1-area"></div>
+      </div>
+
+      <!-- LESSON 2: Plant Growth & Reproduction -->
+      <div class="lesson-page" id="page-lesson2">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 2</div>
+          <h1 class="lesson-title">Plant Growth & Reproduction</h1>
+          <p class="lesson-subtitle">Explore how plants grow from seeds, reproduce through pollination, and disperse their seeds to new places.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">7-B.3</span><span class="outcome-tag">7-B.4</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can describe the stages of a plant's life cycle from seed to mature plant.</li>
+            <li>I can explain how pollination leads to seed formation.</li>
+            <li>I can identify different methods of seed dispersal.</li>
+            <li>I can describe factors that affect plant growth.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">By the end of this lesson, you should be able to check off all of these:</p>
+          <ul class="success-criteria">
+            <li>I can put the stages of germination in the correct order.</li>
+            <li>I can explain the difference between self-pollination and cross-pollination.</li>
+            <li>I can match seed dispersal methods (wind, water, animal, explosive) to examples.</li>
+            <li>I can predict how changing a growth factor (light, water, nutrients) would affect a plant.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <p style="font-size:.85rem;color:var(--text3);margin-bottom:8px">Hover over each term to see its definition.</p>
+          <div class="vocab-glossary">
+            <span class="vocab-chip">🌱 Germination<span class="vocab-def"><strong>Germination:</strong> The process where a seed begins to grow into a new plant when conditions (water, warmth, oxygen) are right.</span></span>
+            <span class="vocab-chip">🐝 Pollination<span class="vocab-def"><strong>Pollination:</strong> The transfer of pollen from the male part (anther) to the female part (stigma) of a flower, enabling fertilization.</span></span>
+            <span class="vocab-chip">💨 Seed Dispersal<span class="vocab-def"><strong>Seed Dispersal:</strong> The way seeds are moved away from the parent plant — by wind, water, animals, or explosive pods.</span></span>
+            <span class="vocab-chip">🌸 Stamen<span class="vocab-def"><strong>Stamen:</strong> The male reproductive part of a flower, made up of the anther (produces pollen) and filament (supports the anther).</span></span>
+            <span class="vocab-chip">🌺 Pistil<span class="vocab-def"><strong>Pistil:</strong> The female reproductive part of a flower, made up of the stigma (catches pollen), style, and ovary (contains ovules).</span></span>
+            <span class="vocab-chip">🍎 Fertilization<span class="vocab-def"><strong>Fertilization:</strong> When pollen reaches the ovule inside the ovary, creating a seed that can grow into a new plant.</span></span>
+          </div>
+        </div>
+
+        <!-- GERMINATION & LIFE CYCLE -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌱</span> From Seed to Plant: Germination</h3>
+          <p>Every plant begins as a <span class="vocab" title="The process where a seed begins to grow into a new plant">seed</span>. Inside each seed is a tiny embryo plant and a food supply. When conditions are right, the seed <strong>germinates</strong> — it breaks open and starts growing.</p>
+          <p><strong>Seeds need three things to germinate:</strong></p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">💧</span><h4>Water</h4><p>Softens the seed coat and activates enzymes that start growth</p></div>
+            <div class="info-box"><span class="emoji">🌡️</span><h4>Warmth</h4><p>Enzymes need the right temperature range to work properly</p></div>
+            <div class="info-box"><span class="emoji">🌬️</span><h4>Oxygen</h4><p>Needed for cellular respiration — the energy that powers initial growth</p></div>
+          </div>
+          <div class="key-point"><p>💡 <strong>Key Idea:</strong> Notice that seeds do NOT need light to germinate — they start underground! Light becomes important once the first leaves emerge above the soil and need to begin photosynthesis.</p></div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>What 3 conditions does a seed need to germinate?</li>
+            <li>Why don't seeds need light to germinate?</li>
+            <li>What provides the initial energy for a germinating seed?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Water, warmth, oxygen · Seeds start underground where there's no light; they use stored food · The food supply stored inside the seed provides energy through cellular respiration</em></p></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📺</span> Watch: Seed Germination</h3>
+          <div class="video-label">🎬 Video — How Seeds Germinate</div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/b0MaC3_0bco" title="Seed Germination" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        </div>
+
+        <!-- POLLINATION & REPRODUCTION -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🐝</span> Pollination & Reproduction</h3>
+          <p>For flowering plants to make seeds, they need <span class="vocab" title="Transfer of pollen from anther to stigma">pollination</span> — the transfer of pollen from the <strong>stamen</strong> (male part) to the <strong>pistil</strong> (female part).</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🔄</span><h4>Self-Pollination</h4><p>Pollen transfers within the same flower or same plant. Simple but less genetic variety.</p></div>
+            <div class="info-box"><span class="emoji">🐝</span><h4>Cross-Pollination</h4><p>Pollen moves between different plants via insects, birds, wind, or water. Creates more genetic diversity.</p></div>
+          </div>
+          <p>After pollination, <span class="vocab" title="When pollen reaches the ovule, creating a seed">fertilization</span> occurs: the pollen grows a tube down to the ovary, joins with the ovule, and a <strong>seed</strong> forms. The ovary often develops into a <strong>fruit</strong> around the seeds.</p>
+          <div class="key-point"><p>💡 <strong>Alberta Connection:</strong> Alberta's canola industry depends heavily on pollination. Canola fields across central and southern Alberta rely on both wind and insect pollinators. Alberta produces over 30% of Canada's canola — worth billions of dollars annually. Without effective pollination, this major crop wouldn't produce seeds.</p></div>
+        </div>
+
+        <!-- SEED DISPERSAL -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">💨</span> Seed Dispersal</h3>
+          <p>Plants can't walk to a new location, so they've evolved amazing ways to send their seeds far away. This prevents overcrowding and competition.</p>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">💨</span><h4>Wind</h4><p>Dandelion puffs, maple keys, cottonwood — light seeds with wings or parachutes</p></div>
+            <div class="info-box"><span class="emoji">🌊</span><h4>Water</h4><p>Coconuts float across oceans; willow seeds travel along rivers</p></div>
+            <div class="info-box"><span class="emoji">🐿️</span><h4>Animals</h4><p>Burrs stick to fur; berries are eaten and seeds pass through digestive systems</p></div>
+            <div class="info-box"><span class="emoji">💥</span><h4>Explosive</h4><p>Touch-me-nots and pea pods burst open, flinging seeds away</p></div>
+          </div>
+        </div>
+
+        <div class="pause-check">
+          <h4>⏸️ Pause and Check</h4>
+          <ul>
+            <li>What's the difference between self-pollination and cross-pollination?</li>
+            <li>Name 4 methods of seed dispersal and give an example of each.</li>
+            <li>Why is it important for seeds to be dispersed away from the parent plant?</li>
+          </ul>
+          <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answers</button>
+          <div class="reveal-answer"><p style="margin-top:8px;font-size:.8rem;color:var(--text3)"><em>Answers: Self = within same plant, cross = between different plants via pollinators · Wind (dandelion), water (coconut), animal (burrs), explosive (pea pods) · Prevents overcrowding and competition for light, water, nutrients</em></p></div>
+        </div>
+
+        <!-- FACTORS AFFECTING GROWTH -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📊</span> Factors That Affect Plant Growth</h3>
+          <p>Once a plant has germinated and established itself, several factors determine how well it grows:</p>
+          <table class="compare-table">
+            <thead><tr><th>Factor</th><th>Effect on Growth</th></tr></thead>
+            <tbody>
+              <tr><td>☀️ <strong>Light</strong></td><td>More light = more photosynthesis = more food for growth</td></tr>
+              <tr><td>💧 <strong>Water</strong></td><td>Needed for photosynthesis, nutrient transport, and cell structure</td></tr>
+              <tr><td>🌡️ <strong>Temperature</strong></td><td>Too cold or too hot slows enzyme activity; each species has an optimal range</td></tr>
+              <tr><td>🪨 <strong>Soil Nutrients</strong></td><td>Nitrogen, phosphorus, potassium — essential for building proteins, DNA, and energy</td></tr>
+              <tr><td>🌬️ <strong>Space</strong></td><td>Crowded plants compete for light, water, and nutrients</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ACTIVITY 1: Germination Sequence -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-germ">
+            <div class="activity-header"><span class="act-num">Activity 1</span><span style="font-weight:700;color:var(--text)">Germination Sequence</span><span class="outcome-tag">7-B.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Put the stages of seed germination in the correct order.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think about what happens first underground, then what emerges.</div>
+            <div id="germArea"></div>
+            <div id="germScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 2: Pollination Matching -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-poll">
+            <div class="activity-header"><span class="act-num">Activity 2</span><span style="font-weight:700;color:var(--text)">Pollination & Dispersal Matcher</span><span class="outcome-tag">7-B.4</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Classify each scenario as a type of pollination or seed dispersal.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Is pollen moving (pollination) or are seeds moving (dispersal)? What's carrying them?</div>
+            <div id="pollArea"></div>
+            <div id="pollScore"></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY 3: Growth Factor Predictor -->
+        <div class="glass-card content">
+          <div class="activity-section" id="act2-growth">
+            <div class="activity-header"><span class="act-num">Activity 3</span><span style="font-weight:700;color:var(--text)">Growth Factor Predictor</span><span class="outcome-tag">7-B.3</span></div>
+            <p style="color:var(--text2);font-size:.9rem;margin-bottom:4px">Predict how changing a growth factor will affect a plant.</p>
+            <div class="need-help"><strong>💡 Need help?</strong> Think about what each factor provides for the plant and what happens when it's missing or increased.</div>
+            <div id="growthArea"></div>
+            <div id="growthScore"></div>
+          </div>
+        </div>
+
+        <div class="constructed-response">
+          <h4>✍️ Explain Your Thinking</h4>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">A farmer in central Alberta plants canola seeds. In 2–4 sentences, describe the journey from seed to new seeds: what conditions are needed for germination, how the flowers get pollinated, and how the seeds are eventually dispersed. Use at least 3 vocabulary words.</p>
+          <textarea id="crResponse2" placeholder="Write your explanation here…" oninput="saveCR2()"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I described germination conditions (water, warmth, oxygen)</label></li>
+            <li><label><input type="checkbox"> I explained pollination (self or cross)</label></li>
+            <li><label><input type="checkbox"> I mentioned seed dispersal</label></li>
+            <li><label><input type="checkbox"> I used at least 3 vocabulary words correctly</label></li>
+          </ul>
+        </div>
+
+        <div class="glass-card content" id="l2-gate" style="text-align:center;padding:24px">
+          <p id="l2-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete all 3 activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('home')">← Home</button>
+            <button class="nav-btn primary" id="l2-quiz-btn" onclick="goTo('lesson2-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about the seeds and fruits you see every day (apples, dandelions, berries, maple keys). How do the dispersal methods you learned about help explain what you see in nature?</p>
+          <textarea id="reflectionText2" placeholder="Type your reflection here…" oninput="saveReflection2()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 2 QUIZ -->
+      <div class="lesson-page" id="page-lesson2-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 2 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review germination conditions, pollination types, seed dispersal methods, and growth factors.</div>
+        <div id="quiz2-area"></div>
+      </div>
+
+      <!-- LESSON 3: CLASSIFICATION & ADAPTATIONS -->
+      <div class="lesson-page" id="page-lesson3">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 3</div>
+          <h1 class="lesson-title">Plant Classification & Adaptations</h1>
+          <p class="lesson-subtitle">Learn how scientists classify plants and how plants have adapted to survive in extreme environments.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">B.K.2</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can distinguish between vascular and non-vascular plants.</li>
+            <li>I can compare flowering and non-flowering plants.</li>
+            <li>I can describe plant adaptations to extreme environments.</li>
+            <li>I can identify common Alberta plants using their characteristics.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <ul class="success-criteria">
+            <li>I can sort plants into vascular/non-vascular groups and explain the difference.</li>
+            <li>I can give 3 examples of plant adaptations and explain how they help survival.</li>
+            <li>I can identify at least 4 Alberta plants by their features.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Vascular</strong><span class="vocab-def">: Has tubes (xylem/phloem) to transport water and nutrients — ferns, trees, flowers</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Non-vascular</strong><span class="vocab-def">: No transport tubes — mosses, liverworts. Must stay small and moist</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Angiosperm</strong><span class="vocab-def">: Flowering plant that produces seeds inside a fruit</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Gymnosperm</strong><span class="vocab-def">: Non-flowering plant with "naked seeds" — conifers like spruce and pine</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Adaptation</strong><span class="vocab-def">: A trait that helps a plant survive in its specific environment</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Dichotomous Key</strong><span class="vocab-def">: A tool that uses yes/no questions to identify organisms</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: Plant Classification</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/bRdq2FbG-OQ" title="Plant Classification" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> What is the key difference between vascular and non-vascular plants?</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌿</span> Vascular vs. Non-Vascular Plants</h3>
+          <p>The most fundamental way to classify plants is by whether they have a <strong>vascular system</strong> — internal tubes for transporting water and nutrients.</p>
+          <table class="compare-table" style="width:100%;margin:16px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Feature</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">🌿 Vascular</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">🟢 Non-Vascular</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Transport</td><td style="padding:8px;border:1px solid var(--border)">Xylem & phloem tubes</td><td style="padding:8px;border:1px solid var(--border)">Osmosis/diffusion only</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Size</td><td style="padding:8px;border:1px solid var(--border)">Can grow very tall (trees)</td><td style="padding:8px;border:1px solid var(--border)">Stay small (a few cm)</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Roots</td><td style="padding:8px;border:1px solid var(--border)">True roots</td><td style="padding:8px;border:1px solid var(--border)">Root-like structures (rhizoids)</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Examples</td><td style="padding:8px;border:1px solid var(--border)">Ferns, grasses, trees, flowers</td><td style="padding:8px;border:1px solid var(--border)">Mosses, liverworts, hornworts</td></tr>
+          </table>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌸</span> Flowering vs. Non-Flowering Plants</h3>
+          <p>Among vascular plants, there's another key split:</p>
+          <div class="need-help"><strong>🌸 Angiosperms (Flowering)</strong> — Produce flowers and fruits. Seeds are protected inside a fruit. Examples: roses, wheat, apple trees, dandelions.</div>
+          <div class="need-help" style="margin-top:12px"><strong>🌲 Gymnosperms (Non-Flowering)</strong> — Produce seeds in cones, not flowers. "Naked seeds." Examples: spruce, pine, fir, larch. Most Alberta conifer forests are gymnosperms.</div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> Is a dandelion an angiosperm or gymnosperm? Why?</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🏔️</span> Plant Adaptations to Extreme Environments</h3>
+          <p>Plants have evolved incredible adaptations to survive in harsh conditions:</p>
+          <div class="need-help"><strong>🏜️ Desert:</strong> Cacti have thick stems to store water, waxy coatings to reduce water loss, and spines instead of leaves to minimize evaporation.</div>
+          <div class="need-help" style="margin-top:8px"><strong>💧 Aquatic:</strong> Water lilies have broad floating leaves to capture sunlight, air spaces in stems for buoyancy, and flexible stems to handle water currents.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🏔️ Alpine:</strong> Alpine plants grow low to the ground to resist wind, have hairy leaves for insulation, and bloom quickly during the short growing season. Example: alpine forget-me-not (Alberta's provincial flower).</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌲 Boreal (Alberta):</strong> Conifer needles have waxy coatings, small surface area, and a conical shape to shed snow — adaptations to Alberta's cold, snowy winters.</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌲</span> Alberta Plant Identification</h3>
+          <p>Alberta is home to diverse plant communities. Here are some iconic species:</p>
+          <div class="need-help"><strong>🌲 White Spruce</strong> — Vascular, gymnosperm. Sharp needles, cylindrical cones. Alberta's most common tree.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🍂 Trembling Aspen</strong> — Vascular, angiosperm. Round leaves that "tremble" in wind. Forms large clonal colonies.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌺 Wild Rose</strong> — Vascular, angiosperm. Alberta's provincial flower. Pink petals, prickly stems.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🟢 Sphagnum Moss</strong> — Non-vascular. Found in Alberta's bogs. Absorbs 20× its weight in water.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌾 Western Wheat Grass</strong> — Vascular, angiosperm. Important prairie grass. Deep roots prevent soil erosion.</div>
+        </div>
+
+        <!-- L3 ACTIVITY 1: Plant Classifier -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🔬</span> Activity 1: Plant Classifier</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Classify each plant as <strong>vascular</strong> or <strong>non-vascular</strong>, then as <strong>angiosperm</strong>, <strong>gymnosperm</strong>, or <strong>non-vascular</strong>.</p>
+          <div id="l3ClassArea"></div>
+          <div id="l3ClassScore"></div>
+        </div>
+
+        <!-- L3 ACTIVITY 2: Adaptation Matcher -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🏔️</span> Activity 2: Adaptation Matcher</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each plant adaptation to the correct environment.</p>
+          <div id="l3AdaptArea"></div>
+          <div id="l3AdaptScore"></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Explain why conifers (gymnosperms) are so well-suited to Alberta's climate. Include at least 3 specific adaptations.</p>
+          <textarea id="crResponse3" placeholder="Type your answer here…" oninput="saveCR3()"></textarea>
+        </div>
+
+        <div class="glass-card content" id="l3-gate" style="text-align:center;padding:24px">
+          <p id="l3-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('lesson2-quiz')">← Previous</button>
+            <button class="nav-btn primary" id="l3-quiz-btn" onclick="goTo('lesson3-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Look outside or think about your neighbourhood. What types of plants can you identify? Are they vascular or non-vascular? Angiosperms or gymnosperms?</p>
+          <textarea id="reflectionText3" placeholder="Type your reflection here…" oninput="saveReflection3()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 3 QUIZ -->
+      <div class="lesson-page" id="page-lesson3-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 3 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review vascular vs. non-vascular, angiosperm vs. gymnosperm, and plant adaptations.</div>
+        <div id="quiz3-area"></div>
+      </div>
+
+      <!-- LESSON 4: GROWING CONDITIONS & PLANT ENVIRONMENTS -->
+      <div class="lesson-page" id="page-lesson4">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 4</div>
+          <h1 class="lesson-title">Growing Conditions & Plant Environments</h1>
+          <p class="lesson-subtitle">Explore the factors that affect plant growth and the technologies humans use to control them.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">B.K.3</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can identify the factors that affect plant growth (light, water, temperature, soil/nutrients).</li>
+            <li>I can explain how soil type and nutrients influence plant health.</li>
+            <li>I can compare greenhouse, field, and hydroponic growing methods.</li>
+            <li>I can design a controlled experiment to test a growth factor.</li>
+          </ul>
+          <h3 class="section-title" style="margin-top:20px"><span class="icon">✅</span> Success Criteria</h3>
+          <ul class="success-criteria">
+            <li>I can list 4 key growth factors and explain how each affects plants.</li>
+            <li>I can describe the advantages and disadvantages of 3 growing methods.</li>
+            <li>I can identify the independent, dependent, and controlled variables in an experiment.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Nutrients</strong><span class="vocab-def">: Chemical elements (NPK — nitrogen, phosphorus, potassium) plants need from soil</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Fertilizer</strong><span class="vocab-def">: Substance added to soil to provide nutrients — organic (compost) or synthetic (chemical)</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Hydroponics</strong><span class="vocab-def">: Growing plants in nutrient-rich water without soil</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Greenhouse</strong><span class="vocab-def">: Enclosed structure that traps heat and controls growing conditions</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Controlled Experiment</strong><span class="vocab-def">: Test that changes only 1 variable while keeping everything else the same</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Soil pH</strong><span class="vocab-def">: Acidity/alkalinity of soil — affects nutrient availability for plants</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: Factors Affecting Plant Growth</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/dSRXPGDYFgk" title="Plant Growth Factors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> Why is nitrogen so important for plant growth?</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌱</span> The 4 Key Growth Factors</h3>
+          <div class="need-help"><strong>☀️ Light:</strong> Powers photosynthesis. More light = more food = more growth. Too little light → etiolated (pale, stretched) plants. Different plants need different amounts (shade vs. sun plants).</div>
+          <div class="need-help" style="margin-top:8px"><strong>💧 Water:</strong> Essential for photosynthesis, nutrient transport, and cell structure (turgor pressure). Too little → wilting. Too much → root rot from lack of oxygen.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌡️ Temperature:</strong> Enzymes work best in a specific range. Too cold → growth slows. Too hot → enzymes denature. Alberta's growing season is limited by cold winters.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🧪 Soil & Nutrients:</strong> NPK (nitrogen, phosphorus, potassium) are the "big 3" nutrients. Nitrogen → leaf growth. Phosphorus → roots & flowers. Potassium → overall health. Soil type (sand, clay, loam) affects water retention and drainage.</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🏡</span> Growing Methods Compared</h3>
+          <table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Method</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">How It Works</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Pros</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Cons</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">🌾 Field</td><td style="padding:8px;border:1px solid var(--border)">Open-air, natural soil</td><td style="padding:8px;border:1px solid var(--border)">Low cost, large scale</td><td style="padding:8px;border:1px solid var(--border)">Weather dependent, pests</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">🏡 Greenhouse</td><td style="padding:8px;border:1px solid var(--border)">Glass/plastic enclosure</td><td style="padding:8px;border:1px solid var(--border)">Year-round growing, climate control</td><td style="padding:8px;border:1px solid var(--border)">High setup cost, energy use</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">💧 Hydroponics</td><td style="padding:8px;border:1px solid var(--border)">Water + nutrients, no soil</td><td style="padding:8px;border:1px solid var(--border)">Faster growth, less water, no weeds</td><td style="padding:8px;border:1px solid var(--border)">Expensive, technical, needs electricity</td></tr>
+          </table>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> Why might a farmer in Northern Alberta choose a greenhouse over field growing?</div>
+        </div>
+
+        <!-- L4 ACTIVITY 1: Growth Factor Predictor -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌱</span> Activity 1: Growth Factor Predictor</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">A virtual plant experiment! Predict what happens when you change each growing condition.</p>
+          <div id="l4GrowthArea"></div>
+          <div id="l4GrowthScore"></div>
+        </div>
+
+        <!-- L4 ACTIVITY 2: Method Matcher -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🏡</span> Activity 2: Growing Method Matcher</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each scenario to the best growing method.</p>
+          <div id="l4MethodArea"></div>
+          <div id="l4MethodScore"></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Design a simple experiment to test how one growth factor (your choice) affects bean plant growth. Identify your independent variable, dependent variable, and 2 controlled variables.</p>
+          <textarea id="crResponse4" placeholder="Type your experiment design here…" oninput="saveCR4()"></textarea>
+        </div>
+
+        <div class="glass-card content" id="l4-gate" style="text-align:center;padding:24px">
+          <p id="l4-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('lesson3-quiz')">← Previous</button>
+            <button class="nav-btn primary" id="l4-quiz-btn" onclick="goTo('lesson4-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">If you could grow food at home, which method would you choose and why? What factors would you need to control?</p>
+          <textarea id="reflectionText4" placeholder="Type your reflection here…" oninput="saveReflection4()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 4 QUIZ -->
+      <div class="lesson-page" id="page-lesson4-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 4 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review the 4 growth factors, NPK nutrients, soil types, and growing methods.</div>
+        <div id="quiz4-area"></div>
+      </div>
+
+      <!-- LESSON 5: AGRICULTURE, PESTS & CONTROLS -->
+      <div class="lesson-page" id="page-lesson5">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 5</div>
+          <h1 class="lesson-title">Agriculture, Pests & Controls</h1>
+          <p class="lesson-subtitle">Explore how humans grow food at scale, manage pests, and the trade-offs of different farming approaches.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">B.K.3</span><span class="outcome-tag">B.K.1</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can compare chemical and biological pest control methods.</li>
+            <li>I can explain the risks of monocultures.</li>
+            <li>I can compare organic and conventional farming practices.</li>
+            <li>I can describe how pesticides and fertilizers affect ecosystems.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Monoculture</strong><span class="vocab-def">: Growing a single crop over a large area — efficient but risky</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Pesticide</strong><span class="vocab-def">: Chemical that kills pests (insects, weeds, fungi). Can harm non-target species</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Biological Control</strong><span class="vocab-def">: Using living organisms (predators, parasites) to control pests naturally</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Organic Farming</strong><span class="vocab-def">: Growing food without synthetic chemicals — uses compost, crop rotation, natural pest control</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Crop Rotation</strong><span class="vocab-def">: Changing which crop is grown in a field each season to maintain soil health</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>IPM</strong><span class="vocab-def">: Integrated Pest Management — combining multiple strategies to minimize chemical use</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: How We Grow Food</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/fvdycNQ8y6Y" title="Agriculture" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🐛</span> Pest Control Methods</h3>
+          <p>Pests (insects, weeds, fungi) can destroy crops. Farmers use different methods to control them:</p>
+          <div class="need-help"><strong>🧪 Chemical Control:</strong> Pesticides (insecticides, herbicides, fungicides). Fast and effective but can harm beneficial insects (pollinators), contaminate water, and lead to pest resistance.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🐞 Biological Control:</strong> Introducing natural predators. Example: ladybugs eat aphids. Safer for ecosystems but slower and less predictable. Risk: the introduced species might become invasive.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🔄 Cultural Control:</strong> Crop rotation, companion planting, resistant crop varieties. Low cost, sustainable, but requires more planning and knowledge.</div>
+          <div class="need-help" style="margin-top:8px"><strong>⚙️ IPM (Integrated Pest Management):</strong> Combines all methods — monitor first, use cultural and biological controls, and only resort to chemicals when necessary. <em>Best practice for sustainable farming.</em></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌾</span> Monocultures: Efficient but Risky</h3>
+          <p>Alberta's prairies feature massive monocultures — fields of a single crop (canola, wheat, barley).</p>
+          <div class="need-help"><strong>✅ Advantages:</strong> Easy to plant, manage, and harvest with machines. Higher short-term yields. Lower labour costs.</div>
+          <div class="need-help" style="margin-top:8px"><strong>❌ Risks:</strong> One disease can wipe out the entire crop. Soil nutrients get depleted. Heavy pesticide/fertilizer dependence. Reduces biodiversity.</div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> Why is crop rotation an important alternative to monoculture?</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌿</span> Organic vs. Conventional Farming</h3>
+          <table class="compare-table" style="width:100%;margin:12px 0;border-collapse:collapse">
+            <tr><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">Feature</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">🌿 Organic</th><th style="padding:10px;border:1px solid var(--border);background:var(--bg2)">🧪 Conventional</th></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Pesticides</td><td style="padding:8px;border:1px solid var(--border)">Natural only</td><td style="padding:8px;border:1px solid var(--border)">Synthetic allowed</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Fertilizers</td><td style="padding:8px;border:1px solid var(--border)">Compost, manure</td><td style="padding:8px;border:1px solid var(--border)">Synthetic NPK</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Yield</td><td style="padding:8px;border:1px solid var(--border)">Lower per hectare</td><td style="padding:8px;border:1px solid var(--border)">Higher per hectare</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Cost</td><td style="padding:8px;border:1px solid var(--border)">Higher (more labour)</td><td style="padding:8px;border:1px solid var(--border)">Lower (mechanized)</td></tr>
+            <tr><td style="padding:8px;border:1px solid var(--border)">Ecosystem Impact</td><td style="padding:8px;border:1px solid var(--border)">Lower</td><td style="padding:8px;border:1px solid var(--border)">Higher (runoff, pollination loss)</td></tr>
+          </table>
+        </div>
+
+        <!-- L5 ACTIVITY 1: Pest Strategy Advisor -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🐛</span> Activity 1: Pest Strategy Advisor</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">A farmer comes to you with a pest problem. Recommend the best control strategy!</p>
+          <div id="l5PestArea"></div>
+          <div id="l5PestScore"></div>
+        </div>
+
+        <!-- L5 ACTIVITY 2: Farm Practice Sorter -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌾</span> Activity 2: Farm Practice Sorter</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Sort each farming practice as organic or conventional.</p>
+          <div id="l5FarmArea"></div>
+          <div id="l5FarmScore"></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">A canola farmer in Alberta is dealing with a flea beetle infestation. Describe two different pest control strategies they could use and explain the trade-offs of each.</p>
+          <textarea id="crResponse5" placeholder="Type your answer here…" oninput="saveCR5()"></textarea>
+        </div>
+
+        <div class="glass-card content" id="l5-gate" style="text-align:center;padding:24px">
+          <p id="l5-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('lesson4-quiz')">← Previous</button>
+            <button class="nav-btn primary" id="l5-quiz-btn" onclick="goTo('lesson5-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Would you buy organic or conventional food? What factors would influence your decision?</p>
+          <textarea id="reflectionText5" placeholder="Type your reflection here…" oninput="saveReflection5()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 5 QUIZ -->
+      <div class="lesson-page" id="page-lesson5-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 5 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review pest control methods, monocultures, and organic vs. conventional farming.</div>
+        <div id="quiz5-area"></div>
+      </div>
+
+      <!-- LESSON 6: PLANTS, PEOPLE & SUSTAINABILITY -->
+      <div class="lesson-page" id="page-lesson6">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 6</div>
+          <h1 class="lesson-title">Plants, People & Sustainability</h1>
+          <p class="lesson-subtitle">Explore how humans have shaped plant species, the value of Indigenous plant knowledge, and the future of sustainable food.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">B.K.4</span></div>
+          <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+          <ul class="styled-list">
+            <li>I can explain how selective breeding has changed plant species.</li>
+            <li>I can describe Indigenous knowledge about plants and land stewardship.</li>
+            <li>I can explain the importance of sustainable forestry and agriculture.</li>
+            <li>I can evaluate trade-offs of different plant technologies.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📖</span> Key Vocabulary</h3>
+          <div class="vocab-grid">
+            <div class="vocab-chip" tabindex="0"><strong>Selective Breeding</strong><span class="vocab-def">: Choosing plants with desired traits to reproduce over many generations</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>GMO</strong><span class="vocab-def">: Genetically Modified Organism — genes directly altered in a laboratory</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Sustainability</strong><span class="vocab-def">: Using resources in a way that meets current needs without harming future generations</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Food Security</strong><span class="vocab-def">: Having reliable access to enough affordable, nutritious food</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>Forestry</strong><span class="vocab-def">: Managing forests for timber, recreation, and ecosystem health</span></div>
+            <div class="vocab-chip" tabindex="0"><strong>TEK</strong><span class="vocab-def">: Traditional Ecological Knowledge — Indigenous understanding of ecosystems built over generations</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🎬</span> Watch: How Humans Changed Plants</h3>
+          <div class="video-container"><iframe src="https://www.youtube.com/embed/S7HFG39i6eA" title="Selective Breeding" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌽</span> Selective Breeding: Then and Now</h3>
+          <p>Humans have been changing plants for over 10,000 years through <strong>selective breeding</strong>:</p>
+          <div class="need-help"><strong>🌽 Corn:</strong> Wild ancestor (teosinte) had tiny ears with few hard kernels. Through thousands of years of selection, farmers created modern corn with large, juicy ears.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🥦 Brassica Family:</strong> Broccoli, cauliflower, kale, Brussels sprouts, and cabbage all come from ONE wild mustard ancestor — different traits were selected in each case.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🌿 Alberta Canola:</strong> Canola was developed in the 1970s by Saskatchewan and Manitoba scientists from rapeseed — selectively bred to have low erucic acid and low glucosinolates, making it safe for eating.</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🤝</span> Indigenous Plant Knowledge</h3>
+          <p>Indigenous peoples across the prairies and boreal regions have deep knowledge of plants built over thousands of years:</p>
+          <div class="need-help"><strong>🫐 Food Plants:</strong> Saskatoon berries, wild rice, wild turnip, labrador tea — harvested sustainably with protocols respecting the land.</div>
+          <div class="need-help" style="margin-top:8px"><strong>💊 Medicine:</strong> Sweetgrass, sage, cedar, and tobacco are sacred medicines. Willow bark (containing salicylic acid — the basis for aspirin) was used for pain relief.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🔥 Land Management:</strong> Controlled burns (prescribed fire) were used to clear brush, promote new growth, attract game, and maintain healthy grassland and forest ecosystems.</div>
+          <div class="pause-check"><strong>⏸️ Pause & Check:</strong> How does Indigenous fire management benefit ecosystems?</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🌲</span> Sustainable Forestry in Alberta</h3>
+          <p>Alberta's boreal forest covers over 60% of the province. Sustainable forestry practices include:</p>
+          <div class="need-help"><strong>🌱 Replanting:</strong> Forest companies must replant harvested areas. Alberta requires reforestation within 2 years of logging.</div>
+          <div class="need-help" style="margin-top:8px"><strong>📐 Buffer Zones:</strong> Leaving strips of trees along rivers and streams to protect water quality and wildlife corridors.</div>
+          <div class="need-help" style="margin-top:8px"><strong>🔄 Selective Harvesting:</strong> Cutting only certain trees instead of clear-cutting, allowing forest ecosystems to recover faster.</div>
+        </div>
+
+        <!-- L6 ACTIVITY 1: Decision Matrix -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">⚖️</span> Activity 1: Plant Technology Decision Maker</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Evaluate different plant technologies. For each scenario, choose whether the practice is sustainable or unsustainable.</p>
+          <div id="l6DecisionArea"></div>
+          <div id="l6DecisionScore"></div>
+        </div>
+
+        <!-- L6 ACTIVITY 2: Knowledge Connector -->
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">🤝</span> Activity 2: Indigenous Knowledge Connector</h3>
+          <p style="color:var(--text2);font-size:.9rem;margin-bottom:12px">Match each Indigenous plant practice to its modern scientific equivalent.</p>
+          <div id="l6TEKArea"></div>
+          <div id="l6TEKScore"></div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">✏️</span> Constructed Response</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Should farmers use GMO crops? Discuss at least 2 advantages and 2 concerns, then give your own evidence-based opinion.</p>
+          <textarea id="crResponse6" placeholder="Type your answer here…" oninput="saveCR6()"></textarea>
+        </div>
+
+        <div class="glass-card content" id="l6-gate" style="text-align:center;padding:24px">
+          <p id="l6-gate-msg" style="color:var(--warn);font-weight:600;margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+          <div class="lesson-nav">
+            <button class="nav-btn" onclick="goTo('lesson5-quiz')">← Previous</button>
+            <button class="nav-btn primary" id="l6-quiz-btn" onclick="goTo('lesson6-quiz')" disabled style="opacity:.5;cursor:not-allowed">Take the Quiz 📝</button>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>🪞 Lesson Reflection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:12px">Think about the food you eat every day. How has selective breeding or modern agriculture changed the plants that become your food?</p>
+          <textarea id="reflectionText6" placeholder="Type your reflection here…" oninput="saveReflection6()"></textarea>
+        </div>
+      </div>
+
+      <!-- LESSON 6 QUIZ -->
+      <div class="lesson-page" id="page-lesson6-quiz">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 6 — Quiz</div>
+          <h1 class="lesson-title">Check Your Understanding</h1>
+          <p class="lesson-subtitle">Two wrong answers on the same topic will trigger a mini-lesson. You need 80% to pass!</p>
+        </div>
+        <div class="need-help" style="margin-bottom:20px"><strong>💡 Before you start:</strong> Review selective breeding, Indigenous plant knowledge, and sustainable forestry.</div>
+        <div id="quiz6-area"></div>
+      </div>
+
+      <!-- LESSON 7: PERFORMANCE TASK -->
+      <div class="lesson-page" id="page-lesson7">
+        <div class="lesson-header">
+          <div class="lesson-num">Lesson 7 — Performance Task</div>
+          <h1 class="lesson-title">🏆 School Garden Sustainability Plan</h1>
+          <p class="lesson-subtitle">Apply everything you've learned to design a sustainable school garden that addresses plant needs, growing conditions, pest management, and food security.</p>
+        </div>
+
+        <div class="glass-card content">
+          <div style="margin-bottom:8px"><span class="outcome-tag">B.K.1</span><span class="outcome-tag">B.K.2</span><span class="outcome-tag">B.K.3</span><span class="outcome-tag">B.K.4</span></div>
+          <h3 class="section-title"><span class="icon">📋</span> Your Task</h3>
+          <p>You are a student environmental consultant hired to design a school garden. Your plan must show mastery of plant biology, growing conditions, pest management, and sustainability.</p>
+          <div class="need-help" style="margin-top:12px"><strong>📝 Complete all 5 sections below.</strong> Your answers will be saved automatically. When you're ready, click "Submit Performance Task" at the bottom.</div>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">1️⃣</span> Garden Design & Plant Selection</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">Choose at least 5 plants for your garden. For each, explain: Is it vascular/non-vascular? Angiosperm/gymnosperm? What are its needs (light, water, soil)? Why did you choose it?</p>
+          <textarea id="pt1" placeholder="List your 5+ plants and explain your choices…" oninput="savePTb(1)" style="min-height:120px"></textarea>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">2️⃣</span> Growing Conditions Plan</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">How will you ensure good growing conditions? Address: soil preparation, watering schedule, sunlight needs, temperature considerations for Alberta's climate.</p>
+          <textarea id="pt2" placeholder="Describe your growing conditions plan…" oninput="savePTb(2)" style="min-height:120px"></textarea>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">3️⃣</span> Pest Management Strategy</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What pests might affect your garden? Describe your IPM plan — at least 2 control methods and explain why you chose them over other options.</p>
+          <textarea id="pt3" placeholder="Describe your pest management strategy…" oninput="savePTb(3)" style="min-height:120px"></textarea>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">4️⃣</span> Sustainability & Food Security</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">How does your garden support sustainability? How could it address food security in your school community? Include at least one idea inspired by Indigenous plant knowledge.</p>
+          <textarea id="pt4" placeholder="Explain how your garden supports sustainability and food security…" oninput="savePTb(4)" style="min-height:120px"></textarea>
+        </div>
+
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">5️⃣</span> Reflection & Connections</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:8px">What was the most important thing you learned in this unit? How has your understanding of plants changed? What would you do differently if you could redesign your garden?</p>
+          <textarea id="pt5" placeholder="Reflect on your learning…" oninput="savePTb(5)" style="min-height:120px"></textarea>
+        </div>
+
+        <div class="glass-card content" style="text-align:center;padding:24px">
+          <h3 class="section-title"><span class="icon">🏆</span> Submit Your Plan</h3>
+          <p style="font-size:.9rem;color:var(--text2);margin-bottom:16px">Make sure all 5 sections are complete. Your teacher will review and provide feedback.</p>
+          <button class="activity-btn" id="ptSubmitBtnB" onclick="submitPTb()" style="font-size:1rem;padding:14px 32px">📨 Submit Performance Task</button>
+        </div>
+      </div>
+
+      <!-- TEACHER DASHBOARD -->
+      <div class="lesson-page" id="page-teacher">
+        <div class="lesson-header">
+          <div class="lesson-num">📊 Teacher</div>
+          <h1 class="lesson-title">Dashboard & Grades</h1>
+          <p class="lesson-subtitle">View student progress and export grades.</p>
+        </div>
+        <div class="glass-card content">
+          <h3 class="section-title"><span class="icon">📋</span> Student Grades</h3>
+          <div id="teacherGrades"><p style="color:var(--text3)">No grade data recorded yet.</p></div>
+          <div class="export-btns">
+            <button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button>
+            <button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button>
+            <button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /app -->
+
+  <script src="../shared.js"></script>
+  <script>
+    // ===== QUIZ BANKS =====
+    const quizBanks = {
+      quiz1: {
+        primary: [
+          { q: "What is the primary role of plants in an ecosystem?", opts: ["Top predators", "Decomposers", "Producers — they make food using sunlight", "Consumers that eat other organisms"], ans: 2, outcome: "7-B.1", explain: "Plants are producers — they capture sunlight and make food through photosynthesis." },
+          { q: "Which plant structure is the main site of photosynthesis?", opts: ["Roots", "Stems", "Flowers", "Leaves"], ans: 3, outcome: "7-B.2", explain: "Leaves contain chloroplasts where photosynthesis occurs." },
+          { q: "What are the inputs (reactants) of photosynthesis?", opts: ["Sugar, oxygen, heat", "Water, carbon dioxide, light energy", "Nitrogen, soil, roots", "Oxygen, glucose, minerals"], ans: 1, outcome: "7-B.1", explain: "Photosynthesis needs water, CO₂, and light to produce sugar and oxygen." },
+          { q: "What is the function of plant roots?", opts: ["Photosynthesis", "Reproduction", "Absorb water/minerals and anchor the plant", "Attract pollinators"], ans: 2, outcome: "7-B.2", explain: "Roots absorb water and nutrients from soil and anchor the plant in place." },
+          { q: "Stomata on leaves allow the plant to:", opts: ["Absorb water from rain", "Exchange gases (CO₂ in, O₂ out)", "Store food for winter", "Attract insects"], ans: 1, outcome: "7-B.2", explain: "Stomata are tiny pores that let CO₂ in for photosynthesis and release O₂." },
+          { q: "Why are plants called 'primary producers'?", opts: ["They produce the most waste", "They are the first organisms to make food from sunlight", "They produce seeds first", "They eat other producers"], ans: 1, outcome: "7-B.1", explain: "Plants convert solar energy into chemical energy (food), forming the base of food chains." },
+          { q: "Which product of photosynthesis do animals depend on to breathe?", opts: ["Sugar", "Carbon dioxide", "Water", "Oxygen"], ans: 3, outcome: "7-B.1", explain: "Photosynthesis produces oxygen, which animals need for cellular respiration." },
+          { q: "The stem's primary function is to:", opts: ["Produce flowers", "Transport water and nutrients between roots and leaves", "Perform photosynthesis", "Store seeds"], ans: 1, outcome: "7-B.2", explain: "Stems transport water upward and sugar downward, and provide structural support." }
+        ],
+        replacement: [
+          { q: "Which is NOT a role plants play in ecosystems?", opts: ["Producing oxygen", "Providing habitat", "Hunting other organisms", "Regulating climate"], ans: 2, outcome: "7-B.1", explain: "Plants don't hunt — they are producers, not predators." },
+          { q: "Chloroplasts are found mainly in:", opts: ["Roots", "Flowers", "Leaves", "Seeds"], ans: 2, outcome: "7-B.2", explain: "Chloroplasts are concentrated in leaves, where photosynthesis occurs." },
+          { q: "What does a plant produce during photosynthesis?", opts: ["Water and CO₂", "Sugar and oxygen", "Minerals and nitrogen", "Soil and nutrients"], ans: 1, outcome: "7-B.1", explain: "Plants produce glucose (sugar) for energy and oxygen as a byproduct." },
+          { q: "Roots do NOT:", opts: ["Absorb water", "Anchor the plant", "Perform photosynthesis", "Take in minerals"], ans: 2, outcome: "7-B.2", explain: "Photosynthesis happens in leaves, not roots." },
+          { q: "Gas exchange in plants occurs through:", opts: ["Roots", "Bark", "Stomata in leaves", "Flower petals"], ans: 2, outcome: "7-B.2", explain: "Stomata are the tiny openings in leaves for gas exchange." },
+          { q: "Food chains always start with:", opts: ["A predator", "A decomposer", "A plant (producer)", "A consumer"], ans: 2, outcome: "7-B.1", explain: "Producers form the base of every food chain." },
+          { q: "Plants release ___ into the atmosphere:", opts: ["Carbon dioxide", "Nitrogen", "Oxygen", "Methane"], ans: 2, outcome: "7-B.1", explain: "Oxygen is released as a byproduct of photosynthesis." },
+          { q: "Water travels from roots to leaves through the:", opts: ["Flowers", "Stem", "Seeds", "Fruit"], ans: 1, outcome: "7-B.2", explain: "The stem's vascular system transports water upward." }
+        ],
+        remediation: {
+          "7-B.1": {
+            video: "https://www.youtube.com/embed/sQK3Yr4Sc_k",
+            questions: [
+              { q: "Plants make food using:", opts: ["Soil and roots", "Sunlight, water, and CO₂", "Only water", "Animal waste"], ans: 1, explain: "Photosynthesis uses sunlight, water, and carbon dioxide." },
+              { q: "The two products of photosynthesis are:", opts: ["Water and minerals", "Sugar and oxygen", "CO₂ and nitrogen", "Heat and light"], ans: 1, explain: "Sugar (glucose) is the food; oxygen is released." },
+              { q: "Without plants, most organisms would:", opts: ["Be fine", "Lose their food source and oxygen", "Find another way", "Eat rocks"], ans: 1, explain: "Plants provide the food and oxygen that sustain most life." }
+            ]
+          },
+          "7-B.2": {
+            video: "https://www.youtube.com/embed/X3Wg-lMkpts",
+            questions: [
+              { q: "Which part of the plant absorbs water?", opts: ["Leaves", "Flowers", "Roots", "Fruit"], ans: 2, explain: "Roots absorb water and minerals from the soil." },
+              { q: "Photosynthesis mainly occurs in:", opts: ["Stems", "Seeds", "Roots", "Leaves"], ans: 3, explain: "Leaves contain chloroplasts for photosynthesis." },
+              { q: "The flower's main function is:", opts: ["Gas exchange", "Water absorption", "Reproduction", "Support"], ans: 2, explain: "Flowers contain reproductive structures and attract pollinators." }
+            ]
+          }
+        }
+      },
+      quiz2: {
+        primary: [
+          { q: "Seeds need ___ to germinate:", opts: ["Light, heat, soil", "Water, warmth, oxygen", "Wind, rain, sunlight", "Nutrients, CO₂, light"], ans: 1, outcome: "7-B.3", explain: "Seeds need water (softens coat), warmth (activates enzymes), and oxygen (cellular respiration)." },
+          { q: "Why don't seeds need light to germinate?", opts: ["They make their own light", "They start underground and use stored food for energy", "Light damages seeds", "Seeds are nocturnal"], ans: 1, outcome: "7-B.3", explain: "Seeds germinate underground using stored food — light is only needed once leaves emerge for photosynthesis." },
+          { q: "Cross-pollination is when:", opts: ["A flower pollinates itself", "Pollen moves between different plants", "Seeds cross a river", "Roots cross underground"], ans: 1, outcome: "7-B.4", explain: "Cross-pollination transfers pollen between different plants, creating genetic diversity." },
+          { q: "The male part of a flower is the:", opts: ["Pistil", "Ovary", "Stamen", "Stigma"], ans: 2, outcome: "7-B.4", explain: "The stamen (anther + filament) is the male part that produces pollen." },
+          { q: "A dandelion's seeds are dispersed by:", opts: ["Animals", "Water", "Explosion", "Wind"], ans: 3, outcome: "7-B.4", explain: "Dandelion seeds have parachute-like structures that catch the wind." },
+          { q: "What happens during fertilization?", opts: ["Seeds are planted", "Pollen reaches the ovule and a seed forms", "The flower blooms", "Leaves produce sugar"], ans: 1, outcome: "7-B.4", explain: "Fertilization occurs when pollen joins with the ovule inside the ovary, creating a seed." },
+          { q: "Which factor does NOT directly affect plant growth?", opts: ["Light", "Water", "The colour of the pot", "Soil nutrients"], ans: 2, outcome: "7-B.3", explain: "Pot colour doesn't significantly affect growth — light, water, temperature, nutrients, and space do." },
+          { q: "Seeds are dispersed away from the parent plant to:", opts: ["Look pretty", "Prevent overcrowding and competition", "Make the parent stronger", "Feed animals only"], ans: 1, outcome: "7-B.4", explain: "Dispersal prevents competition between parent and offspring for light, water, and nutrients." }
+        ],
+        replacement: [
+          { q: "The stored food in a seed provides:", opts: ["Light for growth", "Energy for the embryo until leaves can photosynthesize", "Water", "Minerals"], ans: 1, outcome: "7-B.3", explain: "The seed's food supply powers growth until the plant can make its own food through photosynthesis." },
+          { q: "Self-pollination results in:", opts: ["More genetic diversity", "Less genetic diversity", "No seeds", "Bigger flowers"], ans: 1, outcome: "7-B.4", explain: "Self-pollination produces offspring genetically similar to the parent — less diversity." },
+          { q: "The stigma's job is to:", opts: ["Produce pollen", "Catch pollen", "Make seeds", "Attract bees"], ans: 1, outcome: "7-B.4", explain: "The stigma is the sticky top of the pistil that catches pollen grains." },
+          { q: "Burrs on seeds are an adaptation for dispersal by:", opts: ["Wind", "Water", "Animals", "Explosion"], ans: 2, outcome: "7-B.4", explain: "Burrs hook onto animal fur or human clothing, carrying seeds to new locations." },
+          { q: "If you grew two identical plants but gave one no light, the plant without light would:", opts: ["Grow faster", "Grow normally", "Grow pale and weak (etiolated)", "Not be affected"], ans: 2, outcome: "7-B.3", explain: "Without light, a plant can't photosynthesize — it grows pale, weak, and stretched." },
+          { q: "The ovary of a flower becomes the:", opts: ["Leaf", "Root", "Fruit", "Stem"], ans: 2, outcome: "7-B.4", explain: "After fertilization, the ovary develops into a fruit that surrounds and protects the seeds." },
+          { q: "Temperature affects germination because:", opts: ["Seeds like being cold", "Enzymes need the right temperature to function", "Temperature waters the seed", "Seeds need darkness"], ans: 1, outcome: "7-B.3", explain: "Enzymes that trigger germination work best within a specific temperature range." },
+          { q: "Coconuts are dispersed by:", opts: ["Wind", "Water", "Animals", "Explosion"], ans: 1, outcome: "7-B.4", explain: "Coconuts float across water — they can travel thousands of kilometers by ocean currents." }
+        ],
+        remediation: {
+          "7-B.3": {
+            video: "https://www.youtube.com/embed/b0MaC3_0bco",
+            questions: [
+              { q: "The 3 conditions for germination are:", opts: ["Light, soil, heat", "Water, warmth, oxygen", "Wind, CO₂, sun", "Rain, seeds, flowers"], ans: 1, explain: "Water, warmth, and oxygen are needed — not light." },
+              { q: "Seeds do NOT need ___ to germinate:", opts: ["Water", "Oxygen", "Light", "Warmth"], ans: 2, explain: "Seeds start underground in the dark — they use stored food, not photosynthesis." },
+              { q: "More sunlight helps a plant grow because:", opts: ["It keeps the plant warm", "More light = more photosynthesis = more food", "It dries the soil", "It has nothing to do with growth"], ans: 1, explain: "Light drives photosynthesis, which produces the sugars a plant needs to grow." }
+            ]
+          },
+          "7-B.4": {
+            video: "https://www.youtube.com/embed/e55vSFN0lRE",
+            questions: [
+              { q: "Pollination is the transfer of:", opts: ["Seeds", "Water", "Pollen from stamen to pistil", "Nutrients"], ans: 2, explain: "Pollination moves pollen from the male part (stamen) to the female part (pistil)." },
+              { q: "Seeds dispersed by wind are typically:", opts: ["Heavy and round", "Light with wings or parachutes", "Sticky", "Underground"], ans: 1, explain: "Wind-dispersed seeds are light and have structures that catch air." },
+              { q: "After pollination, the next step is:", opts: ["Germination", "Dispersal", "Fertilization", "Photosynthesis"], ans: 2, explain: "Fertilization occurs when pollen reaches the ovule, forming a seed." }
+            ]
+          }
+        }
+      }
+    };
+
+    // ===== LOCK MAP =====
+    const lockMap = {};
+
+    // ===== ACTIVITY 1: Plant Part Matcher =====
+    const partsData = [
+      { structure: '🌱 Roots', func: 'Absorption & Anchor', id: 'roots' },
+      { structure: '🪵 Stem', func: 'Transport & Support', id: 'stem' },
+      { structure: '🍃 Leaves', func: 'Photosynthesis', id: 'leaves' },
+      { structure: '🌸 Flowers', func: 'Reproduction', id: 'flowers' },
+      { structure: '🍇 Fruit', func: 'Seed Protection', id: 'fruit' },
+      { structure: '🌰 Seeds', func: 'New Plant Growth', id: 'seeds' }
+    ];
+    let partsSel = null, partsOk = 0, partsN = 0;
+
+    function initParts() {
+      partsSel = null; partsOk = 0; partsN = 0;
+      const sh = [...partsData].sort(() => Math.random() - .5);
+      document.getElementById('partsStructures').innerHTML = sh.map(p => `<div class="sort-item" data-id="${p.id}" onclick="selectPart(this)">${p.structure}</div>`).join('');
+      const fsh = [...partsData].sort(() => Math.random() - .5);
+      document.getElementById('partsFunctions').innerHTML = fsh.map(p => `<div class="match-need" data-id="${p.id}" onclick="pickPartFunc('${p.id}')">${p.func}</div>`).join('');
+      document.getElementById('partsResults').innerHTML = '';
+      document.getElementById('partsScore').innerHTML = '';
+    }
+    function selectPart(el) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#partsStructures .sort-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected'); partsSel = el;
+    }
+    function pickPartFunc(funcId) {
+      if (!partsSel) return;
+      const structId = partsSel.dataset.id;
+      const ok = structId === funcId;
+      partsN++; if (ok) partsOk++;
+      const res = document.getElementById('partsResults');
+      const div = document.createElement('div');
+      div.className = 'match-scenario done ' + (ok ? 'correct' : 'wrong');
+      div.textContent = `${partsSel.textContent} → ${partsData.find(p => p.id === funcId).func} ${ok ? '✓' : '✗'}`;
+      res.appendChild(div);
+      partsSel.classList.remove('selected');
+      partsSel.classList.add('placed');
+      partsSel = null;
+      if (partsN === partsData.length) {
+        document.getElementById('partsScore').innerHTML = `<div class="activity-score"><div class="score-number">${partsOk}/${partsData.length}</div><p>${partsOk === partsData.length ? '🎉 Perfect match!' : '📖 Review the plant structures table above.'}</p><button class="activity-btn secondary" onclick="initParts()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'parts', partsOk, partsData.length);
+      }
+    }
+
+    // ===== ACTIVITY 2: Photosynthesis Equation Builder =====
+    const photoData = [
+      { name: '☀️ Light Energy', type: 'input' },
+      { name: '💧 Water (H₂O)', type: 'input' },
+      { name: '🌬️ Carbon Dioxide (CO₂)', type: 'input' },
+      { name: '🍬 Sugar (C₆H₁₂O₆)', type: 'output' },
+      { name: '🫁 Oxygen (O₂)', type: 'output' },
+      { name: '🧱 Soil Minerals', type: 'neither' },
+      { name: '🔥 Heat Energy', type: 'neither' }
+    ];
+    let photoSel = null, photoOk = 0, photoN = 0;
+
+    function initPhoto() {
+      photoSel = null; photoOk = 0; photoN = 0;
+      const sh = [...photoData].sort(() => Math.random() - .5);
+      document.getElementById('photoItems').innerHTML = sh.map(p => `<div class="sort-item" data-type="${p.type}" onclick="selectPhoto(this)">${p.name}</div>`).join('');
+      document.getElementById('inputItems').innerHTML = '';
+      document.getElementById('outputItems').innerHTML = '';
+      document.getElementById('photoScore').innerHTML = '';
+    }
+    function selectPhoto(el) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#photoItems .sort-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected'); photoSel = el;
+    }
+    function dropPhoto(zone) {
+      if (!photoSel) return;
+      const t = photoSel.dataset.type;
+      const ok = t === zone;
+      photoN++; if (ok) photoOk++;
+      const tgt = document.getElementById(zone === 'input' ? 'inputItems' : 'outputItems');
+      const tag = document.createElement('div');
+      tag.className = 'sorted-item ' + (ok ? 'correct' : 'wrong');
+      tag.textContent = (ok ? '✓ ' : '✗ ') + photoSel.textContent;
+      tgt.appendChild(tag);
+      photoSel.classList.remove('selected');
+      photoSel.classList.add('placed');
+      photoSel = null;
+      if (photoN === photoData.length) {
+        document.getElementById('photoScore').innerHTML = `<div class="activity-score"><div class="score-number">${photoOk}/${photoData.length}</div><p>${photoOk >= 5 ? '🎉 Great understanding of photosynthesis!' : '📖 Remember: Light + Water + CO₂ → Sugar + O₂ (soil minerals and heat are not part of the equation)'}</p><button class="activity-btn secondary" onclick="initPhoto()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'photo', photoOk, photoData.length);
+      }
+    }
+
+    // ===== ACTIVITY 3: Plant Role Identifier =====
+    const roleScenarios = [
+      { text: "🌳 A forest canopy provides shade and shelter for deer, birds, and insects.", role: "habitat", explain: "Trees provide habitat (shelter and living space) for many organisms." },
+      { text: "🌾 Wheat fields provide grain that is harvested and turned into bread.", role: "food", explain: "Plants provide food for humans and animals." },
+      { text: "🌿 Algae in a lake produce 70% of the oxygen dissolved in the water.", role: "oxygen", explain: "Plants (and algae) produce oxygen through photosynthesis." },
+      { text: "🌲 Forests absorb billions of tonnes of CO₂ from the atmosphere each year.", role: "climate", explain: "Plants regulate climate by absorbing greenhouse gases." },
+      { text: "🧵 Cotton plants are harvested to make t-shirts and jeans.", role: "fibre", explain: "Plants provide fibre materials for clothing and textiles." }
+    ];
+    const roleMap = { habitat: '🏠 Habitat Provider', food: '🍎 Food Source', oxygen: '🫁 Oxygen Producer', climate: '🌡️ Climate Regulator', fibre: '👕 Fibre & Materials' };
+    let roleIdx = 0, roleOk = 0;
+
+    function initRoles() {
+      roleIdx = 0; roleOk = 0;
+      renderRoleQ();
+      document.getElementById('roleScore').innerHTML = '';
+    }
+    function renderRoleQ() {
+      if (roleIdx >= roleScenarios.length) {
+        document.getElementById('roleScore').innerHTML = `<div class="activity-score"><div class="score-number">${roleOk}/${roleScenarios.length}</div><p>${roleOk === roleScenarios.length ? '🎉 You know your plant roles!' : '📖 Review the six roles plants play in ecosystems.'}</p><button class="activity-btn secondary" onclick="initRoles()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(1, 'roles', roleOk, roleScenarios.length);
+        return;
+      }
+      const sc = roleScenarios[roleIdx];
+      const keys = Object.keys(roleMap).sort(() => Math.random() - .5);
+      document.getElementById('roleArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn${k === 'habitat' ? '' : ' secondary'}" onclick="pickRole('${k}')" style="flex:1;min-width:120px;font-size:.8rem">${roleMap[k]}</button>`).join('')}</div><div id="roleFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">Scenario ${roleIdx + 1} of ${roleScenarios.length}</p>`;
+    }
+    function pickRole(ans) {
+      const sc = roleScenarios[roleIdx];
+      const ok = ans === sc.role;
+      if (ok) roleOk++;
+      document.getElementById('roleFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { roleIdx++; renderRoleQ(); }, 1500);
+    }
+
+    // ===== ACTIVITY GATE =====
+    actComplete = { l1: { parts: false, photo: false, roles: false }, l2: { germ: false, poll: false, growth: false } };
+
+    // ===== L2 ACTIVITY 1: Germination Sequence =====
+    const germSteps = [
+      { id: 1, text: '💧 Seed absorbs water — coat softens' },
+      { id: 2, text: '🌱 Root emerges downward (radicle)' },
+      { id: 3, text: '🌿 Shoot pushes upward toward light' },
+      { id: 4, text: '☀️ First leaves emerge and begin photosynthesis' },
+      { id: 5, text: '🌳 Plant grows, flowers, and produces seeds' }
+    ];
+    let germOrder = [];
+    function initGerm() {
+      germOrder = [];
+      const sh = [...germSteps].sort(() => Math.random() - .5);
+      document.getElementById('germArea').innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:8px">${sh.map(s => `<button class="activity-btn secondary" style="font-size:.82rem" onclick="pickGerm(${s.id},this)">${s.text}</button>`).join('')}</div><div id="germOrder" style="margin-top:12px"></div>`;
+      document.getElementById('germScore').innerHTML = '';
+    }
+    function pickGerm(id, btn) {
+      germOrder.push(id); btn.disabled = true; btn.style.opacity = '.4';
+      document.getElementById('germOrder').innerHTML = germOrder.map((g, i) => `<div style="padding:4px 8px;font-size:.8rem;color:var(--text2)">${i + 1}. ${germSteps.find(s => s.id === g).text}</div>`).join('');
+      if (germOrder.length === germSteps.length) {
+        const ok = germOrder.every((g, i) => g === i + 1);
+        const score = ok ? germSteps.length : germOrder.filter((g, i) => g === i + 1).length;
+        document.getElementById('germScore').innerHTML = `<div class="activity-score"><div class="score-number">${score}/${germSteps.length}</div><p>${ok ? '🎉 Perfect sequence!' : '📖 The correct order: water absorption → root → shoot → leaves → mature plant.'}</p><button class="activity-btn secondary" onclick="initGerm()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'germ', score, germSteps.length);
+      }
+    }
+
+    // ===== L2 ACTIVITY 2: Pollination & Dispersal Matcher =====
+    const pollData = [
+      { text: '🐝 A bee carries pollen from one sunflower to another.', type: 'cross', explain: 'Insect-mediated cross-pollination — pollen moves between plants.' },
+      { text: '💨 Dandelion seeds float away on the wind.', type: 'wind', explain: 'Wind dispersal — lightweight parachute-like seeds travel by air.' },
+      { text: '🐿️ A squirrel buries an acorn and forgets it.', type: 'animal', explain: 'Animal dispersal — the forgotten acorn germinates in a new location.' },
+      { text: '🌸 Pollen falls from the anther to the stigma of the same flower.', type: 'self', explain: 'Self-pollination — pollen stays within the same flower.' },
+      { text: '💥 A pea pod dries out and bursts open, flinging seeds.', type: 'explosive', explain: 'Explosive dispersal — mechanical force launches seeds away from the plant.' },
+      { text: '🌊 A coconut falls into the ocean and floats to a new island.', type: 'water', explain: 'Water dispersal — buoyant seeds travel by water currents.' }
+    ];
+    const pollMap = { cross: '🐝 Cross-Pollination', self: '🔄 Self-Pollination', wind: '💨 Wind Dispersal', water: '🌊 Water Dispersal', animal: '🐿️ Animal Dispersal', explosive: '💥 Explosive Dispersal' };
+    let pollIdx = 0, pollOk = 0;
+    function initPoll() { pollIdx = 0; pollOk = 0; renderPollQ(); document.getElementById('pollScore').innerHTML = ''; }
+    function renderPollQ() {
+      if (pollIdx >= pollData.length) {
+        document.getElementById('pollScore').innerHTML = `<div class="activity-score"><div class="score-number">${pollOk}/${pollData.length}</div><p>${pollOk === pollData.length ? '🎉 Pollination & dispersal expert!' : '📖 Remember: pollination = pollen moving, dispersal = seeds moving.'}</p><button class="activity-btn secondary" onclick="initPoll()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'poll', pollOk, pollData.length);
+        return;
+      }
+      const sc = pollData[pollIdx];
+      const keys = Object.keys(pollMap).sort(() => Math.random() - .5);
+      document.getElementById('pollArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;margin-bottom:16px">${sc.text}</p><div style="display:flex;gap:6px;flex-wrap:wrap">${keys.map(k => `<button class="activity-btn secondary" onclick="pickPoll('${k}')" style="flex:1;min-width:100px;font-size:.75rem">${pollMap[k]}</button>`).join('')}</div><div id="pollFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${pollIdx + 1} of ${pollData.length}</p>`;
+    }
+    function pickPoll(ans) {
+      const sc = pollData[pollIdx], ok = ans === sc.type;
+      if (ok) pollOk++;
+      document.getElementById('pollFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { pollIdx++; renderPollQ(); }, 1500);
+    }
+
+    // ===== L2 ACTIVITY 3: Growth Factor Predictor =====
+    const growthData = [
+      { text: '☀️ A plant is moved from a sunny window to a dark closet. What happens?', opts: ['It grows faster', 'It grows pale, weak, and stretched (etiolated)', 'Nothing changes', 'It produces more flowers'], ans: 1, explain: 'Without light, no photosynthesis occurs — the plant stretches toward any light source and becomes pale.' },
+      { text: '💧 A farmer doubles the amount of water given to crops during a drought. What happens?', opts: ['The plants drown immediately', 'The plants recover and grow better', 'Nothing happens', 'The plants lose their leaves'], ans: 1, explain: 'Water is essential for photosynthesis and nutrient transport — more water during drought helps recovery.' },
+      { text: '🪨 Soil nutrients are completely depleted. What happens to the plant?', opts: ['It grows normally using sunlight', 'Growth slows — yellowing leaves, weak stems', 'It finds nutrients from the air', 'It grows bigger to find nutrients'], ans: 1, explain: 'Plants need nitrogen, phosphorus, and potassium from soil for proteins, DNA, and energy.' },
+      { text: '🌡️ Seeds are placed in a freezer. What happens to germination?', opts: ['They germinate faster', 'Germination stops — enzymes can\'t function in extreme cold', 'They need cold to grow', 'Nothing changes'], ans: 1, explain: 'Enzymes that trigger germination need warmth to function — freezing temperatures halt the process.' }
+    ];
+    let growthIdx = 0, growthOk = 0;
+    function initGrowth() { growthIdx = 0; growthOk = 0; renderGrowthQ(); document.getElementById('growthScore').innerHTML = ''; }
+    function renderGrowthQ() {
+      if (growthIdx >= growthData.length) {
+        document.getElementById('growthScore').innerHTML = `<div class="activity-score"><div class="score-number">${growthOk}/${growthData.length}</div><p>${growthOk === growthData.length ? '🎉 Growth factor expert!' : '📖 Remember: light, water, temperature, nutrients, and space all affect growth.'}</p><button class="activity-btn secondary" onclick="initGrowth()" style="margin-top:8px">🔄 Try Again</button></div>`;
+        markActivityDone(2, 'growth', growthOk, growthData.length);
+        return;
+      }
+      const sc = growthData[growthIdx];
+      document.getElementById('growthArea').innerHTML = `<div class="glass-card" style="padding:16px;margin-bottom:12px"><p style="font-size:.95rem;font-weight:700;margin-bottom:16px">${sc.text}</p>${sc.opts.map((o, i) => `<div class="whatif-option" onclick="pickGrowth(${i})">${o}</div>`).join('')}<div id="growthFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${growthIdx + 1} of ${growthData.length}</p>`;
+    }
+    function pickGrowth(idx) {
+      const sc = growthData[growthIdx], ok = idx === sc.ans;
+      if (ok) growthOk++;
+      document.querySelectorAll('#growthArea .whatif-option').forEach((o, i) => { o.style.pointerEvents = 'none'; o.classList.add(i === sc.ans ? 'correct' : (i === idx && !ok ? 'wrong' : '')); });
+      document.getElementById('growthFb').innerHTML = `<div style="padding:10px;border-radius:8px;background:${ok ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.08)'};font-size:.85rem;color:var(--text2)"><strong>${ok ? '✅' : '❌'}</strong> ${sc.explain}</div>`;
+      setTimeout(() => { growthIdx++; renderGrowthQ(); }, 1800);
+    }
+
+    // ===== L2 SAVE HELPERS =====
+    function saveCR2() { localStorage.setItem('g7-unitb-l2-cr', document.getElementById('crResponse2')?.value || ''); }
+    function saveReflection2() { localStorage.setItem('g7-unitb-l2-reflect', document.getElementById('reflectionText2')?.value || ''); }
+    function loadSavedText2() {
+      const cr = document.getElementById('crResponse2'), rf = document.getElementById('reflectionText2');
+      if (cr) cr.value = localStorage.getItem('g7-unitb-l2-cr') || '';
+      if (rf) rf.value = localStorage.getItem('g7-unitb-l2-reflect') || '';
+    }
+
+
+    // ===== QUIZ BANKS 3-6 =====
+    quizBanks.quiz3 = {primary:[{q:"Vascular plants have:",opts:["No roots","Xylem and phloem tubes for transport","Only flowers","No leaves"],ans:1,outcome:"B.K.2-CLASS",explain:"Vascular plants have internal tubes (xylem for water, phloem for sugars)."},{q:"A gymnosperm is:",opts:["A flowering plant","A plant that produces naked seeds in cones","A moss","A mushroom"],ans:1,outcome:"B.K.2-CLASS",explain:"Gymnosperms produce seeds in cones, not flowers. Examples: spruce, pine."},{q:"Mosses are classified as:",opts:["Vascular","Non-vascular","Angiosperms","Gymnosperms"],ans:1,outcome:"B.K.2-CLASS",explain:"Mosses lack transport tubes and must stay small and moist."},{q:"Cacti store water in their stems as an adaptation to:",opts:["Cold","Desert (dry) conditions","Aquatic environments","Wind"],ans:1,outcome:"B.K.2-ADAPT",explain:"Thick stems store water for long dry periods — key desert adaptation."},{q:"Alberta's provincial flower is the:",opts:["Sunflower","Wild Rose","Dandelion","Alpine Forget-me-not"],ans:1,outcome:"B.K.2-CLASS",explain:"The Wild Rose is Alberta's provincial flower."},{q:"Angiosperms differ from gymnosperms because they:",opts:["Have no seeds","Produce seeds inside fruits","Only grow in water","Are non-vascular"],ans:1,outcome:"B.K.2-CLASS",explain:"Angiosperms protect seeds inside fruits; gymnosperms have exposed seeds."},{q:"Conifer needles are adapted to Alberta's climate because:",opts:["They are big and flat","They have small surface area and waxy coatings to reduce water loss","They fall off in winter","They attract pollinators"],ans:1,outcome:"B.K.2-ADAPT",explain:"Small, waxy needles minimize water loss during cold, dry Alberta winters."},{q:"A dichotomous key helps you:",opts:["Count plants","Identify organisms using yes/no questions","Grow plants faster","Measure photosynthesis"],ans:1,outcome:"B.K.2-CLASS",explain:"Dichotomous keys use branching yes/no questions to identify species."}],replacement:[{q:"Non-vascular plants must stay small because:",opts:["They have no sunlight","They can only move water by diffusion, not tubes","They have no leaves","They grow underground"],ans:1,outcome:"B.K.2-CLASS",explain:"Without tubes, water only moves by slow diffusion — limiting size."},{q:"White spruce is classified as a:",opts:["Non-vascular plant","Vascular gymnosperm","Vascular angiosperm","Fungus"],ans:1,outcome:"B.K.2-CLASS",explain:"White spruce has transport tubes (vascular) and produces cones (gymnosperm)."},{q:"Trembling aspen is classified as a:",opts:["Gymnosperm","Vascular angiosperm","Non-vascular","Fern"],ans:1,outcome:"B.K.2-CLASS",explain:"Aspen has flowers, fruits, and transport tubes — vascular angiosperm."},{q:"Water lilies' broad floating leaves are an adaptation to:",opts:["Desert","Alpine","Aquatic environments","Forest"],ans:1,outcome:"B.K.2-ADAPT",explain:"Broad floating leaves maximize sunlight capture on the water surface."},{q:"Alpine plants grow low to the ground to:",opts:["Get more water","Resist wind and conserve heat","Avoid sunlight","Attract animals"],ans:1,outcome:"B.K.2-ADAPT",explain:"Low growth protects alpine plants from strong mountain winds."},{q:"Sphagnum moss can absorb ___ its weight in water:",opts:["2×","5×","20×","100×"],ans:2,outcome:"B.K.2-CLASS",explain:"Sphagnum moss is incredibly absorbent — up to 20× its weight."},{q:"The difference between xylem and phloem:",opts:["They are the same","Xylem moves water up; phloem moves sugars down","Xylem is in roots only","Phloem is in leaves only"],ans:1,outcome:"B.K.2-CLASS",explain:"Xylem transports water upward; phloem distributes sugars throughout."},{q:"Ferns are:",opts:["Non-vascular","Vascular but non-flowering","Gymnosperms","Angiosperms"],ans:1,outcome:"B.K.2-CLASS",explain:"Ferns have transport tubes but reproduce with spores, not seeds or flowers."}],remediation:{"B.K.2-CLASS":{video:"https://www.youtube.com/embed/bRdq2FbG-OQ",questions:[{q:"Vascular plants have:",opts:["No transport system","Tubes for moving water and nutrients"],ans:1,explain:"Xylem and phloem are the plant's transport tubes."},{q:"A gymnosperm produces seeds in:",opts:["Fruits","Cones"],ans:1,explain:"Gymnosperms = 'naked seeds' in cones, not inside fruits."}]},"B.K.2-ADAPT":{video:"https://www.youtube.com/embed/bRdq2FbG-OQ",questions:[{q:"An adaptation helps a plant:",opts:["Look pretty","Survive in its environment"],ans:1,explain:"Adaptations are traits that improve survival in specific conditions."},{q:"Desert plants store water because:",opts:["They like being heavy","Water is scarce in the desert"],ans:1,explain:"Water storage is crucial when rainfall is rare."}]}}};
+
+    quizBanks.quiz4 = {primary:[{q:"The 3 main nutrients plants need are:",opts:["NaCl, H₂O, O₂","NPK — Nitrogen, Phosphorus, Potassium","CO₂, O₂, H₂","Sugar, starch, protein"],ans:1,outcome:"B.K.3-GROW",explain:"NPK are the 'big 3' macronutrients for plant growth."},{q:"A controlled experiment changes:",opts:["Everything at once","Only one variable while keeping others the same","Nothing","At least 3 variables"],ans:1,outcome:"B.K.3-EXP",explain:"Only the independent variable changes; everything else stays constant."},{q:"Hydroponics grows plants in:",opts:["Soil","Sand","Nutrient-rich water without soil","Air"],ans:2,outcome:"B.K.3-METHOD",explain:"Hydroponics uses water with dissolved nutrients — no soil needed."},{q:"Nitrogen helps plants with:",opts:["Root growth","Leaf and stem growth","Flower production","Seed dispersal"],ans:1,outcome:"B.K.3-GROW",explain:"Nitrogen is essential for leaf and stem (vegetative) growth."},{q:"A greenhouse helps Alberta farmers because:",opts:["It makes crops organic","It extends the growing season beyond cold winters","It eliminates all pests","It uses no water"],ans:1,outcome:"B.K.3-METHOD",explain:"Greenhouses trap heat and allow year-round growing despite Alberta's cold climate."},{q:"Too much water causes:",opts:["Faster growth","Root rot from lack of oxygen","Stronger stems","More flowers"],ans:1,outcome:"B.K.3-GROW",explain:"Waterlogged soil has no oxygen — roots suffocate and rot."},{q:"The independent variable in an experiment is:",opts:["What you measure","What you change","What you keep the same","The conclusion"],ans:1,outcome:"B.K.3-EXP",explain:"The independent variable is what the experimenter deliberately changes."},{q:"Loam soil is ideal because it:",opts:["Is pure clay","Drains too fast","Balances drainage and water retention","Has no nutrients"],ans:2,outcome:"B.K.3-GROW",explain:"Loam combines sand, silt, and clay for ideal drainage and nutrient retention."}],replacement:[{q:"Phosphorus promotes:",opts:["Leaf growth","Root and flower development","Stem height","Water absorption"],ans:1,outcome:"B.K.3-GROW",explain:"Phosphorus supports root growth and flowering."},{q:"Etiolation occurs when plants lack:",opts:["Water","Light","Soil","Oxygen"],ans:1,outcome:"B.K.3-GROW",explain:"Without light, plants grow pale and stretched — called etiolation."},{q:"Field growing's main disadvantage is:",opts:["It's too expensive","It depends on weather and season","It produces too much food","It uses too much technology"],ans:1,outcome:"B.K.3-METHOD",explain:"Field crops are at the mercy of weather, pests, and seasonal limitations."},{q:"In an experiment, controlled variables are:",opts:["The things you change","The things you measure","The things you keep constant","Not important"],ans:2,outcome:"B.K.3-EXP",explain:"Controlled variables must stay the same to ensure a fair test."},{q:"Potassium helps plants with:",opts:["Only root growth","Overall health, disease resistance, and water regulation","Only flowering","Nothing important"],ans:1,outcome:"B.K.3-GROW",explain:"Potassium regulates water balance and strengthens disease resistance."},{q:"Hydroponics uses ___ water than field growing:",opts:["More","The same amount of","Less","No"],ans:2,outcome:"B.K.3-METHOD",explain:"Hydroponics recirculates water, using significantly less than field irrigation."},{q:"Sandy soil drains:",opts:["Very slowly","Very quickly — may not hold enough water","Not at all","Perfectly"],ans:1,outcome:"B.K.3-GROW",explain:"Sand particles are large with big spaces — water moves through quickly."},{q:"The dependent variable is:",opts:["What you change","What you keep the same","What you measure (the result)","The hypothesis"],ans:2,outcome:"B.K.3-EXP",explain:"The dependent variable is what you measure to see the effect of your change."}],remediation:{"B.K.3-GROW":{video:"https://www.youtube.com/embed/dSRXPGDYFgk",questions:[{q:"NPK stands for:",opts:["Sodium, Potassium, Krypton","Nitrogen, Phosphorus, Potassium"],ans:1,explain:"NPK are the three essential macronutrients for plants."},{q:"Too little water causes:",opts:["Root rot","Wilting"],ans:1,explain:"Without water, cells lose turgor pressure and the plant wilts."}]},"B.K.3-METHOD":{video:"https://www.youtube.com/embed/dSRXPGDYFgk",questions:[{q:"Hydroponics uses:",opts:["Soil","Nutrient-rich water"],ans:1,explain:"Hydroponics grows plants in water with dissolved nutrients."},{q:"Greenhouses extend growing time by:",opts:["Adding fertilizer","Trapping heat and controlling conditions"],ans:1,explain:"Glass/plastic traps heat, creating a warm environment year-round."}]},"B.K.3-EXP":{video:"https://www.youtube.com/embed/dSRXPGDYFgk",questions:[{q:"A controlled experiment changes:",opts:["Many things","Only one thing"],ans:1,explain:"Only the independent variable changes to ensure a fair test."},{q:"The dependent variable is:",opts:["What you change","What you measure"],ans:1,explain:"You measure the dependent variable to see the result."}]}}};
+
+    quizBanks.quiz5 = {primary:[{q:"Biological pest control uses:",opts:["Chemicals","Natural predators to control pests","Genetic modification","Radiation"],ans:1,outcome:"B.K.3-PEST",explain:"Biological control introduces natural enemies like ladybugs to eat aphids."},{q:"A monoculture is:",opts:["Growing many different crops","Growing one crop over a large area","A type of fertilizer","Organic farming"],ans:1,outcome:"B.K.3-MONO",explain:"Monoculture = one single crop species across a large field."},{q:"The main risk of monocultures is:",opts:["Too much diversity","One disease can destroy the entire crop","Too many pollinators","Higher labour costs"],ans:1,outcome:"B.K.3-MONO",explain:"With no diversity, a single disease or pest can devastate the whole field."},{q:"IPM stands for:",opts:["International Plant Management","Integrated Pest Management","Internal Pesticide Mixture","Insect Prevention Method"],ans:1,outcome:"B.K.3-PEST",explain:"IPM combines multiple strategies, using chemicals only as a last resort."},{q:"Organic farming avoids:",opts:["All farming","Synthetic chemicals","Composting","Crop rotation"],ans:1,outcome:"B.K.3-PEST",explain:"Organic farming uses natural methods only — no synthetic pesticides or fertilizers."},{q:"Crop rotation helps by:",opts:["Using more pesticides","Preventing soil nutrient depletion and breaking pest cycles","Increasing monoculture","Reducing yields"],ans:1,outcome:"B.K.3-MONO",explain:"Different crops use different nutrients and attract different pests."},{q:"A risk of chemical pesticides is:",opts:["They are too slow","They can harm beneficial insects like pollinators","They are organic","They have no effect"],ans:1,outcome:"B.K.3-PEST",explain:"Pesticides don't distinguish between pests and helpful insects."},{q:"Alberta's prairies are known for:",opts:["Tropical crops","Large monocultures of canola, wheat, and barley","Only organic farming","No agriculture"],ans:1,outcome:"B.K.3-MONO",explain:"Alberta's prairies feature massive grain and oilseed monocultures."}],replacement:[{q:"Ladybugs are used in biological control to eat:",opts:["Weeds","Aphids","Fungi","Seeds"],ans:1,outcome:"B.K.3-PEST",explain:"Ladybugs are natural predators of aphids — a common garden pest."},{q:"Companion planting is a type of:",opts:["Chemical control","Cultural control","Biological control","Genetic modification"],ans:1,outcome:"B.K.3-PEST",explain:"Companion planting (cultural control) uses plant partnerships to deter pests."},{q:"Conventional farming produces ___ yields than organic:",opts:["Lower","Higher","The same","No"],ans:1,outcome:"B.K.3-PEST",explain:"Synthetic inputs in conventional farming typically boost per-hectare yields."},{q:"A disadvantage of biological control is:",opts:["It uses chemicals","The introduced species might become invasive","It's too fast","It's too expensive"],ans:1,outcome:"B.K.3-PEST",explain:"Introduced predators might harm non-target species or become pests themselves."},{q:"Monocultures require heavy ___ use:",opts:["Water only","Pesticide and fertilizer","Labour","Sunlight"],ans:1,outcome:"B.K.3-MONO",explain:"Without crop diversity, monocultures depend on chemical inputs to maintain yields."},{q:"Herbicides target:",opts:["Insects","Weeds","Fungi","Bacteria"],ans:1,outcome:"B.K.3-PEST",explain:"Herbicides specifically kill unwanted plants (weeds)."},{q:"Pesticide resistance occurs when:",opts:["Farmers use too little","Pests evolve to survive the chemical over time","Chemicals get stronger","Organic farming is used"],ans:1,outcome:"B.K.3-PEST",explain:"Overuse of pesticides selects for resistant individuals that survive and reproduce."},{q:"Crop rotation reduces the need for:",opts:["Sunlight","Pesticides and synthetic fertilizers","Water","Soil"],ans:1,outcome:"B.K.3-MONO",explain:"Rotating crops naturally replenishes nutrients and disrupts pest life cycles."}],remediation:{"B.K.3-PEST":{video:"https://www.youtube.com/embed/fvdycNQ8y6Y",questions:[{q:"Biological control uses:",opts:["Chemicals","Living organisms"],ans:1,explain:"Natural predators control pests without synthetic chemicals."},{q:"IPM uses chemicals:",opts:["First","Only as a last resort"],ans:1,explain:"IPM prioritizes cultural and biological methods before chemicals."}]},"B.K.3-MONO":{video:"https://www.youtube.com/embed/fvdycNQ8y6Y",questions:[{q:"A monoculture grows:",opts:["Many crops","One crop"],ans:1,explain:"Monoculture = one crop species across a large area."},{q:"Crop rotation helps by:",opts:["Growing the same crop","Alternating crops to restore soil"],ans:1,explain:"Different crops prevent nutrient depletion and break pest cycles."}]}}};
+
+    quizBanks.quiz6 = {primary:[{q:"Selective breeding is:",opts:["Genetic modification in a lab","Choosing plants with desired traits to reproduce over generations","Cloning plants","A type of fertilizer"],ans:1,outcome:"B.K.4-BREED",explain:"Selective breeding gradually changes plant traits through controlled reproduction."},{q:"Canola was developed from:",opts:["Corn","Rapeseed","Wheat","Soybeans"],ans:1,outcome:"B.K.4-BREED",explain:"Canola was selectively bred from rapeseed to reduce harmful acids."},{q:"Indigenous prescribed fire benefits ecosystems by:",opts:["Destroying all life","Clearing brush, promoting new growth, and maintaining healthy ecosystems","Only creating smoke","Killing all animals"],ans:1,outcome:"B.K.4-TEK",explain:"Controlled burns recycle nutrients, prevent wildfires, and promote diverse plant growth."},{q:"Sustainable forestry requires:",opts:["Clear-cutting all trees","Replanting harvested areas within a set time","Never cutting trees","Only planting one species"],ans:1,outcome:"B.K.4-SUST",explain:"Alberta requires reforestation within 2 years of harvesting."},{q:"A GMO is:",opts:["A selectively bred plant","An organism with genes directly altered in a lab","An organic plant","A wild plant"],ans:1,outcome:"B.K.4-BREED",explain:"GMOs have their DNA directly modified using biotechnology."},{q:"Food security means:",opts:["Locking up food","Having reliable access to enough affordable, nutritious food","Growing only organic","Eating less"],ans:1,outcome:"B.K.4-SUST",explain:"Food security = consistent access to sufficient nutritious food for all."},{q:"Willow bark was used by Indigenous peoples as:",opts:["Building material","Pain relief medicine (contains salicylic acid)","Food","Clothing"],ans:1,outcome:"B.K.4-TEK",explain:"Willow bark contains the compound that became the basis for aspirin."},{q:"Buffer zones in forestry protect:",opts:["Only humans","Waterways and wildlife corridors","Only timber companies","Nothing"],ans:1,outcome:"B.K.4-SUST",explain:"Uncut buffer strips protect water quality and provide wildlife habitat."}],replacement:[{q:"Broccoli, kale, and cabbage all come from:",opts:["Different species","One wild mustard ancestor (Brassica)","Corn","Tropical plants"],ans:1,outcome:"B.K.4-BREED",explain:"All brassica vegetables were selectively bred from one wild mustard species."},{q:"TEK stands for:",opts:["Technical Education for Kids","Traditional Ecological Knowledge","Tree Evaluation Key","Total Environmental Knowledge"],ans:1,outcome:"B.K.4-TEK",explain:"TEK is Indigenous knowledge about ecosystems built over generations."},{q:"Selective harvesting means:",opts:["Clear-cutting","Cutting only certain trees, leaving the forest standing","Never cutting","Only cutting in summer"],ans:1,outcome:"B.K.4-SUST",explain:"Selective harvesting removes individual trees, allowing faster ecosystem recovery."},{q:"A concern about GMOs is:",opts:["They grow too slowly","Possible unintended effects on ecosystems and health","They are too natural","They are the same as selective breeding"],ans:1,outcome:"B.K.4-BREED",explain:"GMO concerns include ecological effects, cross-pollination, and corporate control."},{q:"Saskatoon berries are important because:",opts:["They are imported","They are a traditional Indigenous food plant of the prairies","They are exotic","They are poisonous"],ans:1,outcome:"B.K.4-TEK",explain:"Saskatoon berries have been a staple food for prairie Indigenous peoples."},{q:"Sustainability in agriculture means:",opts:["Producing as much as possible now","Meeting food needs without depleting resources for future generations","Only using chemicals","Stopping all farming"],ans:1,outcome:"B.K.4-SUST",explain:"Sustainable agriculture balances production with long-term environmental health."},{q:"Alberta's boreal forest covers:",opts:["10%","30%","Over 60%","Less than 5%"],ans:2,outcome:"B.K.4-SUST",explain:"Alberta's boreal forest covers more than 60% of the province."},{q:"An advantage of selective breeding over GMOs is:",opts:["It's faster","It's been practiced safely for thousands of years","It uses labs","It changes DNA directly"],ans:1,outcome:"B.K.4-BREED",explain:"Selective breeding has a long history of safe use across many cultures."}],remediation:{"B.K.4-BREED":{video:"https://www.youtube.com/embed/S7HFG39i6eA",questions:[{q:"Selective breeding changes plants by:",opts:["Lab gene editing","Choosing desired traits over generations"],ans:1,explain:"Farmers select the best plants to produce the next generation."},{q:"GMOs differ from selective breeding because:",opts:["They are the same","Genes are directly modified in a lab"],ans:1,explain:"GMOs use biotechnology; selective breeding uses natural reproduction."}]},"B.K.4-TEK":{video:"https://www.youtube.com/embed/S7HFG39i6eA",questions:[{q:"TEK is:",opts:["Modern technology","Indigenous knowledge of ecosystems"],ans:1,explain:"TEK is place-based ecological understanding built over generations."},{q:"Prescribed fire is:",opts:["Arson","A traditional land management practice"],ans:1,explain:"Controlled burns maintain ecosystem health and prevent larger fires."}]},"B.K.4-SUST":{video:"https://www.youtube.com/embed/S7HFG39i6eA",questions:[{q:"Sustainable forestry includes:",opts:["Clear-cutting everything","Replanting and protecting waterways"],ans:1,explain:"Sustainability means harvesting while ensuring long-term forest health."},{q:"Food security means:",opts:["Expensive food for some","Reliable access to nutritious food for all"],ans:1,explain:"Everyone should have consistent access to affordable, nutritious food."}]}}};
+
+    // ===== L3 ACTIVITIES =====
+    const l3ClassData=[{plant:"🌲 White Spruce",ans:"gymnosperm",explain:"Vascular with cones = gymnosperm."},{plant:"🟢 Sphagnum Moss",ans:"nonvascular",explain:"No transport tubes = non-vascular."},{plant:"🌺 Wild Rose",ans:"angiosperm",explain:"Vascular with flowers/fruit = angiosperm."},{plant:"🌿 Fern",ans:"fern",explain:"Vascular but reproduces with spores — neither angiosperm nor gymnosperm."},{plant:"🍂 Trembling Aspen",ans:"angiosperm",explain:"Vascular with flowers = angiosperm."},{plant:"🌳 Lodgepole Pine",ans:"gymnosperm",explain:"Vascular with cones = gymnosperm."}];
+    let l3ClassIdx=0,l3ClassOk=0;
+    function initL3Class(){l3ClassIdx=0;l3ClassOk=0;renderL3Class();document.getElementById('l3ClassScore').innerHTML='';}
+    function renderL3Class(){if(l3ClassIdx>=l3ClassData.length){document.getElementById('l3ClassScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3ClassOk}/${l3ClassData.length}</div><p>${l3ClassOk>=5?'🎉 Classification expert!':'📖 Review vascular/non-vascular and angiosperm/gymnosperm.'}</p><button class="activity-btn secondary" onclick="initL3Class()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'class',l3ClassOk,l3ClassData.length);return;}const d=l3ClassData[l3ClassIdx];document.getElementById('l3ClassArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:16px">${d.plant}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['angiosperm','gymnosperm','nonvascular','fern'].map(t=>`<button class="activity-btn secondary" onclick="pickL3Class('${t}')" style="flex:1;min-width:80px;font-size:.8rem">${t==='angiosperm'?'🌸 Angiosperm':t==='gymnosperm'?'🌲 Gymnosperm':t==='nonvascular'?'🟢 Non-Vascular':'🌿 Fern'}</button>`).join('')}</div><div id="l3ClassFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3ClassIdx+1} of ${l3ClassData.length}</p>`;}
+    function pickL3Class(ans){const d=l3ClassData[l3ClassIdx],ok=ans===d.ans;if(ok)l3ClassOk++;document.getElementById('l3ClassFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3ClassIdx++;renderL3Class();},1500);}
+
+    const l3AdaptData=[{text:"🌵 Thick stems that store water",ans:"desert",explain:"Water storage is a desert adaptation."},{text:"🍃 Broad floating leaves",ans:"aquatic",explain:"Floating leaves capture sunlight on water surfaces."},{text:"🏔️ Low-growing cushion shape",ans:"alpine",explain:"Low growth resists strong mountain winds."},{text:"🌲 Waxy needle-like leaves",ans:"boreal",explain:"Waxy needles reduce water loss in cold, dry winters."},{text:"💧 Air spaces in stems for buoyancy",ans:"aquatic",explain:"Air pockets keep aquatic plants afloat."}];
+    let l3AdaptIdx=0,l3AdaptOk=0;
+    function initL3Adapt(){l3AdaptIdx=0;l3AdaptOk=0;renderL3Adapt();document.getElementById('l3AdaptScore').innerHTML='';}
+    function renderL3Adapt(){if(l3AdaptIdx>=l3AdaptData.length){document.getElementById('l3AdaptScore').innerHTML=`<div class="activity-score"><div class="score-number">${l3AdaptOk}/${l3AdaptData.length}</div><p>${l3AdaptOk>=4?'🎉 Adaptation ace!':'📖 Review plant adaptations for each environment.'}</p><button class="activity-btn secondary" onclick="initL3Adapt()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(3,'adapt',l3AdaptOk,l3AdaptData.length);return;}const d=l3AdaptData[l3AdaptIdx];document.getElementById('l3AdaptArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['desert','aquatic','alpine','boreal'].map(e=>`<button class="activity-btn secondary" onclick="pickL3Adapt('${e}')" style="flex:1;min-width:80px">${e==='desert'?'🏜️ Desert':e==='aquatic'?'💧 Aquatic':e==='alpine'?'🏔️ Alpine':'🌲 Boreal'}</button>`).join('')}</div><div id="l3AdaptFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l3AdaptIdx+1} of ${l3AdaptData.length}</p>`;}
+    function pickL3Adapt(ans){const d=l3AdaptData[l3AdaptIdx],ok=ans===d.ans;if(ok)l3AdaptOk++;document.getElementById('l3AdaptFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l3AdaptIdx++;renderL3Adapt();},1500);}
+
+    // ===== L4 ACTIVITIES =====
+    const l4GrowthData=[{text:"☀️ You place a plant in a dark closet for 2 weeks.",ans:"etiolated",explain:"Without light → no photosynthesis → pale, stretched growth (etiolated)."},{text:"💧 You water a plant every hour, keeping the soil soaked.",ans:"rootrot",explain:"Too much water → no oxygen in soil → root rot."},{text:"🧪 You add nitrogen-rich fertilizer to a leafy plant.",ans:"growth",explain:"Extra nitrogen → more leaf and stem growth."},{text:"🌡️ You put a tropical plant outside in -20°C Alberta winter.",ans:"death",explain:"Enzymes denature in extreme cold → plant dies."},{text:"🌱 You plant seeds in sandy soil with no fertilizer.",ans:"poor",explain:"Sandy soil drains too fast and lacks nutrients → poor growth."}];
+    let l4GrowthIdx=0,l4GrowthOk=0;
+    function initL4Growth(){l4GrowthIdx=0;l4GrowthOk=0;renderL4Growth();document.getElementById('l4GrowthScore').innerHTML='';}
+    function renderL4Growth(){if(l4GrowthIdx>=l4GrowthData.length){document.getElementById('l4GrowthScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4GrowthOk}/${l4GrowthData.length}</div><p>${l4GrowthOk>=4?'🎉 Growth guru!':'📖 Review the 4 growth factors.'}</p><button class="activity-btn secondary" onclick="initL4Growth()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'growth',l4GrowthOk,l4GrowthData.length);return;}const d=l4GrowthData[l4GrowthIdx];document.getElementById('l4GrowthArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><p style="font-weight:600;margin-bottom:8px">What happens?</p><div style="display:flex;gap:8px;flex-wrap:wrap">${[{k:'etiolated',l:'🌿 Etiolated (pale/stretched)'},{k:'rootrot',l:'🤢 Root Rot'},{k:'growth',l:'📈 More Growth'},{k:'death',l:'💀 Plant Dies'},{k:'poor',l:'😞 Poor Growth'}].map(o=>`<button class="activity-btn secondary" onclick="pickL4Growth('${o.k}')" style="flex:1;min-width:120px;font-size:.8rem">${o.l}</button>`).join('')}</div><div id="l4GrowthFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4GrowthIdx+1} of ${l4GrowthData.length}</p>`;}
+    function pickL4Growth(ans){const d=l4GrowthData[l4GrowthIdx],ok=ans===d.ans;if(ok)l4GrowthOk++;document.getElementById('l4GrowthFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l4GrowthIdx++;renderL4Growth();},1500);}
+
+    const l4MethodData=[{text:"🌾 Growing 500 hectares of wheat on the prairies",ans:"field",explain:"Large-scale grain = field growing."},{text:"🍅 Producing tomatoes year-round in Edmonton",ans:"greenhouse",explain:"Year-round tomatoes in Alberta's cold climate = greenhouse."},{text:"🥬 Lettuce grown vertically in a city building with LED lights",ans:"hydro",explain:"Vertical indoor farming with no soil = hydroponics."},{text:"🌽 Summer corn crop in Southern Alberta",ans:"field",explain:"Seasonal outdoor crop = field growing."},{text:"🌿 Herbs grown on a kitchen counter in nutrient water",ans:"hydro",explain:"Small-scale soilless growing = hydroponics."}];
+    let l4MethodIdx=0,l4MethodOk=0;
+    function initL4Method(){l4MethodIdx=0;l4MethodOk=0;renderL4Method();document.getElementById('l4MethodScore').innerHTML='';}
+    function renderL4Method(){if(l4MethodIdx>=l4MethodData.length){document.getElementById('l4MethodScore').innerHTML=`<div class="activity-score"><div class="score-number">${l4MethodOk}/${l4MethodData.length}</div><p>${l4MethodOk>=4?'🎉 Method master!':'📖 Review the 3 growing methods.'}</p><button class="activity-btn secondary" onclick="initL4Method()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(4,'method',l4MethodOk,l4MethodData.length);return;}const d=l4MethodData[l4MethodIdx];document.getElementById('l4MethodArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px">${['field','greenhouse','hydro'].map(m=>`<button class="activity-btn secondary" onclick="pickL4Method('${m}')" style="flex:1">${m==='field'?'🌾 Field':m==='greenhouse'?'🏡 Greenhouse':'💧 Hydroponics'}</button>`).join('')}</div><div id="l4MethodFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l4MethodIdx+1} of ${l4MethodData.length}</p>`;}
+    function pickL4Method(ans){const d=l4MethodData[l4MethodIdx],ok=ans===d.ans;if(ok)l4MethodOk++;document.getElementById('l4MethodFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l4MethodIdx++;renderL4Method();},1500);}
+
+    // ===== L5 ACTIVITIES =====
+    const l5PestData=[{text:"🐛 Aphids are eating your rose bushes but you want to avoid chemicals.",ans:"biological",explain:"Introduce ladybugs — biological control."},{text:"🌿 Weeds are overtaking a 1000-hectare wheat field quickly.",ans:"chemical",explain:"At this scale, targeted herbicide (chemical) is most practical."},{text:"🐛 Flea beetles return to the same canola field every year.",ans:"cultural",explain:"Crop rotation (cultural) breaks the pest's life cycle."},{text:"🍅 A small organic tomato garden has caterpillars.",ans:"biological",explain:"Hand-picking or introducing parasitic wasps — biological/cultural."},{text:"🏭 A large conventional farm wants to reduce chemical use.",ans:"ipm",explain:"IPM combines monitoring, cultural, biological, and minimal chemical use."}];
+    let l5PestIdx=0,l5PestOk=0;
+    function initL5Pest(){l5PestIdx=0;l5PestOk=0;renderL5Pest();document.getElementById('l5PestScore').innerHTML='';}
+    function renderL5Pest(){if(l5PestIdx>=l5PestData.length){document.getElementById('l5PestScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5PestOk}/${l5PestData.length}</div><p>${l5PestOk>=4?'🎉 Pest expert!':'📖 Review the 4 pest control methods.'}</p><button class="activity-btn secondary" onclick="initL5Pest()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'pest',l5PestOk,l5PestData.length);return;}const d=l5PestData[l5PestIdx];document.getElementById('l5PestArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['chemical','biological','cultural','ipm'].map(m=>`<button class="activity-btn secondary" onclick="pickL5Pest('${m}')" style="flex:1;min-width:80px;font-size:.8rem">${m==='chemical'?'🧪 Chemical':m==='biological'?'🐞 Biological':m==='cultural'?'🔄 Cultural':'⚙️ IPM'}</button>`).join('')}</div><div id="l5PestFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5PestIdx+1} of ${l5PestData.length}</p>`;}
+    function pickL5Pest(ans){const d=l5PestData[l5PestIdx],ok=ans===d.ans;if(ok)l5PestOk++;document.getElementById('l5PestFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5PestIdx++;renderL5Pest();},1500);}
+
+    const l5FarmData=[{practice:"♻️ Using compost as fertilizer",ans:true,explain:"Compost = organic method."},{practice:"🧪 Spraying synthetic herbicide on weeds",ans:false,explain:"Synthetic herbicide = conventional."},{practice:"🐞 Releasing ladybugs to eat aphids",ans:true,explain:"Biological control = organic-compatible."},{practice:"💊 Applying synthetic NPK pellets",ans:false,explain:"Synthetic fertilizer = conventional."},{practice:"🔄 Rotating crops each season",ans:true,explain:"Crop rotation = organic practice (also used in conventional)."}];
+    let l5FarmIdx=0,l5FarmOk=0;
+    function initL5Farm(){l5FarmIdx=0;l5FarmOk=0;renderL5Farm();document.getElementById('l5FarmScore').innerHTML='';}
+    function renderL5Farm(){if(l5FarmIdx>=l5FarmData.length){document.getElementById('l5FarmScore').innerHTML=`<div class="activity-score"><div class="score-number">${l5FarmOk}/${l5FarmData.length}</div><p>${l5FarmOk>=4?'🎉 Farm sorter pro!':'📖 Review organic vs. conventional practices.'}</p><button class="activity-btn secondary" onclick="initL5Farm()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(5,'farm',l5FarmOk,l5FarmData.length);return;}const d=l5FarmData[l5FarmIdx];document.getElementById('l5FarmArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:16px">${d.practice}</p><div style="display:flex;gap:8px;justify-content:center"><button class="activity-btn secondary" onclick="pickL5Farm(true)">🌿 Organic</button><button class="activity-btn secondary" onclick="pickL5Farm(false)">🧪 Conventional</button></div><div id="l5FarmFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l5FarmIdx+1} of ${l5FarmData.length}</p>`;}
+    function pickL5Farm(ans){const d=l5FarmData[l5FarmIdx],ok=ans===d.ans;if(ok)l5FarmOk++;document.getElementById('l5FarmFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l5FarmIdx++;renderL5Farm();},1500);}
+
+    // ===== L6 ACTIVITIES =====
+    const l6DecData=[{text:"🌲 A logging company replants all harvested areas within 2 years.",ans:true,explain:"Replanting = sustainable forestry practice."},{text:"🏭 A farm dumps excess fertilizer into a nearby river.",ans:false,explain:"Chemical runoff pollutes waterways — unsustainable."},{text:"🔥 Indigenous communities use controlled burns to manage grasslands.",ans:true,explain:"Prescribed fire is a proven sustainable land management technique."},{text:"🌽 A company creates GMO corn resistant to drought.",ans:true,explain:"Drought-resistant crops = sustainable (reduces water needs)."},{text:"🪓 Clear-cutting an entire hillside without replanting.",ans:false,explain:"Clear-cutting without replanting causes erosion and habitat loss."}];
+    let l6DecIdx=0,l6DecOk=0;
+    function initL6Dec(){l6DecIdx=0;l6DecOk=0;renderL6Dec();document.getElementById('l6DecisionScore').innerHTML='';}
+    function renderL6Dec(){if(l6DecIdx>=l6DecData.length){document.getElementById('l6DecisionScore').innerHTML=`<div class="activity-score"><div class="score-number">${l6DecOk}/${l6DecData.length}</div><p>${l6DecOk>=4?'🎉 Decision expert!':'📖 Review sustainable vs. unsustainable practices.'}</p><button class="activity-btn secondary" onclick="initL6Dec()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(6,'decision',l6DecOk,l6DecData.length);return;}const d=l6DecData[l6DecIdx];document.getElementById('l6DecisionArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;margin-bottom:16px">${d.text}</p><div style="display:flex;gap:8px;justify-content:center"><button class="activity-btn secondary" onclick="pickL6Dec(true)">✅ Sustainable</button><button class="activity-btn secondary" onclick="pickL6Dec(false)">❌ Unsustainable</button></div><div id="l6DecFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l6DecIdx+1} of ${l6DecData.length}</p>`;}
+    function pickL6Dec(ans){const d=l6DecData[l6DecIdx],ok=ans===d.ans;if(ok)l6DecOk++;document.getElementById('l6DecFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l6DecIdx++;renderL6Dec();},1500);}
+
+    const l6TEKData=[{indigenous:"🔥 Prescribed burns to clear brush",modern:"forestry",explain:"Modern forestry now uses prescribed burns — learned from Indigenous practices."},{indigenous:"🌿 Willow bark for pain relief",modern:"medicine",explain:"Willow bark → salicylic acid → aspirin. Traditional knowledge led to modern medicine."},{indigenous:"🫐 Harvesting only what is needed, leaving some for regrowth",modern:"sustainability",explain:"Sustainable harvesting = taking only what ecosystems can regenerate."},{indigenous:"🌾 Planting the Three Sisters (corn, beans, squash together)",modern:"companion",explain:"Three Sisters = companion planting. Beans fix nitrogen, squash shades soil, corn provides structure."}];
+    let l6TEKIdx=0,l6TEKOk=0;
+    function initL6TEK(){l6TEKIdx=0;l6TEKOk=0;renderL6TEK();document.getElementById('l6TEKScore').innerHTML='';}
+    function renderL6TEK(){if(l6TEKIdx>=l6TEKData.length){document.getElementById('l6TEKScore').innerHTML=`<div class="activity-score"><div class="score-number">${l6TEKOk}/${l6TEKData.length}</div><p>${l6TEKOk>=3?'🎉 Knowledge connector!':'📖 Review the connections between Indigenous and modern practices.'}</p><button class="activity-btn secondary" onclick="initL6TEK()" style="margin-top:8px">🔄 Try Again</button></div>`;markActivityDone(6,'tek',l6TEKOk,l6TEKData.length);return;}const d=l6TEKData[l6TEKIdx];document.getElementById('l6TEKArea').innerHTML=`<div class="glass-card" style="padding:16px"><p style="font-size:.95rem;font-weight:700;margin-bottom:16px">${d.indigenous}</p><p style="margin-bottom:12px">Which modern practice does this connect to?</p><div style="display:flex;gap:8px;flex-wrap:wrap">${['forestry','medicine','sustainability','companion'].map(m=>`<button class="activity-btn secondary" onclick="pickL6TEK('${m}')" style="flex:1;min-width:100px;font-size:.8rem">${m==='forestry'?'🌲 Forestry':m==='medicine'?'💊 Medicine':m==='sustainability'?'♻️ Sustainability':'🌱 Companion Planting'}</button>`).join('')}</div><div id="l6TEKFb" style="margin-top:8px"></div></div><p style="color:var(--text3);font-size:.8rem">${l6TEKIdx+1} of ${l6TEKData.length}</p>`;}
+    function pickL6TEK(ans){const d=l6TEKData[l6TEKIdx],ok=ans===d.modern;if(ok)l6TEKOk++;document.getElementById('l6TEKFb').innerHTML=`<div style="padding:10px;border-radius:8px;background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.08)'};font-size:.85rem"><strong>${ok?'✅':'❌'}</strong> ${d.explain}</div>`;setTimeout(()=>{l6TEKIdx++;renderL6TEK();},1500);}
+
+    // ===== SAVE/LOAD for L3-L7 =====
+    function saveCR3(){localStorage.setItem('g7-unitb-l3-cr',document.getElementById('crResponse3').value);}
+    function saveReflection3(){localStorage.setItem('g7-unitb-l3-reflect',document.getElementById('reflectionText3').value);}
+    function saveCR4(){localStorage.setItem('g7-unitb-l4-cr',document.getElementById('crResponse4').value);}
+    function saveReflection4(){localStorage.setItem('g7-unitb-l4-reflect',document.getElementById('reflectionText4').value);}
+    function saveCR5(){localStorage.setItem('g7-unitb-l5-cr',document.getElementById('crResponse5').value);}
+    function saveReflection5(){localStorage.setItem('g7-unitb-l5-reflect',document.getElementById('reflectionText5').value);}
+    function saveCR6(){localStorage.setItem('g7-unitb-l6-cr',document.getElementById('crResponse6').value);}
+    function saveReflection6(){localStorage.setItem('g7-unitb-l6-reflect',document.getElementById('reflectionText6').value);}
+    function savePTb(step){localStorage.setItem('g7-unitb-pt'+step,document.getElementById('pt'+step).value);}
+    function loadLTextB(n){
+      const cr=document.getElementById('crResponse'+n);if(cr)cr.value=localStorage.getItem('g7-unitb-l'+n+'-cr')||'';
+      const rf=document.getElementById('reflectionText'+n);if(rf)rf.value=localStorage.getItem('g7-unitb-l'+n+'-reflect')||'';
+    }
+    function loadPTb(){for(let i=1;i<=5;i++){const el=document.getElementById('pt'+i);if(el)el.value=localStorage.getItem('g7-unitb-pt'+i)||'';}}
+    function submitPTb(){
+      for(let i=1;i<=5;i++){savePTb(i);}
+      localStorage.setItem('g7-unitb-lesson7-passed','true');
+      document.getElementById('ptSubmitBtnB').textContent='✅ Submitted!';
+      document.getElementById('ptSubmitBtnB').disabled=true;
+      updateLock();updateProgress();
+      alert('🏆 Congratulations! Your School Garden Plan has been submitted. Your teacher will review it.');
+    }
+
+    // ===== ACTIVITY GATE =====
+    actComplete = {
+      l1:{parts:false,photo:false,roles:false},
+      l2:{germ:false,poll:false,growth:false},
+      l3:{class:false,adapt:false},
+      l4:{growth:false,method:false},
+      l5:{pest:false,farm:false},
+      l6:{decision:false,tek:false}
+    };
+
+    // ===== PAGE LOAD CALLBACK =====
+    function onPageLoad(page) {
+      if (page === 'lesson1') { initParts(); initPhoto(); initRoles(); loadSavedText(); }
+      if (page === 'lesson1-quiz') initQuiz('quiz1', quizBanks);
+      if (page === 'lesson2') { initGerm(); initPoll(); initGrowth(); loadSavedText2(); }
+      if (page === 'lesson2-quiz') initQuiz('quiz2', quizBanks);
+      if (page === 'lesson3') { initL3Class(); initL3Adapt(); loadLTextB(3); }
+      if (page === 'lesson3-quiz') initQuiz('quiz3', quizBanks);
+      if (page === 'lesson4') { initL4Growth(); initL4Method(); loadLTextB(4); }
+      if (page === 'lesson4-quiz') initQuiz('quiz4', quizBanks);
+      if (page === 'lesson5') { initL5Pest(); initL5Farm(); loadLTextB(5); }
+      if (page === 'lesson5-quiz') initQuiz('quiz5', quizBanks);
+      if (page === 'lesson6') { initL6Dec(); initL6TEK(); loadLTextB(6); }
+      if (page === 'lesson6-quiz') initQuiz('quiz6', quizBanks);
+      if (page === 'lesson7') loadPTb();
+      if (page === 'teacher') renderTeacherDashboard();
+    }
+
+    // ===== PROGRESS =====
+    function updateLock() {
+      const totalLessons = 7;
+      for (let i = 1; i <= totalLessons; i++) {
+        const passed = localStorage.getItem(`g7-unitb-lesson${i}-passed`);
+        if (passed) {
+          document.querySelectorAll('.nav-item').forEach(n => {
+            if (n.dataset.page === `lesson${i}` || n.dataset.page === `lesson${i}-quiz`) n.classList.add('completed');
+          });
+          const card = document.getElementById(`homeCard${i}`);
+          if (card) { card.classList.remove('locked'); card.classList.add('completed'); const btn = card.querySelector('.card-btn'); if (btn) btn.textContent = 'Review ✓'; }
+          const next = i + 1;
+          if (next <= totalLessons) {
+            document.querySelectorAll('.nav-item').forEach(n => {
+              if (n.dataset.page === `lesson${next}` || n.dataset.page === `lesson${next}-quiz`) n.classList.remove('locked');
+            });
+            const nc = document.getElementById(`homeCard${next}`);
+            if (nc) { nc.classList.remove('locked'); const btn = nc.querySelector('.card-btn'); if (btn && btn.textContent.includes('Locked')) btn.textContent = 'Start Lesson →'; }
+          }
+        }
+      }
+    }
+    function updateProgress() {
+      let passed = 0;
+      for (let i = 1; i <= 7; i++) { if (localStorage.getItem(`g7-unitb-lesson${i}-passed`)) passed++; }
+      const fill = document.getElementById('progressFill');
+      if (fill) fill.style.width = Math.round(passed / 7 * 100) + '%';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { updateLock(); updateProgress(); });
+  </script>
+</body>
+</html>
