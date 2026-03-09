@@ -17,7 +17,7 @@
     .landing-logo h2{font-size:1.1rem;color:var(--accent);letter-spacing:-.5px}
     .landing-logo span{display:block;font-family:'Inter';font-size:.7rem;color:var(--text3);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
 
-    .landing-progress{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.85rem;color:var(--text3);width:100%;margin-bottom:16px}
+    .landing-progress{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.85rem;color:var(--text3);width:100%;margin-bottom:8px}
     .landing-progress-bar{width:160px;height:8px;background:var(--card);border-radius:20px;overflow:hidden}
     .landing-progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#4ade80,#38bdf8,#a78bfa);transition:width .5s ease}
 
@@ -36,13 +36,22 @@
     body.light .unit-card[data-unit="d"]{--accent:#0284c7;--accent2:#0369a1;border-top-color:#0284c7}
     body.light .unit-card[data-unit="e"]{--accent:#7c3aed;--accent2:#6d28d9;border-top-color:#7c3aed}
 
-    .stats-bar{display:flex;justify-content:center;gap:32px;margin:0 auto 40px;flex-wrap:wrap}
+    .stats-bar{display:flex;justify-content:center;gap:32px;margin:0 auto 40px;flex-wrap:wrap;max-width:600px}
     .stat{text-align:center}
     .stat .stat-num{font-size:2rem;font-weight:800;font-family:'Outfit';color:var(--accent)}
     .stat .stat-label{font-size:.78rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
 
     .footer{text-align:center;padding:40px 20px 20px;color:var(--text3);font-size:.8rem}
     .footer a{color:var(--accent)}
+
+    /* Mobile responsiveness */
+    @media(max-width:600px){
+      .landing-hero img{height:auto !important;max-width:90%;margin:0 auto 16px !important}
+      .landing-hero h1{font-size:1.6rem}
+      .landing-hero h2{font-size:1rem !important}
+      .stats-bar{gap:20px}
+      .unit-grid{grid-template-columns:1fr !important}
+    }
   </style>
 </head>
 <body>
