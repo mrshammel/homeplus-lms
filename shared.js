@@ -135,11 +135,19 @@ function checkSignIn() {
   const display = document.getElementById('studentDisplay');
   if (name && email) {
     if (overlay) overlay.classList.add('hidden');
-    if (display) display.textContent = '👤 ' + name;
+    if (display) {
+      display.innerHTML = '👤 ' + name + ' <a href="#" onclick="event.preventDefault();studentSignOut()" title="Sign out" style="color:var(--text3);text-decoration:none;margin-left:6px;font-size:.75rem;opacity:.7">✕</a>';
+    }
   } else {
     if (overlay) overlay.classList.remove('hidden');
     if (display) display.textContent = '';
   }
+}
+function studentSignOut() {
+  if (!confirm('Sign out? Your progress on this device will be cleared.')) return;
+  localStorage.removeItem('g7-student-name');
+  localStorage.removeItem('g7-student-email');
+  location.reload();
 }
 
 // ===== GRADE RECORDING =====
