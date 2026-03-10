@@ -184,6 +184,8 @@ function handleStudentCredential(response) {
   localStorage.setItem('g7-student-name', payload.name || payload.email.split('@')[0]);
   localStorage.setItem('g7-student-email', payload.email);
   localStorage.setItem('g7-student-avatar', payload.picture || '');
+  // Sync to Firebase for real-time teacher dashboard
+  try { if (typeof syncStudentLogin === 'function') syncStudentLogin(payload.name, payload.email, payload.picture || ''); } catch(e) {}
   checkSignIn();
 }
 
@@ -200,6 +202,8 @@ function manualStudentSignIn() {
   localStorage.setItem('g7-student-name', name.trim());
   localStorage.setItem('g7-student-email', email.trim());
   localStorage.setItem('g7-student-avatar', '');
+  // Sync to Firebase for real-time teacher dashboard
+  try { if (typeof syncStudentLogin === 'function') syncStudentLogin(name.trim(), email.trim(), ''); } catch(e) {}
   checkSignIn();
 }
 
@@ -237,6 +241,8 @@ function studentSignOut() {
   localStorage.removeItem('g7-teacher-name');
   localStorage.removeItem('g7-teacher-email');
   localStorage.removeItem('g7-teacher-avatar');
+  // Sync sign-out to Firebase
+  try { if (typeof syncStudentSignOut === 'function') syncStudentSignOut(localStorage.getItem('g7-student-email')); } catch(e) {}
   // Revoke Google session if available
   try { if (typeof google !== 'undefined' && google.accounts) google.accounts.id.disableAutoSelect(); } catch(e) {}
   location.reload();
@@ -260,6 +266,8 @@ function recordGrade(quizId, lessonTitle, score, total, passed) {
   if (url) {
     fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) }).catch(e => console.log('Apps Script sync:', e));
   }
+  // Sync quiz result to Firebase
+  try { if (typeof syncQuizResult === 'function') { var unitId = typeof getUnitId === 'function' ? getUnitId() : null; if (unitId) syncQuizResult(unitId, quizId, score, total, passed); } } catch(e) {}
 }
 
 // ===== CSV EXPORT =====
