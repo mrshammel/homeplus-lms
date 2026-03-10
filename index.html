@@ -53,6 +53,7 @@
       .unit-grid{grid-template-columns:1fr !important}
     }
   </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -61,8 +62,8 @@
     <div class="signin-card">
       <div style="font-size:3rem;margin-bottom:12px">🔬</div>
       <h2>Welcome, Scientist!</h2>
-      <p>Enter your name and email to track your progress across all units.</p>
-      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+      <p>Sign in with your Google account to save your progress.</p>
+      <div id="studentGoogleBtn" style="display:flex;justify-content:center;margin-top:8px"></div>
     </div>
   </div>
 

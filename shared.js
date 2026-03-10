@@ -119,44 +119,126 @@ function toggleExpand(btn) {
   btn.nextElementSibling.classList.toggle('open');
 }
 
-// ===== SIGN-IN =====
-function googleSignIn() {
+// ===== GOOGLE SIGN-IN (STUDENT) =====
+// Google OAuth Client ID — same one used by the teacher dashboard
+const STUDENT_GOOGLE_CLIENT_ID = localStorage.getItem('g7-google-client-id') || '487495658772-eck3r6d7s9in7sdc87h6knov95tr4v42.apps.googleusercontent.com';
+
+/** Decode a Google JWT token to extract user info */
+function parseJwtShared(token) {
+  try {
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+  } catch (e) { return null; }
+}
+
+/** Initialize Google Sign-In for students — renders the button inside the sign-in overlay */
+function initStudentGoogleSignIn() {
+  const btnContainer = document.getElementById('studentGoogleBtn');
+  if (!btnContainer) return;
+  // If already signed in, no need to render
+  if (localStorage.getItem('g7-student-name') && localStorage.getItem('g7-student-email')) return;
+
+  const isFileProtocol = window.location.protocol === 'file:';
+
+  // On file://, Google Sign-In will never work — show manual button immediately
+  if (isFileProtocol) {
+    btnContainer.innerHTML = '<p style="color:var(--text3);font-size:.82rem;margin-bottom:10px">Google Sign-In requires http/https. Use manual sign-in for local testing.</p>' +
+      '<button class="signin-btn" onclick="manualStudentSignIn()" style="font-size:.9rem">📝 Sign In Manually</button>';
+    return;
+  }
+
+  // On http/https, try to render Google Sign-In button
+  try {
+    if (typeof google === 'undefined' || !google.accounts) throw new Error('GIS not loaded');
+    google.accounts.id.initialize({
+      client_id: STUDENT_GOOGLE_CLIENT_ID,
+      callback: handleStudentCredential,
+      auto_select: false
+    });
+    google.accounts.id.renderButton(btnContainer, {
+      theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', width: 280
+    });
+    // Also add a subtle manual fallback link below the Google button
+    const fallback = document.createElement('div');
+    fallback.style.cssText = 'margin-top:12px;font-size:.78rem;color:var(--text3)';
+    fallback.innerHTML = '<a href="#" onclick="event.preventDefault();manualStudentSignIn()" style="color:var(--text3);text-decoration:underline">Use manual sign-in instead</a>';
+    btnContainer.appendChild(fallback);
+  } catch (e) {
+    // GIS failed to load entirely
+    console.log('Google Sign-In unavailable:', e.message);
+    btnContainer.innerHTML = '<p style="color:var(--text3);font-size:.82rem;margin-bottom:10px">Google Sign-In is unavailable.</p>' +
+      '<button class="signin-btn" onclick="manualStudentSignIn()" style="font-size:.9rem">📝 Sign In Manually</button>';
+  }
+}
+
+/** Handle Google credential response for students */
+function handleStudentCredential(response) {
+  const payload = parseJwtShared(response.credential);
+  if (!payload || !payload.email) { alert('Sign-in failed. Please try again.'); return; }
+  // Clear any teacher session so lessons lock for students
+  localStorage.removeItem('g7-teacher-unlock');
+  localStorage.removeItem('g7-teacher-name');
+  localStorage.removeItem('g7-teacher-email');
+  localStorage.removeItem('g7-teacher-avatar');
+  // Store verified Google identity
+  localStorage.setItem('g7-student-name', payload.name || payload.email.split('@')[0]);
+  localStorage.setItem('g7-student-email', payload.email);
+  localStorage.setItem('g7-student-avatar', payload.picture || '');
+  checkSignIn();
+}
+
+/** Manual fallback sign-in (for file:// or offline use) */
+function manualStudentSignIn() {
   const name = prompt('Enter your full name (First Last):');
   if (!name || !name.trim()) return;
   const email = prompt('Enter your school email:');
   if (!email || !email.trim()) return;
-  // Clear any teacher session so lessons lock for students
   localStorage.removeItem('g7-teacher-unlock');
   localStorage.removeItem('g7-teacher-name');
   localStorage.removeItem('g7-teacher-email');
   localStorage.removeItem('g7-teacher-avatar');
   localStorage.setItem('g7-student-name', name.trim());
   localStorage.setItem('g7-student-email', email.trim());
+  localStorage.setItem('g7-student-avatar', '');
   checkSignIn();
 }
+
+/** Legacy wrapper — some HTML files still call googleSignIn() */
+function googleSignIn() { manualStudentSignIn(); }
+
+/** Check sign-in status — hide overlay if signed in, show student info in top bar */
 function checkSignIn() {
   const name = localStorage.getItem('g7-student-name');
   const email = localStorage.getItem('g7-student-email');
+  const avatar = localStorage.getItem('g7-student-avatar');
   const overlay = document.getElementById('signinOverlay');
   const display = document.getElementById('studentDisplay');
   if (name && email) {
     if (overlay) overlay.classList.add('hidden');
     if (display) {
-      display.innerHTML = '👤 ' + name + ' <a href="#" onclick="event.preventDefault();studentSignOut()" title="Sign out" style="color:var(--text3);text-decoration:none;margin-left:6px;font-size:.75rem;opacity:.7">✕</a>';
+      const firstName = name.split(' ')[0];
+      const avatarHtml = avatar ? '<img src="' + avatar + '" alt="" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:6px;border:1.5px solid var(--accent)">' : '👤 ';
+      display.innerHTML = avatarHtml + firstName +
+        ' <a href="#" onclick="event.preventDefault();studentSignOut()" title="Sign out" style="color:var(--text3);text-decoration:none;margin-left:6px;font-size:.75rem;opacity:.7">✕</a>';
     }
   } else {
     if (overlay) overlay.classList.remove('hidden');
     if (display) display.textContent = '';
   }
 }
+
+/** Student sign out — clear credentials and reload */
 function studentSignOut() {
   if (!confirm('Sign out? Your progress on this device will be cleared.')) return;
   localStorage.removeItem('g7-student-name');
   localStorage.removeItem('g7-student-email');
+  localStorage.removeItem('g7-student-avatar');
   localStorage.removeItem('g7-teacher-unlock');
   localStorage.removeItem('g7-teacher-name');
   localStorage.removeItem('g7-teacher-email');
   localStorage.removeItem('g7-teacher-avatar');
+  // Revoke Google session if available
+  try { if (typeof google !== 'undefined' && google.accounts) google.accounts.id.disableAutoSelect(); } catch(e) {}
   location.reload();
 }
 
@@ -1005,6 +1087,8 @@ async function submitToTeacher(payload) {
 document.addEventListener('DOMContentLoaded', () => {
   loadTheme();
   checkSignIn();
+  // Init Google Sign-In button (after a short delay to let GIS load)
+  setTimeout(() => { try { initStudentGoogleSignIn(); } catch(e) {} }, 300);
   loadSavedText();
   initReadToMe();
   if (typeof updateLock === 'function') updateLock();
