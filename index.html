@@ -92,7 +92,10 @@
     </div>
     <div class="stat"><div class="stat-num" id="statLessons">0</div><div class="stat-label">Lessons Passed</div></div>
     <div class="stat"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Activities Done</div></div>
-    <div class="stat"><div class="stat-num" id="statAvg">—</div><div class="stat-label">Avg Score</div></div>
+    <a href="grades.html" class="stat" style="text-decoration:none;cursor:pointer;border:1px solid var(--border);border-radius:var(--radius);padding:12px 20px;background:var(--card);transition:all .3s;position:relative" onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(74,222,128,.15)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+      <div class="stat-num" id="statAvg">—</div>
+      <div class="stat-label">My Grades →</div>
+    </a>
   </div>
 
   <!-- UNIT GRID -->

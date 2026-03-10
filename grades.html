@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Grades — Grade 7 Science</title>
+  <meta name="description" content="View your quiz scores, activity results, and overall grade for Grade 7 Science.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .grades-wrap{max-width:900px;margin:0 auto;padding:0 24px 60px}
+    .grades-topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;max-width:900px;margin:0 auto}
+    .grades-topbar .back-btn{display:flex;align-items:center;gap:8px;color:var(--text3);text-decoration:none;font-size:.88rem;padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);transition:all .3s}
+    .grades-topbar .back-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* Grade ring */
+    .grade-hero{text-align:center;margin:20px auto 40px;position:relative}
+    .grade-ring{width:180px;height:180px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 16px;position:relative;background:var(--card);border:3px solid var(--border)}
+    .grade-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(var(--ring-color,#4ade80) var(--ring-pct,0%),transparent 0%);z-index:-1;transition:all 1s ease}
+    .grade-ring .grade-pct{font-family:'Outfit',sans-serif;font-size:3.2rem;font-weight:800;color:var(--accent);line-height:1}
+    .grade-ring .grade-label{font-size:.78rem;color:var(--text3);margin-top:4px}
+    .grade-letter{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-top:8px}
+    .grade-summary{font-size:.88rem;color:var(--text3);margin-top:4px}
+
+    /* Stats row */
+    .grade-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+    .grade-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+    .grade-stat .gs-val{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent)}
+    .grade-stat .gs-lbl{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+    @media(max-width:600px){.grade-stats{grid-template-columns:repeat(2,1fr)}}
+
+    /* Unit section */
+    .unit-grades{margin-bottom:28px}
+    .unit-grades-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .unit-grades-header h3{font-size:1rem;font-weight:700;color:var(--text)}
+    .unit-grades-header .unit-avg{margin-left:auto;font-size:.85rem;font-weight:700}
+
+    /* Grade row */
+    .grade-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;transition:all .2s}
+    .grade-row:hover{border-color:var(--accent);transform:translateX(4px)}
+    .grade-row .gr-icon{font-size:1.3rem;flex-shrink:0}
+    .grade-row .gr-info{flex:1;min-width:0}
+    .grade-row .gr-title{font-weight:600;font-size:.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .grade-row .gr-meta{font-size:.72rem;color:var(--text3);display:flex;gap:12px;margin-top:2px}
+    .grade-row .gr-score{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;flex-shrink:0;min-width:50px;text-align:right}
+    .grade-row .gr-bar{width:80px;height:6px;border-radius:3px;background:var(--card2);overflow:hidden;flex-shrink:0}
+    .grade-row .gr-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+    .grade-row .gr-badge{font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:600;flex-shrink:0}
+    .passed{background:rgba(74,222,128,.12);color:#4ade80}
+    .failed{background:rgba(239,68,68,.1);color:#ef4444}
+    .retry{background:rgba(251,191,36,.12);color:#fbbf24}
+
+    /* Empty state */
+    .empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
+    .empty-state .empty-icon{font-size:4rem;margin-bottom:16px}
+    .empty-state h3{color:var(--text);margin-bottom:8px}
+    .empty-state a{color:var(--accent);text-decoration:none;font-weight:600}
+  </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">📊</div>
+      <h2>View Your Grades</h2>
+      <p>Sign in with your Google account to see your scores.</p>
+      <div id="studentGoogleBtn" style="display:flex;justify-content:center;margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="grades-topbar">
+    <a href="index.html" class="back-btn">← Back to Units</a>
+    <div class="top-actions">
+      <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+  </div>
+
+  <!-- GRADE HERO -->
+  <div class="grades-wrap">
+    <div class="grade-hero">
+      <div class="grade-ring" id="gradeRing">
+        <div class="grade-pct" id="gradePct">—</div>
+        <div class="grade-label">Overall Grade</div>
+      </div>
+      <div class="grade-letter" id="gradeLetter"></div>
+      <div class="grade-summary" id="gradeSummary"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="grade-stats" id="gradeStats"></div>
+
+    <!-- GRADES BY UNIT -->
+    <div id="gradesList"></div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    // ===== GRADE DATA =====
+    const unitMeta = {
+      a: { name: 'Interactions & Ecosystems', icon: '🌿', lessons: 8, prefix: 'unita' },
+      b: { name: 'Plants for Food & Fibre', icon: '🌱', lessons: 7, prefix: 'unitb' },
+      c: { name: 'Heat & Temperature', icon: '🔥', lessons: 6, prefix: 'unitc' },
+      d: { name: 'Structures & Forces', icon: '🏗️', lessons: 7, prefix: 'unitd' },
+      e: { name: 'Planet Earth', icon: '🌍', lessons: 7, prefix: 'unite' }
+    };
+
+    function getGradeColor(pct) {
+      if (pct >= 80) return '#4ade80';
+      if (pct >= 65) return '#fbbf24';
+      return '#ef4444';
+    }
+    function getGradeLetter(pct) {
+      if (pct >= 90) return 'A+';
+      if (pct >= 85) return 'A';
+      if (pct >= 80) return 'A-';
+      if (pct >= 77) return 'B+';
+      if (pct >= 73) return 'B';
+      if (pct >= 70) return 'B-';
+      if (pct >= 67) return 'C+';
+      if (pct >= 63) return 'C';
+      if (pct >= 60) return 'C-';
+      if (pct >= 55) return 'D+';
+      if (pct >= 50) return 'D';
+      return 'F';
+    }
+
+    function renderGrades() {
+      const grades = JSON.parse(localStorage.getItem('g7-grades') || '[]');
+      const email = localStorage.getItem('g7-student-email') || localStorage.getItem('g7-email') || '';
+
+      // Filter to this student's grades
+      const myGrades = grades.filter(g => !email || g.email === email || g.email === 'unknown');
+
+      if (myGrades.length === 0) {
+        document.getElementById('gradeStats').innerHTML = '';
+        document.getElementById('gradesList').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📝</div>
+            <h3>No Grades Yet</h3>
+            <p>Complete quizzes in your units to see your grades here.</p>
+            <a href="index.html">← Go to Units</a>
+          </div>`;
+        return;
+      }
+
+      // Calculate overall stats
+      const quizGrades = myGrades.filter(g => g.quizId && g.quizId.startsWith('quiz'));
+      const totalScore = quizGrades.reduce((s, g) => s + g.score, 0);
+      const totalPossible = quizGrades.reduce((s, g) => s + g.total, 0);
+      const overallPct = totalPossible > 0 ? Math.round(totalScore / totalPossible * 100) : 0;
+      const passedCount = quizGrades.filter(g => g.passed).length;
+      const totalAttempts = quizGrades.reduce((s, g) => s + (g.attempts || 1), 0);
+      const bestScore = quizGrades.length ? Math.max(...quizGrades.map(g => g.percentage)) : 0;
+
+      // Grade ring
+      const ring = document.getElementById('gradeRing');
+      ring.style.setProperty('--ring-pct', overallPct + '%');
+      ring.style.setProperty('--ring-color', getGradeColor(overallPct));
+      document.getElementById('gradePct').textContent = overallPct + '%';
+      document.getElementById('gradePct').style.color = getGradeColor(overallPct);
+
+      const letter = getGradeLetter(overallPct);
+      document.getElementById('gradeLetter').textContent = letter;
+      document.getElementById('gradeLetter').style.color = getGradeColor(overallPct);
+      document.getElementById('gradeSummary').textContent = passedCount + ' of ' + quizGrades.length + ' quizzes passed';
+
+      // Stats row
+      document.getElementById('gradeStats').innerHTML = [
+        { val: quizGrades.length, lbl: 'Quizzes Taken' },
+        { val: passedCount, lbl: 'Quizzes Passed' },
+        { val: bestScore + '%', lbl: 'Best Score' },
+        { val: totalAttempts, lbl: 'Total Attempts' }
+      ].map(s => `<div class="grade-stat"><div class="gs-val">${s.val}</div><div class="gs-lbl">${s.lbl}</div></div>`).join('');
+
+      // Group by unit
+      const unitGroups = {};
+      const unitKeys = Object.keys(unitMeta);
+      unitKeys.forEach(u => { unitGroups[u] = []; });
+
+      quizGrades.forEach(g => {
+        // Determine which unit this quiz belongs to
+        let assignedUnit = null;
+        unitKeys.forEach(u => {
+          const p = unitMeta[u].prefix;
+          if (g.quizId && (g.quizId.includes(p) || g.quizId.includes('unit' + u) || g.quizId.includes('-' + u + '-'))) {
+            assignedUnit = u;
+          }
+        });
+        // Fallback: try to match from lessonTitle
+        if (!assignedUnit && g.lessonTitle) {
+          unitKeys.forEach(u => {
+            if (g.lessonTitle.toLowerCase().includes(unitMeta[u].name.toLowerCase().split(' ')[0].toLowerCase())) {
+              assignedUnit = u;
+            }
+          });
+        }
+        // Fallback: try quizId pattern like quiz1, quiz2 etc
+        if (!assignedUnit) assignedUnit = 'a'; // default
+        unitGroups[assignedUnit].push(g);
+      });
+
+      // Also gather lesson pass status for each unit
+      let html = '';
+      unitKeys.forEach(u => {
+        const meta = unitMeta[u];
+        const unitGrades = unitGroups[u];
+        
+        // Count lesson passes
+        let lessonsPassed = 0;
+        for (let i = 1; i <= meta.lessons; i++) {
+          if (localStorage.getItem('g7-unit' + u + '-lesson' + i + '-passed')) lessonsPassed++;
+        }
+
+        // Skip units with no data
+        if (unitGrades.length === 0 && lessonsPassed === 0) return;
+
+        const unitAvg = unitGrades.length > 0 
+          ? Math.round(unitGrades.reduce((s,g) => s + g.percentage, 0) / unitGrades.length) 
+          : 0;
+        const avgColor = getGradeColor(unitAvg);
+
+        html += `<div class="unit-grades">
+          <div class="unit-grades-header">
+            <span style="font-size:1.3rem">${meta.icon}</span>
+            <h3>Unit ${u.toUpperCase()} — ${meta.name}</h3>
+            ${unitGrades.length > 0 ? `<div class="unit-avg" style="color:${avgColor}">${unitAvg}% avg</div>` : ''}
+          </div>`;
+
+        // Lesson pass rows
+        for (let i = 1; i <= meta.lessons; i++) {
+          const passed = localStorage.getItem('g7-unit' + u + '-lesson' + i + '-passed');
+          const quizForLesson = unitGrades.find(g => g.quizId && g.quizId.includes(String(i)));
+
+          if (quizForLesson) {
+            const pct = quizForLesson.percentage;
+            const color = getGradeColor(pct);
+            const attempts = quizForLesson.attempts || 1;
+            const date = quizForLesson.timestamp ? new Date(quizForLesson.timestamp).toLocaleDateString('en-CA', {month:'short', day:'numeric'}) : '';
+            
+            html += `<div class="grade-row">
+              <div class="gr-icon">${quizForLesson.passed ? '✅' : '❌'}</div>
+              <div class="gr-info">
+                <div class="gr-title">${quizForLesson.lessonTitle || 'Lesson ' + i + ' Quiz'}</div>
+                <div class="gr-meta">
+                  <span>${quizForLesson.score}/${quizForLesson.total} correct</span>
+                  <span>${attempts > 1 ? attempts + ' attempts' : '1st try'}</span>
+                  ${date ? '<span>' + date + '</span>' : ''}
+                </div>
+              </div>
+              <div class="gr-score" style="color:${color}">${pct}%</div>
+              <div class="gr-bar"><div class="gr-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+              <span class="gr-badge ${quizForLesson.passed ? 'passed' : 'failed'}">${quizForLesson.passed ? 'Passed' : 'Retry'}</span>
+            </div>`;
+          } else if (passed) {
+            html += `<div class="grade-row">
+              <div class="gr-icon">✅</div>
+              <div class="gr-info">
+                <div class="gr-title">Lesson ${i} Quiz</div>
+                <div class="gr-meta"><span>Passed</span></div>
+              </div>
+              <div class="gr-score" style="color:#4ade80">✓</div>
+              <div class="gr-bar"><div class="gr-bar-fill" style="width:100%;background:#4ade80"></div></div>
+              <span class="gr-badge passed">Passed</span>
+            </div>`;
+          }
+        }
+
+        // Show remaining quizzes that didn't match a lesson number
+        const unmatchedGrades = unitGrades.filter(g => {
+          for (let i = 1; i <= meta.lessons; i++) {
+            if (g.quizId && g.quizId.includes(String(i))) return false;
+          }
+          return true;
+        });
+        unmatchedGrades.forEach(g => {
+          const pct = g.percentage;
+          const color = getGradeColor(pct);
+          html += `<div class="grade-row">
+            <div class="gr-icon">${g.passed ? '✅' : '❌'}</div>
+            <div class="gr-info">
+              <div class="gr-title">${g.lessonTitle || g.quizId || 'Quiz'}</div>
+              <div class="gr-meta"><span>${g.score}/${g.total}</span></div>
+            </div>
+            <div class="gr-score" style="color:${color}">${pct}%</div>
+            <div class="gr-bar"><div class="gr-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+            <span class="gr-badge ${g.passed ? 'passed' : 'failed'}">${g.passed ? 'Passed' : 'Retry'}</span>
+          </div>`;
+        });
+
+        html += '</div>';
+      });
+
+      if (!html) {
+        html = `<div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3>No Grades Yet</h3>
+          <p>Complete quizzes to see your scores here.</p>
+          <a href="index.html">← Go to Units</a>
+        </div>`;
+      }
+
+      document.getElementById('gradesList').innerHTML = html;
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGrades();
+    });
+  </script>
+  <!-- Fallback teacher unlock -->
+  <script>
+  (function(){
+    if(typeof window.teacherUnlock==='function') return;
+    function unlockAll(){
+      document.querySelectorAll('.nav-item.locked').forEach(function(n){n.classList.remove('locked');});
+      document.querySelectorAll('.lesson-card.locked,.unit-card.locked').forEach(function(c){c.classList.remove('locked');var b=c.querySelector('.card-btn');if(b&&b.textContent.indexOf('Locked')>-1)b.textContent='Start Lesson →';});
+    }
+    window.teacherUnlock=function(){
+      try{if(localStorage.getItem('g7-teacher-unlock')==='true'){if(confirm('Deactivate teacher unlock?')){localStorage.removeItem('g7-teacher-unlock');alert('Locked.');location.reload();}return;}}catch(e){}
+      var code=prompt('Enter teacher access code:');if(!code)return;
+      if(code.trim()==='shammel2026'){try{localStorage.setItem('g7-teacher-unlock','true');}catch(e){}unlockAll();alert('Unlocked!');}else{alert('Invalid code.');}
+    };
+    document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.shiftKey&&(e.key==='L'||e.key==='l')){e.preventDefault();window.teacherUnlock();}});
+    try{if(localStorage.getItem('g7-teacher-unlock')==='true')setTimeout(unlockAll,400);}catch(e){}
+  })();
+  </script>
+</body>
+</html>
