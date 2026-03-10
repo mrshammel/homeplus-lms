@@ -161,7 +161,7 @@ a{color:var(--accent);text-decoration:none}
 .video-summary.locked .video-summary-toggle{cursor:not-allowed;opacity:.6}
 .video-summary.locked .video-summary-toggle:hover{background:var(--card2);color:var(--text2)}
 .video-summary-content{max-height:0;overflow:hidden;transition:max-height .4s ease;background:var(--card);padding:0 18px}
-.video-summary-content.open{max-height:600px;padding:16px 18px}
+.video-summary-content.open{max-height:1200px;padding:16px 18px}
 .video-summary-content ul{padding-left:20px;margin:8px 0}
 .video-summary-content li{color:var(--text2);font-size:.88rem;margin:6px 0;line-height:1.5}
 
