@@ -251,7 +251,7 @@
       const actCount = grades.filter(g => g.quizId && g.quizId.includes('-l') && g.quizId.includes('-')).length;
       document.getElementById('statActivities').textContent = actCount;
 
-      const quizGrades = grades.filter(g => g.quizId && g.quizId.startsWith('quiz'));
+      const quizGrades = grades.filter(g => typeof g.percentage === 'number');
       if (quizGrades.length > 0) {
         const avg = Math.round(quizGrades.reduce((s, g) => s + g.percentage, 0) / quizGrades.length);
         document.getElementById('statAvg').textContent = avg + '%';
