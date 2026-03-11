@@ -71,13 +71,29 @@ function initTeacherGSI(){
   if(!btn) return;
   if(window.location.protocol==='file:') { btn.innerHTML='<p style="color:var(--text3);font-size:.8rem">Google Sign-In requires http/https</p>'; return; }
 
-  // GIS loads async — retry until ready
+  // GIS loads async — retry until the library is available
   let attempts = 0;
   const tryInit = () => {
     attempts++;
     if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-      google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleTeacherCred, auto_select:false });
-      google.accounts.id.renderButton(btn,{theme:'outline',size:'large',text:'signin_with',shape:'pill',width:280});
+      // Step 1: Initialize GIS (must happen before renderButton)
+      try {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleTeacherCred,
+          auto_select: false
+        });
+      } catch(e) { console.warn('GIS init error:', e); }
+      // Step 2: Wait a tick, then render the button
+      setTimeout(() => {
+        try {
+          google.accounts.id.renderButton(btn, {
+            theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', width: 280
+          });
+        } catch(e) {
+          btn.innerHTML = '<p style="color:var(--text3);font-size:.8rem">Google Sign-In unavailable. Use the access code.</p>';
+        }
+      }, 200);
     } else if (attempts < 20) {
       setTimeout(tryInit, 500);
     } else {
