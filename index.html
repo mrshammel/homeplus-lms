@@ -407,18 +407,26 @@
       const btn = document.getElementById('teacherGoogleBtn');
       if (!btn) return;
       if (window.location.protocol === 'file:') {
-        btn.innerHTML = '<p style="color:var(--text3);font-size:.75rem">Google Sign-In requires http/https</p>';
+        btn.innerHTML = '<p style="color:var(--text3);font-size:.75rem">Google Sign-In requires https</p>';
         return;
       }
-      try {
-        if (typeof google === 'undefined' || !google.accounts) throw new Error('GIS not loaded');
-        // Use a separate GIS instance ID for teacher button
-        google.accounts.id.renderButton(btn, {
-          theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', width: 260
-        });
-      } catch(e) {
-        btn.innerHTML = '<p style="color:var(--text3);font-size:.75rem">Google Sign-In unavailable</p>';
-      }
+
+      // GIS loads async — retry until available
+      let attempts = 0;
+      const tryRender = () => {
+        attempts++;
+        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+          // GIS is ready — render the teacher button
+          google.accounts.id.renderButton(btn, {
+            theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', width: 260
+          });
+        } else if (attempts < 20) {
+          setTimeout(tryRender, 500);
+        } else {
+          btn.innerHTML = '<a href="dashboard.html" style="display:inline-block;padding:10px 24px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;color:#60a5fa;font-weight:600;font-size:.88rem;text-decoration:none">Open Teacher Dashboard →</a>';
+        }
+      };
+      tryRender();
     }
 
     function teacherAccessCode() {
