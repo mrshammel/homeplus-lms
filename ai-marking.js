@@ -107,28 +107,61 @@ function aiScoreResponse(response, prompt, unitKey, requiredTerms) {
     clarity: { score: clarityScore, max: 2, label: 'Clarity & Organization' }
   };
 
-  // Strengths
+  // Build specific, thoughtful strengths
   const strengths = [];
-  if (relevanceScore === 2) strengths.push('Your response directly addresses the question');
-  if (vocabScore >= 1) strengths.push('Good use of science vocabulary (' + usedVocab.slice(0, 3).join(', ') + ')');
-  if (explanationScore === 2) strengths.push('Strong explanations with reasoning');
-  if (evidenceScore >= 1) strengths.push('Includes supporting examples');
-  if (clarityScore === 2) strengths.push('Well-organized and clear writing');
+  if (relevanceScore === 2) strengths.push('Your response directly addresses the question — I can see you read the prompt carefully');
+  else if (relevanceScore === 1) strengths.push('You touched on some key ideas from the prompt');
+  if (vocabScore >= 2) strengths.push('Strong use of scientific language — I noticed you used: ' + usedVocab.slice(0, 4).join(', '));
+  else if (vocabScore === 1) strengths.push('You included some science vocabulary (' + usedVocab.slice(0, 2).join(', ') + ') — nice start');
+  if (explanationScore === 2) strengths.push('You explained your reasoning clearly, using cause-and-effect thinking');
+  else if (explanationScore === 1) strengths.push('I can see you\'re starting to explain your thinking — keep building on that');
+  if (evidenceScore >= 2) strengths.push('Good job supporting your ideas with specific examples');
+  else if (evidenceScore === 1) strengths.push('You gave at least one example to back up your point');
+  if (clarityScore === 2) strengths.push('Your writing is well-organized with clear, complete sentences');
 
-  // Next steps
+  // Build specific, thoughtful next steps with tips
   const nextSteps = [];
-  if (relevanceScore < 2) nextSteps.push('Make sure your answer directly addresses all parts of the question');
-  if (vocabScore < 2) nextSteps.push('Include more science vocabulary from this lesson');
-  if (explanationScore < 2) nextSteps.push('Add more "because" and "this means" explanations');
-  if (evidenceScore < 2) nextSteps.push('Give specific examples to support your ideas');
-  if (clarityScore < 2) nextSteps.push('Write at least 2-3 complete sentences');
+  // Missing required terms feedback
+  if (requiredTerms && requiredTerms.length > 0) {
+    const missing = requiredTerms.filter(t => !text.includes(t.toLowerCase()));
+    if (missing.length > 0) {
+      nextSteps.push('The question asked you to use these terms, but I didn\'t see them in your answer: <strong>' + missing.join(', ') + '</strong>. Try going back to the lesson notes to review what they mean, then work them into your response');
+    }
+  }
+  if (relevanceScore < 2) {
+    nextSteps.push('Re-read the question carefully — it may be asking about multiple things. Try underlining the key words in the prompt and make sure your answer touches on each one');
+  }
+  if (vocabScore < 2) {
+    const suggestedTerms = vocab.filter(v => !text.includes(v)).slice(0, 4);
+    if (suggestedTerms.length > 0) {
+      nextSteps.push('Try using more science vocabulary from this lesson. Some terms you could include: <strong>' + suggestedTerms.join(', ') + '</strong>. Using the right terms shows your teacher you understand the concepts');
+    }
+  }
+  if (explanationScore < 2) {
+    nextSteps.push('Deepen your explanations by asking yourself "why?" and "so what?" after each point. For example, instead of just naming something, explain <em>how</em> it works or <em>why</em> it matters. Try using phrases like "because," "this leads to," or "as a result"');
+  }
+  if (evidenceScore < 2) {
+    nextSteps.push('Support your ideas with a specific example. Think: "Can I point to something from the lesson, a real-world situation, or a scenario that proves my point?" Starting with "For example..." or "This can be seen when..." helps');
+  }
+  if (clarityScore < 1) {
+    nextSteps.push('Your response is quite short. Aim for at least 3-4 complete sentences. A good structure is: (1) state your main idea, (2) explain it with science vocabulary, (3) give an example, (4) connect it back to the question');
+  } else if (clarityScore < 2 && wordCount < 35) {
+    nextSteps.push('Try expanding your answer — aim for at least 40-50 words. Add another sentence explaining your reasoning or giving a second example');
+  }
 
-  // Overall feedback message
+  // Overall feedback message — NEVER praise on low scores
   let feedback = '';
-  if (percentage >= 80) feedback = '🌟 Excellent response! You demonstrated strong understanding.';
-  else if (percentage >= 60) feedback = '👍 Good effort! A few areas to strengthen.';
-  else if (percentage >= 40) feedback = '📝 You\'re on the right track. Review the feedback below for tips.';
-  else feedback = '💡 Your response needs more detail. Try adding science vocabulary and explaining your reasoning.';
+  if (percentage >= 80) {
+    feedback = '🌟 Strong response! You showed solid understanding of the concepts and used scientific thinking well.';
+  } else if (percentage >= 60) {
+    feedback = '📝 You\'re showing understanding, but there\'s room to strengthen your response. Check the suggestions below to improve your score.';
+  } else if (percentage >= 40) {
+    feedback = '📖 Your response needs more development. Review the lesson material and look at the specific tips below — they\'ll help you build a stronger answer.';
+  } else if (percentage >= 20) {
+    feedback = '⚠️ Your response doesn\'t yet show the understanding needed. Go back and re-read the lesson content, pay attention to the key vocabulary, and try rewriting your answer using the tips below.';
+  } else {
+    feedback = '🔄 It looks like you may need to revisit this lesson\'s content before attempting this response. Review the videos and reading material, then try again — you\'ve got this!';
+  }
 
   return {
     score: totalScore,
@@ -136,8 +169,8 @@ function aiScoreResponse(response, prompt, unitKey, requiredTerms) {
     percentage,
     rubric: rubricDetail,
     feedback,
-    strengths: strengths.join('. ') + (strengths.length ? '.' : ''),
-    nextSteps: nextSteps.join('. ') + (nextSteps.length ? '.' : ''),
+    strengths: strengths.length ? strengths.join('. ') + '.' : '',
+    nextSteps: nextSteps.length ? nextSteps.join('<br><br>') : '',
     reviewType: 'ai',
     usedVocab,
     wordCount

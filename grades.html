@@ -201,12 +201,15 @@
 <body>
 
   <!-- SIGN-IN OVERLAY -->
-  <div class="signin-overlay" id="signinOverlay">
+  <div class="signin-overlay" id="signinOverlay" style="display:none">
     <div class="signin-card">
       <div style="font-size:3rem;margin-bottom:12px">📊</div>
       <h2>View Your Grades</h2>
       <p>Sign in with your Google account to see your grades and feedback.</p>
       <div id="studentGoogleBtn" style="display:flex;justify-content:center;margin-top:8px"></div>
+      <div style="margin-top:12px;text-align:center">
+        <a href="#" onclick="gradesManualSignin();return false" style="font-size:.82rem;color:var(--text3);text-decoration:underline">Use manual sign-in instead</a>
+      </div>
     </div>
   </div>
 
@@ -699,6 +702,26 @@
     if (typeof initFirebase === 'function') initFirebase();
     if (typeof initAuthService === 'function') initAuthService();
 
+    // Check if student is already signed in
+    const studentEmail = localStorage.getItem('g7-student-email') || localStorage.getItem('g7-email') || '';
+    const studentName = localStorage.getItem('g7-student') || localStorage.getItem('g7-student-name') || '';
+    const signinOverlay = document.getElementById('signinOverlay');
+
+    if (studentEmail) {
+      // Student already signed in — hide overlay, show name
+      signinOverlay.style.display = 'none';
+      const disp = document.getElementById('studentDisplay');
+      if (disp) disp.textContent = studentName || studentEmail;
+    } else {
+      // Not signed in — show overlay
+      signinOverlay.style.display = 'flex';
+      // Set up GIS button if available
+      if (typeof google !== 'undefined' && google.accounts) {
+        google.accounts.id.renderButton(document.getElementById('studentGoogleBtn'), { theme: 'outline', size: 'large', width: 260, text: 'signin_with' });
+      }
+      return; // Don't load grades until signed in
+    }
+
     // Try Firestore first, then fall back to localStorage
     const firestoreItems = await loadGradeItemsFromFirestore();
     if (firestoreItems && firestoreItems.length > 0) {
@@ -710,7 +733,6 @@
     }
 
     if (GRADE_ITEMS.length === 0) {
-      // Empty state — no graded items yet
       document.querySelector('.g-wrap').innerHTML = `
         <div style="text-align:center;padding:60px 20px;max-width:480px;margin:0 auto">
           <div style="font-size:3.5rem;margin-bottom:16px">📝</div>
@@ -729,6 +751,19 @@
     renderTable();
     renderRecentFeedback();
   });
+
+  // Manual sign-in for grades page
+  function gradesManualSignin() {
+    const name = prompt('Enter your name:');
+    if (!name) return;
+    const email = prompt('Enter your email:');
+    if (!email) return;
+    localStorage.setItem('g7-student', name);
+    localStorage.setItem('g7-student-name', name);
+    localStorage.setItem('g7-student-email', email);
+    localStorage.setItem('g7-email', email);
+    location.reload();
+  }
   </script>
 
   <!-- Fallback teacher unlock -->
