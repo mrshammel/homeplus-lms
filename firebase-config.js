@@ -30,40 +30,63 @@ let _firebaseApp = null;
 let _firebaseAuth = null;
 let _firebaseDb = null;
 
+let _firebaseInitDone = false;
+
 function initFirebase() {
+  if (_firebaseInitDone) return true;
   if (!FIREBASE_CONFIGURED) {
     console.log('[Firebase] ⚠️ Config not set — running in OFFLINE mode.');
-    console.log('[Firebase] Set your config in firebase-config.js to enable cloud features.');
     return false;
   }
   try {
     if (typeof firebase === 'undefined') {
-      console.warn('[Firebase] SDK not loaded. Include Firebase SDK scripts.');
+      console.warn('[Firebase] SDK not loaded yet — will retry');
+      _scheduleFirebaseRetry();
       return false;
     }
+    // Initialize the app
     if (!firebase.apps.length) {
       _firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
     } else {
       _firebaseApp = firebase.apps[0];
     }
+    // Check if auth and firestore modules are available
+    if (typeof firebase.auth !== 'function' || typeof firebase.firestore !== 'function') {
+      console.warn('[Firebase] Auth/Firestore modules not ready — will retry');
+      _scheduleFirebaseRetry();
+      return false;
+    }
     _firebaseAuth = firebase.auth();
     _firebaseDb = firebase.firestore();
 
     // Enable offline persistence for Firestore
-    _firebaseDb.enablePersistence({ synchronizeTabs: true }).catch(err => {
-      if (err.code === 'failed-precondition') {
-        console.warn('[Firestore] Persistence failed: multiple tabs open');
-      } else if (err.code === 'unimplemented') {
-        console.warn('[Firestore] Persistence not available in this browser');
-      }
-    });
+    try {
+      _firebaseDb.enablePersistence({ synchronizeTabs: true }).catch(function(){});
+    } catch(e) {}
 
+    _firebaseInitDone = true;
     console.log('[Firebase] ✓ Initialized — Auth + Firestore ready');
+
+    // Trigger any queued syncs
+    if (typeof _onFirebaseReady === 'function') {
+      setTimeout(_onFirebaseReady, 100);
+    }
     return true;
   } catch (e) {
-    console.error('[Firebase] Init failed:', e.message);
+    console.warn('[Firebase] Init attempt failed:', e.message);
+    _scheduleFirebaseRetry();
     return false;
   }
+}
+
+// Retry init up to 15 times (3 seconds total)
+let _firebaseRetryCount = 0;
+function _scheduleFirebaseRetry() {
+  if (_firebaseRetryCount >= 15 || _firebaseInitDone) return;
+  _firebaseRetryCount++;
+  setTimeout(function() {
+    if (!_firebaseInitDone) initFirebase();
+  }, 200);
 }
 
 // ===== Getters =====

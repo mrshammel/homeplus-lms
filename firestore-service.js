@@ -93,6 +93,115 @@ async function updateStudentActivity() {
 }
 
 // ============================================================
+// GRADE SAVING
+// ============================================================
+
+/**
+ * Save a grade record to Firestore grades/{uid}/items subcollection.
+ * Called from recordGrade() in shared.js.
+ * @param {object} record - Grade record with quizId, score, total, etc.
+ */
+async function saveGrade(record) {
+  const db = _getDb();
+  const uid = _getUserId();
+  if (!db || !uid || !record) return;
+
+  try {
+    const itemId = (record.quizId || 'unknown').replace(/[^a-zA-Z0-9_-]/g, '_');
+    await db.collection('grades').doc(uid).collection('items').doc(itemId).set({
+      quizId: record.quizId || '',
+      lessonTitle: record.lessonTitle || '',
+      score: record.score || 0,
+      total: record.total || 0,
+      percentage: record.percentage || 0,
+      passed: !!record.passed,
+      attempts: record.attempts || 1,
+      timestamp: _serverTimestamp(),
+      type: record.quizId && record.quizId.includes('quiz') ? 'quiz' : 'activity'
+    }, { merge: true });
+    console.log('[Firestore] Grade saved:', record.quizId, record.percentage + '%');
+  } catch (e) {
+    console.warn('[Firestore] Grade save failed:', e.message);
+  }
+}
+
+// ============================================================
+// BULK SYNC — localStorage → Firestore
+// ============================================================
+
+/**
+ * Sync ALL localStorage progress and grades to Firestore.
+ * Called when Firebase initializes (possibly late) to push accumulated data.
+ */
+async function syncAllProgressToFirestore() {
+  const db = _getDb();
+  const uid = _getUserId();
+  if (!db || !uid) return;
+
+  console.log('[Firestore] Starting bulk sync from localStorage...');
+
+  // 1. Sync lesson completion progress
+  const units = ['a', 'b', 'c', 'd', 'e'];
+  const lessonCounts = { a: 8, b: 7, c: 6, d: 8, e: 7 };
+  const progressData = { courseId: 'gr7-science', units: {}, lastUpdated: _serverTimestamp() };
+  let totalPassed = 0, totalLessons = 0;
+
+  units.forEach(function(u) {
+    const maxL = lessonCounts[u];
+    totalLessons += maxL;
+    const passed = [];
+    for (let i = 1; i <= maxL; i++) {
+      if (localStorage.getItem('g7-unit' + u + '-lesson' + i + '-passed') === 'true') {
+        passed.push(i);
+      }
+    }
+    totalPassed += passed.length;
+    progressData.units[u] = {
+      lessonsCompleted: passed.length,
+      lessonsPassed: passed
+    };
+  });
+  progressData.overallCompletion = totalLessons > 0 ? Math.round(totalPassed / totalLessons * 100) : 0;
+
+  try {
+    await db.collection('studentProgress').doc(uid).set(progressData, { merge: true });
+    console.log('[Firestore] Progress synced:', totalPassed + '/' + totalLessons + ' lessons');
+  } catch (e) {
+    console.warn('[Firestore] Progress sync failed:', e.message);
+  }
+
+  // 2. Sync grade records
+  const grades = JSON.parse(localStorage.getItem('g7-grades') || '[]');
+  for (const record of grades) {
+    try {
+      await saveGrade(record);
+    } catch (e) {}
+  }
+
+  if (grades.length > 0) {
+    console.log('[Firestore] Synced ' + grades.length + ' grade records');
+  }
+
+  // 3. Register student
+  const email = localStorage.getItem('g7-student-email') || localStorage.getItem('g7-email');
+  const name = localStorage.getItem('g7-student-name') || localStorage.getItem('g7-student');
+  if (email) {
+    try {
+      await registerStudentInFirestore(name || email.split('@')[0], email, localStorage.getItem('g7-student-avatar') || '');
+    } catch (e) {}
+  }
+}
+
+/**
+ * Callback invoked when Firebase finally initializes (via retry mechanism).
+ * Triggers bulk sync of all accumulated localStorage data.
+ */
+function _onFirebaseReady() {
+  console.log('[Firestore] Firebase ready — triggering bulk sync');
+  syncAllProgressToFirestore();
+}
+
+// ============================================================
 // STUDENT PROGRESS
 // ============================================================
 
