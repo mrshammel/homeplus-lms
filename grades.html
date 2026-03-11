@@ -326,42 +326,75 @@
     <div class="detail-panel" id="detailPanel"></div>
   </div>
 
-  <script src="shared.js"></script>
-  <script>
-  // ========== MOCK DATA ==========
-  const GRADE_ITEMS = [
-    // UNIT A
-    {id:1,title:'Ecosystem Components Sorting Activity',unit:'A',unitName:'Interactions & Ecosystems',type:'Formative Activity',category:'formative',date:'2026-02-03',status:'Completed',score:9,total:10,feedback:'Great job identifying biotic and abiotic factors! You correctly sorted 9 out of 10 items.',reviewType:'ai',strengths:'Strong understanding of biotic vs abiotic classification.',nextSteps:'Review the difference between abiotic factors like humidity and temperature.'},
-    {id:2,title:'Food Web Builder — Prairie Ecosystem',unit:'A',unitName:'Interactions & Ecosystems',type:'Formative Activity',category:'formative',date:'2026-02-05',status:'Completed',score:8,total:10,feedback:'You built a mostly accurate food web. One connection was reversed.',reviewType:'ai',strengths:'Excellent identification of producers and consumers.',nextSteps:'Double-check the direction of energy flow arrows — they point from prey to predator.'},
-    {id:3,title:'Symbiotic Relationships Written Response',unit:'A',unitName:'Interactions & Ecosystems',type:'Assignment',category:'assignment',date:'2026-02-10',status:'Returned with Feedback',score:22,total:28,feedback:'Solid understanding of mutualism and parasitism. Your example of the tick and deer was excellent. Your commensalism example could be more specific — "barnacles on a whale" needs more explanation of why the whale is unaffected.',reviewType:'teacher',strengths:'Clear use of real-world Alberta examples. Well-organized paragraphs.',nextSteps:'Strengthen your commensalism explanation. Add why the host is neither helped nor harmed.',rubric:[{name:'Scientific Understanding',score:7,total:8},{name:'Use of Evidence',score:6,total:8},{name:'Communication',score:5,total:6},{name:'Application of Concepts',score:4,total:6}]},
-    {id:4,title:'Lesson 1 Quiz — Ecosystem Basics',unit:'A',unitName:'Interactions & Ecosystems',type:'Quiz',category:'quiz',date:'2026-02-07',status:'Completed',score:7,total:8,feedback:'Excellent! You missed the question about energy pyramids.',reviewType:'teacher',strengths:'Strong foundational knowledge of ecosystem components.',nextSteps:'Review how energy decreases at each trophic level.'},
-    {id:5,title:'Lesson 2 Quiz — Symbiosis & Adaptations',unit:'A',unitName:'Interactions & Ecosystems',type:'Quiz',category:'quiz',date:'2026-02-12',status:'Completed',score:6,total:8,feedback:'Good work. Review mimicry vs camouflage.',reviewType:'teacher',strengths:'Solid understanding of mutualism and parasitism.',nextSteps:'Study the difference between mimicry and camouflage. Review adaptation examples.'},
-    {id:6,title:'Ecosystem Impact Performance Task',unit:'A',unitName:'Interactions & Ecosystems',type:'Performance Task',category:'performance',date:'2026-02-18',status:'Returned with Feedback',score:30,total:36,feedback:'This is a strong performance task submission. Your analysis of the keystone species removal scenario was thoughtful and demonstrated Grade 7–level scientific reasoning. The diagram was clear and well-labelled.',reviewType:'teacher',strengths:'Thorough analysis with multiple cascading effects identified. Excellent use of scientific vocabulary.',nextSteps:'Include Indigenous perspectives on ecosystem stewardship as discussed in Lesson 7.',rubric:[{name:'Scientific Understanding',score:8,total:9},{name:'Use of Evidence',score:7,total:9},{name:'Communication',score:8,total:9},{name:'Application of Concepts',score:7,total:9}]},
+  // ========== LIVE DATA FROM LOCALSTORAGE ==========
+  // Grade items are now read from localStorage ('g7-grades') instead of hardcoded mock data.
+  // Each quiz/activity completion writes to this via shared.js recordGrade().
+  const UNIT_NAMES = {
+    'A': 'Interactions & Ecosystems',
+    'B': 'Plants for Food & Fibre',
+    'C': 'Heat & Temperature',
+    'D': 'Structures & Forces',
+    'E': 'Planet Earth'
+  };
 
-    // UNIT B
-    {id:7,title:'Plant Structure Labelling Activity',unit:'B',unitName:'Plants for Food & Fibre',type:'Formative Activity',category:'formative',date:'2026-02-20',status:'Completed',score:10,total:10,feedback:'Perfect! All plant structures correctly identified.',reviewType:'ai',strengths:'Excellent knowledge of root, stem, leaf, and flower structures.',nextSteps:'You\'re ready for the photosynthesis lesson!'},
-    {id:8,title:'Photosynthesis Diagram Assignment',unit:'B',unitName:'Plants for Food & Fibre',type:'Assignment',category:'assignment',date:'2026-02-24',status:'Needs Revision',score:15,total:24,feedback:'Your diagram shows the basic inputs and outputs of photosynthesis, but the chemical equation is incomplete. You need to balance the equation and label where each reactant enters the plant.',reviewType:'teacher',strengths:'Good understanding that sunlight is the energy source and that CO₂ + water are inputs.',nextSteps:'1) Balance the photosynthesis equation. 2) Show where CO₂ enters (stomata) and where water enters (roots). 3) Resubmit by March 7.',rubric:[{name:'Scientific Understanding',score:5,total:8},{name:'Use of Evidence',score:4,total:6},{name:'Communication',score:3,total:5},{name:'Application of Concepts',score:3,total:5}]},
-    {id:9,title:'Lesson 1 Quiz — Plant Structures',unit:'B',unitName:'Plants for Food & Fibre',type:'Quiz',category:'quiz',date:'2026-02-22',status:'Completed',score:8,total:8,feedback:'Perfect score! Outstanding knowledge of plant anatomy.',reviewType:'teacher',strengths:'Flawless understanding of plant structures and their functions.',nextSteps:'Continue this level of preparation for upcoming quizzes.'},
-    {id:10,title:'Selective Breeding Video Explanation',unit:'B',unitName:'Plants for Food & Fibre',type:'Assignment',category:'assignment',date:'2026-03-01',status:'Submitted – Pending Review',score:null,total:20,feedback:null,reviewType:null},
+  function detectUnit(quizId, lessonTitle) {
+    // Try to extract unit from quizId or lessonTitle
+    const lt = (lessonTitle || '').toLowerCase();
+    const qi = (quizId || '').toLowerCase();
+    if (lt.includes('unit a') || qi.includes('unita') || lt.includes('ecosystem')) return 'A';
+    if (lt.includes('unit b') || qi.includes('unitb') || lt.includes('plant')) return 'B';
+    if (lt.includes('unit c') || qi.includes('unitc') || lt.includes('heat')) return 'C';
+    if (lt.includes('unit d') || qi.includes('unitd') || lt.includes('structure')) return 'D';
+    if (lt.includes('unit e') || qi.includes('unite') || lt.includes('earth')) return 'E';
+    // Try unit key from data-unit-key pattern
+    const unitMatch = (quizId || '').match(/unit[_-]?([a-e])/i) || (lessonTitle || '').match(/unit\s*([a-e])/i);
+    if (unitMatch) return unitMatch[1].toUpperCase();
+    return '?';
+  }
 
-    // UNIT C
-    {id:11,title:'Particle Model Simulation',unit:'C',unitName:'Heat & Temperature',type:'Formative Activity',category:'formative',date:'2026-03-03',status:'Completed',score:7,total:10,feedback:'You correctly demonstrated particle speed changes with temperature but missed the spacing difference between solids and gases.',reviewType:'ai',strengths:'Good understanding of particle speed and temperature relationship.',nextSteps:'Review how particle spacing differs between states of matter.'},
-    {id:12,title:'Heat Transfer Written Explanation',unit:'C',unitName:'Heat & Temperature',type:'Assignment',category:'assignment',date:'2026-03-05',status:'Returned with Feedback',score:19,total:24,feedback:'Well-written explanation of conduction and convection. Your radiation section could include more real-world examples beyond "the sun."',reviewType:'ai',aiFeedback:true,strengths:'Clear and accurate descriptions of conduction (particle collisions) and convection (fluid circulation). Good use of the "metal spoon in hot soup" example.',nextSteps:'Add 2 more examples of radiation (e.g., campfire warmth, infrared heaters). Explain why radiation doesn\'t need a medium.',rubric:[{name:'Scientific Understanding',score:6,total:8},{name:'Use of Evidence',score:5,total:6},{name:'Communication',score:5,total:5},{name:'Application of Concepts',score:3,total:5}]},
-    {id:13,title:'Lesson 1 Quiz — Particle Model',unit:'C',unitName:'Heat & Temperature',type:'Quiz',category:'quiz',date:'2026-03-04',status:'Completed',score:5,total:8,feedback:'Review the difference between heat and temperature. They are not the same thing!',reviewType:'teacher',strengths:'Good understanding of particle motion.',nextSteps:'Heat = total thermal energy transferred. Temperature = average kinetic energy of particles. Study this distinction.'},
-    {id:14,title:'Insulation Design Challenge',unit:'C',unitName:'Heat & Temperature',type:'Performance Task',category:'performance',date:'2026-03-08',status:'Submitted – Pending Review',score:null,total:40,feedback:null,reviewType:null},
+  function detectCategory(quizId, lessonTitle) {
+    const qi = (quizId || '').toLowerCase();
+    const lt = (lessonTitle || '').toLowerCase();
+    if (qi.includes('quiz') || lt.includes('quiz')) return 'quiz';
+    if (qi.includes('task') || lt.includes('performance') || lt.includes('task')) return 'performance';
+    if (qi.includes('assign') || lt.includes('assignment') || lt.includes('written') || lt.includes('response')) return 'assignment';
+    return 'formative';
+  }
 
-    // UNIT D
-    {id:15,title:'Structure Types Sorting Activity',unit:'D',unitName:'Structures & Forces',type:'Formative Activity',category:'formative',date:'2026-03-10',status:'Completed',score:10,total:10,feedback:'All structures correctly classified as shell, frame, or solid!',reviewType:'ai',strengths:'Excellent classification skills.',nextSteps:'Think about real Alberta structures that combine types.'},
-    {id:16,title:'Forces Diagram Assignment',unit:'D',unitName:'Structures & Forces',type:'Assignment',category:'assignment',date:'2026-03-12',status:'Missing',score:null,total:20,feedback:null,reviewType:null},
-    {id:17,title:'Lesson 1 Quiz — Structure Types',unit:'D',unitName:'Structures & Forces',type:'Quiz',category:'quiz',date:'2026-03-11',status:'Completed',score:7,total:8,feedback:'Only missed the question about the CN Tower classification.',reviewType:'teacher',strengths:'Strong understanding of shell, frame, and solid structures.',nextSteps:'The CN Tower is a combination structure — review how structures can combine types.'},
+  function detectType(category) {
+    const map = { formative: 'Formative Activity', assignment: 'Assignment', performance: 'Performance Task', quiz: 'Quiz' };
+    return map[category] || 'Formative Activity';
+  }
 
-    // UNIT E
-    {id:18,title:'Earth Layer Builder',unit:'E',unitName:'Planet Earth',type:'Formative Activity',category:'formative',date:'2026-03-14',status:'Completed',score:4,total:4,feedback:'Layers placed in perfect order!',reviewType:'ai',strengths:'Complete understanding of crust → mantle → outer core → inner core.',nextSteps:'Great foundation for Lesson 2 on plate tectonics.'},
-    {id:19,title:'Rock Type Classifier',unit:'E',unitName:'Planet Earth',type:'Formative Activity',category:'formative',date:'2026-03-14',status:'Completed',score:5,total:6,feedback:'5 of 6 rocks correctly classified. Marble was identified as sedimentary instead of metamorphic.',reviewType:'ai',strengths:'Strong ability to use clues to classify rocks.',nextSteps:'Remember: marble = limestone + heat & pressure = metamorphic.'},
-    {id:20,title:'Lesson 1 Quiz — Earth\'s Layers',unit:'E',unitName:'Planet Earth',type:'Quiz',category:'quiz',date:'2026-03-15',status:'Completed',score:8,total:8,feedback:'Perfect score! You really understand Earth\'s interior.',reviewType:'teacher',strengths:'Flawless knowledge of layers, composition, and how scientists study them.',nextSteps:'Excellent work — continue to Lesson 2.'},
-    {id:21,title:'Plate Tectonics Research Assignment',unit:'E',unitName:'Planet Earth',type:'Assignment',category:'assignment',date:'2026-03-18',status:'Missing',score:null,total:24,feedback:null,reviewType:null},
-    {id:22,title:'Geological Time Written Response',unit:'E',unitName:'Planet Earth',type:'Assignment',category:'assignment',date:'2026-03-20',status:'Returned with Feedback',score:18,total:24,feedback:'Good timeline of major events. Your explanation of how scientists use fossils to date rock layers was well done. The connection to Alberta\'s geological history could be stronger.',reviewType:'ai',aiFeedback:true,teacherReviewed:false,strengths:'Clear chronological organization. Good use of era names (Paleozoic, Mesozoic, Cenozoic).',nextSteps:'Connect geological time to Alberta specifically — mention the Western Interior Seaway and the formation of the Rocky Mountains.',rubric:[{name:'Scientific Understanding',score:6,total:8},{name:'Use of Evidence',score:5,total:6},{name:'Communication',score:4,total:5},{name:'Application of Concepts',score:3,total:5}]}
-  ];
+  function loadGradeItems() {
+    const raw = JSON.parse(localStorage.getItem('g7-grades') || '[]');
+    return raw.map((g, i) => {
+      const unit = detectUnit(g.quizId, g.lessonTitle);
+      const category = detectCategory(g.quizId, g.lessonTitle);
+      return {
+        id: i + 1,
+        title: g.lessonTitle || g.quizId || 'Grade Item',
+        unit: unit,
+        unitName: UNIT_NAMES[unit] || 'Grade 7 Science',
+        type: detectType(category),
+        category: category,
+        date: g.timestamp ? g.timestamp.split('T')[0] : new Date().toISOString().split('T')[0],
+        status: g.passed ? 'Completed' : (g.score !== null && g.score !== undefined ? 'Completed' : 'Missing'),
+        score: g.score !== null && g.score !== undefined ? g.score : null,
+        total: g.total || 0,
+        percentage: g.percentage || (g.total > 0 ? Math.round(g.score / g.total * 100) : 0),
+        feedback: g.passed ? 'Well done!' : (g.score !== null ? 'Keep working on this area.' : ''),
+        reviewType: 'ai',
+        strengths: '',
+        nextSteps: '',
+        rubric: null,
+        attempts: g.attempts || 1,
+        remediationUsed: g.remediationUsed || false
+      };
+    });
+  }
+
+  let GRADE_ITEMS = loadGradeItems();
 
   // ========== CATEGORY CONFIG ==========
   const CATEGORIES = {
@@ -618,6 +651,24 @@
 
   // ========== INIT ==========
   document.addEventListener('DOMContentLoaded', () => {
+    // Reload items from localStorage (may have changed since page load)
+    GRADE_ITEMS = loadGradeItems();
+
+    if (GRADE_ITEMS.length === 0) {
+      // Empty state — no graded items yet
+      document.querySelector('.g-wrap').innerHTML = `
+        <div style="text-align:center;padding:60px 20px;max-width:480px;margin:0 auto">
+          <div style="font-size:3.5rem;margin-bottom:16px">📝</div>
+          <h2 style="color:var(--text);font-family:Outfit,sans-serif;margin-bottom:8px">No Grades Yet</h2>
+          <p style="color:var(--text3);font-size:.9rem;line-height:1.6;margin-bottom:24px">
+            You haven't completed any quizzes or graded activities yet.<br>
+            As you work through lessons and quizzes, your grades will appear here automatically.
+          </p>
+          <a href="index.html" style="display:inline-block;padding:12px 28px;background:var(--accent);color:var(--bg);border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem">← Start Learning</a>
+        </div>`;
+      return;
+    }
+
     renderSummary();
     renderCategories();
     renderTable();
