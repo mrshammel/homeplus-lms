@@ -326,6 +326,11 @@
     <div class="detail-panel" id="detailPanel"></div>
   </div>
 
+  <script src="shared.js"></script>
+  <script>
+  // Run shared init to dismiss overlay if already signed in
+  if (typeof initShared === 'function') initShared();
+
   // ========== LIVE DATA FROM LOCALSTORAGE ==========
   // Grade items are now read from localStorage ('g7-grades') instead of hardcoded mock data.
   // Each quiz/activity completion writes to this via shared.js recordGrade().
