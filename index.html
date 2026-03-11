@@ -95,11 +95,7 @@
       <div style="font-size:3rem;margin-bottom:12px">🔬</div>
       <h2>Welcome, Scientist!</h2>
       <p>Sign in with your Google account to save your progress.</p>
-      <div id="studentGoogleBtn" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px">
-        <button onclick="handleFirebaseSignIn()" class="signin-btn" style="padding:12px 28px;font-size:.95rem;font-weight:600;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .3s">🔑 Sign in with Google</button>
-        <div style="font-size:.72rem;color:var(--text3)">or</div>
-        <button onclick="handleOfflineSignIn()" style="background:none;border:none;color:var(--text3);font-size:.78rem;cursor:pointer;text-decoration:underline">Sign in manually</button>
-      </div>
+      <div id="studentGoogleBtn" style="display:flex;justify-content:center;margin-top:8px"></div>
     </div>
   </div>
 
@@ -336,35 +332,47 @@
       }
     }
 
-    // ===== FIREBASE SIGN IN HANDLERS =====
-    async function handleFirebaseSignIn() {
-      const user = await signInWithGoogle();
-      // Auth state change callback handles the rest
-    }
-    async function handleOfflineSignIn() {
-      const user = await _offlineSignIn();
+    // ===== SIGN-IN STATE CHECK =====
+    function checkAndDismissOverlay() {
+      const overlay = document.getElementById('signinOverlay');
+      const name = localStorage.getItem('g7-student-name');
+      const email = localStorage.getItem('g7-student-email');
+      if (name && email) {
+        if (overlay) overlay.style.display = 'none';
+        const el = document.getElementById('studentDisplay');
+        if (el) el.innerHTML = `<span style="opacity:.7">👋</span> ${name}`;
+        return true;
+      } else {
+        if (overlay) overlay.style.display = 'flex';
+        return false;
+      }
     }
 
     // ===== INIT =====
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize Firebase + Auth
+      // Initialize Firebase (runs in offline mode if not configured)
       initFirebase();
       initAuthService();
 
-      // React to auth state
-      onAuthStateChange(state => {
-        const overlay = document.getElementById('signinOverlay');
-        if (state.signedIn) {
-          if (overlay) overlay.style.display = 'none';
-          const el = document.getElementById('studentDisplay');
-          const name = state.profile ? state.profile.displayName : localStorage.getItem('g7-student-name') || '';
-          if (el) el.innerHTML = `<span style="opacity:.7">👋</span> ${name}`;
-        } else {
-          if (overlay) overlay.style.display = 'flex';
-        }
-        updateLandingProgress();
-        updateEmptyStates();
-      });
+      // Check localStorage immediately (handles GIS sign-in from shared.js)
+      checkAndDismissOverlay();
+      updateLandingProgress();
+      updateEmptyStates();
+
+      // Also listen for Firebase auth state (activates once Firebase is configured)
+      if (typeof onAuthStateChange === 'function') {
+        onAuthStateChange(state => {
+          checkAndDismissOverlay();
+          updateLandingProgress();
+          updateEmptyStates();
+        });
+      }
+
+      // Poll briefly to catch GIS credential callback (fires async after page load)
+      let checks = 0;
+      const poll = setInterval(() => {
+        if (checkAndDismissOverlay() || checks++ > 20) clearInterval(poll);
+      }, 500);
     });
   </script>
   <!-- Teacher unlock (Ctrl+Shift+L) — will move to role-based in Phase 2 -->
