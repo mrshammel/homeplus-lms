@@ -172,16 +172,35 @@ function initStudentGoogleSignIn() {
   }
 }
 
-/** Handle Google credential response for students */
+/** Handle Google credential response — routes to student or teacher based on flag */
 function handleStudentCredential(response) {
   const payload = parseJwtShared(response.credential);
   if (!payload || !payload.email) { alert('Sign-in failed. Please try again.'); return; }
-  // Clear any teacher session so lessons lock for students
+
+  // Check if this sign-in was from the teacher section
+  const TEACHER_EMAILS = ['amanda.shammel@hpln.ca','admin@hpln.ca'];
+  const isTeacherSignIn = sessionStorage.getItem('hpln-signin-as') === 'teacher';
+  const isTeacherEmail = TEACHER_EMAILS.includes(payload.email.toLowerCase());
+  sessionStorage.removeItem('hpln-signin-as'); // clear flag
+
+  if (isTeacherSignIn && isTeacherEmail) {
+    // Teacher flow: store teacher creds and redirect to dashboard
+    localStorage.setItem('g7-teacher-name', payload.name || payload.email.split('@')[0]);
+    localStorage.setItem('g7-teacher-email', payload.email);
+    localStorage.setItem('g7-teacher-avatar', payload.picture || '');
+    localStorage.setItem('g7-teacher-unlock', 'true');
+    window.location.href = 'dashboard.html';
+    return;
+  } else if (isTeacherSignIn && !isTeacherEmail) {
+    alert('⚠️ This Google account is not authorized as a teacher. Please use the access code or sign in as a student.');
+    return;
+  }
+
+  // Student flow (default)
   localStorage.removeItem('g7-teacher-unlock');
   localStorage.removeItem('g7-teacher-name');
   localStorage.removeItem('g7-teacher-email');
   localStorage.removeItem('g7-teacher-avatar');
-  // Store verified Google identity
   localStorage.setItem('g7-student-name', payload.name || payload.email.split('@')[0]);
   localStorage.setItem('g7-student-email', payload.email);
   localStorage.setItem('g7-student-avatar', payload.picture || '');
