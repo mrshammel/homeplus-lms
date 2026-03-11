@@ -955,8 +955,20 @@ function submitDrawing(containerId) {
   const data = ref.canvas.toDataURL();
   localStorage.setItem(ref.storageKey, data);
   const status = document.getElementById(containerId + '-status');
-  if (status) { status.textContent = '✅ Drawing saved! (Submit to teacher coming soon)'; setTimeout(() => status.textContent = '', 4000); }
-  // Future: submitToTeacher({ type: 'drawing', data, containerId });
+  const unitKey = document.body.dataset.unitKey || 'a';
+  // Submit to Firestore
+  submitStudentWork({
+    type: 'drawing',
+    title: 'Drawing: ' + containerId,
+    assignmentId: unitKey + '-' + containerId,
+    content: '(canvas drawing saved)',
+    attachmentType: 'image/png'
+  }).then(result => {
+    if (status) {
+      status.textContent = result.cloud ? '✅ Drawing submitted to teacher!' : '✅ Drawing saved locally';
+      setTimeout(() => status.textContent = '', 4000);
+    }
+  });
 }
 
 // ===== PHOTO CAPTURE TOOL =====
@@ -1089,12 +1101,79 @@ function submitPhotos(containerId) {
   if (!ref) return;
   const photos = JSON.parse(localStorage.getItem(ref.storageKey) || '[]');
   if (!photos.length) { alert('Please add at least one photo before submitting.'); return; }
+  const caption = localStorage.getItem(ref.storageKey + '-caption') || '';
   const status = document.getElementById(containerId + '-status');
-  if (status) { status.textContent = '✅ Photos saved! (Submit to teacher coming soon)'; setTimeout(() => status.textContent = '', 4000); }
-  // Future: submitToTeacher({ type: 'photos', data: photos, containerId });
+  const unitKey = document.body.dataset.unitKey || 'a';
+  submitStudentWork({
+    type: 'photo',
+    title: 'Photo(s): ' + containerId,
+    assignmentId: unitKey + '-' + containerId,
+    content: caption || '(' + photos.length + ' photo(s) submitted)',
+    attachmentCount: photos.length,
+    attachmentType: 'image/jpeg'
+  }).then(result => {
+    if (status) {
+      status.textContent = result.cloud ? '✅ Photos submitted to teacher!' : '✅ Photos saved locally';
+      setTimeout(() => status.textContent = '', 4000);
+    }
+  });
 }
 
-// ===== SUBMISSION HELPER (Phase 3) =====
+// ===== SUBMISSION PIPELINE =====
+// Central function for all student work submissions (Phase 7)
+// Saves to localStorage + Firestore + optional Apps Script
+async function submitStudentWork(opts) {
+  const name = localStorage.getItem('g7-student-name') || 'Unknown';
+  const email = localStorage.getItem('g7-student-email') || '';
+  const unitKey = document.body.dataset.unitKey || 'a';
+  const submission = {
+    studentName: name,
+    studentEmail: email,
+    type: opts.type || 'written',
+    title: opts.title || 'Student Work',
+    assignmentId: opts.assignmentId || unitKey + '-submission',
+    content: opts.content || '',
+    status: 'Submitted',
+    submittedAt: new Date().toISOString(),
+    attachmentType: opts.attachmentType || null,
+    attachmentCount: opts.attachmentCount || 0
+  };
+
+  // Save to localStorage
+  let subs = JSON.parse(localStorage.getItem('g7-submissions') || '[]');
+  const existIdx = subs.findIndex(s => s.assignmentId === submission.assignmentId && s.studentEmail === email);
+  if (existIdx >= 0) {
+    submission.resubmission = true;
+    submission.previousStatus = subs[existIdx].status;
+    subs[existIdx] = submission;
+  } else {
+    subs.push(submission);
+  }
+  localStorage.setItem('g7-submissions', JSON.stringify(subs));
+
+  // Sync to Firestore
+  let cloud = false;
+  try {
+    if (typeof saveSubmission === 'function') {
+      await saveSubmission(submission);
+      cloud = true;
+      console.log('[Submission] Saved to Firestore:', submission.title);
+    }
+  } catch(e) {
+    console.warn('[Submission] Firestore save failed:', e.message);
+  }
+
+  // Also sync to Apps Script if configured
+  try {
+    if (typeof submitToTeacher === 'function') {
+      submitToTeacher(submission);
+    }
+  } catch(e) {}
+
+  return { success: true, cloud };
+}
+
+// ===== APPS SCRIPT SUBMISSION =====
 const APPS_SCRIPT_URL = localStorage.getItem('g7-apps-script-url') || 'https://script.google.com/macros/s/AKfycbwhr5HmNc1_5RBukfLmNdR6kWn9z6czPd-2IXZY93pGvodyf4NnZcGIAxkYwrgnmWybXQ/exec';
 async function submitToTeacher(payload) {
   if (!APPS_SCRIPT_URL) {

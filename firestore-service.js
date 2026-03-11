@@ -561,6 +561,87 @@ function listenToUserActivity(callback) {
 }
 
 // ============================================================
+// SUBMISSIONS
+// ============================================================
+
+/**
+ * Save a student submission to Firestore.
+ * @param {Object} submissionData - submission record
+ */
+async function saveSubmission(submissionData) {
+  const db = _getDb();
+  const uid = _getUserId();
+  if (!db || !uid) return;
+
+  try {
+    const doc = {
+      ...submissionData,
+      uid,
+      submittedAt: _serverTimestamp(),
+      updatedAt: _serverTimestamp()
+    };
+    // Use assignmentId + uid as a deterministic doc ID
+    const docId = uid + '_' + (submissionData.assignmentId || Date.now());
+    await db.collection('submissions').doc(docId).set(doc, { merge: true });
+    console.log('[Firestore] Submission saved:', submissionData.title);
+  } catch (e) {
+    console.warn('[Firestore] Submission save failed:', e.message);
+  }
+}
+
+/**
+ * Update a submission's status (teacher review action).
+ * @param {Object} submission - the submission object
+ * @param {string} newStatus - 'Approved', 'Needs Revision', etc.
+ */
+async function updateSubmissionStatus(submission, newStatus) {
+  const db = _getDb();
+  if (!db || !submission) return;
+
+  try {
+    // Find the doc by querying
+    const snap = await db.collection('submissions')
+      .where('assignmentId', '==', submission.assignmentId || '')
+      .where('studentEmail', '==', submission.studentEmail || submission.email || '')
+      .limit(1).get();
+
+    if (!snap.empty) {
+      await snap.docs[0].ref.update({
+        status: newStatus,
+        reviewedAt: _serverTimestamp(),
+        reviewedBy: localStorage.getItem('g7-teacher-email') || 'teacher'
+      });
+      console.log('[Firestore] Submission status updated:', newStatus);
+    }
+  } catch (e) {
+    console.warn('[Firestore] Submission status update failed:', e.message);
+  }
+}
+
+// ============================================================
+// TEACHER NOTES
+// ============================================================
+
+/**
+ * Save a teacher note to Firestore.
+ * @param {Object} noteData - { student, tag, text, date, teacher }
+ */
+async function saveTeacherNote(noteData) {
+  const db = _getDb();
+  if (!db) return;
+
+  try {
+    await db.collection('teacherNotes').add({
+      ...noteData,
+      createdAt: _serverTimestamp()
+    });
+    console.log('[Firestore] Teacher note saved');
+  } catch (e) {
+    console.warn('[Firestore] Teacher note save failed:', e.message);
+  }
+}
+
+// ============================================================
 // MIGRATION: localStorage → Firestore
 // ============================================================
 

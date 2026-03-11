@@ -14,12 +14,12 @@
    ============================================================ */
 
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY_HERE",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000"
+  apiKey: "AIzaSyCvaqlYKvMy4t4F_zmy4Nckjql4_ezD47c",
+  authDomain: "project-3c5c1cf6-7c84-4a5d-8fe.firebaseapp.com",
+  projectId: "project-3c5c1cf6-7c84-4a5d-8fe",
+  storageBucket: "project-3c5c1cf6-7c84-4a5d-8fe.firebasestorage.app",
+  messagingSenderId: "487495658772",
+  appId: "1:487495658772:web:8304e311380708f521e601"
 };
 
 // ===== Detect if config is placeholder =====

@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===== HELPER FUNCTIONS =====
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isTeacher() {
+      return isSignedIn() && getUserRole() in ['teacher', 'admin'];
+    }
+
+    function isAdmin() {
+      return isSignedIn() && getUserRole() == 'admin';
+    }
+
+    // ===== USERS =====
+    // Students can read their own profile.
+    // Teachers can read all student profiles.
+    // Profile is created on first sign-in by auth-service.js.
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===== STUDENT PROGRESS =====
+    // Students can read/write their own progress.
+    // Teachers can read all progress (for dashboard).
+    match /studentProgress/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow write: if isOwner(uid);
+
+      // Activities sub-collection
+      match /activities/{activityId} {
+        allow read: if isOwner(uid) || isTeacher();
+        allow write: if isOwner(uid);
+      }
+    }
+
+    // ===== GRADES =====
+    // Students can read their own grades.
+    // The system (student client) writes grade items on quiz completion.
+    // Teachers can read all grades and write feedback/overrides.
+    match /grades/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow write: if isOwner(uid) || isTeacher();
+
+      match /items/{itemId} {
+        allow read: if isOwner(uid) || isTeacher();
+        allow create: if isOwner(uid);
+        allow update: if isOwner(uid) || isTeacher();
+        allow delete: if isTeacher();
+      }
+    }
+
+    // ===== SUBMISSIONS =====
+    // Students can create and read their own submissions.
+    // Teachers can read all submissions and update status/feedback.
+    match /submissions/{submissionId} {
+      allow create: if isSignedIn()
+                    && request.resource.data.studentId == request.auth.uid;
+      allow read: if isSignedIn()
+                  && (resource.data.studentId == request.auth.uid || isTeacher());
+      allow update: if isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    // ===== TEACHER NOTES =====
+    // Only teachers can create, read, update, and delete notes.
+    match /teacherNotes/{noteId} {
+      allow read, write: if isTeacher();
+    }
+
+    // ===== CATCH-ALL: deny everything else =====
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

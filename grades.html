@@ -371,7 +371,7 @@
     return map[category] || 'Formative Activity';
   }
 
-  function loadGradeItems() {
+  function loadGradeItemsFromLocal() {
     const raw = JSON.parse(localStorage.getItem('g7-grades') || '[]');
     return raw.map((g, i) => {
       const unit = detectUnit(g.quizId, g.lessonTitle);
@@ -388,18 +388,57 @@
         score: g.score !== null && g.score !== undefined ? g.score : null,
         total: g.total || 0,
         percentage: g.percentage || (g.total > 0 ? Math.round(g.score / g.total * 100) : 0),
-        feedback: g.passed ? 'Well done!' : (g.score !== null ? 'Keep working on this area.' : ''),
-        reviewType: 'ai',
-        strengths: '',
-        nextSteps: '',
-        rubric: null,
+        feedback: g.feedback || (g.passed ? 'Well done!' : (g.score !== null ? 'Keep working on this area.' : '')),
+        reviewType: g.reviewType || 'ai',
+        teacherReviewed: g.teacherReviewed || false,
+        strengths: g.strengths || '',
+        nextSteps: g.nextSteps || '',
+        rubric: g.rubric || null,
         attempts: g.attempts || 1,
         remediationUsed: g.remediationUsed || false
       };
     });
   }
 
-  let GRADE_ITEMS = loadGradeItems();
+  async function loadGradeItemsFromFirestore() {
+    // Only try Firestore if configured and available
+    if (typeof getGrades !== 'function') return null;
+    if (typeof FIREBASE_CONFIGURED !== 'undefined' && !FIREBASE_CONFIGURED) return null;
+    try {
+      const items = await getGrades();
+      if (!items || items.length === 0) return null;
+      return items.map((g, i) => {
+        const unit = g.unit || detectUnit(g.quizId, g.lessonTitle);
+        const category = g.category || detectCategory(g.quizId, g.lessonTitle);
+        return {
+          id: i + 1,
+          title: g.lessonTitle || g.quizId || g.title || 'Grade Item',
+          unit: unit,
+          unitName: UNIT_NAMES[unit] || 'Grade 7 Science',
+          type: g.type ? (g.type.charAt(0).toUpperCase() + g.type.slice(1)) : detectType(category),
+          category: category,
+          date: g.timestamp ? (typeof g.timestamp === 'string' ? g.timestamp.split('T')[0] : (g.timestamp.toDate ? g.timestamp.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0])) : new Date().toISOString().split('T')[0],
+          status: g.status || (g.passed ? 'Completed' : (g.score !== null && g.score !== undefined ? 'Completed' : 'Missing')),
+          score: g.score !== null && g.score !== undefined ? g.score : null,
+          total: g.total || 0,
+          percentage: g.percentage || (g.total > 0 ? Math.round(g.score / g.total * 100) : 0),
+          feedback: g.feedback || (g.passed ? 'Well done!' : (g.score !== null ? 'Keep working on this area.' : '')),
+          reviewType: g.reviewType || 'ai',
+          teacherReviewed: g.teacherReviewed || false,
+          strengths: g.strengths || '',
+          nextSteps: g.nextSteps || '',
+          rubric: g.rubric || null,
+          attempts: g.attempts || 1,
+          remediationUsed: g.remediationUsed || false
+        };
+      });
+    } catch(e) {
+      console.warn('[Grades] Firestore fetch failed, using localStorage:', e.message);
+      return null;
+    }
+  }
+
+  let GRADE_ITEMS = loadGradeItemsFromLocal();
 
   // ========== CATEGORY CONFIG ==========
   const CATEGORIES = {
@@ -655,9 +694,20 @@
   document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
 
   // ========== INIT ==========
-  document.addEventListener('DOMContentLoaded', () => {
-    // Reload items from localStorage (may have changed since page load)
-    GRADE_ITEMS = loadGradeItems();
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Firebase modules if available
+    if (typeof initFirebase === 'function') initFirebase();
+    if (typeof initAuthService === 'function') initAuthService();
+
+    // Try Firestore first, then fall back to localStorage
+    const firestoreItems = await loadGradeItemsFromFirestore();
+    if (firestoreItems && firestoreItems.length > 0) {
+      GRADE_ITEMS = firestoreItems;
+      console.log('[Grades] Loaded ' + firestoreItems.length + ' items from Firestore');
+    } else {
+      GRADE_ITEMS = loadGradeItemsFromLocal();
+      console.log('[Grades] Loaded ' + GRADE_ITEMS.length + ' items from localStorage');
+    }
 
     if (GRADE_ITEMS.length === 0) {
       // Empty state — no graded items yet

@@ -43,21 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTeacherGSI();
 });
 
-// ===== MANUAL ACCESS CODE (called from dashboard.html button) =====
-function manualTeacherLogin() {
-  const code = prompt('Enter teacher access code:');
-  if (!code) return;
-  if (code.trim() === 'hpln2025') {
-    const name = prompt('Enter your name:') || 'Teacher';
-    localStorage.setItem('g7-teacher-name', name);
-    localStorage.setItem('g7-teacher-email', 'teacher@hpln.ca');
-    localStorage.setItem('g7-teacher-avatar', '');
-    localStorage.setItem('g7-teacher-unlock', 'true');
-    showDashboard(name, 'teacher@hpln.ca', '');
-  } else {
-    alert('❌ Invalid access code.');
-  }
-}
+// manualTeacherLogin is defined below (line ~129) with guardManualLogin support
 
 function _legacyAuthCheck() {
   const tName = localStorage.getItem('g7-teacher-name');
@@ -596,45 +582,382 @@ function exportAllData(){
   a.click();
 }
 
-// ===== FIREBASE LIVE DATA =====
-let _dashFbDb = null;
-let _dashFbReady = false;
+// ===== SECTION 6: SUBMISSIONS =====
+function renderSubmissions(){
+  const el = document.getElementById('submissionsContent');
+  if(!el) return;
+  // Gather submissions from mock students + localStorage
+  let subs = [];
+  MOCK_STUDENTS.forEach(s=>{
+    if(s.submissions && s.submissions.length){
+      s.submissions.forEach(sub=>{
+        subs.push({...sub, studentName:s.name, studentId:s.id, email:s.email});
+      });
+    }
+  });
+  // Also merge from localStorage
+  try {
+    const localSubs = JSON.parse(localStorage.getItem('g7-submissions') || '[]');
+    localSubs.forEach(ls=>{
+      if(!subs.find(s=>s.title===ls.title && s.studentName===(ls.studentName||ls.studentEmail))){
+        subs.push({type:ls.type||'Written',title:ls.title,status:ls.status||'Submitted',date:ls.submittedAt?(ls.submittedAt.split('T')[0]):'',studentName:ls.studentName||ls.studentEmail||'Unknown',studentId:0,email:ls.studentEmail||''});
+      }
+    });
+  } catch(e){}
+
+  const statusColors = {Pending:'rgba(251,191,36,.12)',Submitted:'rgba(251,191,36,.12)',Approved:'rgba(74,222,128,.12)','Needs Revision':'rgba(167,139,250,.12)',Returned:'rgba(56,189,248,.12)',Reviewed:'rgba(74,222,128,.12)'};
+  const statusIcons = {Pending:'⏳',Submitted:'⏳',Approved:'✅','Needs Revision':'🔄',Returned:'📬',Reviewed:'✅'};
+
+  if(!subs.length){
+    el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:3rem;margin-bottom:12px">📭</div><h3 style="color:var(--text)">No Submissions Yet</h3><p style="font-size:.88rem">Student submissions (drawings, photos, written responses) will appear here for review.</p></div>';
+    return;
+  }
+
+  // Sort: pending first
+  subs.sort((a,b)=>{
+    const order = {Pending:0,Submitted:0,'Needs Revision':1,Returned:2,Reviewed:3,Approved:3};
+    return (order[a.status]||0)-(order[b.status]||0);
+  });
+
+  let html = '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">';
+  const pending = subs.filter(s=>s.status==='Pending'||s.status==='Submitted').length;
+  const reviewed = subs.filter(s=>s.status==='Approved'||s.status==='Reviewed').length;
+  const revision = subs.filter(s=>s.status==='Needs Revision').length;
+  html += '<div class="kpi-card" style="flex:1;min-width:140px"><div class="kpi-icon">⏳</div><div class="kpi-val">'+pending+'</div><div class="kpi-label">Awaiting Review</div></div>';
+  html += '<div class="kpi-card" style="flex:1;min-width:140px"><div class="kpi-icon">✅</div><div class="kpi-val">'+reviewed+'</div><div class="kpi-label">Reviewed</div></div>';
+  html += '<div class="kpi-card" style="flex:1;min-width:140px"><div class="kpi-icon">🔄</div><div class="kpi-val">'+revision+'</div><div class="kpi-label">Needs Revision</div></div>';
+  html += '<div class="kpi-card" style="flex:1;min-width:140px"><div class="kpi-icon">📝</div><div class="kpi-val">'+subs.length+'</div><div class="kpi-label">Total</div></div>';
+  html += '</div>';
+
+  html += '<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Student</th><th>Type</th><th>Title</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  subs.forEach((sub,i)=>{
+    const bg = statusColors[sub.status]||'transparent';
+    const icon = statusIcons[sub.status]||'📄';
+    html += '<tr style="background:'+bg+'">';
+    html += '<td style="font-weight:600">'+sub.studentName+'</td>';
+    html += '<td><span style="font-size:.72rem;padding:2px 8px;border-radius:8px;background:var(--card2);color:var(--text2)">'+sub.type+'</span></td>';
+    html += '<td>'+sub.title+'</td>';
+    html += '<td style="white-space:nowrap;font-size:.82rem;color:var(--text3)">'+(sub.date||'—')+'</td>';
+    html += '<td><span style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:600">'+icon+' '+sub.status+'</span></td>';
+    html += '<td style="white-space:nowrap">';
+    if(sub.status==='Pending'||sub.status==='Submitted'){
+      html += '<button class="activity-btn" style="font-size:.72rem;padding:4px 10px;margin-right:4px" onclick="reviewSubmission('+i+',\'Approved\')">✅ Approve</button>';
+      html += '<button class="dash-back" style="font-size:.72rem;padding:4px 10px" onclick="reviewSubmission('+i+',\'Needs Revision\')">🔄 Return</button>';
+    } else {
+      html += '<span style="font-size:.72rem;color:var(--text3)">—</span>';
+    }
+    html += '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function reviewSubmission(idx, newStatus){
+  // Update mock data
+  let subs = [];
+  MOCK_STUDENTS.forEach(s=>{
+    if(s.submissions) s.submissions.forEach(sub=>subs.push(sub));
+  });
+  if(subs[idx]) subs[idx].status = newStatus;
+  // Update localStorage submissions too
+  try {
+    const local = JSON.parse(localStorage.getItem('g7-submissions') || '[]');
+    if(local[idx]) { local[idx].status = newStatus; localStorage.setItem('g7-submissions', JSON.stringify(local)); }
+  } catch(e){}
+  // Sync to Firestore
+  try {
+    if(typeof updateSubmissionStatus === 'function') updateSubmissionStatus(subs[idx], newStatus);
+  } catch(e){}
+  renderSubmissions();
+}
+
+// ===== SECTION 7: NOTES =====
+function renderNotes(){
+  const el = document.getElementById('notesList');
+  if(!el) return;
+  let notes = JSON.parse(localStorage.getItem('g7-teacher-notes') || '[]');
+  const tagFilter = document.getElementById('noteTagFilter');
+  const tag = tagFilter ? tagFilter.value : '';
+  if(tag) notes = notes.filter(n=>n.tag===tag);
+  notes.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  if(!notes.length){
+    el.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text3)"><div style="font-size:2.5rem;margin-bottom:8px">📋</div><p>No notes yet. Click <strong>+ Add Note</strong> to get started.</p></div>';
+    return;
+  }
+  el.innerHTML = notes.map((n,i)=>{
+    const dateStr = new Date(n.date).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'});
+    return '<div class="note-card" style="padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:600;font-size:.88rem;color:var(--text)">'+(n.student||'General')+'</span><span style="font-size:.72rem;color:var(--text3)">'+dateStr+'</span></div><span class="note-tag" style="display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:8px;background:var(--card2);color:var(--accent);font-weight:600;margin-bottom:6px">'+n.tag+'</span><div style="font-size:.84rem;color:var(--text2);line-height:1.5">'+n.text+'</div><button onclick="deleteNote('+i+')" style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;margin-top:6px;padding:0">🗑️ Delete</button></div>';
+  }).join('');
+}
+
+function addNewNote(){
+  // Populate student dropdown
+  const sel = document.getElementById('noteStudent');
+  if(sel) {
+    sel.innerHTML = '<option value="">— General —</option>' + MOCK_STUDENTS.map(s=>'<option value="'+s.name+'">'+s.name+'</option>').join('');
+  }
+  document.getElementById('noteText').value = '';
+  document.getElementById('noteOverlay').classList.add('open');
+}
+
+function closeNoteModal(){ document.getElementById('noteOverlay').classList.remove('open'); }
+
+function saveNote(){
+  const student = document.getElementById('noteStudent').value;
+  const tag = document.getElementById('noteTag').value;
+  const text = document.getElementById('noteText').value.trim();
+  if(!text){ alert('Please enter a note.'); return; }
+  let notes = JSON.parse(localStorage.getItem('g7-teacher-notes') || '[]');
+  const note = { student, tag, text, date: new Date().toISOString(), teacher: localStorage.getItem('g7-teacher-email')||'teacher' };
+  notes.push(note);
+  localStorage.setItem('g7-teacher-notes', JSON.stringify(notes));
+  // Sync to Firestore
+  try { if(typeof saveTeacherNote === 'function') saveTeacherNote(note); } catch(e){}
+  closeNoteModal();
+  renderNotes();
+}
+
+function deleteNote(idx){
+  if(!confirm('Delete this note?')) return;
+  let notes = JSON.parse(localStorage.getItem('g7-teacher-notes') || '[]');
+  notes.splice(idx, 1);
+  localStorage.setItem('g7-teacher-notes', JSON.stringify(notes));
+  renderNotes();
+}
+
+function filterNotes(){ renderNotes(); }
+
+// ===== SECTION 8: PACING =====
+function renderPacing(){
+  const el = document.getElementById('pacingContent');
+  if(!el) return;
+  const students = MOCK_STUDENTS;
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0=Sun
+  const daysIntoWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+  // Expected pace: ~2-3 lessons per week, so ~0.35 lessons per day across all units
+  const expectedProgressPerDay = 2.5; // % per day roughly
+
+  let html = '<div class="dash-card" style="margin-bottom:20px"><h3 class="dash-card-title">⏱️ Weekly Pacing Summary</h3><p style="font-size:.82rem;color:var(--text3);margin-bottom:16px">Shows which students are ahead of, on, or behind a comfortable weekly pace.</p>';
+  html += '<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Student</th><th>Current Position</th><th>Progress</th><th>Pace</th><th>Status</th></tr></thead><tbody>';
+
+  students.forEach(s=>{
+    const daysSinceActive = Math.floor((Date.now()-new Date(s.lastActive).getTime())/86400000);
+    let pace = 'On Pace', paceColor = 'var(--green)', paceIcon = '✅';
+    if(daysSinceActive >= 7 || s.progress < 10){
+      pace = 'Stalled'; paceColor = 'var(--red,#ef4444)'; paceIcon = '🛑';
+    } else if(daysSinceActive >= 4 || s.avgScore < 65){
+      pace = 'Slow'; paceColor = 'var(--yellow,#fbbf24)'; paceIcon = '⚠️';
+    } else if(s.progress > 60){
+      pace = 'Ahead'; paceColor = 'var(--blue,#38bdf8)'; paceIcon = '🚀';
+    }
+
+    html += '<tr><td style="font-weight:600">'+s.name+'</td>';
+    html += '<td style="font-size:.82rem">Unit '+s.unit+' · Lesson '+s.lesson+'</td>';
+    html += '<td><div style="display:flex;align-items:center;gap:8px"><div style="width:80px;height:6px;background:var(--card2);border-radius:3px;overflow:hidden"><div style="width:'+s.progress+'%;height:100%;background:'+paceColor+';border-radius:3px"></div></div><span style="font-size:.78rem;font-weight:600">'+s.progress+'%</span></div></td>';
+    html += '<td style="font-size:.82rem;color:var(--text3)">Active '+daysSinceActive+'d ago</td>';
+    html += '<td><span style="display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:600;color:'+paceColor+'">'+paceIcon+' '+pace+'</span></td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div></div>';
+  el.innerHTML = html;
+}
+
+
+// ===== FIRESTORE LIVE DATA =====
+let _dashFirestoreReady = false;
+let _unsubProgress = null;
+let _unsubUsers = null;
 
 function initDashboardFirebase() {
+  if (typeof FIREBASE_CONFIGURED !== 'undefined' && !FIREBASE_CONFIGURED) {
+    console.log('[Dashboard] Firebase config not set — using mock data');
+    updateConnectionStatus(false);
+    return;
+  }
   if (typeof FIREBASE_CONFIG === 'undefined' || FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY_HERE') {
     console.log('[Dashboard] Firebase config not set — using mock data');
     updateConnectionStatus(false);
     return;
   }
   try {
-    if (typeof firebase === 'undefined') { console.warn('[Dashboard] Firebase SDK not loaded'); updateConnectionStatus(false); return; }
-    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-    _dashFbDb = firebase.database();
-    _dashFbReady = true;
+    // Use Firestore via firestore-service.js
+    const db = typeof _getDb === 'function' ? _getDb() : (typeof getFirestore === 'function' ? getFirestore() : null);
+    if (!db) {
+      console.warn('[Dashboard] Firestore not available');
+      updateConnectionStatus(false);
+      return;
+    }
 
-    // Monitor connection
-    _dashFbDb.ref('.info/connected').on('value', function(snap) {
-      updateConnectionStatus(snap.val() === true);
-    });
+    _dashFirestoreReady = true;
+    updateConnectionStatus(true);
 
-    // Listen for real-time student data
-    _dashFbDb.ref('students').on('value', function(snap) {
-      const data = snap.val();
-      if (data) {
-        const liveStudents = transformFirebaseToMockFormat(data);
-        if (liveStudents.length > 0) {
-          // Replace MOCK_STUDENTS with live data
-          window.LIVE_STUDENTS = liveStudents;
-          MOCK_STUDENTS.length = 0;
-          liveStudents.forEach(s => MOCK_STUDENTS.push(s));
-          renderAll();
-          updateLiveBadge(liveStudents.length);
+    // Listen for real-time student users
+    _unsubUsers = db.collection('users')
+      .where('role', '==', 'student')
+      .onSnapshot(async function(userSnap) {
+        if (userSnap.empty) {
+          console.log('[Dashboard] No students in Firestore — keeping mock data');
+          return;
         }
-      }
-    });
-    console.log('[Dashboard] Firebase connected — listening for live data');
+
+        // Build student list from users + progress + grades
+        const students = [];
+        let id = 1;
+        const unitNames = ['A','B','C','D','E'];
+        const totalLessonsPerUnit = { A:8, B:7, C:6, D:8, E:7 };
+
+        for (const userDoc of userSnap.docs) {
+          const u = userDoc.data();
+          if (!u.email) continue;
+
+          // Fetch progress for this student
+          let progressData = null;
+          try {
+            const progDoc = await db.collection('studentProgress').doc(userDoc.id).get();
+            if (progDoc.exists) progressData = progDoc.data();
+          } catch(e) {}
+
+          // Fetch grades for this student
+          let gradeItems = [];
+          try {
+            const gradeSnap = await db.collection('grades').doc(userDoc.id)
+              .collection('items').get();
+            gradeItems = gradeSnap.docs.map(d => d.data());
+          } catch(e) {}
+
+          // Fetch submissions
+          let submissions = [];
+          try {
+            const subSnap = await db.collection('submissions')
+              .where('studentId', '==', userDoc.id).get();
+            submissions = subSnap.docs.map(d => ({
+              type: d.data().type || 'Written',
+              title: d.data().title || d.data().assignmentId || 'Submission',
+              status: d.data().status || 'Submitted',
+              date: d.data().submittedAt ? (d.data().submittedAt.toDate ? d.data().submittedAt.toDate().toISOString().split('T')[0] : d.data().submittedAt) : ''
+            }));
+          } catch(e) {}
+
+          // Calculate progress from units data
+          let totalPassed = 0, totalLessons = 0, quizScores = [];
+          let currentUnit = 'A', currentLesson = 1;
+          let activitiesDone = 0, activitiesTotal = 0, quizPasses = 0, quizAttempts = 0;
+          const unitProgress = { A:0, B:0, C:0, D:0, E:0 };
+
+          if (progressData && progressData.units) {
+            unitNames.forEach(uName => {
+              const uKey = uName.toLowerCase();
+              const unitData = progressData.units[uKey] || progressData.units[uName];
+              const maxL = totalLessonsPerUnit[uName];
+              totalLessons += maxL;
+
+              if (unitData) {
+                const passed = unitData.lessonsCompleted || (unitData.lessonsPassed ? unitData.lessonsPassed.length : 0);
+                totalPassed += passed;
+                unitProgress[uName] = Math.round(passed / maxL * 100);
+
+                // Track current position — first unit/lesson not fully passed
+                if (passed < maxL && uName >= currentUnit) {
+                  currentUnit = uName;
+                  currentLesson = passed + 1;
+                }
+              } else {
+                totalLessons += 0; // already counted
+              }
+            });
+          } else {
+            unitNames.forEach(uName => { totalLessons += totalLessonsPerUnit[uName]; });
+          }
+
+          // Compute quiz stats from grade items
+          gradeItems.forEach(g => {
+            if (g.type === 'quiz' || g.quizId) {
+              quizAttempts += g.attempts || 1;
+              if (g.passed) quizPasses++;
+              if (typeof g.percentage === 'number') quizScores.push(g.percentage);
+            }
+          });
+
+          const progress = totalLessons ? Math.round(totalPassed / totalLessons * 100) : 0;
+          const avgScore = quizScores.length ? Math.round(quizScores.reduce((a,b) => a+b, 0) / quizScores.length) : 0;
+
+          // Determine last active
+          let lastActive = u.lastActive;
+          if (lastActive && lastActive.toDate) lastActive = lastActive.toDate().toISOString();
+          else if (!lastActive) lastActive = new Date().toISOString();
+
+          const daysSinceActive = Math.floor((Date.now() - new Date(lastActive).getTime()) / 86400000);
+
+          // Determine status + alerts
+          let status = 'On Track';
+          const alerts = [];
+          if (progress >= 90) { status = 'Complete'; }
+          else if (daysSinceActive >= 7 || (avgScore > 0 && avgScore < 55)) {
+            status = 'Stuck';
+            if (daysSinceActive >= 7) alerts.push('Inactive ' + daysSinceActive + ' days');
+            if (avgScore > 0 && avgScore < 55) alerts.push('Low quiz scores');
+          }
+          else if (daysSinceActive >= 4 || (avgScore > 0 && avgScore < 70) || progress < 20) {
+            status = 'Behind';
+            if (daysSinceActive >= 4) alerts.push('Dropping engagement');
+            if (avgScore > 0 && avgScore < 70) alerts.push('Scores need support');
+            if (progress < 20) alerts.push('Low progress');
+          }
+
+          // Build mastery outcomes from grade data
+          const allOutcomes = UNITS.flatMap(unit => unit.outcomes);
+          const mastered = [], developing = [], notStarted = [];
+          allOutcomes.forEach(o => {
+            const unitLetter = o.split('.')[0];
+            if (unitProgress[unitLetter] >= 80) mastered.push(o);
+            else if (unitProgress[unitLetter] > 0) developing.push(o);
+            else notStarted.push(o);
+          });
+
+          students.push({
+            id: id++,
+            name: u.displayName || u.email.split('@')[0],
+            email: u.email,
+            avatar: u.avatar || '',
+            unit: currentUnit,
+            lesson: currentLesson,
+            progress: progressData ? (progressData.overallCompletion || progress) : progress,
+            avgScore: avgScore,
+            lastActive: lastActive.split('T')[0],
+            status: status,
+            alerts: alerts,
+            quizPasses: quizPasses,
+            quizAttempts: quizAttempts,
+            activitiesDone: activitiesDone,
+            activitiesTotal: activitiesTotal || activitiesDone,
+            timeSpent: '—',
+            unitProgress: unitProgress,
+            outcomes: { mastered: mastered, developing: developing, notStarted: notStarted },
+            submissions: submissions
+          });
+        }
+
+        if (students.length > 0) {
+          // Replace MOCK_STUDENTS with live data
+          window.LIVE_STUDENTS = students;
+          MOCK_STUDENTS.length = 0;
+          students.forEach(s => MOCK_STUDENTS.push(s));
+          renderAll();
+          updateLiveBadge(students.length);
+          console.log('[Dashboard] Loaded ' + students.length + ' students from Firestore');
+        }
+      }, function(err) {
+        console.warn('[Dashboard] Firestore listener error:', err.message);
+        updateConnectionStatus(false);
+      });
+
+    console.log('[Dashboard] Firestore connected — listening for live data');
   } catch (e) {
-    console.warn('[Dashboard] Firebase init failed:', e.message);
+    console.warn('[Dashboard] Firestore init failed:', e.message);
     updateConnectionStatus(false);
   }
 }
@@ -648,8 +971,8 @@ function updateConnectionStatus(connected) {
     document.body.appendChild(indicator);
   }
   if (connected) {
-    indicator.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse 2s infinite"></span> <span style="color:var(--text2)">Live</span>';
-    indicator.title = 'Connected to Firebase — real-time data active';
+    indicator.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse 2s infinite"></span> <span style="color:var(--text2)">Live · Firestore</span>';
+    indicator.title = 'Connected to Cloud Firestore — real-time data active';
   } else {
     indicator.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span> <span style="color:var(--text3)">Mock Data</span>';
     indicator.title = 'Firebase not connected — showing demo data';
@@ -669,103 +992,20 @@ function updateLiveBadge(count) {
   badge.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse 2s infinite"></span> ' + count + ' students live';
 }
 
-function transformFirebaseToMockFormat(fbData) {
-  const students = [];
-  let id = 1;
-  const unitNames = ['A','B','C','D','E'];
-  const totalLessonsPerUnit = { A:7, B:7, C:5, D:7, E:7 };
-
-  Object.keys(fbData).forEach(key => {
-    const s = fbData[key];
-    if (!s.email || !s.name) return;
-
-    // Calculate progress from unit lesson data
-    let totalPassed = 0, totalLessons = 0, quizScores = [], currentUnit = 'A', currentLesson = 1;
-    let activitiesDone = 0, activitiesTotal = 0, quizPasses = 0, quizAttempts = 0;
-    const unitProgress = { A:0, B:0, C:0, D:0, E:0 };
-
-    unitNames.forEach(u => {
-      const unitData = s.units && s.units[u];
-      const maxL = totalLessonsPerUnit[u];
-      totalLessons += maxL;
-      let lessonsPassed = 0;
-
-      if (unitData) {
-        for (let i = 1; i <= maxL; i++) {
-          const ld = unitData['lesson' + i];
-          if (ld) {
-            if (ld.passed) { lessonsPassed++; totalPassed++; }
-            // Count activities
-            if (ld.activities) {
-              Object.values(ld.activities).forEach(act => {
-                activitiesDone++;
-                activitiesTotal++;
-              });
-            }
-            // Count quizzes
-            if (ld.quiz) {
-              quizAttempts += ld.quiz.attempts || 1;
-              if (ld.quiz.passed) quizPasses++;
-              quizScores.push(Math.round((ld.quiz.score / ld.quiz.total) * 100));
-            }
-            // Track current position
-            if (!ld.passed) {
-              if (u >= currentUnit) { currentUnit = u; currentLesson = Math.max(currentLesson, i); }
-            }
-          }
-        }
-        unitProgress[u] = Math.round(lessonsPassed / maxL * 100);
-      }
-    });
-
-    const progress = totalLessons ? Math.round(totalPassed / totalLessons * 100) : 0;
-    const avgScore = quizScores.length ? Math.round(quizScores.reduce((a,b) => a+b, 0) / quizScores.length) : 0;
-
-    // Determine status
-    const lastActive = s.lastActive || new Date().toISOString();
-    const daysSinceActive = Math.floor((Date.now() - new Date(lastActive).getTime()) / 86400000);
-    let status = 'On Track';
-    const alerts = [];
-    if (daysSinceActive >= 7) { status = 'Inactive'; alerts.push('No activity for ' + daysSinceActive + ' days'); }
-    else if (avgScore > 0 && avgScore < 65) { status = 'Stuck'; alerts.push('Average score below 65%'); }
-    else if (progress < 20 && daysSinceActive >= 3) { status = 'Behind'; alerts.push('Low progress'); }
-
-    students.push({
-      id: id++,
-      name: s.name,
-      email: s.email,
-      avatar: s.avatar || '',
-      unit: currentUnit,
-      lesson: currentLesson,
-      progress: progress,
-      avgScore: avgScore,
-      lastActive: lastActive.split('T')[0],
-      status: status,
-      alerts: alerts,
-      quizPasses: quizPasses,
-      quizAttempts: quizAttempts,
-      activitiesDone: activitiesDone,
-      activitiesTotal: activitiesTotal || activitiesDone,
-      timeSpent: '—',
-      unitProgress: unitProgress,
-      outcomes: { mastered: [], developing: [], notStarted: [] },
-      submissions: []
-    });
-  });
-
-  return students;
+// Helpers — daysAgo and UNITS are defined in dashboard-data.js
+// Only define if not already present (e.g. dashboard-data.js not loaded)
+if (typeof daysAgo === 'undefined') {
+  window.daysAgo = function(n){ const d=new Date(); d.setDate(d.getDate()-n); return d.toISOString().split('T')[0]; };
 }
-
-// Helpers
-function daysAgo(n){ const d=new Date(); d.setDate(d.getDate()-n); return d.toISOString().split('T')[0]; }
-
-const UNITS = [
-  {id:'A',icon:'🌿',name:'Ecosystems',outcomes:['A.K.1','A.S.1','A.S.2']},
-  {id:'B',icon:'🌱',name:'Plants',outcomes:['B.K.1','B.S.1','B.S.2']},
-  {id:'C',icon:'🔥',name:'Heat',outcomes:['C.K.1','C.S.1','C.S.2']},
-  {id:'D',icon:'🏗️',name:'Structures',outcomes:['D.K.1','D.S.1','D.S.2']},
-  {id:'E',icon:'🌍',name:'Planet Earth',outcomes:['E.K.1','E.S.1','E.S.2']}
-];
+if (typeof UNITS === 'undefined') {
+  window.UNITS = [
+    {id:'A',icon:'🌿',name:'Ecosystems',outcomes:['STS-K.1','STS-K.2','A.K.1','A.K.2','A.K.3']},
+    {id:'B',icon:'🌱',name:'Plants for Food & Fibre',outcomes:['B.K.1','B.K.2','B.K.3']},
+    {id:'C',icon:'🔥',name:'Heat & Temperature',outcomes:['C.K.1','C.K.2','C.K.3']},
+    {id:'D',icon:'🏗️',name:'Structures & Forces',outcomes:['D.K.1','D.K.2','D.K.3']},
+    {id:'E',icon:'🌍',name:'Planet Earth',outcomes:['E.K.1','E.K.2','E.K.3']}
+  ];
+}
 
 // Add pulse animation
 const style = document.createElement('style');
