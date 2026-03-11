@@ -22,7 +22,8 @@ const TEACHER_EMAILS = [
   'admin@hpln.ca',
   'amanda.yaremchuk@gmail.com',
   'amandahammel@prrd8.ca',
-  'coreysteeves@prrd8.ca'
+  'coreysteeves@prrd8.ca',
+  'hammel1610@gmail.com'
 ];
 
 // ===== INIT =====
