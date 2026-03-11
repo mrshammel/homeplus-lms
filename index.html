@@ -77,6 +77,14 @@
       .how-it-works{grid-template-columns:repeat(2,1fr)}
     }
   </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- HPLN Firebase modules -->
+  <script src="firebase-config.js"></script>
+  <script src="auth-service.js"></script>
+  <!-- Legacy GIS fallback (kept for transition, can remove later) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
@@ -87,7 +95,11 @@
       <div style="font-size:3rem;margin-bottom:12px">🔬</div>
       <h2>Welcome, Scientist!</h2>
       <p>Sign in with your Google account to save your progress.</p>
-      <div id="studentGoogleBtn" style="display:flex;justify-content:center;margin-top:8px"></div>
+      <div id="studentGoogleBtn" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px">
+        <button onclick="handleFirebaseSignIn()" class="signin-btn" style="padding:12px 28px;font-size:.95rem;font-weight:600;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .3s">🔑 Sign in with Google</button>
+        <div style="font-size:.72rem;color:var(--text3)">or</div>
+        <button onclick="handleOfflineSignIn()" style="background:none;border:none;color:var(--text3);font-size:.78rem;cursor:pointer;text-decoration:underline">Sign in manually</button>
+      </div>
     </div>
   </div>
 
@@ -324,13 +336,38 @@
       }
     }
 
+    // ===== FIREBASE SIGN IN HANDLERS =====
+    async function handleFirebaseSignIn() {
+      const user = await signInWithGoogle();
+      // Auth state change callback handles the rest
+    }
+    async function handleOfflineSignIn() {
+      const user = await _offlineSignIn();
+    }
+
     // ===== INIT =====
     document.addEventListener('DOMContentLoaded', () => {
-      updateLandingProgress();
-      updateEmptyStates();
+      // Initialize Firebase + Auth
+      initFirebase();
+      initAuthService();
+
+      // React to auth state
+      onAuthStateChange(state => {
+        const overlay = document.getElementById('signinOverlay');
+        if (state.signedIn) {
+          if (overlay) overlay.style.display = 'none';
+          const el = document.getElementById('studentDisplay');
+          const name = state.profile ? state.profile.displayName : localStorage.getItem('g7-student-name') || '';
+          if (el) el.innerHTML = `<span style="opacity:.7">👋</span> ${name}`;
+        } else {
+          if (overlay) overlay.style.display = 'flex';
+        }
+        updateLandingProgress();
+        updateEmptyStates();
+      });
     });
   </script>
-  <!-- Fallback: self-contained teacher unlock if shared.js fails -->
+  <!-- Teacher unlock (Ctrl+Shift+L) — will move to role-based in Phase 2 -->
   <script>
   (function(){
     if(typeof window.teacherUnlock==='function') return;
@@ -340,6 +377,7 @@
       document.querySelectorAll('[id$="-quiz-btn"]').forEach(function(b){b.disabled=false;b.style.opacity='1';b.style.cursor='pointer';});
     }
     window.teacherUnlock=function(){
+      if (typeof isTeacher === 'function' && isTeacher()) { unlockAll(); return; }
       try{if(localStorage.getItem('g7-teacher-unlock')==='true'){if(confirm('Deactivate teacher unlock?')){localStorage.removeItem('g7-teacher-unlock');alert('Locked.');location.reload();}return;}}catch(e){}
       var code=prompt('Enter teacher access code:');if(!code)return;
       if(code.trim()==='shammel2026'){try{localStorage.setItem('g7-teacher-unlock','true');}catch(e){}unlockAll();alert('Unlocked! All lessons accessible.');}else{alert('Invalid code.');}

@@ -7,6 +7,15 @@
   <meta name="description" content="Teacher dashboard for HPLN Grade 7 Science. View student progress, analytics, mastery tracking, and intervention tools.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- HPLN modules -->
+  <script src="firebase-config.js"></script>
+  <script src="auth-service.js"></script>
+  <!-- Legacy GIS (kept for transition) -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="dashboard-styles.css">
 </head>
@@ -185,7 +194,6 @@
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="firebase-sync.js"></script>
 <script src="shared.js"></script>
