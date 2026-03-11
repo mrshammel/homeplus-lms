@@ -70,11 +70,21 @@ function initTeacherGSI(){
   const btn = document.getElementById('teacherGoogleBtn');
   if(!btn) return;
   if(window.location.protocol==='file:') { btn.innerHTML='<p style="color:var(--text3);font-size:.8rem">Google Sign-In requires http/https</p>'; return; }
-  try {
-    if(typeof google==='undefined'||!google.accounts) throw new Error('GIS not loaded');
-    google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleTeacherCred, auto_select:false });
-    google.accounts.id.renderButton(btn,{theme:'outline',size:'large',text:'signin_with',shape:'pill',width:280});
-  } catch(e){ btn.innerHTML='<p style="color:var(--text3);font-size:.8rem">Google Sign-In unavailable</p>'; }
+
+  // GIS loads async — retry until ready
+  let attempts = 0;
+  const tryInit = () => {
+    attempts++;
+    if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+      google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleTeacherCred, auto_select:false });
+      google.accounts.id.renderButton(btn,{theme:'outline',size:'large',text:'signin_with',shape:'pill',width:280});
+    } else if (attempts < 20) {
+      setTimeout(tryInit, 500);
+    } else {
+      btn.innerHTML='<p style="color:var(--text3);font-size:.8rem">Google Sign-In unavailable. Use the access code below.</p>';
+    }
+  };
+  tryInit();
 }
 
 function handleTeacherCred(resp){
