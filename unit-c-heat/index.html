@@ -14,6 +14,7 @@
   <!-- HPLN modules -->
   <script src="../firebase-config.js"></script>
   <script src="../auth-service.js"></script>
+  <script src="../auth-guard.js"></script>
   <!-- Legacy GIS fallback -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1191,7 +1192,7 @@
     window.teacherUnlock=function(){
       try{if(localStorage.getItem('g7-teacher-unlock')==='true'){if(confirm('Deactivate teacher unlock?')){localStorage.removeItem('g7-teacher-unlock');alert('Locked.');location.reload();}return;}}catch(e){}
       var code=prompt('Enter teacher access code:');if(!code)return;
-      if(code.trim()==='shammel2026'){try{localStorage.setItem('g7-teacher-unlock','true');}catch(e){}unlockAll();alert('Unlocked! All lessons accessible.');}else{alert('Invalid code.');}
+      if(code.trim()==='hpln2025'){try{localStorage.setItem('g7-teacher-unlock','true');}catch(e){}unlockAll();alert('Unlocked! All lessons accessible.');}else{alert('Invalid code.');}
     };
     document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.shiftKey&&(e.key==='L'||e.key==='l')){e.preventDefault();window.teacherUnlock();}});
     try{if(localStorage.getItem('g7-teacher-unlock')==='true')setTimeout(unlockAll,400);}catch(e){}

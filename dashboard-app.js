@@ -3,10 +3,11 @@
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '487495658772-eck3r6d7s9in7sdc87h6knov95tr4v42.apps.googleusercontent.com';
-const TEACHER_EMAILS = ['amanda.shammel@hpln.ca','admin@hpln.ca'];
+// Teacher email allowlist — also defined in auth-service.js TEACHER_EMAILS
+const DASHBOARD_TEACHER_EMAILS = ['amanda.shammel@hpln.ca','admin@hpln.ca'];
 let currentSort = { col:'name', asc:true };
 
-// ===== AUTH =====
+// ===== AUTH (uses auth-guard.js) =====
 document.addEventListener('DOMContentLoaded', () => {
   // Date
   const d = new Date();
@@ -16,12 +17,38 @@ document.addEventListener('DOMContentLoaded', () => {
   if(localStorage.getItem('g7-theme')==='light') document.body.classList.add('light');
   const tb = document.getElementById('dashThemeBtn');
   if(tb) tb.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
-  // Check auth
+
+  // Initialize Firebase (runs in offline mode if not configured)
+  if (typeof initFirebase === 'function') initFirebase();
+  if (typeof initAuthService === 'function') initAuthService();
+
+  // Use auth guard to protect this page — requires teacher role
+  if (typeof guardPage === 'function') {
+    guardPage({
+      requiredRole: 'teacher',
+      contentId: 'dashMain',
+      gateId: 'authGate',
+      onAuthorized: function(name, email, avatar) {
+        showDashboard(name, email, avatar);
+      },
+      allowManualCode: true,
+      manualCode: 'hpln2025'
+    });
+  } else {
+    // Fallback if auth-guard.js didn't load
+    _legacyAuthCheck();
+  }
+
+  // Also init GIS button for the auth gate
+  initTeacherGSI();
+});
+
+function _legacyAuthCheck() {
   const tName = localStorage.getItem('g7-teacher-name');
   const tEmail = localStorage.getItem('g7-teacher-email');
   if(tName && tEmail) { showDashboard(tName, tEmail, localStorage.getItem('g7-teacher-avatar')||''); }
-  else { document.getElementById('authGate').style.display='flex'; initTeacherGSI(); }
-});
+  else { document.getElementById('authGate').style.display='flex'; }
+}
 
 function initTeacherGSI(){
   const btn = document.getElementById('teacherGoogleBtn');
@@ -39,6 +66,16 @@ function handleTeacherCred(resp){
     const b = resp.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
     const p = JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
     if(!p.email){ alert('Sign-in failed'); return; }
+    // Check if email is a teacher
+    if (!DASHBOARD_TEACHER_EMAILS.some(e => e.toLowerCase() === p.email.toLowerCase())) {
+      // Not a recognized teacher — check Firestore role if available
+      if (typeof getUserRole === 'function' && (getUserRole() === 'teacher' || getUserRole() === 'admin')) {
+        // Firestore says they're a teacher, allow
+      } else {
+        alert('⚠️ This account does not have teacher access. Please sign in with your teacher account.');
+        return;
+      }
+    }
     localStorage.setItem('g7-teacher-name', p.name||p.email.split('@')[0]);
     localStorage.setItem('g7-teacher-email', p.email);
     localStorage.setItem('g7-teacher-avatar', p.picture||'');
@@ -50,7 +87,12 @@ function handleTeacherCred(resp){
 function manualTeacherLogin(){
   const code = prompt('Enter teacher access code:');
   if(!code) return;
-  if(code==='hpln2025'||code==='teacher'){
+  if (typeof guardManualLogin === 'function') {
+    guardManualLogin(code);
+    return;
+  }
+  // Legacy fallback
+  if(code==='hpln2025'){
     const name = prompt('Enter your name:') || 'Teacher';
     localStorage.setItem('g7-teacher-name', name);
     localStorage.setItem('g7-teacher-email', 'teacher@hpln.ca');
@@ -66,6 +108,8 @@ function teacherSignOut(){
   localStorage.removeItem('g7-teacher-email');
   localStorage.removeItem('g7-teacher-avatar');
   localStorage.removeItem('g7-teacher-unlock');
+  // Sign out of Firebase Auth if available
+  if (typeof signOut === 'function') { try { signOut(); } catch(e){} }
   try { if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); } catch(e){}
   location.reload();
 }

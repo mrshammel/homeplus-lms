@@ -14,6 +14,7 @@
   <!-- HPLN modules -->
   <script src="../firebase-config.js"></script>
   <script src="../auth-service.js"></script>
+  <script src="../auth-guard.js"></script>
   <!-- Legacy GIS fallback -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1639,7 +1640,7 @@
       }catch(e){}
       var code=prompt('Enter teacher access code:');
       if(!code)return;
-      if(code.trim()==='shammel2026'){
+      if(code.trim()==='hpln2025'){
         try{localStorage.setItem('g7-teacher-unlock','true');}catch(e){}
         unlockAll();
         alert('Unlocked! All lessons accessible.');

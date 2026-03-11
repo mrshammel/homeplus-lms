@@ -38,7 +38,7 @@ function toggleTeacherUnlock() {
   }
   const code = prompt('🔐 Enter teacher access code:');
   if (!code) return;
-  if (code.trim() === 'shammel2026') {
+  if (code.trim() === 'hpln2025') {
     localStorage.setItem('g7-teacher-unlock', 'true');
     applyTeacherUnlock();
     alert('🔓 Teacher unlock activated! All lessons and quizzes are now accessible.');
