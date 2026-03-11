@@ -1218,6 +1218,8 @@ async function submitToTeacher(payload) {
 
 // ===== INIT ON LOAD =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Firebase FIRST so all Firestore writes work
+  try { if (typeof initFirebase === 'function') initFirebase(); } catch(e) {}
   loadTheme();
   checkSignIn();
   // Init Google Sign-In button (after a short delay to let GIS load)
