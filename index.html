@@ -354,8 +354,8 @@
     // ===== SIGN-IN STATE CHECK =====
     function checkAndDismissOverlay() {
       const overlay = document.getElementById('signinOverlay');
-      const name = localStorage.getItem('g7-student-name');
-      const email = localStorage.getItem('g7-student-email');
+      const name = localStorage.getItem('g7-student-name') || localStorage.getItem('g7-student') || '';
+      const email = localStorage.getItem('g7-student-email') || localStorage.getItem('g7-email') || '';
       if (name && email) {
         if (overlay) overlay.style.display = 'none';
         const el = document.getElementById('studentDisplay');

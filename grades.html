@@ -363,7 +363,9 @@
   function detectCategory(quizId, lessonTitle) {
     const qi = (quizId || '').toLowerCase();
     const lt = (lessonTitle || '').toLowerCase();
-    if (qi.includes('quiz') || lt.includes('quiz')) return 'quiz';
+    // Check for activities first (quizId pattern: unitKey-l#-actName, or lessonTitle contains 'activity')
+    if (lt.includes('activity') || (qi.includes('-l') && qi.includes('-') && !qi.startsWith('quiz'))) return 'formative';
+    if (qi.startsWith('quiz') || qi.includes('quiz') || lt.includes('quiz')) return 'quiz';
     if (qi.includes('task') || lt.includes('performance') || lt.includes('task')) return 'performance';
     if (qi.includes('assign') || lt.includes('assignment') || lt.includes('written') || lt.includes('response')) return 'assignment';
     return 'formative';
@@ -372,6 +374,15 @@
   function detectType(category) {
     const map = { formative: 'Formative Activity', assignment: 'Assignment', performance: 'Performance Task', quiz: 'Quiz' };
     return map[category] || 'Formative Activity';
+  }
+
+  function _defaultFeedback(pct) {
+    if (pct >= 90) return 'Excellent work! Keep it up!';
+    if (pct >= 80) return 'Great job! You demonstrated strong understanding.';
+    if (pct >= 70) return 'Good effort. Review any areas you missed.';
+    if (pct >= 50) return 'You\'re getting there. Try reviewing the lesson material and retrying.';
+    if (pct > 0) return 'Keep practicing. Review the lesson content and try again.';
+    return 'Not yet attempted or no correct answers. Review the lesson and give it another try.';
   }
 
   function loadGradeItemsFromLocal() {
@@ -391,7 +402,7 @@
         score: g.score !== null && g.score !== undefined ? g.score : null,
         total: g.total || 0,
         percentage: g.percentage || (g.total > 0 ? Math.round(g.score / g.total * 100) : 0),
-        feedback: g.feedback || (g.passed ? 'Well done!' : (g.score !== null ? 'Keep working on this area.' : '')),
+        feedback: g.feedback || _defaultFeedback(g.percentage || (g.total > 0 ? Math.round(g.score / g.total * 100) : 0)),
         reviewType: g.reviewType || 'ai',
         teacherReviewed: g.teacherReviewed || false,
         strengths: g.strengths || '',
