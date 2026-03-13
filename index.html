@@ -147,9 +147,6 @@
         Sign in with Google
       </button>
       <div id="signinStatus" style="margin-top:12px;font-size:.82rem;color:var(--text3);min-height:20px"></div>
-      <p style="margin-top:12px;font-size:.78rem;color:var(--text3);opacity:.6">
-        Or <a href="#" onclick="event.preventDefault();manualSignIn()" style="color:var(--accent)">sign in manually</a>
-      </p>
     </div>
   </div>
 
@@ -234,8 +231,8 @@
             handleGoogleSignIn(); // Retry
           } else if (waited >= 3000) {
             clearInterval(waitInterval);
-            if (status) status.innerHTML = '<span style="color:#ef4444">Google Sign-In unavailable. Using manual sign-in.</span>';
-            setTimeout(() => manualSignIn(), 500);
+            if (status) status.innerHTML = '<span style="color:#ef4444">Google Sign-In is loading. Please try again in a moment.</span>';
+            _signingIn = false;
           }
         }, 200);
         return;
@@ -266,16 +263,16 @@
           updateUI();
         } else {
           // User cancelled the popup
-          if (status) status.innerHTML = '<span style="color:#f59e0b">Sign-in was cancelled. Try again or use manual sign-in below.</span>';
+          if (status) status.innerHTML = '<span style="color:#f59e0b">Sign-in was cancelled. Click the button to try again.</span>';
         }
       } catch (err) {
         console.error('[Home Plus] Sign-in error:', err);
         if (err.code === 'auth/popup-blocked') {
-          if (status) status.innerHTML = '<span style="color:#ef4444">⚠️ Popup was blocked. Please allow popups for this site, or use <a href="#" onclick="event.preventDefault();manualSignIn()" style="color:var(--accent)">manual sign-in</a>.</span>';
+          if (status) status.innerHTML = '<span style="color:#ef4444">⚠️ Popup was blocked by your browser. Please allow popups for this site and try again.</span>';
         } else if (err.code === 'auth/cancelled-popup-request') {
           if (status) status.innerHTML = '<span style="color:#f59e0b">Please wait for the sign-in popup to complete.</span>';
         } else {
-          if (status) status.innerHTML = '<span style="color:#ef4444">Sign-in failed. Try <a href="#" onclick="event.preventDefault();manualSignIn()" style="color:var(--accent)">manual sign-in</a> instead.</span>';
+          if (status) status.innerHTML = '<span style="color:#ef4444">Sign-in failed: ' + (err.message || 'Unknown error') + '. Please try again.</span>';
         }
       } finally {
         // Reset button
@@ -286,18 +283,6 @@
           btn.style.pointerEvents = '';
         }
       }
-    }
-
-    function manualSignIn() {
-      const name = prompt('Enter your full name (First Last):');
-      if (!name || !name.trim()) return;
-      const email = prompt('Enter your school email:');
-      if (!email || !email.trim()) return;
-      localStorage.setItem('g6-student-name', name.trim());
-      localStorage.setItem('g6-student-email', email.trim());
-      localStorage.setItem('g7-student-name', name.trim());
-      localStorage.setItem('g7-student-email', email.trim());
-      updateUI();
     }
 
     // ===== THEME =====
