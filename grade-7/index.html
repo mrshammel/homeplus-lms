@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 7 &mdash; Home Plus Online Learning</title>
+  <meta name="description" content="Interactive mastery-based Grade 7 lessons aligned to the Alberta Curriculum. Science, ELA, Math, and Social Studies.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    /* Landing-page-only overrides */
+    .landing-wrap{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+
+    .landing-topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;max-width:1200px;margin:0 auto}
+    .landing-logo{display:flex;align-items:center;gap:10px}
+    .landing-logo .logo-icon{font-size:28px}
+    .landing-logo h2{font-size:1.1rem;color:var(--accent);letter-spacing:-.5px}
+    .landing-logo span{display:block;font-family:'Inter';font-size:.7rem;color:var(--text3);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+
+    .landing-progress{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.85rem;color:var(--text3);width:100%;margin-bottom:8px}
+    .landing-progress-bar{width:160px;height:8px;background:var(--card);border-radius:20px;overflow:hidden}
+    .landing-progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#4ade80,#38bdf8,#a78bfa);transition:width .5s ease}
+
+    .subject-card{border-top:3px solid var(--accent);position:relative}
+
+    /* Accent overrides per subject card */
+    .subject-card[data-subject="science"]{--accent:#4ade80;--accent2:#22c55e;border-top-color:#4ade80}
+    .subject-card[data-subject="ela"]{--accent:#f472b6;--accent2:#ec4899;border-top-color:#f472b6}
+    .subject-card[data-subject="math"]{--accent:#38bdf8;--accent2:#0ea5e9;border-top-color:#38bdf8}
+    .subject-card[data-subject="social"]{--accent:#f59e0b;--accent2:#d97706;border-top-color:#f59e0b}
+
+    body.light .subject-card[data-subject="science"]{--accent:#16a34a;--accent2:#15803d;border-top-color:#16a34a}
+    body.light .subject-card[data-subject="ela"]{--accent:#db2777;--accent2:#be185d;border-top-color:#db2777}
+    body.light .subject-card[data-subject="math"]{--accent:#0284c7;--accent2:#0369a1;border-top-color:#0284c7}
+    body.light .subject-card[data-subject="social"]{--accent:#b45309;--accent2:#92400e;border-top-color:#b45309}
+
+    .coming-soon-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(2px)}
+    .coming-soon-badge{background:var(--card);border:1px solid var(--border);padding:10px 24px;border-radius:30px;font-weight:700;font-size:.9rem;color:var(--text2);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+
+    .stats-bar{display:flex;justify-content:center;gap:32px;margin:0 auto 40px;flex-wrap:wrap;max-width:600px}
+    .stat{text-align:center}
+    .stat .stat-num{font-size:2rem;font-weight:800;font-family:'Outfit';color:var(--accent)}
+    .stat .stat-label{font-size:.78rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+
+    .footer{text-align:center;padding:40px 20px 20px;color:var(--text3);font-size:.8rem}
+    .footer a{color:var(--accent)}
+
+    /* Sign-in overlay styles */
+    .signin-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+    .signin-overlay{background:rgba(248,249,251,.97)}
+    body:not(.light) .signin-overlay{background:rgba(15,15,25,.92)}
+    .signin-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius,16px);padding:48px 40px;max-width:420px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.12)}
+    .signin-card h2{font-family:'Outfit',sans-serif;font-size:1.5rem;margin-bottom:8px;color:var(--text1)}
+    .signin-card p{font-size:.9rem;color:var(--text3);margin-bottom:24px}
+    .signin-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;border:none;padding:13px 32px;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer;transition:opacity .2s,transform .2s}
+    .signin-btn:hover{opacity:.88;transform:scale(1.02)}
+
+    /* Mobile */
+    @media(max-width:600px){
+      .landing-hero img{height:auto !important;max-width:90%;margin:0 auto 16px !important}
+      .landing-hero h1{font-size:1.6rem}
+      .landing-hero h2{font-size:1rem !important}
+      .stats-bar{gap:20px}
+      .unit-grid{grid-template-columns:1fr !important}
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay" style="display:none">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">🔬</div>
+      <h2>Welcome, Learner!</h2>
+      <p>Sign in with your Google account to track your progress across all subjects.</p>
+      <button class="signin-btn" onclick="handleGoogleSignIn()" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Sign in with Google
+      </button>
+      <p style="margin-top:16px;font-size:.78rem;color:var(--text3);opacity:.7">Or <a href="#" onclick="event.preventDefault();offlineSignIn()" style="color:var(--accent)">sign in manually</a></p>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="landing-topbar">
+    <div class="landing-logo">
+      <a href="../grade-6/index.html" style="font-size:.82rem;color:var(--text3);text-decoration:none;font-weight:500;transition:color .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">← Grade 6 Platform</a>
+    </div>
+    <div class="top-actions" style="display:flex;align-items:center;gap:16px">
+      <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="landing-wrap">
+    <div class="landing-hero" style="text-align:center;margin-bottom:36px">
+      <img src="../assets/hpln-logo.png" alt="Home Plus Online Learning" style="height:160px;margin-bottom:20px;display:block;margin-left:auto;margin-right:auto">
+      <h1 style="font-family:'Outfit';font-size:2.2rem;font-weight:800;color:var(--text1);line-height:1.2;margin-bottom:8px">Learn. Grow. Master.</h1>
+      <h2 style="font-family:'Outfit';font-size:1.1rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px">Grade 7 &mdash; Alberta Curriculum</h2>
+      <p style="font-size:1rem;color:var(--text3);max-width:600px;margin:0 auto;line-height:1.6">Choose a subject to begin your learning journey. Master lessons, complete activities, and prove your knowledge.</p>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="landing-progress">
+      <span id="progressLabel">0 / 4 subjects in progress</span>
+      <div class="landing-progress-bar"><div class="landing-progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num" id="statLessons">0</div><div class="stat-label">Lessons Passed</div></div>
+      <div class="stat"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Activities Done</div></div>
+      <div class="stat"><div class="stat-num" id="statAvg">&mdash;</div><div class="stat-label">Avg Score</div></div>
+    </div>
+
+    <!-- SUBJECT GRID -->
+    <div class="unit-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+
+      <!-- SCIENCE (Active) -->
+      <div class="glass-card subject-card" data-subject="science" onclick="window.location.href='../index.html'" style="cursor:pointer">
+        <div style="text-align:center;margin-bottom:16px">
+          <div style="font-size:3rem;margin-bottom:8px">🔬</div>
+          <h3 style="font-family:'Outfit';font-size:1.3rem;color:var(--accent);margin-bottom:4px">Science</h3>
+          <div style="font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:700">Inquiry &amp; Discovery</div>
+        </div>
+        <p style="font-size:.9rem;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:16px">
+          All five units: Ecosystems, Plants, Heat, Structures, and Earth's Crust. Mastery-based lessons with interactive activities.
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:.78rem;color:var(--text3);margin-bottom:16px">
+          <span>📚 5 Units</span><span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn" style="background:var(--accent);color:#fff;text-align:center;padding:11px 24px;border-radius:10px;font-weight:700;font-size:.9rem;transition:opacity .2s">Start Science →</div>
+      </div>
+
+      <!-- ELA (Coming Soon) -->
+      <div class="glass-card subject-card" data-subject="ela" style="cursor:default">
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+        <div style="text-align:center;margin-bottom:16px">
+          <div style="font-size:3rem;margin-bottom:8px">📖</div>
+          <h3 style="font-family:'Outfit';font-size:1.3rem;color:var(--accent);margin-bottom:4px">English Language Arts</h3>
+          <div style="font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:700">Reading &amp; Writing</div>
+        </div>
+        <p style="font-size:.9rem;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:16px">
+          Reading comprehension, writing, vocabulary, figurative language, oral communication, and media literacy.
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:.78rem;color:var(--text3);margin-bottom:16px">
+          <span>📚 Coming Soon</span><span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn" style="background:var(--accent);color:#fff;text-align:center;padding:11px 24px;border-radius:10px;font-weight:700;font-size:.9rem;opacity:.5">Coming Soon</div>
+      </div>
+
+      <!-- MATH (Coming Soon) -->
+      <div class="glass-card subject-card" data-subject="math" style="cursor:default">
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+        <div style="text-align:center;margin-bottom:16px">
+          <div style="font-size:3rem;margin-bottom:8px">🔢</div>
+          <h3 style="font-family:'Outfit';font-size:1.3rem;color:var(--accent);margin-bottom:4px">Mathematics</h3>
+          <div style="font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:700">Number, Patterns &amp; Geometry</div>
+        </div>
+        <p style="font-size:.9rem;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:16px">
+          Number sense, fractions, decimals, patterns, algebra, geometry, and data analysis.
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:.78rem;color:var(--text3);margin-bottom:16px">
+          <span>📚 Coming Soon</span><span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn" style="background:var(--accent);color:#fff;text-align:center;padding:11px 24px;border-radius:10px;font-weight:700;font-size:.9rem;opacity:.5">Coming Soon</div>
+      </div>
+
+      <!-- SOCIAL STUDIES (Coming Soon) -->
+      <div class="glass-card subject-card" data-subject="social" style="cursor:default">
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+        <div style="text-align:center;margin-bottom:16px">
+          <div style="font-size:3rem;margin-bottom:8px">🌍</div>
+          <h3 style="font-family:'Outfit';font-size:1.3rem;color:var(--accent);margin-bottom:4px">Social Studies</h3>
+          <div style="font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:700">Citizenship &amp; Identity</div>
+        </div>
+        <p style="font-size:.9rem;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:16px">
+          Alberta communities, Canadian identity, governance, economic systems, and civic engagement.
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:.78rem;color:var(--text3);margin-bottom:16px">
+          <span>📚 Coming Soon</span><span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn" style="background:var(--accent);color:#fff;text-align:center;padding:11px 24px;border-radius:10px;font-weight:700;font-size:.9rem;opacity:.5">Coming Soon</div>
+      </div>
+
+    </div><!-- /unit-grid -->
+  </div><!-- /landing-wrap -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Aligned to the Alberta Grade 7 Curriculum &middot; Mastery-Based Learning &middot; <a href="../grade-6/index.html">📚 Grade 6 Platform →</a></p>
+    <p style="margin-top:6px;opacity:.6">Home Plus Online Learning &copy; 2026</p>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script>
+    // ===== GOOGLE SIGN-IN =====
+    async function handleGoogleSignIn() {
+      if (typeof signInWithGoogle === 'function') {
+        const user = await signInWithGoogle();
+        if (user) {
+          localStorage.setItem('g7-student-name', user.displayName || user.email.split('@')[0]);
+          localStorage.setItem('g7-student-email', user.email);
+          updateUI();
+        }
+      } else {
+        offlineSignIn();
+      }
+    }
+
+    function offlineSignIn() {
+      if (typeof googleSignIn === 'function') {
+        googleSignIn();
+      } else {
+        const name = prompt('Enter your full name (First Last):');
+        if (!name || !name.trim()) return;
+        const email = prompt('Enter your school email:');
+        if (!email || !email.trim()) return;
+        localStorage.setItem('g7-student-name', name.trim());
+        localStorage.setItem('g7-student-email', email.trim());
+        updateUI();
+      }
+    }
+
+    // ===== THEME =====
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const isLight = document.body.classList.contains('light');
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.innerHTML = isLight ? '🌙 Dark' : '☀️ Light';
+      localStorage.setItem('g7-theme', isLight ? 'light' : 'dark');
+    }
+
+    // ===== UI UPDATE =====
+    function updateUI() {
+      const name = localStorage.getItem('g7-student-name');
+      const email = localStorage.getItem('g7-student-email');
+      const overlay = document.getElementById('signinOverlay');
+      const display = document.getElementById('studentDisplay');
+
+      if (name && email) {
+        if (overlay) overlay.style.display = 'none';
+        if (display) display.innerHTML = '👋 ' + name + ' <a href="#" onclick="event.preventDefault();signOutG7()" title="Sign out" style="color:var(--text3);text-decoration:none;margin-left:6px;font-size:.75rem;opacity:.7">✕</a>';
+      } else {
+        if (overlay) overlay.style.display = 'flex';
+        if (display) display.textContent = '';
+      }
+    }
+
+    function signOutG7() {
+      if (!confirm('Sign out? Your progress on this device will be cleared.')) return;
+      if (typeof signOut === 'function') {
+        signOut();
+      }
+      localStorage.removeItem('g7-student-name');
+      localStorage.removeItem('g7-student-email');
+      location.reload();
+    }
+
+    // ===== PROGRESS =====
+    function updateProgress() {
+      // Count Science lessons passed (from existing Grade 7 hub)
+      let totalPassed = 0;
+      const units = ['a','b','c','d','e'];
+      units.forEach(u => {
+        for (let i = 1; i <= 5; i++) {
+          if (localStorage.getItem('g7-unit' + u + '-lesson' + i + '-passed')) totalPassed++;
+        }
+      });
+
+      document.getElementById('statLessons').textContent = totalPassed;
+
+      // Count activities
+      let actCount = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('g7-') && key.includes('-act')) actCount++;
+      }
+      document.getElementById('statActivities').textContent = actCount;
+
+      // Average score
+      const grades = JSON.parse(localStorage.getItem('g7-grades') || '[]');
+      if (grades.length > 0) {
+        const avg = Math.round(grades.reduce((s, g) => s + g.percentage, 0) / grades.length);
+        document.getElementById('statAvg').textContent = avg + '%';
+      }
+
+      // Progress bar
+      const subjectsStarted = totalPassed > 0 ? 1 : 0; // Only Science for now
+      document.getElementById('progressLabel').textContent = subjectsStarted + ' / 4 subjects in progress';
+      document.getElementById('progressFill').style.width = (subjectsStarted / 4 * 100) + '%';
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize Firebase + Auth
+      if (typeof initFirebase === 'function') {
+        initFirebase();
+        if (typeof initAuthService === 'function') initAuthService();
+      }
+      // Bridge auth-service state
+      if (typeof onAuthStateChange === 'function') {
+        onAuthStateChange(state => {
+          if (state.signedIn && state.profile) {
+            localStorage.setItem('g7-student-name', state.profile.displayName || '');
+            localStorage.setItem('g7-student-email', state.profile.email || '');
+          }
+          const overlay = document.getElementById('signinOverlay');
+          if (overlay) overlay.style.display = state.signedIn ? 'none' : 'flex';
+          updateUI();
+        });
+      }
+      updateUI();
+      updateProgress();
+
+      // Default to light theme
+      if (localStorage.getItem('g7-theme') === 'dark') {
+        document.body.classList.remove('light');
+        const btn = document.getElementById('themeBtn');
+        if (btn) btn.innerHTML = '☀️ Light';
+      }
+
+      // Teacher unlock shortcut
+      document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+          e.preventDefault();
+          if (typeof toggleTeacherUnlock === 'function') toggleTeacherUnlock();
+        }
+      });
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../auth-service.js"></script>
+</body>
+</html>
