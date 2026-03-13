@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 6 English Language Arts — Home Plus Online Learning</title>
+  <meta name="description" content="Grade 6 ELA course homepage — 6 integrated thematic units covering reading, writing, vocabulary, speaking, and critical thinking aligned to the Alberta curriculum.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       GRADE 6 ELA — COURSE HOMEPAGE
+       Light, polished, modern LMS dashboard
+       ============================================================ */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8f9fb;
+      --card-bg: #ffffff;
+      --text1: #1a1d2e;
+      --text2: #3d4259;
+      --text3: #6b7294;
+      --border: #e4e7ef;
+      --shadow: 0 2px 12px rgba(0,0,0,.06);
+      --shadow-hover: 0 8px 32px rgba(0,0,0,.10);
+      --radius: 16px;
+      --radius-sm: 10px;
+
+      /* Unit accent colors */
+      --u1: #e85d9a;
+      --u2: #7c5cf5;
+      --u3: #0ea5e9;
+      --u4: #f59e0b;
+      --u5: #10b981;
+      --u6: #f43f5e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text1);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 32px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .topbar-logo {
+      height: 48px;
+      border-radius: 8px;
+    }
+    .topbar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .topbar-right a {
+      font-size: .85rem;
+      color: var(--text3);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .topbar-right a:hover { color: var(--text1); }
+    #studentDisplay {
+      font-size: .85rem;
+      color: var(--text3);
+    }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: .8rem;
+      color: var(--text3);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .theme-toggle:hover {
+      background: var(--text1);
+      color: #fff;
+      border-color: var(--text1);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 48px 32px 20px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #e85d9a22, #7c5cf522);
+      border: 1px solid #e85d9a33;
+      color: var(--u1);
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--text1);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text3);
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-section {
+      max-width: 1140px;
+      margin: 20px auto 12px;
+      padding: 0 32px;
+    }
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 24px;
+      box-shadow: var(--shadow);
+    }
+    .progress-label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text2);
+      white-space: nowrap;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #eef0f6;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, var(--u1), var(--u2), var(--u5));
+      width: 0%;
+      transition: width .6s ease;
+    }
+    .progress-stats {
+      display: flex;
+      gap: 20px;
+      font-size: .78rem;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .progress-stats strong {
+      color: var(--text1);
+    }
+
+    /* ===== UNIT GRID ===== */
+    .grid-section {
+      max-width: 1140px;
+      margin: 28px auto 0;
+      padding: 0 32px 60px;
+    }
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* ===== UNIT CARD ===== */
+    .unit-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      transition: box-shadow .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .unit-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .unit-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    /* Accent borders per unit */
+    .unit-card[data-unit="1"]::before { background: var(--u1); }
+    .unit-card[data-unit="2"]::before { background: var(--u2); }
+    .unit-card[data-unit="3"]::before { background: var(--u3); }
+    .unit-card[data-unit="4"]::before { background: var(--u4); }
+    .unit-card[data-unit="5"]::before { background: var(--u5); }
+    .unit-card[data-unit="6"]::before { background: var(--u6); }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+    }
+    .unit-card[data-unit="1"] .card-icon { background: #e85d9a15; }
+    .unit-card[data-unit="2"] .card-icon { background: #7c5cf515; }
+    .unit-card[data-unit="3"] .card-icon { background: #0ea5e915; }
+    .unit-card[data-unit="4"] .card-icon { background: #f59e0b15; }
+    .unit-card[data-unit="5"] .card-icon { background: #10b98115; }
+    .unit-card[data-unit="6"] .card-icon { background: #f43f5e15; }
+
+    .card-unit-num {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text3);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text1);
+      text-align: center;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .card-subtitle {
+      font-size: .72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .unit-card[data-unit="1"] .card-subtitle { color: var(--u1); }
+    .unit-card[data-unit="2"] .card-subtitle { color: var(--u2); }
+    .unit-card[data-unit="3"] .card-subtitle { color: var(--u3); }
+    .unit-card[data-unit="4"] .card-subtitle { color: var(--u4); }
+    .unit-card[data-unit="5"] .card-subtitle { color: var(--u5); }
+    .unit-card[data-unit="6"] .card-subtitle { color: var(--u6); }
+
+    .card-desc {
+      font-size: .88rem;
+      color: var(--text2);
+      text-align: center;
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: .76rem;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+    .card-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-tag {
+      display: block;
+      text-align: center;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--text3);
+      margin-bottom: 16px;
+    }
+
+    .card-eq {
+      font-size: .78rem;
+      color: var(--text3);
+      font-style: italic;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      padding: 0 4px;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 -4px 16px;
+    }
+
+    .card-btn {
+      display: block;
+      text-align: center;
+      font-weight: 700;
+      font-size: .88rem;
+      padding: 11px 24px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .3px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .unit-card[data-unit="1"] .card-btn { background: var(--u1); }
+    .unit-card[data-unit="2"] .card-btn { background: var(--u2); }
+    .unit-card[data-unit="3"] .card-btn { background: var(--u3); }
+    .unit-card[data-unit="4"] .card-btn { background: var(--u4); color: var(--text1); }
+    .unit-card[data-unit="5"] .card-btn { background: var(--u5); }
+    .unit-card[data-unit="6"] .card-btn { background: var(--u6); }
+    .card-btn:hover { opacity: .88; transform: scale(1.02); }
+
+    .card-progress-bar {
+      height: 4px;
+      background: #eef0f6;
+      border-radius: 20px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .card-progress-fill {
+      height: 100%;
+      border-radius: 20px;
+      width: 0%;
+      transition: width .5s;
+    }
+    .unit-card[data-unit="1"] .card-progress-fill { background: var(--u1); }
+    .unit-card[data-unit="2"] .card-progress-fill { background: var(--u2); }
+    .unit-card[data-unit="3"] .card-progress-fill { background: var(--u3); }
+    .unit-card[data-unit="4"] .card-progress-fill { background: var(--u4); }
+    .unit-card[data-unit="5"] .card-progress-fill { background: var(--u5); }
+    .unit-card[data-unit="6"] .card-progress-fill { background: var(--u6); }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 20px 32px 40px;
+      font-size: .78rem;
+      color: var(--text3);
+    }
+    .footer a {
+      color: var(--u2);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ===== SIGN-IN OVERLAY ===== */
+    .signin-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(248,249,251,.97);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+    }
+    .signin-overlay.hidden { display: none; }
+    .signin-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 12px 48px rgba(0,0,0,.08);
+    }
+    .signin-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: var(--text1);
+    }
+    .signin-card p {
+      font-size: .9rem;
+      color: var(--text3);
+      margin-bottom: 24px;
+    }
+    .signin-btn {
+      display: inline-block;
+      background: var(--u2);
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .signin-btn:hover { opacity: .85; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 960px) {
+      .unit-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 1.8rem; }
+    }
+    @media (max-width: 640px) {
+      .unit-grid { grid-template-columns: 1fr; gap: 16px; }
+      .hero { padding: 32px 20px 12px; }
+      .hero h1 { font-size: 1.5rem; }
+      .topbar { padding: 16px 20px; }
+      .grid-section, .progress-section { padding-left: 16px; padding-right: 16px; }
+      .progress-wrap { flex-direction: column; gap: 8px; text-align: center; }
+      .progress-stats { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIGN-IN -->
+  <div class="signin-overlay" id="signinOverlay" style="display:none">
+    <div class="signin-card">
+      <div style="font-size:2.5rem;margin-bottom:12px">📖</div>
+      <h2>Welcome to Grade 6 ELA</h2>
+      <p>Enter your name and email to begin tracking your progress across all units.</p>
+      <button class="signin-btn" onclick="signIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="../assets/hpln-logo.png" alt="Home Plus Online Learning" class="topbar-logo">
+      <span class="topbar-brand">Home Plus Online Learning</span>
+    </div>
+    <div class="topbar-right">
+      <a href="../index.html">← All Subjects</a>
+      <span id="studentDisplay"></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Alberta Curriculum · Grade 6</div>
+    <h1>Grade 6 English Language Arts</h1>
+    <p>Integrated units for reading, writing, vocabulary, speaking, and critical thinking across the year.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-wrap">
+      <span class="progress-label" id="progressLabel">0 / 6 units complete</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-stats">
+        <span><strong id="statLessons">0</strong> lessons passed</span>
+        <span><strong id="statAvg">—</strong> avg score</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT GRID -->
+  <div class="grid-section">
+    <div class="unit-grid">
+
+      <!-- UNIT 1 -->
+      <div class="unit-card" data-unit="1" onclick="openUnit(1)">
+        <div class="card-icon">🪞</div>
+        <div class="card-unit-num">Unit 1</div>
+        <div class="card-title">Identity, Belonging, and Voice</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How do experiences, relationships, and culture shape who we are?"</div>
+        <p class="card-desc">Explore identity through stories, poems, and reflections. Build comprehension strategies, personal writing skills, and respectful discussion practices.</p>
+        <div class="card-meta">
+          <span>📚 8 Lessons</span>
+          <span>🎯 7 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Narrative · Reflection · Discussion</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn1">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog1"></div></div>
+      </div>
+
+      <!-- UNIT 2 -->
+      <div class="unit-card" data-unit="2" onclick="openUnit(2)">
+        <div class="card-icon">📕</div>
+        <div class="card-unit-num">Unit 2</div>
+        <div class="card-title">Story Power</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How do authors use structure, character, and craft to engage readers?"</div>
+        <p class="card-desc">Study fiction as both a reader and writer. Analyze mentor texts for narrative craft, then create your own original short story.</p>
+        <div class="card-meta">
+          <span>📚 8 Lessons</span>
+          <span>🎯 8 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Fiction · Structure · Craft</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn2">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog2"></div></div>
+      </div>
+
+      <!-- UNIT 3 -->
+      <div class="unit-card" data-unit="3" onclick="openUnit(3)">
+        <div class="card-icon">🔎</div>
+        <div class="card-unit-num">Unit 3</div>
+        <div class="card-title">Truth, Evidence, and Information</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How do we find, evaluate, and communicate information responsibly?"</div>
+        <p class="card-desc">Identify main ideas, evaluate source reliability, and write evidence-based research responses. Build media literacy and nonfiction reading skills.</p>
+        <div class="card-meta">
+          <span>📚 7 Lessons</span>
+          <span>🎯 7 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Research · Nonfiction · Media Literacy</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn3">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog3"></div></div>
+      </div>
+
+      <!-- UNIT 4 -->
+      <div class="unit-card" data-unit="4" onclick="openUnit(4)">
+        <div class="card-icon">⚖️</div>
+        <div class="card-unit-num">Unit 4</div>
+        <div class="card-title">Perspectives and Justice</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How do different perspectives shape how we understand each other?"</div>
+        <p class="card-desc">Compare viewpoints, discuss ideas, and write persuasive responses about school community, fairness, belonging, and local responsibility.</p>
+        <div class="card-meta">
+          <span>📚 7 Lessons</span>
+          <span>🎯 7 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Perspective · Argument · Community</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn4">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog4"></div></div>
+      </div>
+
+      <!-- UNIT 5 -->
+      <div class="unit-card" data-unit="5" onclick="openUnit(5)">
+        <div class="card-icon">🌿</div>
+        <div class="card-unit-num">Unit 5</div>
+        <div class="card-title">Wonder, Discovery, and Imagination</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How can curiosity and creativity help us see the world in new ways?"</div>
+        <p class="card-desc">Connect informational reading, poetry, and imaginative thinking. Explore figurative language, original expression, and the joy of language itself.</p>
+        <div class="card-meta">
+          <span>📚 6 Lessons</span>
+          <span>🎯 7 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Inquiry · Poetry · Creativity</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn5">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog5"></div></div>
+      </div>
+
+      <!-- UNIT 6 -->
+      <div class="unit-card" data-unit="6" onclick="openUnit(6)">
+        <div class="card-icon">🎓</div>
+        <div class="card-unit-num">Unit 6</div>
+        <div class="card-title">Publish and Reflect</div>
+        <div class="card-subtitle">Integrated ELA Unit</div>
+        <div class="card-eq">"How has my reading, writing, and communication grown this year?"</div>
+        <p class="card-desc">Analyze revision choices, select and polish your strongest work, build a portfolio, and present your learning journey with confidence.</p>
+        <div class="card-meta">
+          <span>📚 6 Lessons</span>
+          <span>🎯 6 Priority Outcomes</span>
+        </div>
+        <div class="card-tag">Revision · Presentation · Portfolio</div>
+        <div class="card-divider"></div>
+        <div class="card-btn" id="btn6">Start Unit →</div>
+        <div class="card-progress-bar"><div class="card-progress-fill" id="prog6"></div></div>
+      </div>
+
+    </div><!-- /unit-grid -->
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Aligned to the Alberta Grade 6 ELA & Literature Curriculum &middot; Mastery-Based Learning &middot; <a href="../index.html">← All Subjects</a></p>
+  </div>
+
+  <script>
+    // ===== SIGN-IN =====
+    function signIn() {
+      const name = prompt('Enter your full name (First Last):');
+      if (!name || !name.trim()) return;
+      const email = prompt('Enter your school email:');
+      if (!email || !email.trim()) return;
+      localStorage.setItem('g6-student-name', name.trim());
+      localStorage.setItem('g6-student-email', email.trim());
+      checkSignIn();
+    }
+    function checkSignIn() {
+      const name = localStorage.getItem('g6-student-name');
+      const email = localStorage.getItem('g6-student-email');
+      const overlay = document.getElementById('signinOverlay');
+      const display = document.getElementById('studentDisplay');
+      if (name && email) {
+        if (overlay) { overlay.classList.add('hidden'); overlay.style.display = 'none'; }
+        if (display) display.innerHTML = '👤 ' + name + ' <a href="#" onclick="event.preventDefault();signOut()" style="color:#6b7294;margin-left:4px;font-size:.7rem" title="Sign out">✕</a>';
+      } else {
+        if (overlay) { overlay.classList.remove('hidden'); overlay.style.display = 'flex'; }
+        if (display) display.textContent = '';
+      }
+    }
+    function signOut() {
+      if (!confirm('Sign out? Your progress on this device will be cleared.')) return;
+      localStorage.removeItem('g6-student-name');
+      localStorage.removeItem('g6-student-email');
+      location.reload();
+    }
+
+    // ===== NAVIGATION =====
+    const unitPaths = {
+      1: 'unit-1-identity/index.html',
+      2: 'unit-2-writing/index.html',
+      3: 'unit-3-vocabulary/index.html',
+      4: 'unit-4-oral-media/index.html',
+      5: 'unit-5-oral-lang/index.html',
+      6: 'unit-6-creative/index.html'
+    };
+    function openUnit(num) {
+      if (unitPaths[num]) window.location.href = unitPaths[num];
+    }
+
+    // ===== PROGRESS =====
+    function updateProgress() {
+      const units = [
+        { id: '1', count: 8, prefix: 'g6-ela-u1' },
+        { id: '2', count: 8, prefix: 'g6-ela-u2' },
+        { id: '3', count: 7, prefix: 'g6-ela-u3' },
+        { id: '4', count: 7, prefix: 'g6-ela-u4' },
+        { id: '5', count: 6, prefix: 'g6-ela-u5' },
+        { id: '6', count: 6, prefix: 'g6-ela-u6' }
+      ];
+      let totalPassed = 0, totalLessons = 0, unitsComplete = 0;
+
+      units.forEach(u => {
+        let passed = 0;
+        for (let i = 1; i <= u.count; i++) {
+          if (localStorage.getItem(`${u.prefix}-lesson${i}-passed`)) passed++;
+        }
+        totalPassed += passed;
+        totalLessons += u.count;
+        const pct = u.count > 0 ? Math.round(passed / u.count * 100) : 0;
+        const progEl = document.getElementById('prog' + u.id);
+        const btnEl = document.getElementById('btn' + u.id);
+        if (progEl) progEl.style.width = pct + '%';
+        if (passed === u.count && u.count > 0) {
+          unitsComplete++;
+          if (btnEl) btnEl.textContent = 'Review Unit ✓';
+        } else if (passed > 0) {
+          if (btnEl) btnEl.textContent = 'Continue →';
+        }
+      });
+
+      const overallPct = totalLessons > 0 ? Math.round(totalPassed / totalLessons * 100) : 0;
+      document.getElementById('progressFill').style.width = overallPct + '%';
+      document.getElementById('progressLabel').textContent = `${unitsComplete} / 6 units complete`;
+      document.getElementById('statLessons').textContent = totalPassed;
+
+      const grades = JSON.parse(localStorage.getItem('g6-grades') || '[]');
+      const quizGrades = grades.filter(g => g.quizId && g.quizId.startsWith('quiz'));
+      if (quizGrades.length > 0) {
+        const avg = Math.round(quizGrades.reduce((s, g) => s + g.percentage, 0) / quizGrades.length);
+        document.getElementById('statAvg').textContent = avg + '%';
+      }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      checkSignIn();
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Story Power — Grade 6 ELA</title>
+  <meta name="description" content="Discover how authors use structure, character, and craft to create engaging fiction. Write your own original short story.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u2">
+
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">📕</div>
+      <h2>Welcome, Storyteller!</h2>
+      <p>Enter your name and email to track your progress.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo"><div>
+      <h2 style="color:#7c5cf5">📕 Story Power</h2>
+      <span>Grade 6 ELA &bull; Unit 2</span>
+    </div></div>
+    <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Unit Home</div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Great Stories</div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Mentor Text Study</div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Character &amp; Conflict</div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Theme vs. Plot</div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Literary Devices</div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Plotting &amp; Drafting</div>
+    <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')"><div class="nav-num"><span>7</span></div> Revise &amp; Polish</div>
+    <div class="nav-item locked" data-page="lesson8" onclick="goTo('lesson8')"><div class="nav-num"><span>8</span></div> Story Showcase</div>
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><a href="../index.html" class="back-to-units">← All ELA Units</a></div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div class="nav-item" data-page="teacher" onclick="goTo('teacher')"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="top-actions">
+        <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome">
+        <h1>Story Power</h1>
+        <p>Discover how authors use structure, character, conflict, and craft to create stories that engage and move readers. Analyze mentor texts and write your own original short story.</p>
+      </div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How do authors use structure, character, and craft to create stories that engage and move readers?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Write an original short story and present a book talk.</p>
+      </div>
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:8px">✅ Mastery Checklist</h3>
+        <ul class="success-criteria">
+          <li>I can explain how character, conflict, and point of view shape a story</li>
+          <li>I can distinguish between theme and plot</li>
+          <li>I can identify literary devices and explain their effect</li>
+          <li>I can plan and write a short story with a clear structure</li>
+          <li>I can revise my writing to improve clarity and craft</li>
+          <li>I can present my work and explain my craft choices</li>
+        </ul>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">📖</span><h3>Lesson 1: What Makes a Great Story?</h3><p>Analyze what draws readers in and practice inference and visualization.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeLesson2"><span class="card-icon">🔬</span><h3>Lesson 2: Mentor Text Study</h3><p>Deep-dive into a mentor text to study author craft moves.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked" id="homeLesson3"><span class="card-icon">👤</span><h3>Lesson 3: Character &amp; Conflict</h3><p>Analyze character development and types of conflict.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">💡</span><h3>Lesson 4: Theme vs. Plot</h3><p>Distinguish theme from plot and explore point of view.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✨</span><h3>Lesson 5: Literary Devices</h3><p>Study simile, metaphor, imagery, and word origins.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 6: Plotting &amp; Drafting</h3><p>Plan and draft your original short story.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🔄</span><h3>Lesson 7: Revise &amp; Polish</h3><p>Self-edit and peer-edit for clarity and conventions.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🎤</span><h3>Lesson 8: Story Showcase</h3><p>Present a book talk and reflect on craft choices.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header">
+        <div class="lesson-num">Lesson 1</div>
+        <h1 class="lesson-title">What Makes a Great Story?</h1>
+        <p class="lesson-subtitle">Analyze what draws readers into fiction. Use inference and visualization to understand character, conflict, and engagement.</p>
+      </div>
+
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can identify what makes fiction engaging and use inference to understand characters.</li>
+          <li>I can visualize scenes and explain how an author creates mental images.</li>
+          <li>I can identify character traits using text evidence.</li>
+        </ul>
+        <div style="margin-top:12px">
+          <span class="outcome-tag">Comprehension</span>
+          <span class="outcome-tag">Inference</span>
+          <span class="outcome-tag">Character Analysis</span>
+        </div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Protagonist <span class="vocab-def">The main character in a story — the one the reader follows and roots for.</span></span>
+          <span class="vocab-chip">Antagonist <span class="vocab-def">A character or force that opposes the protagonist and creates conflict.</span></span>
+          <span class="vocab-chip">Conflict <span class="vocab-def">The central problem or struggle in a story that drives the plot forward.</span></span>
+          <span class="vocab-chip">Visualization <span class="vocab-def">Creating mental pictures while reading to deepen understanding.</span></span>
+          <span class="vocab-chip">Character Traits <span class="vocab-def">Qualities that describe a character's personality, revealed through actions, words, and thoughts.</span></span>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎬</span> Watch: Elements of a Story</h3>
+        <div class="video-label">📺 Educational Video — Story Elements (5 min)</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/v3JLXvcRbAg" title="Story Elements" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: What Hooks a Reader?</h3>
+        <p>Every great story begins with something that <strong>hooks</strong> the reader — a moment of tension, a question, or a vivid image that makes you want to keep reading. But what makes a story truly powerful is how the author builds <span class="vocab" title="The central problem or struggle in a story">conflict</span>, develops <span class="vocab" title="Qualities of a character revealed through actions and words">characters</span>, and uses language to create an experience.</p>
+
+        <div class="key-point">
+          <p><strong>What Great Stories Have:</strong></p>
+          <ul style="margin-top:8px;padding-left:20px">
+            <li><strong>A character you care about</strong> — someone with wants, fears, and flaws</li>
+            <li><strong>A conflict that matters</strong> — something at stake for the character</li>
+            <li><strong>Details that make you see, hear, and feel</strong> — vivid, sensory language</li>
+            <li><strong>Change</strong> — the character is different by the end</li>
+          </ul>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Anchor Text Excerpt</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid var(--accent)">
+          <p style="font-style:italic;color:var(--text2);margin-bottom:12px">"Mija crouched behind the dumpster, her heart slamming against her ribs. The stray dog — the one with the torn ear and the limp — pressed against her leg, trembling. She could hear the older kids on the other side, kicking at cans, calling out. She wrapped her arm around the dog's neck and whispered, 'It's okay. I won't let them hurt you.' Her voice was braver than she felt."</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <span class="emoji">👤</span>
+            <h4>Character</h4>
+            <p>Mija — brave, protective, compassionate. She acts despite her fear.</p>
+          </div>
+          <div class="info-box">
+            <span class="emoji">⚡</span>
+            <h4>Conflict</h4>
+            <p>Mija must protect the stray dog from the threatening older kids.</p>
+          </div>
+          <div class="info-box">
+            <span class="emoji">🎨</span>
+            <h4>Craft</h4>
+            <p>"Heart slamming," "torn ear," "braver than she felt" — vivid imagery and irony.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pause-check">
+        <h4>⏸️ Pause and Check</h4>
+        <p><strong>Re-read the anchor text.</strong> What can you <strong>infer</strong> about Mija's character? What text clues support your answer?</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answer</button>
+        <div class="reveal-answer">
+          <p><strong>Inference:</strong> Mija is courageous and empathetic. Even though she's scared (heart slamming, "braver than she felt"), she stays to protect something vulnerable. The contrast between her fear and her words shows inner strength. Her action of whispering reassurance to the dog reveals compassion.</p>
+        </div>
+      </div>
+
+      <!-- ACTIVITY 1: Character Trait Identifier -->
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header">
+          <span class="act-num">Activity 1</span>
+          <h3 class="section-title" style="margin:0"><span class="icon">👤</span> Character Trait or Plot Event?</h3>
+        </div>
+        <p style="color:var(--text2);margin-bottom:16px">Read each statement about Mija and decide: is it a <strong>character trait</strong> (what she is like) or a <strong>plot event</strong> (what happens)?</p>
+        <div id="l1-act1-area">
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-trait"><div class="zone-title">👤 Character Trait</div><div id="act1-trait-items"></div></div>
+            <div class="sort-zone" id="act1-zone-event"><div class="zone-title">📌 Plot Event</div><div id="act1-event-items"></div></div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none"><div class="score-number" id="act1-score-num"></div><p id="act1-score-msg"></p></div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY 2 -->
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header">
+          <span class="act-num">Activity 2</span>
+          <h3 class="section-title" style="margin:0"><span class="icon">✍️</span> What Would Happen Next?</h3>
+        </div>
+        <p style="color:var(--text2);margin-bottom:16px">Based on what you know about Mija's character, write a short paragraph predicting what she does next. Use <strong>text evidence</strong> to support your prediction.</p>
+        <div class="constructed-response">
+          <h4>Your Prediction</h4>
+          <textarea id="l1-cr" placeholder="I predict Mija will... because in the text it says...&#10;&#10;Based on her character traits, I think she would..." rows="6"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I made a specific prediction based on character traits</label></li>
+            <li><label><input type="checkbox"> I used text evidence to support my prediction</label></li>
+            <li><label><input type="checkbox"> My prediction makes sense with the story's conflict</label></li>
+          </ul>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="activity-btn" onclick="saveCR()">💾 Save Response</button>
+            <button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button>
+          </div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center;margin-top:32px">
+        <p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+        <button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button>
+      </div>
+
+      <div class="reflection-box">
+        <h3>🪞 Reflection</h3>
+        <p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">Think about a story (book, movie, or real life) that stayed with you. What made it powerful?</p>
+        <textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea>
+        <button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="lesson-page" id="page-lesson1-quiz">
+      <div class="lesson-header">
+        <div class="lesson-num">Lesson 1 Quiz</div>
+        <h1 class="lesson-title">What Makes a Great Story?</h1>
+        <p class="lesson-subtitle">Show your mastery — 80% or higher to unlock Lesson 2.</p>
+      </div>
+      <div id="quiz1-area"></div>
+    </div>
+
+    <!-- PLACEHOLDERS -->
+    <div class="lesson-page" id="page-lesson2"><div class="welcome"><h1>🔬 Mentor Text Study</h1><p>Deep-dive into one mentor text: study the author's structural and language choices.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>👤 Character, Conflict, and Change</h1><p>Study how authors develop characters through actions, dialogue, and thoughts.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>💡 Theme vs. Plot and Point of View</h1><p>Distinguish theme from plot and compare narration styles.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>✨ Literary Devices and Word Origins</h1><p>Identify simile, metaphor, personification, imagery. Study Greek/Latin word origins.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>✍️ Plotting and Drafting My Story</h1><p>Plan your original short story and begin drafting with craft.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson7"><div class="welcome"><h1>🔄 Revise, Edit, Polish</h1><p>Self-edit and peer-edit for clarity, style, and conventions.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson8"><div class="welcome"><h1>🎤 Story Showcase: Book Talk</h1><p>Present a dramatic excerpt or book talk and reflect on craft choices.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+
+    <div class="lesson-page" id="page-teacher">
+      <div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div>
+      <div class="glass-card"><h3 class="section-title"><span class="icon">📋</span> Grade Records</h3><div id="teacherGrades"></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button></div></div>
+    </div>
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    const lockMap = {
+      'lesson1-quiz': 'g6-ela-u2-l1-gate',
+      'lesson2':      'g6-ela-u2-lesson1-passed',
+      'lesson2-quiz': 'g6-ela-u2-l2-gate',
+      'lesson3':      'g6-ela-u2-lesson2-passed',
+      'lesson4':      'g6-ela-u2-lesson3-passed',
+      'lesson5':      'g6-ela-u2-lesson4-passed',
+      'lesson6':      'g6-ela-u2-lesson5-passed',
+      'lesson7':      'g6-ela-u2-lesson6-passed',
+      'lesson8':      'g6-ela-u2-lesson7-passed'
+    };
+    actComplete = { l1: { act1: false, act2: false } };
+
+    const act1Data = [
+      { text: 'Mija crouched behind the dumpster.', answer: 'event' },
+      { text: 'She is brave and protective.', answer: 'trait' },
+      { text: 'The older kids were kicking at cans.', answer: 'event' },
+      { text: 'She is compassionate toward animals.', answer: 'trait' },
+      { text: 'She wrapped her arm around the dog.', answer: 'event' },
+      { text: 'Her voice was braver than she felt — she shows courage despite fear.', answer: 'trait' }
+    ];
+
+    let act1Score = 0, act1Total = act1Data.length, act1Answered = 0, selectedItem = null;
+
+    function initAct1() {
+      if (isActivityDone(1, 'act1')) { document.getElementById('l1-act1-area').innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Activity completed!</p></div>'; return; }
+      const items = document.getElementById('act1-items'); items.innerHTML = '';
+      act1Data.forEach((item, i) => { const el = document.createElement('div'); el.className = 'sort-item'; el.textContent = item.text; el.dataset.idx = i; el.onclick = () => selectAct1Item(el, i); items.appendChild(el); });
+    }
+    function selectAct1Item(el, idx) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#act1-items .sort-item').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected'); selectedItem = idx;
+      document.getElementById('act1-zone-trait').onclick = () => placeAct1Item(idx, 'trait');
+      document.getElementById('act1-zone-event').onclick = () => placeAct1Item(idx, 'event');
+    }
+    function placeAct1Item(idx, zone) {
+      if (selectedItem === null) return;
+      const item = act1Data[idx]; const correct = item.answer === zone; if (correct) act1Score++; act1Answered++;
+      const placed = document.createElement('div'); placed.className = 'sorted-item ' + (correct ? 'correct' : 'wrong');
+      placed.textContent = (correct ? '✅ ' : '❌ ') + item.text;
+      document.getElementById(`act1-${zone}-items`).appendChild(placed);
+      const src = document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);
+      if (src) { src.classList.add('placed'); src.classList.remove('selected'); } selectedItem = null;
+      if (act1Answered >= act1Total) { document.getElementById('act1-score').style.display = 'block'; document.getElementById('act1-score-num').textContent = `${act1Score}/${act1Total}`; document.getElementById('act1-score-msg').textContent = act1Score >= 4 ? 'Great character analysis!' : 'Keep practicing!'; markActivityDone(1, 'act1', act1Score, act1Total); }
+    }
+
+    function saveCR() { const el = document.getElementById('l1-cr'); if (el) { localStorage.setItem('g6-ela-u2-l1-cr', el.value); document.getElementById('l1-cr-status').textContent = '✅ Response saved!'; setTimeout(() => document.getElementById('l1-cr-status').textContent = '', 3000); } }
+    function submitAct2() { const el = document.getElementById('l1-cr'); if (!el || el.value.trim().length < 20) { alert('Please write at least a few sentences.'); return; } saveCR(); markActivityDone(1, 'act2', 1, 1); document.getElementById('l1-cr-status').textContent = '✅ Activity complete!'; }
+
+    const quizBanks = { quiz1: { primary: [
+      { q: 'What is the protagonist of a story?', opts: ['The villain', 'The narrator', 'The main character the reader follows', 'A minor character'], ans: 2, outcome: 'Character', explain: 'The protagonist is the main character — the one whose journey drives the story.' },
+      { q: 'In the anchor text, what is the main conflict?', opts: ['Mija is lost', 'Mija must protect a stray dog from threatening kids', 'The dog is hungry', 'Mija is late for school'], ans: 1, outcome: 'Conflict', explain: 'The conflict is Mija protecting the vulnerable dog from the older kids.' },
+      { q: '"Her voice was braver than she felt." This tells the reader that:', opts: ['Mija is shouting', 'Mija is pretending not to be afraid', 'Mija is not scared at all', 'Mija is talking to herself'], ans: 1, outcome: 'Inference', explain: 'This irony shows that Mija puts on a brave front despite feeling scared inside.' },
+      { q: 'A character trait is:', opts: ['Something that happens in the story', 'A quality that describes the character\'s personality', 'A setting detail', 'A vocabulary word'], ans: 1, outcome: 'Character', explain: 'Character traits describe WHO a character is — their personality, not what happens TO them.' },
+      { q: 'Which detail from the text helps the reader visualize the scene?', opts: ['"She wrapped her arm"', '"Heart slamming against her ribs"', '"She whispered"', 'All of the above'], ans: 3, outcome: 'Visualization', explain: 'All three details create sensory images — physical sensation, action, and sound.' }
+    ], replacement: {
+      0: { q: 'The antagonist in a story:', opts: ['Is always evil', 'Opposes the protagonist and creates conflict', 'Narrates the story', 'Is the best friend'], ans: 1, outcome: 'Character', explain: 'The antagonist creates the main opposition — they don\'t have to be evil, just create conflict.' },
+      1: { q: 'Conflict in a story is important because it:', opts: ['Makes the story longer', 'Drives the plot and creates tension', 'Adds vocabulary', 'Describes the setting'], ans: 1, outcome: 'Conflict', explain: 'Without conflict, there\'s no tension — it\'s the engine that moves the story forward.' },
+      2: null, 3: null,
+      4: { q: 'Visualization while reading means:', opts: ['Drawing pictures', 'Creating mental images from the text', 'Reading out loud', 'Skimming the text'], ans: 1, outcome: 'Visualization', explain: 'Visualization = creating pictures in your mind using the author\'s descriptive language.' }
+    }, remediation: {
+      'Character': { video: 'https://www.youtube.com/embed/v3JLXvcRbAg', questions: [
+        { q: 'Character traits are revealed through:', opts: ['The title', 'Actions, words, and thoughts', 'Page numbers', 'Font size'], ans: 1, explain: 'We learn about characters by what they do, say, and think.' },
+        { q: 'A protagonist is:', opts: ['A minor character', 'The main character', 'The author', 'A setting'], ans: 1, explain: 'The protagonist is the central character whose journey the reader follows.' }
+      ]},
+      'Conflict': { video: 'https://www.youtube.com/embed/v3JLXvcRbAg', questions: [
+        { q: 'Conflict is:', opts: ['A happy ending', 'A problem or struggle in the story', 'A type of poem', 'A chapter title'], ans: 1, explain: 'Conflict is the core problem that creates tension and drives the plot.' }
+      ]},
+      'Inference': { video: 'https://www.youtube.com/embed/v3JLXvcRbAg', questions: [
+        { q: 'An inference in fiction requires:', opts: ['A dictionary', 'Using text clues + background knowledge', 'Reading the last page first', 'Asking a friend'], ans: 1, explain: 'Inference = text clues + what you know → conclusion about what\'s unstated.' }
+      ]},
+      'Visualization': { video: 'https://www.youtube.com/embed/v3JLXvcRbAg', questions: [
+        { q: 'Good visualization comes from:', opts: ['Just your imagination', 'The author\'s descriptive, sensory language', 'Pictures in the book', 'The cover design'], ans: 1, explain: 'Authors use descriptive language — sights, sounds, textures — to help you see the story.' }
+      ]}
+    }}};
+
+    function updateProgress() { const total = 8; let passed = 0; for (let i = 1; i <= total; i++) { if (localStorage.getItem(`g6-ela-u2-lesson${i}-passed`)) { passed++; document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n => n.classList.add('completed')); } } const fill = document.getElementById('unitProgressFill'); if (fill) fill.style.width = Math.round(passed/total*100) + '%'; }
+    function onPageLoad(page) { if (page === 'lesson1') { initAct1(); const cr = document.getElementById('l1-cr'); if (cr) cr.value = localStorage.getItem('g6-ela-u2-l1-cr') || ''; } if (page === 'lesson1-quiz') initQuiz('quiz1', quizBanks); if (page === 'teacher') renderTeacherDashboard(); }
+    document.addEventListener('DOMContentLoaded', () => { updateProgress(); initAct1(); const cr = document.getElementById('l1-cr'); if (cr) cr.value = localStorage.getItem('g6-ela-u2-l1-cr') || ''; });
+  </script>
+</body>
+</html>

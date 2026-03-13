@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 5: Wonder, Discovery, and Imagination — Grade 6 ELA</title>
+  <meta name="description" content="Use curiosity and creativity to connect poetry, informational reading, and imaginative thinking. Explore figurative language and original expression.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u5">
+  <div class="signin-overlay" id="signinOverlay"><div class="signin-card"><div style="font-size:3rem;margin-bottom:12px">🌿</div><h2>Welcome, Creator!</h2><p>Enter your name and email to track your progress.</p><button class="signin-btn" onclick="googleSignIn()">Get Started →</button></div></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo"><div><h2 style="color:#10b981">🌿 Wonder &amp; Imagination</h2><span>Grade 6 ELA &bull; Unit 5</span></div></div>
+    <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Unit Home</div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Language of Wonder</div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Figurative Language</div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Poetic Forms</div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Crafting Poems</div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Informational Writing</div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Spoken Word</div>
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><a href="../index.html" class="back-to-units">← All ELA Units</a></div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div class="nav-item" data-page="teacher" onclick="goTo('teacher')"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div class="top-actions"><span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div><button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button></div></div>
+
+    <!-- HOME -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome"><h1>Wonder, Discovery, and Imagination</h1><p>Use curiosity and creativity to connect informational reading, poetry, and imaginative thinking. Explore figurative language, original expression, and the joy of language itself.</p></div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How can curiosity and creativity help us see the world in new ways?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Create a poetry + informational mini-collection and perform a spoken word reading.</p>
+      </div>
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:8px">✅ Mastery Checklist</h3>
+        <ul class="success-criteria">
+          <li>I can use comprehension strategies to understand poetry and informational texts</li>
+          <li>I can identify different poetic forms and explain how form affects meaning</li>
+          <li>I can use figurative language intentionally in my writing</li>
+          <li>I can write original poems and informational text about a topic of wonder</li>
+          <li>I can explain how poetry and informational text connect</li>
+          <li>I can deliver a spoken word performance expressively</li>
+        </ul>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">✨</span><h3>Lesson 1: The Language of Wonder</h3><p>Read paired poetry and informational texts on the same theme.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeLesson2"><span class="card-icon">🎭</span><h3>Lesson 2: Figurative Language Deep Dive</h3><p>Study simile, metaphor, personification, and imagery.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked" id="homeLesson3"><span class="card-icon">📜</span><h3>Lesson 3: Exploring Poetic Forms</h3><p>Compare free verse, haiku, concrete, and found poetry.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 4: Crafting My Poems</h3><p>Write 2–3 original poems using different forms.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📖</span><h3>Lesson 5: Informational Writing with Wonder</h3><p>Write about something you're curious about.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🎤</span><h3>Lesson 6: Spoken Word Showcase</h3><p>Perform a reading and reflect on creative growth.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header"><div class="lesson-num">Lesson 1</div><h1 class="lesson-title">The Language of Wonder</h1><p class="lesson-subtitle">Read a poem and an informational text on the same theme. Use comprehension strategies for both genres and discover how they create wonder differently.</p></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can use comprehension strategies to understand and respond to both poetry and informational text.</li>
+          <li>I can compare how a poem and an informational text explore the same theme.</li>
+          <li>I can identify how each text type creates a sense of wonder.</li>
+        </ul>
+        <div style="margin-top:12px"><span class="outcome-tag">Comprehension</span><span class="outcome-tag">Poetry</span><span class="outcome-tag">Informational Text</span></div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Figurative Language <span class="vocab-def">Words or phrases that mean something different from their literal meaning — used to create images or emphasis.</span></span>
+          <span class="vocab-chip">Imagery <span class="vocab-def">Descriptive language that appeals to the senses — sight, sound, touch, taste, or smell.</span></span>
+          <span class="vocab-chip">Tone <span class="vocab-def">The feeling or attitude conveyed by a text — such as curious, peaceful, urgent, or playful.</span></span>
+          <span class="vocab-chip">Stanza <span class="vocab-def">A group of lines in a poem, similar to a paragraph in prose.</span></span>
+        </div>
+      </div>
+
+      <div class="glass-card"><h3 class="section-title"><span class="icon">🎬</span> Watch: What Is Poetry?</h3><div class="video-label">📺 Educational Video — Understanding Poetry (4 min)</div><div class="video-wrap"><iframe src="https://www.youtube.com/embed/JwhouCNq-Fc" title="What Is Poetry?" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: Two Ways of Seeing the Ocean</h3>
+        <p>The same topic — the ocean — can be explored through poetry and through informational text. Each creates a different kind of wonder. Let's read both and compare.</p>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Text A: Poem — "The Sea"</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid #10b981">
+          <p style="font-style:italic;color:var(--text2);white-space:pre-line;line-height:1.8">The sea does not care about your name.
+It pulls and pushes without permission,
+salting the air with ancient memory.
+
+Beneath, the jellyfish drift like lanterns
+in a city no one built,
+and the coral hums a song
+only the tide remembers.
+
+Come close. Listen.
+The ocean is telling you something
+you used to know.</p>
+          <p style="font-size:.82rem;color:var(--text3);margin-top:12px">— Original poem for classroom use</p>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Text B: Informational — "Ocean Zones"</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid #0ea5e9">
+          <p style="color:var(--text2)">The ocean is divided into five zones based on depth. The <strong>sunlight zone</strong> (0–200m) receives the most light and supports the greatest diversity of life, including coral reefs, fish, and marine mammals. Below that, the <strong>twilight zone</strong> (200–1,000m) has dim light and is home to jellyfish and squid. The deepest zones are completely dark and feature extreme pressure and temperatures. Scientists estimate that more than 80% of the ocean remains unexplored.</p>
+        </div>
+
+        <div class="key-point"><p><strong>Notice:</strong> Both texts are about the ocean — but the poem uses <em>figurative language and imagery</em> to create emotion, while the informational text uses <em>facts and data</em> to build understanding. Both create wonder, just in different ways.</p></div>
+      </div>
+
+      <div class="pause-check"><h4>⏸️ Pause and Check</h4><p>How does the <strong>poem</strong> make you feel about the ocean? How does the <strong>informational text</strong> make you think about it? What's different about the kind of wonder each creates?</p><button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answer</button><div class="reveal-answer"><p>The poem creates emotional, mysterious wonder — it personifies the ocean and uses imagery like "lanterns" and "a song only the tide remembers." The informational text creates intellectual wonder — 80% unexplored! Both make us curious, but through different tools: feeling vs. fact.</p></div></div>
+
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">📜</span> Poetry or Informational?</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Sort each phrase: does it come from the <strong>poem</strong> or the <strong>informational text</strong>?</p>
+        <div id="l1-act1-area">
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-poem"><div class="zone-title">📜 Poem</div><div id="act1-poem-items"></div></div>
+            <div class="sort-zone" id="act1-zone-info"><div class="zone-title">📊 Informational</div><div id="act1-info-items"></div></div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none"><div class="score-number" id="act1-score-num"></div><p id="act1-score-msg"></p></div>
+        </div>
+      </div>
+
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">✍️</span> Two Kinds of Wonder</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Write a short response comparing the poem and the informational text. Which one created more wonder for you, and why?</p>
+        <div class="constructed-response">
+          <h4>Your Response</h4>
+          <textarea id="l1-cr" placeholder="The poem made me feel...&#10;The informational text made me think...&#10;&#10;The one that created more wonder for me was... because..." rows="6"></textarea>
+          <ul class="cr-checklist"><li><label><input type="checkbox"> I compared both texts</label></li><li><label><input type="checkbox"> I explained which created more wonder and why</label></li><li><label><input type="checkbox"> I used specific details from each text</label></li></ul>
+          <div style="display:flex;gap:8px;margin-top:12px"><button class="activity-btn" onclick="saveCR()">💾 Save</button><button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button></div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center;margin-top:32px"><p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button></div>
+      <div class="reflection-box"><h3>🪞 Reflection</h3><p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">What is something you wonder about? Could you explore it better through a poem, an informational text, or both?</p><textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea><button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button></div>
+    </div>
+
+    <div class="lesson-page" id="page-lesson1-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 1 Quiz</div><h1 class="lesson-title">The Language of Wonder</h1><p class="lesson-subtitle">80% or higher to unlock Lesson 2.</p></div><div id="quiz1-area"></div></div>
+
+    <div class="lesson-page" id="page-lesson2"><div class="welcome"><h1>🎭 Figurative Language Deep Dive</h1><p>Study simile, metaphor, personification, hyperbole, and imagery. Create your own.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>📜 Exploring Poetic Forms</h1><p>Compare free verse, haiku, concrete poetry, and found poetry.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>✍️ Crafting My Poems</h1><p>Write 2–3 original poems using different forms and figurative language.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>📖 Informational Writing with Wonder</h1><p>Write about something you're curious about with engaging hook and clear structure.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>🎤 Spoken Word Showcase</h1><p>Record or perform a spoken word reading and reflect on creativity.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+
+    <div class="lesson-page" id="page-teacher"><div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div><div class="glass-card"><h3 class="section-title"><span class="icon">📋</span> Grade Records</h3><div id="teacherGrades"></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button></div></div></div>
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    const lockMap={'lesson1-quiz':'g6-ela-u5-l1-gate','lesson2':'g6-ela-u5-lesson1-passed','lesson2-quiz':'g6-ela-u5-l2-gate','lesson3':'g6-ela-u5-lesson2-passed','lesson4':'g6-ela-u5-lesson3-passed','lesson5':'g6-ela-u5-lesson4-passed','lesson6':'g6-ela-u5-lesson5-passed'};
+    actComplete={l1:{act1:false,act2:false}};
+
+    const act1Data=[
+      {text:'Jellyfish drift like lanterns',answer:'poem'},
+      {text:'The sunlight zone receives the most light',answer:'info'},
+      {text:'Salting the air with ancient memory',answer:'poem'},
+      {text:'More than 80% of the ocean remains unexplored',answer:'info'},
+      {text:'The coral hums a song only the tide remembers',answer:'poem'},
+      {text:'The ocean is divided into five zones based on depth',answer:'info'}
+    ];
+    let act1Score=0,act1Total=act1Data.length,act1Answered=0,selectedItem=null;
+
+    function initAct1(){if(isActivityDone(1,'act1')){document.getElementById('l1-act1-area').innerHTML='<div class="activity-score"><div class="score-number">✅</div><p>Activity completed!</p></div>';return;}const items=document.getElementById('act1-items');items.innerHTML='';act1Data.forEach((item,i)=>{const el=document.createElement('div');el.className='sort-item';el.textContent=item.text;el.dataset.idx=i;el.onclick=()=>selectAct1Item(el,i);items.appendChild(el);});}
+    function selectAct1Item(el,idx){if(el.classList.contains('placed'))return;document.querySelectorAll('#act1-items .sort-item').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedItem=idx;document.getElementById('act1-zone-poem').onclick=()=>placeAct1Item(idx,'poem');document.getElementById('act1-zone-info').onclick=()=>placeAct1Item(idx,'info');}
+    function placeAct1Item(idx,zone){if(selectedItem===null)return;const item=act1Data[idx];const correct=item.answer===zone;if(correct)act1Score++;act1Answered++;const placed=document.createElement('div');placed.className='sorted-item '+(correct?'correct':'wrong');placed.textContent=(correct?'✅ ':'❌ ')+item.text;document.getElementById(`act1-${zone}-items`).appendChild(placed);const src=document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);if(src){src.classList.add('placed');src.classList.remove('selected');}selectedItem=null;if(act1Answered>=act1Total){document.getElementById('act1-score').style.display='block';document.getElementById('act1-score-num').textContent=`${act1Score}/${act1Total}`;document.getElementById('act1-score-msg').textContent=act1Score>=4?'Beautiful text analysis!':'Keep practicing!';markActivityDone(1,'act1',act1Score,act1Total);}}
+
+    function saveCR(){const el=document.getElementById('l1-cr');if(el){localStorage.setItem('g6-ela-u5-l1-cr',el.value);document.getElementById('l1-cr-status').textContent='✅ Saved!';setTimeout(()=>document.getElementById('l1-cr-status').textContent='',3000);}}
+    function submitAct2(){const el=document.getElementById('l1-cr');if(!el||el.value.trim().length<20){alert('Write at least a few sentences.');return;}saveCR();markActivityDone(1,'act2',1,1);document.getElementById('l1-cr-status').textContent='✅ Complete!';}
+
+    const quizBanks={quiz1:{primary:[
+      {q:'Figurative language means:',opts:['Exact literal meaning','Words used in non-literal ways to create images or emphasis','Dictionary definitions','A type of paragraph'],ans:1,outcome:'Figurative',explain:'Figurative language uses words beyond their literal meaning for effect.'},
+      {q:'"Jellyfish drift like lanterns" is an example of:',opts:['A fact','A simile','Alliteration','A summary'],ans:1,outcome:'Figurative',explain:'This compares jellyfish to lanterns using "like" — a simile.'},
+      {q:'The informational text creates wonder through:',opts:['Rhyme and rhythm','Facts and data','Character development','Dialogue'],ans:1,outcome:'Text Types',explain:'Informational texts use facts, statistics, and real-world data to spark curiosity.'},
+      {q:'A stanza in a poem is similar to:',opts:['A title','A paragraph in prose','A bibliography','A heading'],ans:1,outcome:'Poetry',explain:'Stanzas group lines in poems, like paragraphs group sentences in prose.'},
+      {q:'Imagery appeals to:',opts:['Logic only','The five senses','Math skills','Memory only'],ans:1,outcome:'Figurative',explain:'Imagery creates mental pictures using sight, sound, touch, taste, and smell.'}
+    ],replacement:{0:null,1:null,2:null,3:null,4:null},
+    remediation:{'Figurative':{video:'https://www.youtube.com/embed/JwhouCNq-Fc',questions:[{q:'A simile uses:',opts:['"is" to compare','"like" or "as" to compare','No comparison','Numbers'],ans:1,explain:'Similes compare two unlike things using "like" or "as."'}]},'Text Types':{video:'https://www.youtube.com/embed/JwhouCNq-Fc',questions:[{q:'Poetry and informational text are different because:',opts:['Poetry uses emotion/imagery, informational uses facts','They are the same','Poetry is always short','Informational text rhymes'],ans:0,explain:'Poetry uses figurative language for emotional impact; informational text uses facts for understanding.'}]},'Poetry':{video:'https://www.youtube.com/embed/JwhouCNq-Fc',questions:[{q:'What makes a text a poem?',opts:['It must rhyme','It uses line breaks, imagery, and intentional word choice','It is always short','It tells a story'],ans:1,explain:'Poems use line breaks, figurative language, and precise word choice — they don\'t have to rhyme.'}]}}}};
+
+    function updateProgress(){const total=6;let passed=0;for(let i=1;i<=total;i++){if(localStorage.getItem(`g6-ela-u5-lesson${i}-passed`)){passed++;document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n=>n.classList.add('completed'));}}const fill=document.getElementById('unitProgressFill');if(fill)fill.style.width=Math.round(passed/total*100)+'%';}
+    function onPageLoad(page){if(page==='lesson1'){initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u5-l1-cr')||'';}if(page==='lesson1-quiz')initQuiz('quiz1',quizBanks);if(page==='teacher')renderTeacherDashboard();}
+    document.addEventListener('DOMContentLoaded',()=>{updateProgress();initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u5-l1-cr')||'';});
+  </script>
+</body>
+</html>

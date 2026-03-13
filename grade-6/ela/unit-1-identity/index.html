@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Identity, Belonging, and Voice — Grade 6 ELA</title>
+  <meta name="description" content="Explore identity through stories, poems, and reflections. Build comprehension, narrative writing, vocabulary, and discussion skills.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u1">
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">🪞</div>
+      <h2>Welcome, Writer!</h2>
+      <p>Enter your name and email to track your progress.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo">
+      <div>
+        <h2 style="color:#e85d9a">🪞 Identity &amp; Voice</h2>
+        <span>Grade 6 ELA &bull; Unit 1</span>
+      </div>
+    </div>
+
+    <div class="nav-item active" data-page="home" onclick="goTo('home')">
+      <div class="nav-num"><span>🏠</span></div> Unit Home
+    </div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')">
+      <div class="nav-num"><span>1</span></div> Who Am I?
+    </div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')">
+      <div class="nav-num"><span>2</span></div> Words That Shape Us
+    </div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')">
+      <div class="nav-num"><span>3</span></div> Theme &amp; Message
+    </div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')">
+      <div class="nav-num"><span>4</span></div> Narrative Structure
+    </div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')">
+      <div class="nav-num"><span>5</span></div> Drafting My Narrative
+    </div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')">
+      <div class="nav-num"><span>6</span></div> Revision &amp; Voice
+    </div>
+    <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')">
+      <div class="nav-num"><span>7</span></div> Discussion Circle
+    </div>
+
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px">
+      <a href="../index.html" class="back-to-units">← All ELA Units</a>
+    </div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+      <div class="nav-item" data-page="teacher" onclick="goTo('teacher')">
+        <div class="nav-num"><span>📊</span></div> Teacher Dashboard
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="top-actions">
+        <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+      </div>
+    </div>
+
+    <!-- ========== HOME PAGE ========== -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome">
+        <h1>Identity, Belonging, and Voice</h1>
+        <p>Explore how experiences, relationships, and culture shape who we are. Read stories, build vocabulary, draft a personal narrative, and share your voice.</p>
+      </div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How do experiences, relationships, and culture shape who we are and how we express ourselves?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Write and present a personal identity narrative.</p>
+      </div>
+
+      <!-- Evidence Tracker -->
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:12px">📊 Unit Evidence Tracker</h3>
+        <div id="evidenceTracker"></div>
+      </div>
+
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">🪞</span><h3>Lesson 1: Who Am I?</h3><p>Explore identity-themed texts using comprehension strategies.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeL2"><span class="card-icon">💬</span><h3>Lesson 2: Words That Shape Us</h3><p>Explore how vocabulary carries cultural and personal meaning.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">💡</span><h3>Lesson 3: Theme &amp; Message</h3><p>Identify theme vs. topic in identity texts.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📐</span><h3>Lesson 4: Narrative Structure</h3><p>Analyze narrative elements and plan your story.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 5: Drafting</h3><p>Write your identity narrative with voice and detail.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🔄</span><h3>Lesson 6: Revision &amp; Voice</h3><p>Revise using feedback to strengthen your writing.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🗣️</span><h3>Lesson 7: Discussion Circle</h3><p>Share your narrative and reflect on growth.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- ========== LESSON 1: WHO AM I? (Reading & Comprehension) ========== -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header">
+        <div class="archetype-badge">📖 Reading &amp; Comprehension</div>
+        <div class="lesson-num">Lesson 1 of 7</div>
+        <h1 class="lesson-title">Who Am I? Exploring Identity</h1>
+        <p class="lesson-subtitle">Use comprehension strategies to explore identity-themed texts and make personal connections.</p>
+      </div>
+
+      <!-- Learning Targets -->
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can use comprehension strategies (connecting, questioning, inferring) to understand a text.</li>
+          <li>I can identify explicit and implicit information in a text about identity.</li>
+          <li>I can make personal connections (text-to-self) while reading.</li>
+        </ul>
+        <div style="margin-top:12px">
+          <span class="outcome-tag">Comprehension</span>
+          <span class="outcome-tag">Connections</span>
+          <span class="outcome-tag">Identity</span>
+        </div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Identity <span class="vocab-def">Who you are — shaped by your experiences, relationships, culture, and beliefs.</span></span>
+          <span class="vocab-chip">Text-to-Self <span class="vocab-def">When something in a text reminds you of your own life or feelings.</span></span>
+          <span class="vocab-chip">Inference <span class="vocab-def">A conclusion based on evidence and reasoning — reading "between the lines."</span></span>
+          <span class="vocab-chip">Explicit <span class="vocab-def">Information stated directly and clearly in the text.</span></span>
+          <span class="vocab-chip">Implicit <span class="vocab-def">Information suggested or hinted at, not stated directly.</span></span>
+        </div>
+      </div>
+
+      <!-- SECTION 1: LAUNCH PAD -->
+      <div class="lesson-section open" id="l1-launch">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🚀</span>
+          <div class="section-label"><h3>Launch Pad</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l1-launch-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="glass-card" style="text-align:center;background:var(--card2)">
+            <p style="font-size:1.3rem;font-style:italic;color:var(--text2);margin-bottom:16px">"Your name carries the story of who you are and where you come from."</p>
+            <p style="font-size:.82rem;color:var(--text3)">— Adapted proverb</p>
+          </div>
+          <p style="color:var(--text2);margin:16px 0 12px">Think about YOUR name for a moment. Then answer:</p>
+          <div class="constructed-response">
+            <textarea id="l1-launch-response" placeholder="What does your name mean to you? Is there a story behind it?" rows="2" oninput="autoSave('l1-launch-response')"></textarea>
+            <button class="activity-btn secondary" style="margin-top:8px" onclick="completeSection('l1','launch')">Done ✓</button>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- SECTION 2: LEARN -->
+      <div class="lesson-section" id="l1-learn">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">📚</span>
+          <div class="section-label"><h3>Learn</h3><span class="section-time">≈ 10 min</span></div>
+          <span class="section-check" id="l1-learn-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="video-label">📺 Video — What Is Identity? (4 min)</div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/D9Ihs241zeg" title="What Is Identity?" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+
+          <div class="key-point" style="margin-top:20px">
+            <p><strong>Key Comprehension Strategies for This Unit:</strong></p>
+            <ul style="margin-top:8px;padding-left:20px">
+              <li><strong>Connecting:</strong> What does this remind me of in my own life?</li>
+              <li><strong>Questioning:</strong> What am I wondering about as I read?</li>
+              <li><strong>Inferring:</strong> What is the author suggesting without saying directly?</li>
+            </ul>
+          </div>
+
+          <h4 style="color:var(--accent);margin:20px 0 10px">Anchor Text: "The Name Jar" Excerpt</h4>
+          <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid var(--accent)">
+            <p style="font-style:italic;color:var(--text2);margin-bottom:12px">"Unhei stared at the name tag on her desk — the one her teacher had carefully written in English letters. It looked strange and unfamiliar. On the bus that morning, the other kids had stumbled over her name, repeating it wrong, laughing at the sounds. She wanted to disappear. But her grandmother's voice echoed in her memory: <em>'Your name means grace. It was chosen with love.'</em>"</p>
+            <p style="font-size:.82rem;color:var(--text3)">— Adapted from <em>The Name Jar</em> by Yangsook Choi</p>
+          </div>
+
+          <div class="info-grid" style="margin-top:16px">
+            <div class="info-box"><span class="emoji">🔗</span><h4>Connect</h4><p>Have you ever felt misunderstood because of something about you?</p></div>
+            <div class="info-box"><span class="emoji">❓</span><h4>Question</h4><p>Why does her grandmother's voice matter in this moment?</p></div>
+            <div class="info-box"><span class="emoji">🔍</span><h4>Infer</h4><p>What do "wanted to disappear" and "strange" tell us about Unhei?</p></div>
+          </div>
+          <button class="activity-btn secondary" style="margin-top:16px" onclick="completeSection('l1','learn')">I've finished reading ✓</button>
+        </div></div>
+      </div>
+
+      <!-- SECTION 3: CHECK-IN -->
+      <div class="lesson-section" id="l1-checkin">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">✋</span>
+          <div class="section-label"><h3>Check-In</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l1-checkin-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <p style="color:var(--text2);margin-bottom:16px">Quick check — did you catch the key ideas? (Not graded!)</p>
+          <div id="l1-checkin-area"></div>
+          <div class="need-help-link" id="l1-checkin-help" style="display:none" onclick="openSection('l1-learn')">💡 Need help? Review the Learn section</div>
+        </div></div>
+      </div>
+
+      <!-- SECTION 4: PRACTICE STUDIO -->
+      <div class="lesson-section" id="l1-practice">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🎯</span>
+          <div class="section-label"><h3>Practice Studio</h3><span class="section-time">≈ 12 min</span></div>
+          <span class="section-check" id="l1-practice-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">🔗</span> Strategy Sorter</h3></div>
+          <p style="color:var(--text2);margin-bottom:16px">Read each statement and decide which comprehension strategy it best represents.</p>
+          <div id="l1-sort-area">
+            <div class="sort-items" id="l1-sort-items"></div>
+            <div class="sort-zones" style="margin-top:16px">
+              <div class="sort-zone" id="l1-zone-connecting"><div class="zone-title">🔗 Connecting</div><div id="l1-connecting-items"></div></div>
+              <div class="sort-zone" id="l1-zone-questioning"><div class="zone-title">❓ Questioning</div><div id="l1-questioning-items"></div></div>
+            </div>
+            <div class="sort-zones" style="grid-template-columns:1fr">
+              <div class="sort-zone" id="l1-zone-inferring"><div class="zone-title">🔍 Inferring</div><div id="l1-inferring-items"></div></div>
+            </div>
+            <div class="activity-score" id="l1-sort-score" style="display:none">
+              <div class="score-number" id="l1-sort-score-num"></div>
+              <p id="l1-sort-score-msg"></p>
+            </div>
+          </div>
+
+          <div class="activity-header" style="margin-top:32px"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">📖</span> Passage Analysis</h3></div>
+          <div class="glass-card" style="background:var(--card2);padding:16px;border-left:3px solid var(--accent);font-style:italic;color:var(--text2);margin-bottom:16px">"Kwame sat in the back of the classroom, his new school ID still warm from the printer. He traced his finger over the letters of his name. In Ghana, everyone said it easily — <em>KWAH-meh</em>. Here, the teacher had called him 'Kuh-wame.' He didn't correct her."</div>
+          <div class="constructed-response">
+            <h4>Analyze this passage</h4>
+            <textarea id="l1-practice-cr" placeholder="What can you INFER about how Kwame feels? What TEXT CLUES support your inference? What CONNECTIONS can you make?" rows="4" oninput="autoSave('l1-practice-cr')"></textarea>
+            <button class="activity-btn secondary" style="margin-top:8px" onclick="completePractice1()">Mark Complete ✓</button>
+            <p id="l1-practice-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- SECTION 5: SHOW WHAT YOU KNOW -->
+      <div class="lesson-section" id="l1-show">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🌟</span>
+          <div class="section-label"><h3>Show What You Know</h3><span class="section-time">≈ 15 min</span></div>
+          <span class="section-check" id="l1-show-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="evidence-badge">📖 Read &amp; Think</div>
+          <p style="color:var(--text2);margin-bottom:16px">Re-read the anchor text about Unhei, then write a response that demonstrates your comprehension skills.</p>
+          <div class="constructed-response">
+            <h4>Your Response</h4>
+            <p style="color:var(--text3);font-size:.85rem;margin-bottom:12px"><strong>Prompt:</strong> In the anchor text, Unhei "wanted to disappear" after the kids stumbled over her name. Using <strong>at least 2 text clues</strong>, explain what this passage reveals about how identity and belonging are connected. Then describe a <strong>personal connection</strong> — a time when something about YOUR identity felt important.</p>
+            <textarea id="l1-show-response" placeholder="Text clues I noticed:&#10;&#10;What these clues reveal about identity and belonging:&#10;&#10;My personal connection:" rows="8" oninput="autoSave('l1-show-response')"></textarea>
+            <ul class="cr-checklist">
+              <li><label><input type="checkbox"> I identified at least 2 specific text clues</label></li>
+              <li><label><input type="checkbox"> I explained what the passage reveals about identity</label></li>
+              <li><label><input type="checkbox"> I made a genuine personal connection</label></li>
+              <li><label><input type="checkbox"> I used complete sentences</label></li>
+            </ul>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="activity-btn" onclick="submitShow1()">📤 Submit Response</button>
+            </div>
+            <p id="l1-show-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- SECTION 6: REFLECT & TRACK -->
+      <div class="lesson-section" id="l1-reflect">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🪞</span>
+          <div class="section-label"><h3>Reflect &amp; Track</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l1-reflect-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <h4 style="color:var(--accent);margin-bottom:12px">Self-Assessment</h4>
+          <p style="color:var(--text3);font-size:.82rem;margin-bottom:12px">Rate your confidence on each learning target:</p>
+          <div class="self-assess-grid">
+            <div class="self-assess-row"><span class="target-text">I can use comprehension strategies to understand a text</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+            <div class="self-assess-row"><span class="target-text">I can identify explicit and implicit information</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+            <div class="self-assess-row"><span class="target-text">I can make personal connections while reading</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+          </div>
+          <div class="constructed-response" style="margin-top:16px">
+            <h4>Reflection</h4>
+            <textarea id="l1-reflection" placeholder="What is one thing about your identity that you'd want others to understand? Why?" rows="3" oninput="autoSave('l1-reflection')"></textarea>
+          </div>
+          <button class="activity-btn" style="margin-top:12px" onclick="completeLesson1()">Complete Lesson 1 ✓</button>
+        </div></div>
+      </div>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-footer-nav">
+        <button class="nav-btn" onclick="goTo('home')">← Unit Home</button>
+        <button class="nav-btn primary" onclick="goTo('lesson2')">Lesson 2: Words That Shape Us →</button>
+      </div>
+    </div>
+
+    <!-- ========== LESSON 2: WORDS THAT SHAPE US (Vocabulary & Language) ========== -->
+    <div class="lesson-page" id="page-lesson2">
+      <div class="lesson-header">
+        <div class="archetype-badge">💬 Vocabulary &amp; Language</div>
+        <div class="lesson-num">Lesson 2 of 7</div>
+        <h1 class="lesson-title">Words That Shape Us</h1>
+        <p class="lesson-subtitle">Explore how vocabulary carries cultural and personal meaning. Study figurative and identity-related words from mentor texts.</p>
+      </div>
+
+      <!-- Learning Targets -->
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can determine the meaning of words using context clues.</li>
+          <li>I can explain how specific words carry cultural or emotional meaning.</li>
+          <li>I can use new vocabulary accurately in my own writing.</li>
+        </ul>
+        <div style="margin-top:12px">
+          <span class="outcome-tag">Vocabulary</span>
+          <span class="outcome-tag">Context Clues</span>
+          <span class="outcome-tag">Figurative Language</span>
+        </div>
+      </div>
+
+      <!-- LAUNCH PAD -->
+      <div class="lesson-section open" id="l2-launch">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🚀</span>
+          <div class="section-label"><h3>Launch Pad</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l2-launch-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <h4 style="color:var(--accent);margin-bottom:12px">🧩 Which Word Doesn't Belong?</h4>
+          <p style="color:var(--text2);margin-bottom:16px">Look at these four words. Click the one that does NOT fit with the others, then explain why.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0" id="l2-wdb-area">
+            <div class="sort-item" onclick="pickWDB(this,0)">Heritage</div>
+            <div class="sort-item" onclick="pickWDB(this,1)">Tradition</div>
+            <div class="sort-item" onclick="pickWDB(this,2)">Textbook</div>
+            <div class="sort-item" onclick="pickWDB(this,3)">Ancestry</div>
+          </div>
+          <p id="l2-wdb-feedback" style="font-size:.85rem;color:var(--text3);text-align:center;margin:8px 0"></p>
+          <div class="constructed-response" style="margin-top:12px">
+            <textarea id="l2-launch-response" placeholder="Why doesn't that word fit?" rows="2" oninput="autoSave('l2-launch-response')"></textarea>
+            <button class="activity-btn secondary" style="margin-top:8px" onclick="completeSection('l2','launch')">Done ✓</button>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- LEARN -->
+      <div class="lesson-section" id="l2-learn">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">📚</span>
+          <div class="section-label"><h3>Learn</h3><span class="section-time">≈ 10 min</span></div>
+          <span class="section-check" id="l2-learn-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="key-point">
+            <p><strong>Words carry more than definitions.</strong> They carry culture, emotion, history, and identity. Understanding the deeper meaning of words helps us connect with texts — and with each other.</p>
+          </div>
+
+          <h4 style="color:var(--accent);margin:20px 0 10px">Key Vocabulary Strategies</h4>
+          <div class="info-grid">
+            <div class="info-box"><span class="emoji">🔎</span><h4>Context Clues</h4><p>Use surrounding words and sentences to figure out meaning.</p></div>
+            <div class="info-box"><span class="emoji">🌳</span><h4>Word Roots</h4><p>Break words into parts (prefixes, roots, suffixes) to unlock meaning.</p></div>
+            <div class="info-box"><span class="emoji">💭</span><h4>Connotation</h4><p>The feeling or association a word carries beyond its dictionary definition.</p></div>
+          </div>
+
+          <h4 style="color:var(--accent);margin:20px 0 10px">Identity Words in Context</h4>
+          <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid var(--accent)">
+            <p style="color:var(--text2);margin-bottom:12px">Read these sentences from identity texts. Notice how each bolded word carries deep meaning:</p>
+            <ul style="padding-left:20px;color:var(--text2);font-size:.9rem">
+              <li style="margin-bottom:8px">"Her <strong>heritage</strong> was woven into every dish her grandmother prepared." <em style="color:var(--text3)">— Heritage means the traditions, values, and culture passed down through generations.</em></li>
+              <li style="margin-bottom:8px">"He felt a deep sense of <strong>belonging</strong> when he heard his family's language spoken." <em style="color:var(--text3)">— Belonging means feeling accepted, connected, and at home.</em></li>
+              <li style="margin-bottom:8px">"She wanted to <strong>reclaim</strong> her name after years of hearing it mispronounced." <em style="color:var(--text3)">— Reclaim means to take back something that was lost or taken away.</em></li>
+              <li style="margin-bottom:8px">"His <strong>resilience</strong> showed in the way he kept going despite the challenges." <em style="color:var(--text3)">— Resilience means the ability to recover and stay strong through difficulty.</em></li>
+              <li>"The painting was a <strong>mosaic</strong> of her many identities — daughter, student, artist, friend." <em style="color:var(--text3)">— Mosaic (figurative) means a combination of many different pieces forming one beautiful whole.</em></li>
+            </ul>
+          </div>
+
+          <div class="vocab-glossary" style="margin-top:16px">
+            <span class="vocab-chip">Heritage <span class="vocab-def">Traditions, values, and culture passed down through generations.</span></span>
+            <span class="vocab-chip">Belonging <span class="vocab-def">Feeling accepted, connected, and at home in a group or place.</span></span>
+            <span class="vocab-chip">Reclaim <span class="vocab-def">To take back something that was lost, dismissed, or taken away.</span></span>
+            <span class="vocab-chip">Resilience <span class="vocab-def">The ability to recover and stay strong through difficulty.</span></span>
+            <span class="vocab-chip">Mosaic <span class="vocab-def">A combination of many different pieces forming one beautiful whole (figurative).</span></span>
+            <span class="vocab-chip">Connotation <span class="vocab-def">The emotional feeling or association a word carries beyond its definition.</span></span>
+          </div>
+          <button class="activity-btn secondary" style="margin-top:16px" onclick="completeSection('l2','learn')">I've finished reading ✓</button>
+        </div></div>
+      </div>
+
+      <!-- CHECK-IN -->
+      <div class="lesson-section" id="l2-checkin">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">✋</span>
+          <div class="section-label"><h3>Check-In</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l2-checkin-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <p style="color:var(--text2);margin-bottom:16px">Quick vocabulary check — match the word to the right meaning.</p>
+          <div id="l2-checkin-area"></div>
+          <div class="need-help-link" id="l2-checkin-help" style="display:none" onclick="openSection('l2-learn')">💡 Need help? Review the Learn section</div>
+        </div></div>
+      </div>
+
+      <!-- PRACTICE STUDIO -->
+      <div class="lesson-section" id="l2-practice">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🎯</span>
+          <div class="section-label"><h3>Practice Studio</h3><span class="section-time">≈ 12 min</span></div>
+          <span class="section-check" id="l2-practice-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">🔎</span> Context Clue Detective</h3></div>
+          <p style="color:var(--text2);margin-bottom:16px">Read each sentence and use context clues to choose the best meaning of the underlined word.</p>
+          <div id="l2-context-area"></div>
+
+          <div class="activity-header" style="margin-top:32px"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">✍️</span> Words in My World</h3></div>
+          <p style="color:var(--text2);margin-bottom:12px">Choose <strong>3 words</strong> from this lesson's vocabulary and write an original sentence for each one that connects to YOUR life or identity.</p>
+          <div class="constructed-response">
+            <textarea id="l2-practice-cr" placeholder="1. Heritage: ...&#10;&#10;2. Belonging: ...&#10;&#10;3. (Your choice): ..." rows="6" oninput="autoSave('l2-practice-cr')"></textarea>
+            <button class="activity-btn secondary" style="margin-top:8px" onclick="completePractice2()">Mark Complete ✓</button>
+            <p id="l2-practice-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- SHOW WHAT YOU KNOW -->
+      <div class="lesson-section" id="l2-show">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🌟</span>
+          <div class="section-label"><h3>Show What You Know</h3><span class="section-time">≈ 15 min</span></div>
+          <span class="section-check" id="l2-show-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <div class="evidence-badge">✍️ Create &amp; Write</div>
+          <p style="color:var(--text2);margin-bottom:16px">Write a short paragraph (5-8 sentences) about a word, phrase, or saying that is important in YOUR family or culture.</p>
+          <div class="constructed-response">
+            <h4>Your Identity Word Response</h4>
+            <p style="color:var(--text3);font-size:.85rem;margin-bottom:12px"><strong>Prompt:</strong> Think of a word, phrase, or saying that is important in your family or culture. It could be a greeting, a nickname, a proverb, or a term of endearment. Write a paragraph that explains: (1) what the word/phrase is, (2) what it means, (3) why it matters to your identity, and (4) use <strong>at least 2 vocabulary words from this lesson</strong> (heritage, belonging, reclaim, resilience, mosaic, connotation).</p>
+            <textarea id="l2-show-response" placeholder="The word/phrase that is important in my life is...&#10;&#10;It means...&#10;&#10;It matters to my identity because..." rows="8" oninput="autoSave('l2-show-response')"></textarea>
+            <ul class="cr-checklist">
+              <li><label><input type="checkbox"> I named a specific word or phrase from my life</label></li>
+              <li><label><input type="checkbox"> I explained what it means and why it matters</label></li>
+              <li><label><input type="checkbox"> I used at least 2 vocabulary words from this lesson</label></li>
+              <li><label><input type="checkbox"> I wrote 5-8 complete sentences</label></li>
+            </ul>
+            <button class="activity-btn" style="margin-top:12px" onclick="submitShow2()">📤 Submit Response</button>
+            <p id="l2-show-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- REFLECT & TRACK -->
+      <div class="lesson-section" id="l2-reflect">
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-icon">🪞</span>
+          <div class="section-label"><h3>Reflect &amp; Track</h3><span class="section-time">≈ 3 min</span></div>
+          <span class="section-check" id="l2-reflect-check">☐</span>
+          <span class="section-chevron">▼</span>
+        </div>
+        <div class="section-body"><div class="section-body-inner">
+          <h4 style="color:var(--accent);margin-bottom:12px">Self-Assessment</h4>
+          <div class="self-assess-grid">
+            <div class="self-assess-row"><span class="target-text">I can use context clues to determine word meaning</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+            <div class="self-assess-row"><span class="target-text">I can explain how words carry cultural meaning</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+            <div class="self-assess-row"><span class="target-text">I can use new vocabulary in my own writing</span><div class="traffic-lights"><span class="traffic-light" data-level="green" onclick="selectLight(this)">🟢</span><span class="traffic-light" data-level="yellow" onclick="selectLight(this)">🟡</span><span class="traffic-light" data-level="red" onclick="selectLight(this)">🔴</span></div></div>
+          </div>
+          <div class="constructed-response" style="margin-top:16px">
+            <h4>Reflection</h4>
+            <textarea id="l2-reflection" placeholder="Which vocabulary word from this lesson resonated most with you? Why?" rows="3" oninput="autoSave('l2-reflection')"></textarea>
+          </div>
+          <button class="activity-btn" style="margin-top:12px" onclick="completeLesson2()">Complete Lesson 2 ✓</button>
+        </div></div>
+      </div>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-footer-nav">
+        <button class="nav-btn" onclick="goTo('lesson1')">← Lesson 1</button>
+        <button class="nav-btn primary" onclick="goTo('lesson3')">Lesson 3: Theme &amp; Message →</button>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER PAGES -->
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>💡 Theme &amp; Message</h1><p><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>📐 Narrative Structure</h1><p><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>✍️ Drafting My Narrative</h1><p><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>🔄 Revision &amp; Voice</h1><p><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson7"><div class="welcome"><h1>🗣️ Discussion Circle</h1><p><em>Coming soon.</em></p></div></div>
+
+    <!-- Teacher Dashboard -->
+    <div class="lesson-page" id="page-teacher">
+      <div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">📋</span> Grade Records</h3>
+        <div id="teacherGrades"></div>
+        <div class="export-btns">
+          <button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button>
+          <button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    /* ===== LOCK MAP ===== */
+    const lockMap = {
+      'lesson2': 'g6-ela-u1-lesson1-done',
+      'lesson3': 'g6-ela-u1-lesson2-done',
+      'lesson4': 'g6-ela-u1-lesson3-done',
+      'lesson5': 'g6-ela-u1-lesson4-done',
+      'lesson6': 'g6-ela-u1-lesson5-done',
+      'lesson7': 'g6-ela-u1-lesson6-done'
+    };
+
+    /* ===== SECTION FRAMEWORK ===== */
+    const sectionState = {};
+
+    function toggleSection(header) {
+      header.closest('.lesson-section').classList.toggle('open');
+    }
+    function openSection(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add('open'); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+
+    function completeSection(lesson, section) {
+      const key = `g6-ela-u1-${lesson}-${section}`;
+      localStorage.setItem(key, '1');
+      const check = document.getElementById(`${lesson}-${section}-check`);
+      if (check) { check.textContent = '✅'; check.classList.add('done'); }
+    }
+
+    function isSectionDone(lesson, section) {
+      return !!localStorage.getItem(`g6-ela-u1-${lesson}-${section}`);
+    }
+
+    function autoSave(id) {
+      const el = document.getElementById(id);
+      if (el) localStorage.setItem(`g6-ela-u1-${id}`, el.value);
+    }
+    function loadSaved(id) {
+      const el = document.getElementById(id);
+      if (el) el.value = localStorage.getItem(`g6-ela-u1-${id}`) || '';
+    }
+
+    function selectLight(el) {
+      el.closest('.traffic-lights').querySelectorAll('.traffic-light').forEach(l => l.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    /* ===== LESSON 1: CHECK-IN ===== */
+    const l1CheckinData = [
+      { q: 'In the anchor text, which detail is EXPLICIT (directly stated)?', opts: ['Unhei feels embarrassed', 'Unhei stared at the name tag on her desk', 'Unhei wants to change her name', 'Unhei is sad'], ans: 1, explain: '"Unhei stared at the name tag on her desk" is directly stated. The other options are inferences.' },
+      { q: 'What does it mean to make an INFERENCE?', opts: ['Copy a sentence from the text', 'Draw a conclusion from clues the author gives you', 'Summarize the whole story', 'Ask the teacher a question'], ans: 1, explain: 'An inference is a conclusion drawn from text clues and your own knowledge — reading between the lines.' },
+      { q: '"She wanted to disappear" is an example of:', opts: ['A fact about where Unhei went', 'Figurative language showing how she feels', 'A direct quote from her grandmother', 'The main idea'], ans: 1, explain: 'She didn\'t literally disappear — this is figurative language expressing her emotional state.' }
+    ];
+    let l1CheckinScore = 0, l1CheckinDone = 0;
+
+    function initL1Checkin() {
+      const area = document.getElementById('l1-checkin-area');
+      if (!area) return;
+      if (isSectionDone('l1','checkin')) {
+        area.innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Check-In complete!</p></div>';
+        return;
+      }
+      area.innerHTML = '';
+      l1CheckinData.forEach((item, i) => {
+        let html = `<div class="checkin-item" id="l1-ci-${i}"><div class="checkin-q">${i+1}. ${item.q}</div><div class="checkin-opts">`;
+        item.opts.forEach((opt, j) => {
+          html += `<div class="checkin-opt" onclick="answerCheckin(${i},${j})">${opt}</div>`;
+        });
+        html += `</div><div class="checkin-feedback" id="l1-ci-fb-${i}"></div></div>`;
+        area.innerHTML += html;
+      });
+    }
+    function answerCheckin(qi, ai) {
+      const item = l1CheckinData[qi];
+      const wrap = document.getElementById(`l1-ci-${qi}`);
+      const opts = wrap.querySelectorAll('.checkin-opt');
+      if (opts[0].classList.contains('disabled')) return;
+      opts.forEach((o, j) => {
+        o.classList.add('disabled');
+        if (j === item.ans) o.classList.add('correct-answer');
+        else if (j === ai) o.classList.add('wrong-answer');
+      });
+      const fb = document.getElementById(`l1-ci-fb-${qi}`);
+      const correct = ai === item.ans;
+      if (correct) l1CheckinScore++;
+      fb.className = 'checkin-feedback show ' + (correct ? 'correct' : 'wrong');
+      fb.textContent = (correct ? '✅ ' : '❌ ') + item.explain;
+      l1CheckinDone++;
+      if (l1CheckinDone >= l1CheckinData.length) {
+        completeSection('l1', 'checkin');
+        if (l1CheckinScore < 2) document.getElementById('l1-checkin-help').style.display = 'flex';
+      }
+    }
+
+    /* ===== LESSON 1: PRACTICE STUDIO — SORTER ===== */
+    const l1SortData = [
+      { text: 'This reminds me of when I moved to a new school.', answer: 'connecting' },
+      { text: 'I wonder if Unhei will choose a new name or keep her own.', answer: 'questioning' },
+      { text: 'Unhei probably feels embarrassed and isolated.', answer: 'inferring' },
+      { text: 'My grandmother also told me stories about my name.', answer: 'connecting' },
+      { text: 'Why did the other kids laugh at a name they hadn\'t heard before?', answer: 'questioning' },
+      { text: 'The phrase "wanted to disappear" suggests she feels shame.', answer: 'inferring' }
+    ];
+    let l1SortScore = 0, l1SortAnswered = 0, l1Selected = null;
+
+    function initL1Sort() {
+      if (isSectionDone('l1','practice')) {
+        document.getElementById('l1-sort-area').innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Strategy Sorter complete!</p></div>';
+        return;
+      }
+      const items = document.getElementById('l1-sort-items');
+      if (!items) return;
+      items.innerHTML = '';
+      l1SortData.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'sort-item'; el.textContent = item.text; el.dataset.idx = i;
+        el.onclick = () => selectL1Sort(el, i);
+        items.appendChild(el);
+      });
+    }
+    function selectL1Sort(el, idx) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#l1-sort-items .sort-item').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected'); l1Selected = idx;
+      ['connecting','questioning','inferring'].forEach(z => {
+        document.getElementById('l1-zone-'+z).onclick = () => placeL1Sort(idx, z);
+      });
+    }
+    function placeL1Sort(idx, zone) {
+      if (l1Selected === null) return;
+      const item = l1SortData[idx], correct = item.answer === zone;
+      if (correct) l1SortScore++;
+      l1SortAnswered++;
+      const placed = document.createElement('div');
+      placed.className = 'sorted-item ' + (correct ? 'correct' : 'wrong');
+      placed.textContent = (correct ? '✅ ' : '❌ ') + item.text;
+      document.getElementById('l1-'+zone+'-items').appendChild(placed);
+      const src = document.querySelector(`#l1-sort-items .sort-item[data-idx="${idx}"]`);
+      if (src) { src.classList.add('placed'); src.classList.remove('selected'); }
+      l1Selected = null;
+      if (l1SortAnswered >= l1SortData.length) {
+        document.getElementById('l1-sort-score').style.display = 'block';
+        document.getElementById('l1-sort-score-num').textContent = `${l1SortScore}/${l1SortData.length}`;
+        document.getElementById('l1-sort-score-msg').textContent = l1SortScore >= 4 ? 'Great work identifying strategies!' : 'Keep practicing!';
+      }
+    }
+    function completePractice1() {
+      const cr = document.getElementById('l1-practice-cr');
+      if (!cr || cr.value.trim().length < 20) { alert('Please write at least a few sentences.'); return; }
+      autoSave('l1-practice-cr');
+      completeSection('l1', 'practice');
+      document.getElementById('l1-practice-status').textContent = '✅ Practice complete!';
+    }
+
+    /* ===== LESSON 1: SHOW ===== */
+    function submitShow1() {
+      const el = document.getElementById('l1-show-response');
+      if (!el || el.value.trim().length < 40) { alert('Please write a more detailed response before submitting.'); return; }
+      autoSave('l1-show-response');
+      completeSection('l1', 'show');
+      document.getElementById('l1-show-status').textContent = '✅ Response submitted!';
+    }
+
+    /* ===== LESSON 1: COMPLETE ===== */
+    function completeLesson1() {
+      const el = document.getElementById('l1-reflection');
+      if (!el || el.value.trim().length < 10) { alert('Please write a short reflection.'); return; }
+      autoSave('l1-reflection');
+      completeSection('l1', 'reflect');
+      localStorage.setItem('g6-ela-u1-lesson1-done', '1');
+      updateProgress();
+      if (typeof updateLock === 'function') updateLock();
+      alert('🎉 Lesson 1 complete! Lesson 2 is now unlocked.');
+    }
+
+    /* ===== EVIDENCE TRACKER ===== */
+    function buildEvidenceTracker() {
+      const cats = [
+        { icon: '📖', label: 'Reading Evidence', keys: ['l1-show','l3-show','l4-show'], total: 3 },
+        { icon: '✍️', label: 'Writing Evidence', keys: ['l5-show','l6-show'], total: 2 },
+        { icon: '🎤', label: 'Oral Evidence', keys: ['l7-show'], total: 1 },
+        { icon: '💬', label: 'Vocabulary Evidence', keys: ['l2-show'], total: 1 },
+        { icon: '🪞', label: 'Reflection Evidence', keys: ['l1-reflect','l2-reflect','l3-reflect','l4-reflect','l5-reflect','l6-reflect','l7-reflect'], total: 7 }
+      ];
+      const wrap = document.getElementById('evidenceTracker');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      cats.forEach(c => {
+        let done = 0;
+        c.keys.forEach(k => { if (localStorage.getItem('g6-ela-u1-'+k)) done++; });
+        const pct = Math.round(done / c.total * 100);
+        wrap.innerHTML += `<div style="display:flex;align-items:center;gap:12px;margin:8px 0"><span style="width:24px;text-align:center">${c.icon}</span><span style="flex:1;font-size:.85rem;color:var(--text2)">${c.label}</span><div style="flex:2;height:8px;background:var(--card2);border-radius:20px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px;transition:width .5s"></div></div><span style="font-size:.78rem;color:var(--text3);width:36px;text-align:right">${done}/${c.total}</span></div>`;
+      });
+    }
+
+    /* ===== PROGRESS ===== */
+    function updateProgress() {
+      let done = 0;
+      for (let i = 1; i <= 7; i++) {
+        if (localStorage.getItem(`g6-ela-u1-lesson${i}-done`)) {
+          done++;
+          document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n => n.classList.add('completed'));
+        }
+      }
+      const fill = document.getElementById('unitProgressFill');
+      if (fill) fill.style.width = Math.round(done / 7 * 100) + '%';
+      buildEvidenceTracker();
+    }
+
+    /* ===== PAGE LOAD ===== */
+    function onPageLoad(page) {
+      if (page === 'lesson1') {
+        initL1Checkin(); initL1Sort();
+        ['l1-launch-response','l1-practice-cr','l1-show-response','l1-reflection'].forEach(loadSaved);
+        ['launch','learn','checkin','practice','show','reflect'].forEach(s => {
+          if (isSectionDone('l1', s)) {
+            const ch = document.getElementById(`l1-${s}-check`);
+            if (ch) { ch.textContent = '✅'; ch.classList.add('done'); }
+          }
+        });
+      }
+      if (page === 'home') buildEvidenceTracker();
+      if (page === 'teacher') renderTeacherDashboard();
+    }
+
+    /* ===== LESSON 2: WDB GAME ===== */
+    function pickWDB(el, idx) {
+      document.querySelectorAll('#l2-wdb-area .sort-item').forEach(s => { s.classList.remove('selected'); s.style.pointerEvents = 'none'; });
+      el.classList.add('selected');
+      const fb = document.getElementById('l2-wdb-feedback');
+      fb.textContent = idx === 2 ? '✅ Correct! "Textbook" is unrelated to identity or family history.' : '❌ Try again — "Textbook" is the odd one out because Heritage, Tradition, and Ancestry are all about identity.';
+      fb.style.color = idx === 2 ? 'var(--quiz-correct)' : 'var(--quiz-wrong)';
+    }
+
+    /* ===== LESSON 2: CHECK-IN ===== */
+    const l2CheckinData = [
+      { q: 'Which word means "the ability to recover and stay strong through difficulty"?', opts: ['Heritage', 'Resilience', 'Connotation', 'Mosaic'], ans: 1, explain: 'Resilience means bouncing back from challenges with strength.' },
+      { q: '"Reclaim" most likely means:', opts: ['To forget something', 'To take back something that was lost', 'To celebrate a holiday', 'To write a story'], ans: 1, explain: 'Reclaim means to take back something that was dismissed or taken away.' },
+      { q: 'The connotation of a word is:', opts: ['Its dictionary definition only', 'The feeling or association it carries', 'How many syllables it has', 'Its spelling'], ans: 1, explain: 'Connotation is the emotional or cultural feeling a word carries beyond its literal definition.' }
+    ];
+    let l2CiScore = 0, l2CiDone = 0;
+
+    function initL2Checkin() {
+      const area = document.getElementById('l2-checkin-area');
+      if (!area) return;
+      if (isSectionDone('l2', 'checkin')) { area.innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Check-In complete!</p></div>'; return; }
+      area.innerHTML = '';
+      l2CheckinData.forEach((item, i) => {
+        let html = `<div class="checkin-item" id="l2-ci-${i}"><div class="checkin-q">${i + 1}. ${item.q}</div><div class="checkin-opts">`;
+        item.opts.forEach((opt, j) => { html += `<div class="checkin-opt" onclick="answerL2Ci(${i},${j})">${opt}</div>`; });
+        html += `</div><div class="checkin-feedback" id="l2-ci-fb-${i}"></div></div>`;
+        area.innerHTML += html;
+      });
+    }
+    function answerL2Ci(qi, ai) {
+      const item = l2CheckinData[qi];
+      const wrap = document.getElementById(`l2-ci-${qi}`);
+      const opts = wrap.querySelectorAll('.checkin-opt');
+      if (opts[0].classList.contains('disabled')) return;
+      opts.forEach((o, j) => { o.classList.add('disabled'); if (j === item.ans) o.classList.add('correct-answer'); else if (j === ai) o.classList.add('wrong-answer'); });
+      const fb = document.getElementById(`l2-ci-fb-${qi}`);
+      if (ai === item.ans) l2CiScore++;
+      fb.className = 'checkin-feedback show ' + (ai === item.ans ? 'correct' : 'wrong');
+      fb.textContent = (ai === item.ans ? '✅ ' : '❌ ') + item.explain;
+      l2CiDone++;
+      if (l2CiDone >= l2CheckinData.length) {
+        completeSection('l2', 'checkin');
+        if (l2CiScore < 2) document.getElementById('l2-checkin-help').style.display = 'flex';
+      }
+    }
+
+    /* ===== LESSON 2: CONTEXT CLUE DETECTIVE ===== */
+    const l2ContextData = [
+      { sentence: '"After years of moving between cities, she finally felt a sense of <u>belonging</u> when she joined the art club."', q: 'Belonging means:', opts: ['Being lost', 'Feeling accepted and connected', 'Moving to a new city', 'Joining a sports team'], ans: 1 },
+      { sentence: '"The old photo album was a window into their <u>heritage</u> — recipes, stories, and traditions from generations past."', q: 'Heritage means:', opts: ['A type of window', 'Traditions and culture passed down', 'A photo album', 'A recipe book'], ans: 1 },
+      { sentence: '"Despite losing the competition, Priya showed <u>resilience</u> by signing up again the following year with a stronger routine."', q: 'Resilience means:', opts: ['Giving up', 'Being angry', 'Recovering and staying strong', 'Winning easily'], ans: 2 }
+    ];
+    let l2CtxDone = 0;
+
+    function initL2Context() {
+      const area = document.getElementById('l2-context-area');
+      if (!area) return;
+      if (isSectionDone('l2', 'practice')) { area.innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Context Clue Detective complete!</p></div>'; return; }
+      area.innerHTML = '';
+      l2ContextData.forEach((item, i) => {
+        let html = `<div class="checkin-item" id="l2-ctx-${i}"><p style="color:var(--text2);margin-bottom:10px;font-style:italic">${item.sentence}</p><div class="checkin-q">${item.q}</div><div class="checkin-opts">`;
+        item.opts.forEach((opt, j) => { html += `<div class="checkin-opt" onclick="answerL2Ctx(${i},${j})">${opt}</div>`; });
+        html += `</div><div class="checkin-feedback" id="l2-ctx-fb-${i}"></div></div>`;
+        area.innerHTML += html;
+      });
+    }
+    function answerL2Ctx(qi, ai) {
+      const item = l2ContextData[qi];
+      const wrap = document.getElementById(`l2-ctx-${qi}`);
+      const opts = wrap.querySelectorAll('.checkin-opt');
+      if (opts[0].classList.contains('disabled')) return;
+      opts.forEach((o, j) => { o.classList.add('disabled'); if (j === item.ans) o.classList.add('correct-answer'); else if (j === ai) o.classList.add('wrong-answer'); });
+      const fb = document.getElementById(`l2-ctx-fb-${qi}`);
+      fb.className = 'checkin-feedback show ' + (ai === item.ans ? 'correct' : 'wrong');
+      fb.textContent = ai === item.ans ? '✅ Great use of context clues!' : '❌ Look at the surrounding words for clues about the meaning.';
+      l2CtxDone++;
+    }
+
+    function completePractice2() {
+      const cr = document.getElementById('l2-practice-cr');
+      if (!cr || cr.value.trim().length < 30) { alert('Please write at least 3 original sentences.'); return; }
+      autoSave('l2-practice-cr');
+      completeSection('l2', 'practice');
+      document.getElementById('l2-practice-status').textContent = '✅ Practice complete!';
+    }
+
+    function submitShow2() {
+      const el = document.getElementById('l2-show-response');
+      if (!el || el.value.trim().length < 50) { alert('Please write a more detailed response (5-8 sentences).'); return; }
+      autoSave('l2-show-response');
+      completeSection('l2', 'show');
+      document.getElementById('l2-show-status').textContent = '✅ Response submitted!';
+    }
+
+    function completeLesson2() {
+      const el = document.getElementById('l2-reflection');
+      if (!el || el.value.trim().length < 10) { alert('Please write a short reflection.'); return; }
+      autoSave('l2-reflection');
+      completeSection('l2', 'reflect');
+      localStorage.setItem('g6-ela-u1-lesson2-done', '1');
+      updateProgress(); updateLock();
+      alert('🎉 Lesson 2 complete! Lesson 3 is now unlocked.');
+    }
+
+    /* ===== NAVIGATION ===== */
+    function goTo(page) {
+      const lockKey = lockMap[page];
+      if (lockKey && !localStorage.getItem(lockKey) && !isTeacherUnlocked()) {
+        alert('🔒 Complete the previous lesson first.'); return;
+      }
+      document.querySelectorAll('.lesson-page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + page);
+      if (target) target.classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll(`.nav-item[data-page="${page}"]`).forEach(n => n.classList.add('active'));
+      window.scrollTo(0, 0);
+      onPageLoad(page);
+    }
+
+    function updateLock() {
+      Object.keys(lockMap).forEach(page => {
+        const key = lockMap[page];
+        const unlocked = localStorage.getItem(key) || isTeacherUnlocked();
+        document.querySelectorAll(`.nav-item[data-page="${page}"]`).forEach(n => {
+          if (unlocked) n.classList.remove('locked'); else n.classList.add('locked');
+        });
+        const homeCard = document.getElementById('homeL' + page.replace('lesson', ''));
+        if (homeCard) {
+          if (unlocked) { homeCard.classList.remove('locked'); homeCard.querySelector('.card-btn').textContent = 'Start Lesson →'; homeCard.onclick = () => goTo(page); }
+        }
+      });
+      if (isTeacherUnlocked()) { applyTeacherUnlock(); const tn = document.getElementById('teacherNav'); if (tn) tn.style.display = 'block'; }
+    }
+
+    function renderTeacherDashboard() {
+      const wrap = document.getElementById('teacherGrades');
+      if (!wrap) return;
+      const grades = JSON.parse(localStorage.getItem('g6-grades') || '[]');
+      if (!grades.length) { wrap.innerHTML = '<p style="color:var(--text3)">No grade data recorded yet.</p>'; return; }
+      let html = '<table class="grade-table"><thead><tr><th>Student</th><th>Quiz</th><th>Score</th><th>%</th><th>Passed</th></tr></thead><tbody>';
+      grades.forEach(g => { html += `<tr><td>${g.name}</td><td>${g.lessonTitle||g.quizId}</td><td>${g.score}/${g.total}</td><td>${g.percentage}%</td><td>${g.passed?'✅':'❌'}</td></tr>`; });
+      html += '</tbody></table>';
+      wrap.innerHTML = html;
+    }
+
+    /* ===== INIT ===== */
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTheme(); checkSignIn(); updateProgress(); updateLock();
+      // Lesson 1
+      initL1Checkin(); initL1Sort();
+      ['l1-launch-response','l1-practice-cr','l1-show-response','l1-reflection'].forEach(loadSaved);
+      ['launch','learn','checkin','practice','show','reflect'].forEach(s => {
+        if (isSectionDone('l1', s)) { const ch = document.getElementById(`l1-${s}-check`); if (ch) { ch.textContent = '✅'; ch.classList.add('done'); } }
+      });
+      // Lesson 2
+      initL2Checkin(); initL2Context();
+      ['l2-launch-response','l2-practice-cr','l2-show-response','l2-reflection'].forEach(loadSaved);
+      ['launch','learn','checkin','practice','show','reflect'].forEach(s => {
+        if (isSectionDone('l2', s)) { const ch = document.getElementById(`l2-${s}-check`); if (ch) { ch.textContent = '✅'; ch.classList.add('done'); } }
+      });
+      buildEvidenceTracker();
+    });
+  </script>
+</body>
+</html>

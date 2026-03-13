@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: Truth, Evidence, and Information — Grade 6 ELA</title>
+  <meta name="description" content="Learn how to find, evaluate, and communicate information responsibly. Build research, media literacy, and evidence-based writing skills.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u3">
+  <div class="signin-overlay" id="signinOverlay"><div class="signin-card"><div style="font-size:3rem;margin-bottom:12px">🔎</div><h2>Welcome, Researcher!</h2><p>Enter your name and email to track your progress.</p><button class="signin-btn" onclick="googleSignIn()">Get Started →</button></div></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo"><div><h2 style="color:#0ea5e9">🔎 Truth &amp; Evidence</h2><span>Grade 6 ELA &bull; Unit 3</span></div></div>
+    <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Unit Home</div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Main Ideas</div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Text Features</div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Word Roots</div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Source Reliability</div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Research &amp; Notes</div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Writing a Report</div>
+    <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')"><div class="nav-num"><span>7</span></div> Present Findings</div>
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><a href="../index.html" class="back-to-units">← All ELA Units</a></div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div class="nav-item" data-page="teacher" onclick="goTo('teacher')"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div class="top-actions"><span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div><button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button></div></div>
+
+    <!-- HOME -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome"><h1>Truth, Evidence, and Information</h1><p>Learn how to find, evaluate, and communicate information responsibly. Read articles and multimedia texts, then create evidence-based responses.</p></div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How do we find, evaluate, and communicate information responsibly?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Write and present an evidence-based research report.</p>
+      </div>
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:8px">✅ Mastery Checklist</h3>
+        <ul class="success-criteria">
+          <li>I can identify the main idea and supporting details in informational text</li>
+          <li>I can explain how text features help readers understand nonfiction</li>
+          <li>I can use Greek and Latin roots to figure out word meanings</li>
+          <li>I can evaluate whether a source is reliable</li>
+          <li>I can write a research report with evidence from multiple sources</li>
+          <li>I can present my research findings clearly</li>
+        </ul>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">📌</span><h3>Lesson 1: Main Ideas &amp; Details</h3><p>Identify main ideas and supporting details in informational texts.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeLesson2"><span class="card-icon">📊</span><h3>Lesson 2: Text Features</h3><p>Analyze how nonfiction structures support understanding.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked" id="homeLesson3"><span class="card-icon">🔤</span><h3>Lesson 3: Word Roots</h3><p>Study Greek, Latin, and Indigenous language word origins.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🛡️</span><h3>Lesson 4: Source Reliability</h3><p>Evaluate sources for reliability and bias.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📋</span><h3>Lesson 5: Research &amp; Notes</h3><p>Form questions, locate sources, take organized notes.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 6: Writing a Report</h3><p>Draft an evidence-based informational report.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🎤</span><h3>Lesson 7: Present Findings</h3><p>Deliver a research presentation with a visual aid.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header"><div class="lesson-num">Lesson 1</div><h1 class="lesson-title">Main Ideas and Supporting Details</h1><p class="lesson-subtitle">Learn how to identify the main idea and supporting details in informational texts.</p></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can identify the main idea of an informational text.</li>
+          <li>I can distinguish between the main idea and supporting details.</li>
+          <li>I can summarize the key points of a nonfiction text.</li>
+        </ul>
+        <div style="margin-top:12px"><span class="outcome-tag">Comprehension</span><span class="outcome-tag">Main Idea</span><span class="outcome-tag">Summarizing</span></div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Main Idea <span class="vocab-def">The most important point the author is making — what the text is mostly about.</span></span>
+          <span class="vocab-chip">Supporting Details <span class="vocab-def">Facts, examples, or evidence that explain, prove, or expand on the main idea.</span></span>
+          <span class="vocab-chip">Summary <span class="vocab-def">A brief restatement of the most important ideas in a text, in your own words.</span></span>
+          <span class="vocab-chip">Informational Text <span class="vocab-def">Nonfiction text written to inform, explain, or teach the reader about a topic.</span></span>
+        </div>
+      </div>
+      <div class="glass-card"><h3 class="section-title"><span class="icon">🎬</span> Watch: Finding the Main Idea</h3><div class="video-label">📺 Educational Video — Main Idea (4 min)</div><div class="video-wrap"><iframe src="https://www.youtube.com/embed/m56GtHXRn3g" title="Main Idea" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: Ocean Plastic — A Growing Problem</h3>
+        <p>Every year, approximately <strong>8 million tonnes</strong> of plastic enter the world's oceans. This plastic doesn't disappear — it breaks into smaller and smaller pieces called <span class="vocab" title="Tiny plastic particles less than 5mm in size">microplastics</span>, which are now found in the water, sea life, and even the air we breathe.</p>
+        <div class="key-point"><p><strong>Main Idea:</strong> Ocean plastic pollution is a serious and growing environmental problem that affects marine life, ecosystems, and human health.</p></div>
+        <p>Scientists have found microplastics in fish, sea turtles, and seabirds. When animals eat plastic, it can block their digestive systems or release toxic chemicals into their bodies. Coral reefs — already threatened by warming oceans — are also harmed when plastic settles on them.</p>
+        <p>Researchers are developing new solutions, from ocean cleanup machines to biodegradable packaging. But experts agree that the most effective solution is <strong>reducing plastic use</strong> at the source — using reusable containers, refusing single-use plastics, and improving recycling systems.</p>
+        <div class="info-grid">
+          <div class="info-box"><span class="emoji">📌</span><h4>Main Idea</h4><p>Ocean plastic pollution is a growing crisis affecting wildlife and ecosystems.</p></div>
+          <div class="info-box"><span class="emoji">📎</span><h4>Details</h4><p>8M tonnes/year, microplastics in animals, coral damage, cleanup solutions.</p></div>
+        </div>
+      </div>
+
+      <div class="pause-check"><h4>⏸️ Pause and Check</h4><p>In your own words, what is the <strong>main idea</strong> of this text? Name <strong>two supporting details</strong>.</p><button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answer</button><div class="reveal-answer"><p><strong>Main Idea:</strong> Plastic pollution in the ocean is a serious problem. <strong>Details:</strong> (1) 8 million tonnes enter oceans yearly; (2) microplastics harm fish, turtles, and seabirds.</p></div></div>
+
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">📌</span> Main Idea or Supporting Detail?</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Sort each statement: is it the <strong>main idea</strong> or a <strong>supporting detail</strong>?</p>
+        <div id="l1-act1-area">
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-main"><div class="zone-title">📌 Main Idea</div><div id="act1-main-items"></div></div>
+            <div class="sort-zone" id="act1-zone-detail"><div class="zone-title">📎 Supporting Detail</div><div id="act1-detail-items"></div></div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none"><div class="score-number" id="act1-score-num"></div><p id="act1-score-msg"></p></div>
+        </div>
+      </div>
+
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">✍️</span> Summarize the Text</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Write a <strong>3–4 sentence summary</strong> of the ocean plastic text. Include the main idea and at least two supporting details in your own words.</p>
+        <div class="constructed-response">
+          <h4>Your Summary</h4>
+          <textarea id="l1-cr" placeholder="The main idea of this text is...&#10;&#10;One important detail is...&#10;Another detail is..." rows="6"></textarea>
+          <ul class="cr-checklist"><li><label><input type="checkbox"> I stated the main idea clearly</label></li><li><label><input type="checkbox"> I included at least two supporting details</label></li><li><label><input type="checkbox"> I used my own words (not copied)</label></li></ul>
+          <div style="display:flex;gap:8px;margin-top:12px"><button class="activity-btn" onclick="saveCR()">💾 Save</button><button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button></div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center;margin-top:32px"><p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button></div>
+      <div class="reflection-box"><h3>🪞 Reflection</h3><p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">Where do you get most of your information? How do you know if it's reliable?</p><textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea><button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button></div>
+    </div>
+
+    <div class="lesson-page" id="page-lesson1-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 1 Quiz</div><h1 class="lesson-title">Main Ideas and Supporting Details</h1><p class="lesson-subtitle">80% or higher to unlock Lesson 2.</p></div><div id="quiz1-area"></div></div>
+
+    <div class="lesson-page" id="page-lesson2"><div class="welcome"><h1>📊 Text Features and Structures</h1><p>Analyze how nonfiction uses headings, charts, and organizational patterns.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>🔤 Word Roots: Greek, Latin, and Beyond</h1><p>Study common roots, prefixes, suffixes, and Indigenous language origins.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>🛡️ Source Reliability and Media Literacy</h1><p>Evaluate sources for reliability and bias. Compare media presentations.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>📋 Research and Note-Taking</h1><p>Form questions, locate sources, take organized notes, avoid plagiarism.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>✍️ Writing an Evidence-Based Report</h1><p>Draft a structured informational report with evidence and simple citation.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson7"><div class="welcome"><h1>🎤 Present Your Findings</h1><p>Deliver a 3-minute research presentation with a visual aid.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+
+    <div class="lesson-page" id="page-teacher"><div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div><div class="glass-card"><h3 class="section-title"><span class="icon">📋</span> Grade Records</h3><div id="teacherGrades"></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button></div></div></div>
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    const lockMap = { 'lesson1-quiz':'g6-ela-u3-l1-gate','lesson2':'g6-ela-u3-lesson1-passed','lesson2-quiz':'g6-ela-u3-l2-gate','lesson3':'g6-ela-u3-lesson2-passed','lesson4':'g6-ela-u3-lesson3-passed','lesson5':'g6-ela-u3-lesson4-passed','lesson6':'g6-ela-u3-lesson5-passed','lesson7':'g6-ela-u3-lesson6-passed' };
+    actComplete = { l1: { act1: false, act2: false } };
+
+    const act1Data = [
+      { text: 'Ocean plastic pollution is a serious and growing environmental problem.', answer: 'main' },
+      { text: '8 million tonnes of plastic enter the oceans each year.', answer: 'detail' },
+      { text: 'Microplastics have been found in fish, turtles, and seabirds.', answer: 'detail' },
+      { text: 'Coral reefs are harmed when plastic settles on them.', answer: 'detail' },
+      { text: 'Reducing plastic use at the source is the most effective solution.', answer: 'detail' },
+      { text: 'Plastic pollution affects marine life, ecosystems, and human health.', answer: 'main' }
+    ];
+    let act1Score=0,act1Total=act1Data.length,act1Answered=0,selectedItem=null;
+
+    function initAct1(){if(isActivityDone(1,'act1')){document.getElementById('l1-act1-area').innerHTML='<div class="activity-score"><div class="score-number">✅</div><p>Activity completed!</p></div>';return;}const items=document.getElementById('act1-items');items.innerHTML='';act1Data.forEach((item,i)=>{const el=document.createElement('div');el.className='sort-item';el.textContent=item.text;el.dataset.idx=i;el.onclick=()=>selectAct1Item(el,i);items.appendChild(el);});}
+    function selectAct1Item(el,idx){if(el.classList.contains('placed'))return;document.querySelectorAll('#act1-items .sort-item').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedItem=idx;document.getElementById('act1-zone-main').onclick=()=>placeAct1Item(idx,'main');document.getElementById('act1-zone-detail').onclick=()=>placeAct1Item(idx,'detail');}
+    function placeAct1Item(idx,zone){if(selectedItem===null)return;const item=act1Data[idx];const correct=item.answer===zone;if(correct)act1Score++;act1Answered++;const placed=document.createElement('div');placed.className='sorted-item '+(correct?'correct':'wrong');placed.textContent=(correct?'✅ ':'❌ ')+item.text;document.getElementById(`act1-${zone}-items`).appendChild(placed);const src=document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);if(src){src.classList.add('placed');src.classList.remove('selected');}selectedItem=null;if(act1Answered>=act1Total){document.getElementById('act1-score').style.display='block';document.getElementById('act1-score-num').textContent=`${act1Score}/${act1Total}`;document.getElementById('act1-score-msg').textContent=act1Score>=4?'Great work separating ideas!':'Keep practicing!';markActivityDone(1,'act1',act1Score,act1Total);}}
+
+    function saveCR(){const el=document.getElementById('l1-cr');if(el){localStorage.setItem('g6-ela-u3-l1-cr',el.value);document.getElementById('l1-cr-status').textContent='✅ Saved!';setTimeout(()=>document.getElementById('l1-cr-status').textContent='',3000);}}
+    function submitAct2(){const el=document.getElementById('l1-cr');if(!el||el.value.trim().length<20){alert('Write at least a few sentences.');return;}saveCR();markActivityDone(1,'act2',1,1);document.getElementById('l1-cr-status').textContent='✅ Complete!';}
+
+    const quizBanks={quiz1:{primary:[
+      {q:'The main idea of a text is:',opts:['A small detail','The most important point the author makes','The title','A vocabulary word'],ans:1,outcome:'Main Idea',explain:'The main idea is the central, most important point of the entire text.'},
+      {q:'Supporting details:',opts:['Replace the main idea','Explain, prove, or expand on the main idea','Are always in the title','Are opinions only'],ans:1,outcome:'Details',explain:'Details support the main idea with facts, examples, and evidence.'},
+      {q:'A summary should:',opts:['Copy the text exactly','Include every detail','Briefly restate the most important ideas in your own words','Be longer than the original'],ans:2,outcome:'Summarizing',explain:'A summary is a brief, original restatement of key ideas — not a copy.'},
+      {q:'In the ocean plastic text, which is a supporting detail?',opts:['Plastic pollution is a problem','8 million tonnes enter the ocean yearly','The text is about the ocean','Nonfiction is informational'],ans:1,outcome:'Details',explain:'The statistic supports the main idea that pollution is a significant problem.'},
+      {q:'Informational text is written to:',opts:['Entertain only','Inform, explain, or teach','Tell fictional stories','Express personal feelings'],ans:1,outcome:'Main Idea',explain:'Informational text\'s primary purpose is to inform and educate readers about a topic.'}
+    ],replacement:{0:{q:'Where is the main idea usually found?',opts:['Only in the last sentence','Often in the first or last paragraph','In the footnotes','Never stated'],ans:1,outcome:'Main Idea',explain:'Main ideas are typically found in introductory or concluding paragraphs.'},1:null,2:null,3:null,4:null},
+    remediation:{'Main Idea':{video:'https://www.youtube.com/embed/m56GtHXRn3g',questions:[{q:'To find the main idea, ask:',opts:['What is this mostly about?','What is the first word?','Who is the author?','How many pages?'],ans:0,explain:'The main idea answers: what is this text mostly about?'}]},'Details':{video:'https://www.youtube.com/embed/m56GtHXRn3g',questions:[{q:'Supporting details help by:',opts:['Changing the topic','Giving evidence for the main idea','Making the text longer','Adding pictures'],ans:1,explain:'Details support, prove, or expand on the main idea.'}]},'Summarizing':{video:'https://www.youtube.com/embed/m56GtHXRn3g',questions:[{q:'A good summary:',opts:['Copies word for word','Uses your own words for key ideas','Includes every sentence','Is longer than the text'],ans:1,explain:'Summaries are brief original restatements of the most important information.'}]}}}};
+
+    function updateProgress(){const total=7;let passed=0;for(let i=1;i<=total;i++){if(localStorage.getItem(`g6-ela-u3-lesson${i}-passed`)){passed++;document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n=>n.classList.add('completed'));}}const fill=document.getElementById('unitProgressFill');if(fill)fill.style.width=Math.round(passed/total*100)+'%';}
+    function onPageLoad(page){if(page==='lesson1'){initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u3-l1-cr')||'';}if(page==='lesson1-quiz')initQuiz('quiz1',quizBanks);if(page==='teacher')renderTeacherDashboard();}
+    document.addEventListener('DOMContentLoaded',()=>{updateProgress();initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u3-l1-cr')||'';});
+  </script>
+</body>
+</html>

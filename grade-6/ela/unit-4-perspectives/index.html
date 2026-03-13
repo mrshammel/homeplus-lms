@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 4: Perspectives and Justice — Grade 6 ELA</title>
+  <meta name="description" content="Examine how different perspectives shape understanding of issues. Compare viewpoints, write persuasive responses, and participate in respectful dialogue.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u4">
+  <div class="signin-overlay" id="signinOverlay"><div class="signin-card"><div style="font-size:3rem;margin-bottom:12px">⚖️</div><h2>Welcome, Thinker!</h2><p>Enter your name and email to track your progress.</p><button class="signin-btn" onclick="googleSignIn()">Get Started →</button></div></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo"><div><h2 style="color:#f59e0b">⚖️ Perspectives</h2><span>Grade 6 ELA &bull; Unit 4</span></div></div>
+    <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Unit Home</div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Walking in Shoes</div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Author's Purpose</div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Persuasive Language</div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Building Arguments</div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Drafting Response</div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Dialogue &amp; Debate</div>
+    <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')"><div class="nav-num"><span>7</span></div> Perspectives Showcase</div>
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><a href="../index.html" class="back-to-units">← All ELA Units</a></div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div class="nav-item" data-page="teacher" onclick="goTo('teacher')"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div class="top-actions"><span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div><button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button></div></div>
+
+    <!-- HOME -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome"><h1>Perspectives and Justice</h1><p>Examine how different perspectives shape how we understand issues, events, and each other. Compare viewpoints, discuss ideas, and write persuasive responses.</p></div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How do different perspectives shape how we understand issues, events, and each other?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Write a persuasive response and participate in a Socratic dialogue.</p>
+      </div>
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:8px">✅ Mastery Checklist</h3>
+        <ul class="success-criteria">
+          <li>I can identify and compare different perspectives in texts</li>
+          <li>I can explain how an author's purpose and viewpoint shape a text</li>
+          <li>I can use persuasive language techniques intentionally</li>
+          <li>I can write a persuasive response with a clear claim, evidence, and reasoning</li>
+          <li>I can participate in respectful dialogue, building on others' ideas</li>
+          <li>I can reflect on how my own perspective has developed</li>
+        </ul>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">👟</span><h3>Lesson 1: Walking in Someone Else's Shoes</h3><p>Read paired texts with different perspectives on the same situation.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeLesson2"><span class="card-icon">🎯</span><h3>Lesson 2: Author's Purpose &amp; Bias</h3><p>Analyze how author choices shape meaning and reveal purpose.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked" id="homeLesson3"><span class="card-icon">💬</span><h3>Lesson 3: Persuasive Language</h3><p>Study how persuasive texts use loaded language and tone.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📝</span><h3>Lesson 4: Building an Argument</h3><p>Model claim-evidence-reasoning structure.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 5: Drafting My Response</h3><p>Write a persuasive letter or editorial.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🗣️</span><h3>Lesson 6: Dialogue &amp; Debate</h3><p>Practice structured discussion with talking circle protocols.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🏆</span><h3>Lesson 7: Perspectives Showcase</h3><p>Socratic dialogue and written reflection.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header"><div class="lesson-num">Lesson 1</div><h1 class="lesson-title">Walking in Someone Else's Shoes</h1><p class="lesson-subtitle">Read paired texts showing different perspectives on the same situation. Learn to identify and compare viewpoints.</p></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can identify and compare different perspectives in texts.</li>
+          <li>I can explain why different people might see the same situation differently.</li>
+          <li>I can use text evidence to support my understanding of a perspective.</li>
+        </ul>
+        <div style="margin-top:12px"><span class="outcome-tag">Perspective</span><span class="outcome-tag">Comparison</span><span class="outcome-tag">Empathy</span></div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Perspective <span class="vocab-def">A person's point of view — how they see and interpret the world, shaped by their experience and background.</span></span>
+          <span class="vocab-chip">Bias <span class="vocab-def">A tendency to favour one viewpoint over another, sometimes unfairly.</span></span>
+          <span class="vocab-chip">Empathy <span class="vocab-def">The ability to understand and share the feelings of another person.</span></span>
+          <span class="vocab-chip">Viewpoint <span class="vocab-def">The position from which someone observes or considers something.</span></span>
+        </div>
+      </div>
+
+      <div class="glass-card"><h3 class="section-title"><span class="icon">🎬</span> Watch: Understanding Perspectives</h3><div class="video-label">📺 Educational Video — Perspectives (4 min)</div><div class="video-wrap"><iframe src="https://www.youtube.com/embed/GKuI_USYbok" title="Perspectives" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: Two Perspectives on the Same Event</h3>
+        <p>The school board has announced that the old community garden next to Riverside School will be removed to build a new parking lot. Read what two different people think about this decision.</p>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Perspective A: The School Board Chair</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid #f59e0b">
+          <p style="font-style:italic;color:var(--text2)">"We need the parking lot. Every morning, parents circle the block looking for a spot, creating traffic jams that make the intersection unsafe. The garden is lovely, but safety comes first. We'll plant a few trees in the new lot to keep some green space."</p>
+        </div>
+        <h4 style="color:var(--accent);margin:20px 0 10px">Perspective B: A Community Elder</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid #10b981">
+          <p style="font-style:italic;color:var(--text2)">"This garden has been here for thirty years. Kids learn to grow food here. Families gather here. My grandmother helped plant the first tomatoes. You can't replace that with a few trees in a parking lot. There must be another way to solve the traffic problem without destroying what connects us to this place."</p>
+        </div>
+
+        <div class="key-point"><p><strong>Key Insight:</strong> Both people care about the community — but their experiences lead them to different conclusions. Understanding both perspectives doesn't mean agreeing with both. It means seeing <em>why</em> each person thinks the way they do.</p></div>
+      </div>
+
+      <div class="pause-check"><h4>⏸️ Pause and Check</h4><p>What does each person <strong>value most</strong>? What <strong>evidence</strong> does each use?</p><button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answer</button><div class="reveal-answer"><p><strong>Chair:</strong> Values safety — uses evidence about traffic jams and unsafe intersections. <strong>Elder:</strong> Values community connection and history — uses evidence about thirty years of learning, gathering, and cultural roots.</p></div></div>
+
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">⚖️</span> Who Said It?</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Sort each statement: does it belong to <strong>Perspective A</strong> (School Board Chair) or <strong>Perspective B</strong> (Community Elder)?</p>
+        <div id="l1-act1-area">
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-a"><div class="zone-title">🅰️ School Board Chair</div><div id="act1-a-items"></div></div>
+            <div class="sort-zone" id="act1-zone-b"><div class="zone-title">🅱️ Community Elder</div><div id="act1-b-items"></div></div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none"><div class="score-number" id="act1-score-num"></div><p id="act1-score-msg"></p></div>
+        </div>
+      </div>
+
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">✍️</span> A Third Perspective</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Imagine you are a <strong>Grade 6 student at Riverside School</strong>. Write your perspective on the garden vs. parking lot decision. What would you value? What solution might you suggest?</p>
+        <div class="constructed-response">
+          <h4>Your Perspective</h4>
+          <textarea id="l1-cr" placeholder="As a student at Riverside School, I think...&#10;&#10;What matters most to me is...&#10;&#10;A possible solution could be..." rows="6"></textarea>
+          <ul class="cr-checklist"><li><label><input type="checkbox"> I stated my perspective clearly</label></li><li><label><input type="checkbox"> I explained what I value and why</label></li><li><label><input type="checkbox"> I acknowledged at least one other viewpoint</label></li></ul>
+          <div style="display:flex;gap:8px;margin-top:12px"><button class="activity-btn" onclick="saveCR()">💾 Save</button><button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button></div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center;margin-top:32px"><p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button></div>
+      <div class="reflection-box"><h3>🪞 Reflection</h3><p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">Think of a time when you disagreed with someone. What was their perspective? Did understanding it change how you felt?</p><textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea><button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button></div>
+    </div>
+
+    <div class="lesson-page" id="page-lesson1-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 1 Quiz</div><h1 class="lesson-title">Walking in Someone Else's Shoes</h1><p class="lesson-subtitle">80% or higher to unlock Lesson 2.</p></div><div id="quiz1-area"></div></div>
+
+    <div class="lesson-page" id="page-lesson2"><div class="welcome"><h1>🎯 Author's Purpose, Bias, and Voice</h1><p>Analyze how authors' choices shape meaning and reveal whose voices are centred or absent.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>💬 Persuasive Vocabulary and Tone</h1><p>Study loaded language, rhetorical devices, and persuasive word choice.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>📝 Building an Argument</h1><p>Model claim-evidence-reasoning structure for a community issue.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>✍️ Drafting My Persuasive Response</h1><p>Write a persuasive letter or editorial with claim, evidence, and reasoning.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>🗣️ Respectful Dialogue and Debate</h1><p>Practice structured dialogue including talking circle protocols.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson7"><div class="welcome"><h1>🏆 Perspectives Showcase</h1><p>Socratic dialogue or mini-debate and written reflection.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+
+    <div class="lesson-page" id="page-teacher"><div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div><div class="glass-card"><h3 class="section-title"><span class="icon">📋</span> Grade Records</h3><div id="teacherGrades"></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button></div></div></div>
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    const lockMap={'lesson1-quiz':'g6-ela-u4-l1-gate','lesson2':'g6-ela-u4-lesson1-passed','lesson2-quiz':'g6-ela-u4-l2-gate','lesson3':'g6-ela-u4-lesson2-passed','lesson4':'g6-ela-u4-lesson3-passed','lesson5':'g6-ela-u4-lesson4-passed','lesson6':'g6-ela-u4-lesson5-passed','lesson7':'g6-ela-u4-lesson6-passed'};
+    actComplete={l1:{act1:false,act2:false}};
+
+    const act1Data=[
+      {text:'Safety comes first — we need to reduce traffic.',answer:'a'},
+      {text:'This garden has been here for thirty years.',answer:'b'},
+      {text:'We\'ll plant a few trees in the new lot.',answer:'a'},
+      {text:'Kids learn to grow food here.',answer:'b'},
+      {text:'Parents circle the block creating traffic jams.',answer:'a'},
+      {text:'My grandmother helped plant the first tomatoes.',answer:'b'}
+    ];
+    let act1Score=0,act1Total=act1Data.length,act1Answered=0,selectedItem=null;
+
+    function initAct1(){if(isActivityDone(1,'act1')){document.getElementById('l1-act1-area').innerHTML='<div class="activity-score"><div class="score-number">✅</div><p>Activity completed!</p></div>';return;}const items=document.getElementById('act1-items');items.innerHTML='';act1Data.forEach((item,i)=>{const el=document.createElement('div');el.className='sort-item';el.textContent=item.text;el.dataset.idx=i;el.onclick=()=>selectAct1Item(el,i);items.appendChild(el);});}
+    function selectAct1Item(el,idx){if(el.classList.contains('placed'))return;document.querySelectorAll('#act1-items .sort-item').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedItem=idx;document.getElementById('act1-zone-a').onclick=()=>placeAct1Item(idx,'a');document.getElementById('act1-zone-b').onclick=()=>placeAct1Item(idx,'b');}
+    function placeAct1Item(idx,zone){if(selectedItem===null)return;const item=act1Data[idx];const correct=item.answer===zone;if(correct)act1Score++;act1Answered++;const placed=document.createElement('div');placed.className='sorted-item '+(correct?'correct':'wrong');placed.textContent=(correct?'✅ ':'❌ ')+item.text;document.getElementById(`act1-${zone}-items`).appendChild(placed);const src=document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);if(src){src.classList.add('placed');src.classList.remove('selected');}selectedItem=null;if(act1Answered>=act1Total){document.getElementById('act1-score').style.display='block';document.getElementById('act1-score-num').textContent=`${act1Score}/${act1Total}`;document.getElementById('act1-score-msg').textContent=act1Score>=4?'Great perspective analysis!':'Keep practicing!';markActivityDone(1,'act1',act1Score,act1Total);}}
+
+    function saveCR(){const el=document.getElementById('l1-cr');if(el){localStorage.setItem('g6-ela-u4-l1-cr',el.value);document.getElementById('l1-cr-status').textContent='✅ Saved!';setTimeout(()=>document.getElementById('l1-cr-status').textContent='',3000);}}
+    function submitAct2(){const el=document.getElementById('l1-cr');if(!el||el.value.trim().length<20){alert('Write at least a few sentences.');return;}saveCR();markActivityDone(1,'act2',1,1);document.getElementById('l1-cr-status').textContent='✅ Complete!';}
+
+    const quizBanks={quiz1:{primary:[
+      {q:'A perspective is:',opts:['A fact','A person\'s point of view shaped by their experiences','A type of text','A writing style'],ans:1,outcome:'Perspective',explain:'A perspective is how someone sees and interprets the world, shaped by their background.'},
+      {q:'In the paired texts, what does the School Board Chair value most?',opts:['History','Student safety and traffic flow','Gardening','Community traditions'],ans:1,outcome:'Comparison',explain:'The Chair prioritizes safety — traffic jams and unsafe intersections are their main concerns.'},
+      {q:'The Community Elder uses which type of evidence?',opts:['Statistics','Personal and community history','Scientific data','Legal documents'],ans:1,outcome:'Comparison',explain:'The Elder draws on personal memory and community connection spanning thirty years.'},
+      {q:'Understanding perspectives means:',opts:['Agreeing with everyone','Seeing why each person thinks the way they do','Ignoring other viewpoints','Always changing your mind'],ans:1,outcome:'Empathy',explain:'Understanding perspectives means comprehending the reasoning behind each viewpoint, not necessarily agreeing.'},
+      {q:'Bias is:',opts:['A balanced view','A tendency to favour one viewpoint, sometimes unfairly','A type of paragraph','A discussion skill'],ans:1,outcome:'Perspective',explain:'Bias means leaning toward one side, sometimes without considering the full picture.'}
+    ],replacement:{0:null,1:null,2:null,3:{q:'Empathy in reading means:',opts:['Speed reading','Understanding and sharing another person\'s feelings','Finding the main idea','Memorizing vocabulary'],ans:1,outcome:'Empathy',explain:'Empathy is putting yourself in someone else\'s shoes to understand their experience.'},4:null},
+    remediation:{'Perspective':{video:'https://www.youtube.com/embed/GKuI_USYbok',questions:[{q:'Perspectives differ because:',opts:['People read different books','People have different experiences and values','Everyone is wrong','Only one view is correct'],ans:1,explain:'Different experiences, backgrounds, and values lead people to see the same situation differently.'}]},'Comparison':{video:'https://www.youtube.com/embed/GKuI_USYbok',questions:[{q:'Comparing perspectives helps you:',opts:['Pick the winner','Understand the complexity of an issue','Avoid thinking','Copy someone\'s opinion'],ans:1,explain:'Comparing perspectives reveals that issues are complex and have multiple valid sides.'}]},'Empathy':{video:'https://www.youtube.com/embed/GKuI_USYbok',questions:[{q:'Showing empathy means:',opts:['Ignoring differences','Trying to understand how someone else feels','Always agreeing','Giving advice'],ans:1,explain:'Empathy is the effort to understand and share another person\'s feelings and perspective.'}]}}}};
+
+    function updateProgress(){const total=7;let passed=0;for(let i=1;i<=total;i++){if(localStorage.getItem(`g6-ela-u4-lesson${i}-passed`)){passed++;document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n=>n.classList.add('completed'));}}const fill=document.getElementById('unitProgressFill');if(fill)fill.style.width=Math.round(passed/total*100)+'%';}
+    function onPageLoad(page){if(page==='lesson1'){initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u4-l1-cr')||'';}if(page==='lesson1-quiz')initQuiz('quiz1',quizBanks);if(page==='teacher')renderTeacherDashboard();}
+    document.addEventListener('DOMContentLoaded',()=>{updateProgress();initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u4-l1-cr')||'';});
+  </script>
+</body>
+</html>

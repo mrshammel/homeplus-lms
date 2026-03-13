@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 6: Publish and Reflect — Grade 6 ELA</title>
+  <meta name="description" content="Analyze revision choices, polish your strongest work, build a portfolio, and present your learning journey with confidence.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-u6">
+  <div class="signin-overlay" id="signinOverlay"><div class="signin-card"><div style="font-size:3rem;margin-bottom:12px">🎓</div><h2>Welcome, Publisher!</h2><p>Enter your name and email to track your progress.</p><button class="signin-btn" onclick="googleSignIn()">Get Started →</button></div></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo"><div><h2 style="color:#f43f5e">🎓 Publish &amp; Reflect</h2><span>Grade 6 ELA &bull; Unit 6</span></div></div>
+    <div class="nav-item active" data-page="home" onclick="goTo('home')"><div class="nav-num"><span>🏠</span></div> Unit Home</div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')"><div class="nav-num"><span>1</span></div> Looking Back</div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 1 Quiz</div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')"><div class="nav-num"><span>2</span></div> Worth Publishing?</div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')"><div class="nav-num"><span>📝</span></div> Lesson 2 Quiz</div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')"><div class="nav-num"><span>3</span></div> Select &amp; Revise</div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')"><div class="nav-num"><span>4</span></div> Edit &amp; Publish</div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')"><div class="nav-num"><span>5</span></div> Reflective Letter</div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')"><div class="nav-num"><span>6</span></div> Celebrate &amp; Share</div>
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><a href="../index.html" class="back-to-units">← All ELA Units</a></div>
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div class="nav-item" data-page="teacher" onclick="goTo('teacher')"><div class="nav-num"><span>📊</span></div> Teacher Dashboard</div></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div class="top-actions"><span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div><button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button></div></div>
+
+    <!-- HOME -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome"><h1>Publish and Reflect</h1><p>Analyze revision choices, select and polish your strongest work, build a portfolio, and present your learning journey with confidence.</p></div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Essential Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How has my reading, writing, and communication grown this year, and how can I show it?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Culminating Task:</strong> Build a portfolio of 3–4 revised pieces with a reflective letter and deliver a presentation.</p>
+      </div>
+      <div class="glass-card" style="max-width:700px;margin:20px auto 0">
+        <h3 style="color:var(--accent);margin-bottom:8px">✅ Mastery Checklist</h3>
+        <ul class="success-criteria">
+          <li>I can analyze what revision choices improved a piece of writing</li>
+          <li>I can select my strongest work and explain why it represents growth</li>
+          <li>I can revise a piece of writing to significantly improve it</li>
+          <li>I can edit and publish writing to a polished standard</li>
+          <li>I can prepare and deliver a confident portfolio presentation</li>
+          <li>I can reflect on my growth and set goals for Grade 7</li>
+        </ul>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')"><span class="card-icon">📂</span><h3>Lesson 1: Looking Back</h3><p>Review your work from Units 1–5 and identify strengths and growth areas.</p><div class="card-btn">Start Lesson →</div></div>
+        <div class="lesson-card locked" id="homeLesson2"><span class="card-icon">🔍</span><h3>Lesson 2: Worth Publishing?</h3><p>Compare drafts to analyze what revision choices improve writing.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked" id="homeLesson3"><span class="card-icon">✂️</span><h3>Lesson 3: Select &amp; Revise</h3><p>Choose portfolio pieces and apply revision strategies.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📄</span><h3>Lesson 4: Edit &amp; Publish</h3><p>Final editing, formatting, and publishing conventions.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">✍️</span><h3>Lesson 5: Reflective Letter</h3><p>Write a letter about growth and set goals for Grade 7.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🎉</span><h3>Lesson 6: Celebrate &amp; Share</h3><p>Portfolio presentation and year-end celebration.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header"><div class="lesson-num">Lesson 1</div><h1 class="lesson-title">Looking Back: My Reading and Writing Journey</h1><p class="lesson-subtitle">Review your work from the year, identify your growth, and prepare to build a portfolio that shows who you've become as a reader, writer, and communicator.</p></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can reflect on my growth as a reader and writer by analyzing my own work.</li>
+          <li>I can identify strengths, growth areas, and favourite pieces from across the year.</li>
+          <li>I can use self-monitoring to evaluate my own comprehension and communication.</li>
+        </ul>
+        <div style="margin-top:12px"><span class="outcome-tag">Metacognition</span><span class="outcome-tag">Reflection</span><span class="outcome-tag">Growth</span></div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Metacognition <span class="vocab-def">Thinking about your own thinking — being aware of how you learn and what strategies work for you.</span></span>
+          <span class="vocab-chip">Portfolio <span class="vocab-def">A curated collection of your best work that shows growth and achievement over time.</span></span>
+          <span class="vocab-chip">Revision <span class="vocab-def">The process of re-seeing and improving a piece of writing — not just fixing errors, but making it stronger.</span></span>
+          <span class="vocab-chip">Self-Assessment <span class="vocab-def">Evaluating your own work and learning using criteria, rubrics, or reflection questions.</span></span>
+        </div>
+      </div>
+
+      <div class="glass-card"><h3 class="section-title"><span class="icon">🎬</span> Watch: The Power of Reflection</h3><div class="video-label">📺 Educational Video — Growth Mindset and Reflection (4 min)</div><div class="video-wrap"><iframe src="https://www.youtube.com/embed/M1CHPnZfFmU" title="Growth Mindset" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: Looking Back to Move Forward</h3>
+        <p>Before you build your final portfolio, take a moment to look back at the journey you've taken this year. In Grade 6 ELA, you have:</p>
+        <div class="info-grid">
+          <div class="info-box"><span class="emoji">🪞</span><h4>Unit 1</h4><p>Explored identity through narrative writing and discussion circles</p></div>
+          <div class="info-box"><span class="emoji">📕</span><h4>Unit 2</h4><p>Analyzed fiction craft and wrote your own original short story</p></div>
+          <div class="info-box"><span class="emoji">🔎</span><h4>Unit 3</h4><p>Evaluated sources, conducted research, and wrote evidence-based reports</p></div>
+          <div class="info-box"><span class="emoji">⚖️</span><h4>Unit 4</h4><p>Compared perspectives, built arguments, and engaged in dialogue</p></div>
+          <div class="info-box"><span class="emoji">🌿</span><h4>Unit 5</h4><p>Created poetry, explored figurative language, and performed spoken word</p></div>
+          <div class="info-box"><span class="emoji">🎓</span><h4>Unit 6</h4><p>Now: reflect, select, revise, and celebrate your growth</p></div>
+        </div>
+
+        <div class="key-point"><p><strong>Key Insight:</strong> A portfolio isn't just a collection of finished work. It's a <em>story of growth</em>. The best portfolios show not just what you did well, but how you <strong>improved</strong> — what was hard, what you learned, and what you're proud of.</p></div>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Growth Questions to Guide Your Review</h4>
+        <ul style="padding-left:20px;line-height:2;color:var(--text2)">
+          <li>Which piece of writing am I most proud of? Why?</li>
+          <li>Where did I struggle, and what did I learn from that struggle?</li>
+          <li>What comprehension or writing strategy made the biggest difference for me?</li>
+          <li>How has my voice as a writer changed from Unit 1 to now?</li>
+          <li>What would I do differently if I could redo one unit?</li>
+        </ul>
+      </div>
+
+      <div class="pause-check"><h4>⏸️ Pause and Check</h4><p>Without looking back at your work yet — what is one thing you remember being really proud of this year? What is one thing that challenged you?</p><button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Reflection Prompt</button><div class="reveal-answer"><p>There's no single right answer here! The goal is honest self-reflection. Something you're proud of might be your identity narrative, a spoken word performance, a research report, or even just a moment where you participated in a discussion for the first time. Challenges might include writing a longer piece, understanding figurative language, or presenting to others.</p></div></div>
+
+      <!-- ACTIVITY 1: Growth Sort -->
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header"><span class="act-num">Activity 1</span><h3 class="section-title" style="margin:0"><span class="icon">📊</span> Strength or Growth Area?</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Think about your year in ELA. Sort each skill into <strong>Strength</strong> (I feel confident) or <strong>Growth Area</strong> (I want to improve).</p>
+        <div id="l1-act1-area">
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-strength"><div class="zone-title">💪 Strength</div><div id="act1-strength-items"></div></div>
+            <div class="sort-zone" id="act1-zone-growth"><div class="zone-title">🌱 Growth Area</div><div id="act1-growth-items"></div></div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none"><div class="score-number" id="act1-score-num"></div><p id="act1-score-msg"></p></div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY 2: Reflection Response -->
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header"><span class="act-num">Activity 2</span><h3 class="section-title" style="margin:0"><span class="icon">✍️</span> My Year in Review</h3></div>
+        <p style="color:var(--text2);margin-bottom:16px">Write a short reflection (at least 4–5 sentences) about your growth this year. Use the growth questions above to help you.</p>
+        <div class="constructed-response">
+          <h4>Your Reflection</h4>
+          <textarea id="l1-cr" placeholder="This year in ELA, I am most proud of...&#10;&#10;Something that challenged me was...&#10;&#10;The strategy that helped me most was...&#10;&#10;Looking back, I have grown in..." rows="8"></textarea>
+          <ul class="cr-checklist"><li><label><input type="checkbox"> I identified something I'm proud of</label></li><li><label><input type="checkbox"> I named a challenge and what I learned from it</label></li><li><label><input type="checkbox"> I described growth from the beginning of the year to now</label></li></ul>
+          <div style="display:flex;gap:8px;margin-top:12px"><button class="activity-btn" onclick="saveCR()">💾 Save</button><button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button></div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center;margin-top:32px"><p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities to unlock the quiz.</p><button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button></div>
+      <div class="reflection-box"><h3>🪞 Reflection</h3><p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">If you could give your beginning-of-year self one piece of advice about ELA, what would it be?</p><textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea><button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button></div>
+    </div>
+
+    <div class="lesson-page" id="page-lesson1-quiz"><div class="lesson-header"><div class="lesson-num">Lesson 1 Quiz</div><h1 class="lesson-title">Looking Back</h1><p class="lesson-subtitle">80% or higher to unlock Lesson 2.</p></div><div id="quiz1-area"></div></div>
+
+    <div class="lesson-page" id="page-lesson2"><div class="welcome"><h1>🔍 What Makes Writing Worth Publishing?</h1><p>Compare an early draft and a final draft. Analyze revision choices and identify what improved the text.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>✂️ Selecting and Revising for My Portfolio</h1><p>Choose 3–4 pieces and apply revision strategies: restructuring, adding detail, strengthening voice.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>📄 Editing and Publishing</h1><p>Final editing, formatting, and publishing conventions. Transfer of learning across text forms.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>✍️ Writing My Reflective Letter and Setting Goals</h1><p>Write a reflective letter about growth, challenges, and goals for Grade 7.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>🎉 Celebrate and Share</h1><p>Deliver your portfolio presentation and celebrate your achievements.</p><p style="color:var(--text3);margin-top:12px"><em>Coming soon.</em></p></div></div>
+
+    <div class="lesson-page" id="page-teacher"><div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div><div class="glass-card"><h3 class="section-title"><span class="icon">📋</span> Grade Records</h3><div id="teacherGrades"></div><div class="export-btns"><button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button><button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button><button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button></div></div></div>
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    const lockMap={'lesson1-quiz':'g6-ela-u6-l1-gate','lesson2':'g6-ela-u6-lesson1-passed','lesson2-quiz':'g6-ela-u6-l2-gate','lesson3':'g6-ela-u6-lesson2-passed','lesson4':'g6-ela-u6-lesson3-passed','lesson5':'g6-ela-u6-lesson4-passed','lesson6':'g6-ela-u6-lesson5-passed'};
+    actComplete={l1:{act1:false,act2:false}};
+
+    // Activity 1 — self-assessment sort (no right/wrong — all count as complete)
+    const act1Data=[
+      {text:'Reading comprehension strategies'},
+      {text:'Writing with voice and detail'},
+      {text:'Using figurative language'},
+      {text:'Presenting orally with confidence'},
+      {text:'Evaluating sources for reliability'},
+      {text:'Revising and editing my work'}
+    ];
+    let act1Answered=0,selectedItem=null;
+
+    function initAct1(){
+      if(isActivityDone(1,'act1')){document.getElementById('l1-act1-area').innerHTML='<div class="activity-score"><div class="score-number">✅</div><p>Self-assessment completed!</p></div>';return;}
+      const items=document.getElementById('act1-items');items.innerHTML='';
+      act1Data.forEach((item,i)=>{const el=document.createElement('div');el.className='sort-item';el.textContent=item.text;el.dataset.idx=i;el.onclick=()=>selectAct1Item(el,i);items.appendChild(el);});
+    }
+    function selectAct1Item(el,idx){if(el.classList.contains('placed'))return;document.querySelectorAll('#act1-items .sort-item').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedItem=idx;document.getElementById('act1-zone-strength').onclick=()=>placeAct1Item(idx,'strength');document.getElementById('act1-zone-growth').onclick=()=>placeAct1Item(idx,'growth');}
+    function placeAct1Item(idx,zone){
+      if(selectedItem===null)return;act1Answered++;
+      const placed=document.createElement('div');placed.className='sorted-item correct';
+      placed.textContent='✅ '+act1Data[idx].text;
+      document.getElementById(`act1-${zone}-items`).appendChild(placed);
+      const src=document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);
+      if(src){src.classList.add('placed');src.classList.remove('selected');}selectedItem=null;
+      if(act1Answered>=act1Data.length){document.getElementById('act1-score').style.display='block';document.getElementById('act1-score-num').textContent='✅';document.getElementById('act1-score-msg').textContent='Great self-reflection! Every honest answer helps you grow.';markActivityDone(1,'act1',act1Data.length,act1Data.length);}
+    }
+
+    function saveCR(){const el=document.getElementById('l1-cr');if(el){localStorage.setItem('g6-ela-u6-l1-cr',el.value);document.getElementById('l1-cr-status').textContent='✅ Saved!';setTimeout(()=>document.getElementById('l1-cr-status').textContent='',3000);}}
+    function submitAct2(){const el=document.getElementById('l1-cr');if(!el||el.value.trim().length<30){alert('Write at least 4–5 sentences about your growth.');return;}saveCR();markActivityDone(1,'act2',1,1);document.getElementById('l1-cr-status').textContent='✅ Complete!';}
+
+    const quizBanks={quiz1:{primary:[
+      {q:'A portfolio is:',opts:['A random folder of papers','A curated collection showing growth and achievement','A test grade','A textbook'],ans:1,outcome:'Portfolio',explain:'A portfolio is carefully selected work that demonstrates your learning journey.'},
+      {q:'Metacognition means:',opts:['Reading quickly','Thinking about your own thinking','Memorizing facts','Writing neatly'],ans:1,outcome:'Metacognition',explain:'Metacognition is awareness of how you learn, what strategies work, and where you can improve.'},
+      {q:'The purpose of reflection in a portfolio is to:',opts:['Fill more pages','Show how you have grown and what you have learned','Avoid revision','Please the teacher'],ans:1,outcome:'Reflection',explain:'Reflection helps you and others understand your growth journey — it's about honest self-awareness.'},
+      {q:'Revision is different from editing because:',opts:['Revision means fixing spelling','Revision means rethinking and improving IDEAS, not just fixing errors','They are the same thing','Editing is harder'],ans:1,outcome:'Revision',explain:'Revision is re-seeing your work: restructuring, adding detail, strengthening voice. Editing fixes surface errors.'},
+      {q:'Which question helps with self-assessment?',opts:['What grade did I get?','What did I learn and how have I improved?','How long is my essay?','Did I use a pen or pencil?'],ans:1,outcome:'Metacognition',explain:'Self-assessment focuses on growth, learning, and improvement — not just grades or length.'}
+    ],replacement:{0:null,1:null,2:null,3:null,4:null},
+    remediation:{'Portfolio':{video:'https://www.youtube.com/embed/M1CHPnZfFmU',questions:[{q:'A good portfolio includes:',opts:['Every assignment','Selected work that shows growth','Only perfect pieces','Nothing from early in the year'],ans:1,explain:'Portfolios show growth — that includes pieces that improved, not just perfect ones.'}]},'Metacognition':{video:'https://www.youtube.com/embed/M1CHPnZfFmU',questions:[{q:'Self-monitoring means:',opts:['Someone else checks your work','You evaluate your own understanding and adjust strategies','You memorize everything','You read faster'],ans:1,explain:'Self-monitoring is checking your own understanding and adjusting your approach.'}]},'Reflection':{video:'https://www.youtube.com/embed/M1CHPnZfFmU',questions:[{q:'A strong reflection includes:',opts:['Just saying "I did good"','Specific examples of growth and learning','Copying the assignment','One word answers'],ans:1,explain:'Strong reflections name specific changes, challenges overcome, and skills developed.'}]},'Revision':{video:'https://www.youtube.com/embed/M1CHPnZfFmU',questions:[{q:'When revising, you might:',opts:['Only check spelling','Add details, restructure, or strengthen voice','Delete the whole thing','Just change the title'],ans:1,explain:'Revision is about improving content and craft — not just surface corrections.'}]}}}};
+
+    function updateProgress(){const total=6;let passed=0;for(let i=1;i<=total;i++){if(localStorage.getItem(`g6-ela-u6-lesson${i}-passed`)){passed++;document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`).forEach(n=>n.classList.add('completed'));}}const fill=document.getElementById('unitProgressFill');if(fill)fill.style.width=Math.round(passed/total*100)+'%';}
+    function onPageLoad(page){if(page==='lesson1'){initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u6-l1-cr')||'';}if(page==='lesson1-quiz')initQuiz('quiz1',quizBanks);if(page==='teacher')renderTeacherDashboard();}
+    document.addEventListener('DOMContentLoaded',()=>{updateProgress();initAct1();const cr=document.getElementById('l1-cr');if(cr)cr.value=localStorage.getItem('g6-ela-u6-l1-cr')||'';});
+  </script>
+</body>
+</html>

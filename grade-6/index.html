@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 6 — Home Plus Online Learning</title>
+  <meta name="description" content="Interactive mastery-based Grade 6 lessons aligned to the Alberta Curriculum. Multiple subjects including ELA, Math, Science, and Social Studies.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Landing-page-only overrides */
+    .landing-wrap{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+
+    .landing-topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;max-width:1200px;margin:0 auto}
+    .landing-logo{display:flex;align-items:center;gap:10px}
+    .landing-logo .logo-icon{font-size:28px}
+    .landing-logo h2{font-size:1.1rem;color:var(--accent);letter-spacing:-.5px}
+    .landing-logo span{display:block;font-family:'Inter';font-size:.7rem;color:var(--text3);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+
+    .landing-progress{display:flex;align-items:center;justify-content:center;gap:12px;font-size:.85rem;color:var(--text3);width:100%;margin-bottom:8px}
+    .landing-progress-bar{width:160px;height:8px;background:var(--card);border-radius:20px;overflow:hidden}
+    .landing-progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#4ade80,#38bdf8,#a78bfa);transition:width .5s ease}
+
+    .subject-card{border-top:3px solid var(--accent);position:relative}
+
+    /* Accent overrides per subject card */
+    .subject-card[data-subject="ela"]{--accent:#f472b6;--accent2:#ec4899;border-top-color:#f472b6}
+    .subject-card[data-subject="math"]{--accent:#38bdf8;--accent2:#0ea5e9;border-top-color:#38bdf8}
+    .subject-card[data-subject="science"]{--accent:#4ade80;--accent2:#22c55e;border-top-color:#4ade80}
+    .subject-card[data-subject="social"]{--accent:#f59e0b;--accent2:#d97706;border-top-color:#f59e0b}
+
+    body.light .subject-card[data-subject="ela"]{--accent:#db2777;--accent2:#be185d;border-top-color:#db2777}
+    body.light .subject-card[data-subject="math"]{--accent:#0284c7;--accent2:#0369a1;border-top-color:#0284c7}
+    body.light .subject-card[data-subject="science"]{--accent:#16a34a;--accent2:#15803d;border-top-color:#16a34a}
+    body.light .subject-card[data-subject="social"]{--accent:#b45309;--accent2:#92400e;border-top-color:#b45309}
+
+    .coming-soon-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(2px)}
+    .coming-soon-badge{background:var(--card);border:1px solid var(--border);padding:10px 24px;border-radius:30px;font-weight:700;font-size:.9rem;color:var(--text2);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+
+    .stats-bar{display:flex;justify-content:center;gap:32px;margin:0 auto 40px;flex-wrap:wrap;max-width:600px}
+    .stat{text-align:center}
+    .stat .stat-num{font-size:2rem;font-weight:800;font-family:'Outfit';color:var(--accent)}
+    .stat .stat-label{font-size:.78rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+
+    .footer{text-align:center;padding:40px 20px 20px;color:var(--text3);font-size:.8rem}
+    .footer a{color:var(--accent)}
+
+    /* Mobile responsiveness */
+    @media(max-width:600px){
+      .landing-hero img{height:auto !important;max-width:90%;margin:0 auto 16px !important}
+      .landing-hero h1{font-size:1.6rem}
+      .landing-hero h2{font-size:1rem !important}
+      .stats-bar{gap:20px}
+      .unit-grid{grid-template-columns:1fr !important}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay" style="display:none">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">📚</div>
+      <h2>Welcome, Learner!</h2>
+      <p>Enter your name and email to track your progress across all subjects.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="landing-topbar">
+    <div class="landing-logo">
+      <a href="../index.html" style="font-size:.82rem;color:var(--text3);text-decoration:none;font-weight:500;transition:color .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">← Grade 7 Science</a>
+    </div>
+    <div class="top-actions">
+      <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="landing-hero">
+    <img src="assets/hpln-logo.png" alt="Home Plus Online Learning" style="height:245px;display:block;margin:0 auto 20px;border-radius:12px">
+    <h1>Learn. Grow. Master.</h1>
+    <h2 style="font-size:1.4rem;font-weight:500;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin:4px 0 16px;opacity:.85">Grade 6 — Alberta Curriculum</h2>
+    <p>Choose a subject to begin your learning journey. Master lessons, complete activities, and prove your knowledge.</p>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="landing-progress" style="flex-basis:100%">
+      <span id="overallLabel">0 / 4 subjects in progress</span>
+      <div class="landing-progress-bar"><div class="landing-progress-fill" id="overallFill" style="width:0%"></div></div>
+    </div>
+    <div class="stat"><div class="stat-num" id="statLessons">0</div><div class="stat-label">Lessons Passed</div></div>
+    <div class="stat"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Activities Done</div></div>
+    <div class="stat"><div class="stat-num" id="statAvg">—</div><div class="stat-label">Avg Score</div></div>
+  </div>
+
+  <!-- SUBJECT GRID -->
+  <div class="landing-wrap">
+    <div class="unit-grid">
+
+      <!-- ELA -->
+      <div class="unit-card subject-card" data-subject="ela" id="subjectCardEla" onclick="openSubject('ela')">
+        <span class="card-icon">📖</span>
+        <h3>English Language Arts</h3>
+        <div class="unit-code">ELA & Literature</div>
+        <p>Reading comprehension, writing, vocabulary, figurative language, oral communication, and media literacy.</p>
+        <div class="card-meta">
+          <span>📚 4 Units</span>
+          <span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn" id="subjectBtnEla">Start ELA →</div>
+        <div class="card-progress"><div class="card-progress-fill" id="progEla" style="width:0%"></div></div>
+      </div>
+
+      <!-- MATH -->
+      <div class="unit-card subject-card" data-subject="math" id="subjectCardMath">
+        <span class="card-icon">🔢</span>
+        <h3>Mathematics</h3>
+        <div class="unit-code">Number, Patterns & Geometry</div>
+        <p>Number sense, operations, fractions, decimals, patterns, algebra, geometry, and data analysis.</p>
+        <div class="card-meta">
+          <span>📚 Coming Soon</span>
+          <span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn">Coming Soon</div>
+        <div class="card-progress"><div class="card-progress-fill" id="progMath" style="width:0%"></div></div>
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+      </div>
+
+      <!-- SCIENCE -->
+      <div class="unit-card subject-card" data-subject="science" id="subjectCardScience">
+        <span class="card-icon">🔬</span>
+        <h3>Science</h3>
+        <div class="unit-code">Inquiry & Discovery</div>
+        <p>Air & aerodynamics, flight, sky science, evidence & investigation, trees & forests.</p>
+        <div class="card-meta">
+          <span>📚 Coming Soon</span>
+          <span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn">Coming Soon</div>
+        <div class="card-progress"><div class="card-progress-fill" id="progScience" style="width:0%"></div></div>
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+      </div>
+
+      <!-- SOCIAL STUDIES -->
+      <div class="unit-card subject-card" data-subject="social" id="subjectCardSocial">
+        <span class="card-icon">🌍</span>
+        <h3>Social Studies</h3>
+        <div class="unit-code">Citizens & Society</div>
+        <p>Democracy, government, Canadian identity, historical perspectives, and global citizenship.</p>
+        <div class="card-meta">
+          <span>📚 Coming Soon</span>
+          <span>🎯 Multiple Outcomes</span>
+        </div>
+        <div class="card-btn">Coming Soon</div>
+        <div class="card-progress"><div class="card-progress-fill" id="progSocial" style="width:0%"></div></div>
+        <div class="coming-soon-overlay"><div class="coming-soon-badge">🔒 Coming Soon</div></div>
+      </div>
+
+    </div><!-- /unit-grid -->
+
+    <div class="footer">
+      <p>Built for Alberta Grade 6 &middot; Mastery-Based Learning &middot; Home Plus Online Learning</p>
+      <div style="margin-top:10px">
+        <a href="../index.html" style="font-size:.78rem;color:var(--text3);text-decoration:none;opacity:.7;transition:opacity .2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">🔬 Grade 7 Science Hub →</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    // ===== SUBJECT NAVIGATION =====
+    const subjectPaths = {
+      ela: 'ela/index.html'
+    };
+
+    function openSubject(sid) {
+      if (!subjectPaths[sid]) return;
+      window.location.href = subjectPaths[sid];
+    }
+
+    // ===== PROGRESS TRACKING =====
+    function updateLandingProgress() {
+      let totalPassed = 0, totalLessons = 0;
+
+      // ELA: 4 units, lesson counts TBD — scanning localStorage
+      const elaUnits = ['reading', 'writing', 'vocabulary', 'oral-media'];
+      const elaLessonCounts = { reading: 8, writing: 7, vocabulary: 6, 'oral-media': 6 };
+      let elaPassed = 0, elaTotal = 0;
+
+      elaUnits.forEach(u => {
+        const count = elaLessonCounts[u] || 0;
+        elaTotal += count;
+        for (let i = 1; i <= count; i++) {
+          if (localStorage.getItem(`g6-ela-${u}-lesson${i}-passed`)) { elaPassed++; totalPassed++; }
+        }
+      });
+      totalLessons += elaTotal;
+
+      const elaPct = elaTotal > 0 ? Math.round(elaPassed / elaTotal * 100) : 0;
+      const progEla = document.getElementById('progEla');
+      const btnEla = document.getElementById('subjectBtnEla');
+      if (progEla) progEla.style.width = elaPct + '%';
+      if (elaPassed === elaTotal && elaTotal > 0) {
+        if (btnEla) btnEla.textContent = 'Review ELA ✓';
+      } else if (elaPassed > 0) {
+        if (btnEla) btnEla.textContent = 'Continue ELA →';
+      }
+
+      // Overall progress
+      const overallPct = totalLessons > 0 ? Math.round(totalPassed / totalLessons * 100) : 0;
+      const fillEl = document.getElementById('overallFill');
+      const labelEl = document.getElementById('overallLabel');
+      if (fillEl) fillEl.style.width = overallPct + '%';
+
+      let subjectsStarted = 0;
+      if (elaPassed > 0) subjectsStarted++;
+      if (labelEl) labelEl.textContent = `${subjectsStarted} / 4 subjects in progress`;
+
+      // Stats
+      document.getElementById('statLessons').textContent = totalPassed;
+
+      const grades = JSON.parse(localStorage.getItem('g6-grades') || '[]');
+      const actCount = grades.filter(g => g.quizId && g.quizId.includes('-l') && g.quizId.includes('-')).length;
+      document.getElementById('statActivities').textContent = actCount;
+
+      const quizGrades = grades.filter(g => g.quizId && g.quizId.startsWith('quiz'));
+      if (quizGrades.length > 0) {
+        const avg = Math.round(quizGrades.reduce((s, g) => s + g.percentage, 0) / quizGrades.length);
+        document.getElementById('statAvg').textContent = avg + '%';
+      }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLandingProgress();
+    });
+  </script>
+  <!-- Fallback: self-contained teacher unlock if shared.js fails -->
+  <script>
+  (function(){
+    if(typeof window.teacherUnlock==='function') return;
+    function unlockAll(){
+      document.querySelectorAll('.nav-item.locked').forEach(function(n){n.classList.remove('locked');});
+      document.querySelectorAll('.lesson-card.locked,.unit-card.locked,.subject-card.locked').forEach(function(c){c.classList.remove('locked');var ov=c.querySelector('.coming-soon-overlay');if(ov)ov.style.display='none';var b=c.querySelector('.card-btn');if(b&&b.textContent.indexOf('Coming Soon')>-1)b.textContent='Explore →';});
+    }
+    window.teacherUnlock=function(){
+      try{if(localStorage.getItem('g6-teacher-unlock')==='true'){if(confirm('Deactivate teacher unlock?')){localStorage.removeItem('g6-teacher-unlock');alert('Locked.');location.reload();}return;}}catch(e){}
+      var code=prompt('Enter teacher access code:');if(!code)return;
+      if(code.trim()==='shammel2026'){try{localStorage.setItem('g6-teacher-unlock','true');}catch(e){}unlockAll();alert('Unlocked! All content accessible.');}else{alert('Invalid code.');}
+    };
+    document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.shiftKey&&(e.key==='L'||e.key==='l')){e.preventDefault();window.teacherUnlock();}});
+    try{if(localStorage.getItem('g6-teacher-unlock')==='true')setTimeout(unlockAll,400);}catch(e){}
+  })();
+  </script>
+</body>
+</html>

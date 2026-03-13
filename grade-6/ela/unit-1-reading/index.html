@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprehension — Grade 6 ELA</title>
+  <meta name="description" content="Grade 6 ELA Comprehension unit: inference strategies, main ideas, summarizing, synthesizing, and text analysis.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css">
+</head>
+<body data-unit-key="ela-comp">
+
+  <!-- SIGN-IN OVERLAY -->
+  <div class="signin-overlay" id="signinOverlay">
+    <div class="signin-card">
+      <div style="font-size:3rem;margin-bottom:12px">🔍</div>
+      <h2>Welcome, Reader!</h2>
+      <p>Enter your name and email to track your progress.</p>
+      <button class="signin-btn" onclick="googleSignIn()">Get Started →</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <img src="../../assets/hpln-logo.png" alt="HPLN" class="sidebar-brand">
+    <div class="logo">
+      <div>
+        <h2 style="color:#f472b6">🔍 Comprehension</h2>
+        <span>Grade 6 ELA &bull; Unit 1</span>
+      </div>
+    </div>
+
+    <div class="nav-item active" data-page="home" onclick="goTo('home')">
+      <div class="nav-num"><span>🏠</span></div> Unit Home
+    </div>
+    <div class="nav-item" data-page="lesson1" onclick="goTo('lesson1')">
+      <div class="nav-num"><span>1</span></div> Making Inferences
+    </div>
+    <div class="nav-item locked" data-page="lesson1-quiz" onclick="goTo('lesson1-quiz')">
+      <div class="nav-num"><span>📝</span></div> Lesson 1 Quiz
+    </div>
+    <div class="nav-item locked" data-page="lesson2" onclick="goTo('lesson2')">
+      <div class="nav-num"><span>2</span></div> Main Idea & Details
+    </div>
+    <div class="nav-item locked" data-page="lesson2-quiz" onclick="goTo('lesson2-quiz')">
+      <div class="nav-num"><span>📝</span></div> Lesson 2 Quiz
+    </div>
+    <div class="nav-item locked" data-page="lesson3" onclick="goTo('lesson3')">
+      <div class="nav-num"><span>3</span></div> Summarizing Texts
+    </div>
+    <div class="nav-item locked" data-page="lesson4" onclick="goTo('lesson4')">
+      <div class="nav-num"><span>4</span></div> Synthesizing Information
+    </div>
+    <div class="nav-item locked" data-page="lesson5" onclick="goTo('lesson5')">
+      <div class="nav-num"><span>5</span></div> Context & Perspectives
+    </div>
+    <div class="nav-item locked" data-page="lesson6" onclick="goTo('lesson6')">
+      <div class="nav-num"><span>6</span></div> Drawing Conclusions
+    </div>
+    <div class="nav-item locked" data-page="lesson7" onclick="goTo('lesson7')">
+      <div class="nav-num"><span>7</span></div> Analyzing Texts
+    </div>
+    <div class="nav-item locked" data-page="lesson8" onclick="goTo('lesson8')">
+      <div class="nav-num"><span>8</span></div> Comprehension Showcase
+    </div>
+
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px">
+      <a href="../index.html" class="back-to-units">← All ELA Units</a>
+    </div>
+
+    <div id="teacherNav" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+      <div class="nav-item" data-page="teacher" onclick="goTo('teacher')">
+        <div class="nav-num"><span>📊</span></div> Teacher Dashboard
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="top-actions">
+        <span id="studentDisplay" style="font-size:.85rem;color:var(--text3)"></span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="unitProgressFill"></div></div>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+      </div>
+    </div>
+
+    <!-- ========== HOME PAGE ========== -->
+    <div class="lesson-page active" id="page-home">
+      <div class="welcome">
+        <h1>Comprehension Strategies</h1>
+        <p>Learn how to deeply understand texts using strategies like inferencing, summarizing, synthesizing, and analyzing context. Prove your mastery through interactive activities and quizzes.</p>
+      </div>
+      <div class="glass-card" style="text-align:center;max-width:700px;margin:0 auto">
+        <h3 style="color:var(--accent);margin-bottom:8px">🎯 Guiding Question</h3>
+        <p style="font-size:1.05rem;color:var(--text2);font-style:italic">"How do comprehension strategies increase interpretation of texts?"</p>
+        <p style="font-size:.85rem;color:var(--text3);margin-top:12px"><strong>Learning Outcome:</strong> Students interact and respond to texts through application of comprehension strategies.</p>
+      </div>
+      <div class="home-grid">
+        <div class="lesson-card" onclick="goTo('lesson1')">
+          <span class="card-icon">🔍</span>
+          <h3>Lesson 1: Making Inferences</h3>
+          <p>Use clues in the text and your own knowledge to read between the lines.</p>
+          <div class="card-btn">Start Lesson →</div>
+        </div>
+        <div class="lesson-card locked" id="homeLesson2">
+          <span class="card-icon">📌</span>
+          <h3>Lesson 2: Main Idea & Details</h3>
+          <p>Identify the main idea and supporting details in different texts.</p>
+          <div class="card-btn">🔒 Locked</div>
+        </div>
+        <div class="lesson-card locked" id="homeLesson3">
+          <span class="card-icon">📋</span>
+          <h3>Lesson 3: Summarizing Texts</h3>
+          <p>Condense key ideas into clear, concise summaries.</p>
+          <div class="card-btn">🔒 Locked</div>
+        </div>
+        <div class="lesson-card locked"><span class="card-icon">🔗</span><h3>Lesson 4: Synthesizing</h3><p>Combine information from multiple sources.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🌍</span><h3>Lesson 5: Context & Perspectives</h3><p>Analyze how context influences interpretation.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">💡</span><h3>Lesson 6: Drawing Conclusions</h3><p>Use evidence to form well-supported conclusions.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">📊</span><h3>Lesson 7: Analyzing Texts</h3><p>Critically analyze ideas using text evidence.</p><div class="card-btn">🔒 Locked</div></div>
+        <div class="lesson-card locked"><span class="card-icon">🏆</span><h3>Lesson 8: Showcase</h3><p>Demonstrate mastery across all comprehension strategies.</p><div class="card-btn">🔒 Locked</div></div>
+      </div>
+    </div>
+
+    <!-- ========== LESSON 1: MAKING INFERENCES ========== -->
+    <div class="lesson-page" id="page-lesson1">
+      <div class="lesson-header">
+        <div class="lesson-num">Lesson 1</div>
+        <h1 class="lesson-title">Making Inferences</h1>
+        <p class="lesson-subtitle">Use clues in the text combined with your own background knowledge to understand what's happening "between the lines."</p>
+      </div>
+
+      <!-- Learning Targets -->
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎯</span> Learning Targets</h3>
+        <ul class="success-criteria">
+          <li>I can use comprehension strategies to interact and respond to texts.</li>
+          <li>I can make inferences by combining text clues with my own knowledge.</li>
+          <li>I can evaluate the effectiveness of comprehension strategies I use.</li>
+        </ul>
+        <div style="margin-top:12px">
+          <span class="outcome-tag">Comprehension</span>
+          <span class="outcome-tag">Inference</span>
+          <span class="outcome-tag">Text Evidence</span>
+        </div>
+        <div class="vocab-glossary" style="margin-top:12px">
+          <span class="vocab-chip">Inference <span class="vocab-def">A conclusion you reach based on evidence and reasoning — reading "between the lines."</span></span>
+          <span class="vocab-chip">Text Clues <span class="vocab-def">Specific words, phrases, or details in a text that help you figure out something the author doesn't directly say.</span></span>
+          <span class="vocab-chip">Background Knowledge <span class="vocab-def">What you already know from your own experiences and learning that helps you understand new text.</span></span>
+          <span class="vocab-chip">Explicit <span class="vocab-def">Information that is stated directly and clearly in the text.</span></span>
+          <span class="vocab-chip">Implicit <span class="vocab-def">Information that is suggested or hinted at, but not stated directly.</span></span>
+        </div>
+      </div>
+
+      <!-- Video -->
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">🎬</span> Watch: What Are Inferences?</h3>
+        <div class="video-label">📺 Educational Video — Making Inferences (5 min)</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/lKqmDJbIjfg" title="Making Inferences" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="glass-card content">
+        <h3 class="section-title"><span class="icon">📖</span> Read: Understanding Inferences</h3>
+        <p>When you read, not everything is spelled out for you. Authors expect you to use clues they provide — along with what you already know — to figure things out. This is called <span class="vocab" title="A conclusion you reach based on evidence and reasoning">making an inference</span>.</p>
+
+        <div class="key-point">
+          <p><strong>The Inference Formula:</strong> Text Clues + Background Knowledge = Inference</p>
+        </div>
+
+        <p>Think of it this way: if you walk into your house and smell cookies baking, you <strong>infer</strong> that someone has been baking — even though nobody told you. You used a clue (the smell) plus your knowledge (cookies require baking) to draw a conclusion.</p>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Explicit vs. Implicit Information</h4>
+        <div class="info-grid">
+          <div class="info-box">
+            <span class="emoji">📢</span>
+            <h4>Explicit</h4>
+            <p>Stated directly in the text. You can point to the exact words.</p>
+          </div>
+          <div class="info-box">
+            <span class="emoji">🔍</span>
+            <h4>Implicit</h4>
+            <p>Not stated directly. You must infer using clues and your own knowledge.</p>
+          </div>
+        </div>
+
+        <h4 style="color:var(--accent);margin:20px 0 10px">Example: Making an Inference</h4>
+        <div class="glass-card" style="background:var(--card2);padding:20px;border-left:3px solid var(--accent)">
+          <p style="font-style:italic;color:var(--text2);margin-bottom:12px">"Marcus stared at the test paper on his desk. He tapped his pencil against the edge, then looked around the room. Everyone else was writing. He sighed and stared at question one again."</p>
+          <p><strong>Text Clues:</strong> Marcus is staring, tapping his pencil, sighing, and looking at everyone else writing.</p>
+          <p><strong>Background Knowledge:</strong> When people stare at a test and sigh, they're usually struggling.</p>
+          <p style="color:var(--accent);font-weight:600">→ <strong>Inference:</strong> Marcus is having difficulty with the test.</p>
+        </div>
+      </div>
+
+      <!-- Pause and Check -->
+      <div class="pause-check">
+        <h4>⏸️ Pause and Check</h4>
+        <p><strong>Read this passage:</strong> "Lena sat at the kitchen table, flipping through the pages of her math textbook. She chewed her lip and glanced at the clock — 9:47 PM. She rubbed her eyes and turned back to the problem."</p>
+        <p>What can you infer about Lena?</p>
+        <button class="reveal-btn" onclick="revealAnswer(this)">👀 Reveal Answer</button>
+        <div class="reveal-answer">
+          <p><strong>Inference:</strong> Lena has been studying for a long time and is getting tired. Text clues include the late time (9:47 PM), rubbing her eyes, and chewing her lip (stress/frustration). Background knowledge tells us these are signs of fatigue and difficulty.</p>
+        </div>
+      </div>
+
+      <!-- ACTIVITY 1: Inference Sorter -->
+      <div class="activity-section" id="l1-act1-section">
+        <div class="activity-header">
+          <span class="act-num">Activity 1</span>
+          <h3 class="section-title" style="margin:0"><span class="icon">🔍</span> Inference or Explicit?</h3>
+        </div>
+        <p style="color:var(--text2);margin-bottom:16px">Read each statement about the passage below and decide: is it <strong>explicit</strong> (stated directly) or an <strong>inference</strong> (you have to figure it out)?</p>
+
+        <div class="glass-card" style="background:var(--card2);padding:16px;margin-bottom:16px;border-left:3px solid var(--accent);font-style:italic;color:var(--text2)">
+          "The old woman shuffled through the garden, pausing to touch each rose. Her hands trembled slightly as she leaned down to smell a yellow bloom. She smiled softly and whispered, 'Just like the ones your grandfather planted.'"
+        </div>
+
+        <div id="l1-act1-area">
+          <!-- Items to sort -->
+          <div class="sort-items" id="act1-items"></div>
+          <div class="sort-zones" style="margin-top:16px">
+            <div class="sort-zone" id="act1-zone-explicit">
+              <div class="zone-title">📢 Explicit</div>
+              <div id="act1-explicit-items"></div>
+            </div>
+            <div class="sort-zone" id="act1-zone-inference">
+              <div class="zone-title">🔍 Inference</div>
+              <div id="act1-inference-items"></div>
+            </div>
+          </div>
+          <div class="activity-score" id="act1-score" style="display:none">
+            <div class="score-number" id="act1-score-num"></div>
+            <p id="act1-score-msg"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY 2: Constructed Response -->
+      <div class="activity-section" id="l1-act2-section">
+        <div class="activity-header">
+          <span class="act-num">Activity 2</span>
+          <h3 class="section-title" style="margin:0"><span class="icon">✍️</span> Write Your Own Inference</h3>
+        </div>
+        <p style="color:var(--text2);margin-bottom:16px">Read the passage below, then write an inference statement using the formula: <strong>Text Clues + Background Knowledge = Inference.</strong></p>
+
+        <div class="glass-card" style="background:var(--card2);padding:16px;margin-bottom:16px;border-left:3px solid var(--accent);font-style:italic;color:var(--text2)">
+          "Ava checked her phone again — still no messages. She sat alone at the corner table in the cafeteria, unwrapping her sandwich slowly. When she heard laughter from across the room, she looked up briefly, then back down at her tray."
+        </div>
+
+        <div class="constructed-response">
+          <h4>Your Inference Response</h4>
+          <textarea id="l1-cr" placeholder="Text Clues I noticed: ...&#10;&#10;My Background Knowledge: ...&#10;&#10;My Inference: ..." rows="6"></textarea>
+          <ul class="cr-checklist">
+            <li><label><input type="checkbox"> I identified at least 2 text clues</label></li>
+            <li><label><input type="checkbox"> I connected clues to my background knowledge</label></li>
+            <li><label><input type="checkbox"> I wrote a clear inference statement</label></li>
+          </ul>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="activity-btn" onclick="saveCRLesson1()">💾 Save Response</button>
+            <button class="activity-btn secondary" onclick="submitAct2()">✅ Mark Complete</button>
+          </div>
+          <p id="l1-cr-status" style="color:var(--accent);font-size:.85rem;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <!-- GATE -->
+      <div class="glass-card" style="text-align:center;margin-top:32px">
+        <p id="l1-gate-msg" style="font-size:.9rem;color:var(--text3);margin-bottom:12px">🔒 Complete both activities above to unlock the quiz.</p>
+        <button class="nav-btn primary" id="l1-quiz-btn" disabled style="opacity:.5;cursor:not-allowed" onclick="goTo('lesson1-quiz')">📝 Take the Quiz</button>
+      </div>
+
+      <!-- Reflection -->
+      <div class="reflection-box">
+        <h3>🪞 Reflection</h3>
+        <p style="color:var(--text3);font-size:.88rem;margin-bottom:12px">Think about a time outside of school when you made an inference. What clues did you use?</p>
+        <textarea id="reflectionText" placeholder="Write your reflection here..." rows="3"></textarea>
+        <button class="activity-btn secondary" style="margin-top:8px" onclick="saveReflection()">💾 Save Reflection</button>
+      </div>
+    </div>
+
+    <!-- ========== LESSON 1 QUIZ ========== -->
+    <div class="lesson-page" id="page-lesson1-quiz">
+      <div class="lesson-header">
+        <div class="lesson-num">Lesson 1 Quiz</div>
+        <h1 class="lesson-title">Making Inferences</h1>
+        <p class="lesson-subtitle">Show your mastery — 80% or higher to unlock Lesson 2.</p>
+      </div>
+      <div id="quiz1-area"></div>
+    </div>
+
+    <!-- ========== PLACEHOLDER PAGES ========== -->
+    <div class="lesson-page" id="page-lesson2">
+      <div class="welcome"><h1>📌 Main Idea & Details</h1><p>This lesson is coming soon. Complete Lesson 1 to prepare.</p></div>
+    </div>
+    <div class="lesson-page" id="page-lesson2-quiz"><div class="welcome"><h1>📝 Lesson 2 Quiz</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson3"><div class="welcome"><h1>📋 Summarizing Texts</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson4"><div class="welcome"><h1>🔗 Synthesizing Information</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson5"><div class="welcome"><h1>🌍 Context & Perspectives</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson6"><div class="welcome"><h1>💡 Drawing Conclusions</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson7"><div class="welcome"><h1>📊 Analyzing Texts</h1><p>Coming soon.</p></div></div>
+    <div class="lesson-page" id="page-lesson8"><div class="welcome"><h1>🏆 Comprehension Showcase</h1><p>Coming soon.</p></div></div>
+
+    <!-- Teacher Dashboard -->
+    <div class="lesson-page" id="page-teacher">
+      <div class="lesson-header"><h1 class="lesson-title">📊 Teacher Dashboard</h1></div>
+      <div class="glass-card">
+        <h3 class="section-title"><span class="icon">📋</span> Grade Records</h3>
+        <div id="teacherGrades"></div>
+        <div class="export-btns">
+          <button class="activity-btn" onclick="exportCSV()">📥 Export CSV</button>
+          <button class="activity-btn secondary" onclick="exportJSON()">📥 Export JSON</button>
+          <button class="activity-btn secondary" onclick="clearGrades()">🗑️ Clear Data</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../../shared.js"></script>
+  <script>
+    // ===== LOCK MAP =====
+    const lockMap = {
+      'lesson1-quiz': 'g6-unitela-comp-l1-gate',
+      'lesson2':      'g6-unitela-comp-lesson1-passed',
+      'lesson2-quiz': 'g6-unitela-comp-l2-gate',
+      'lesson3':      'g6-unitela-comp-lesson2-passed',
+      'lesson4':      'g6-unitela-comp-lesson3-passed',
+      'lesson5':      'g6-unitela-comp-lesson4-passed',
+      'lesson6':      'g6-unitela-comp-lesson5-passed',
+      'lesson7':      'g6-unitela-comp-lesson6-passed',
+      'lesson8':      'g6-unitela-comp-lesson7-passed'
+    };
+
+    // ===== ACTIVITY COMPLETION MAP =====
+    actComplete = {
+      l1: { act1: false, act2: false }
+    };
+
+    // ===== ACTIVITY 1: INFERENCE SORTER =====
+    const act1Data = [
+      { text: 'The woman shuffled through the garden.', answer: 'explicit' },
+      { text: 'Her hands trembled slightly.', answer: 'explicit' },
+      { text: 'The garden belonged to her late husband.', answer: 'inference' },
+      { text: 'She whispered about her grandfather.', answer: 'explicit' },
+      { text: 'She felt nostalgic and missed someone.', answer: 'inference' },
+      { text: 'The roses had sentimental meaning to her.', answer: 'inference' }
+    ];
+
+    let act1Score = 0, act1Total = act1Data.length, act1Answered = 0;
+    let selectedItem = null;
+
+    function initAct1() {
+      if (isActivityDone(1, 'act1')) {
+        document.getElementById('l1-act1-area').innerHTML = '<div class="activity-score"><div class="score-number">✅</div><p>Activity completed!</p></div>';
+        return;
+      }
+      const items = document.getElementById('act1-items');
+      items.innerHTML = '';
+      act1Data.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'sort-item';
+        el.textContent = item.text;
+        el.dataset.idx = i;
+        el.onclick = () => selectAct1Item(el, i);
+        items.appendChild(el);
+      });
+    }
+
+    function selectAct1Item(el, idx) {
+      if (el.classList.contains('placed')) return;
+      document.querySelectorAll('#act1-items .sort-item').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedItem = idx;
+      // Now clicks on zones sort it
+      document.getElementById('act1-zone-explicit').onclick = () => placeAct1Item(idx, 'explicit');
+      document.getElementById('act1-zone-inference').onclick = () => placeAct1Item(idx, 'inference');
+    }
+
+    function placeAct1Item(idx, zone) {
+      if (selectedItem === null) return;
+      const item = act1Data[idx];
+      const correct = item.answer === zone;
+      if (correct) act1Score++;
+      act1Answered++;
+
+      const targetZone = zone === 'explicit' ? 'act1-explicit-items' : 'act1-inference-items';
+      const placed = document.createElement('div');
+      placed.className = 'sorted-item ' + (correct ? 'correct' : 'wrong');
+      placed.textContent = (correct ? '✅ ' : '❌ ') + item.text;
+      document.getElementById(targetZone).appendChild(placed);
+
+      // Mark source item as placed
+      const sourceEl = document.querySelector(`#act1-items .sort-item[data-idx="${idx}"]`);
+      if (sourceEl) { sourceEl.classList.add('placed'); sourceEl.classList.remove('selected'); }
+      selectedItem = null;
+
+      // Check completion
+      if (act1Answered >= act1Total) {
+        const scoreEl = document.getElementById('act1-score');
+        scoreEl.style.display = 'block';
+        document.getElementById('act1-score-num').textContent = `${act1Score}/${act1Total}`;
+        document.getElementById('act1-score-msg').textContent = act1Score >= 4 ? 'Great job reading between the lines!' : 'Keep practicing — inference takes time!';
+        markActivityDone(1, 'act1', act1Score, act1Total);
+      }
+    }
+
+    // ===== ACTIVITY 2: CONSTRUCTED RESPONSE =====
+    function saveCRLesson1() {
+      const el = document.getElementById('l1-cr');
+      if (el) {
+        localStorage.setItem('g6-unitela-comp-l1-cr', el.value);
+        document.getElementById('l1-cr-status').textContent = '✅ Response saved!';
+        setTimeout(() => document.getElementById('l1-cr-status').textContent = '', 3000);
+      }
+    }
+
+    function submitAct2() {
+      const el = document.getElementById('l1-cr');
+      if (!el || el.value.trim().length < 20) {
+        alert('Please write at least a few sentences before marking complete.');
+        return;
+      }
+      saveCRLesson1();
+      markActivityDone(1, 'act2', 1, 1);
+      document.getElementById('l1-cr-status').textContent = '✅ Activity marked complete!';
+    }
+
+    // ===== QUIZ BANKS =====
+    const quizBanks = {
+      quiz1: {
+        primary: [
+          { q: 'What is an inference?', opts: ['A direct quote from the text', 'A conclusion based on text clues and background knowledge', 'A summary of the main idea', 'A question the author asks'], ans: 1, outcome: 'Inference', explain: 'An inference is a conclusion you draw by combining text clues with your own background knowledge.' },
+          { q: 'Read: "The dog wagged its tail and jumped up when the door opened." What can you infer?', opts: ['The dog is scared', 'The dog recognizes someone it likes', 'The dog is hungry', 'The dog wants to go outside'], ans: 1, outcome: 'Inference', explain: 'Wagging tail and jumping up are signs of excitement/happiness, suggesting the dog recognizes someone it likes.' },
+          { q: 'Which of these is an example of EXPLICIT information?', opts: ['The character seemed nervous', 'The story takes place in a school', 'He probably felt sad about moving', 'She likely wanted to win the race'], ans: 1, outcome: 'Explicit vs Implicit', explain: '"The story takes place in a school" is explicit because it directly states a fact. The other options are inferences or interpretations.' },
+          { q: 'What two things do you combine to make an inference?', opts: ['Title + author name', 'Vocabulary + spelling', 'Text clues + background knowledge', 'Pictures + captions'], ans: 2, outcome: 'Inference', explain: 'The inference formula is: Text Clues + Background Knowledge = Inference.' },
+          { q: 'Read: "Maria looked at the wilted flowers on her desk and sighed. She hadn\'t watered them in weeks." What is IMPLICIT in this passage?', opts: ['The flowers are on her desk', 'She forgot or neglected the flowers', 'She sighed', 'She hadn\'t watered them in weeks'], ans: 1, outcome: 'Explicit vs Implicit', explain: 'That she forgot or neglected them is implicit — we infer this from the clues (wilted, hadn\'t watered). The other options are all explicitly stated.' }
+        ],
+        replacement: {
+          0: { q: 'An inference requires you to:', opts: ['Copy text word for word', 'Use clues and what you know to figure something out', 'Ask the teacher for help', 'Guess randomly'], ans: 1, outcome: 'Inference', explain: 'Inference means using clues from the text plus your own knowledge to figure out what is not directly stated.' },
+          1: { q: '"She held the trophy high above her head, grinning from ear to ear." What can you infer?', opts: ['She is tired from the competition', 'She won and is proud/happy', 'She wants to go home', 'She is showing off'], ans: 1, outcome: 'Inference', explain: 'Holding a trophy high and grinning suggests winning and feeling proud — a positive emotion.' },
+          2: { q: 'Which statement is IMPLICIT (not directly stated)?', opts: ['"The cat sat on the mat"', '"It was a rainy Tuesday"', '"He must have been planning this for a while"', '"She wore a blue coat"'], ans: 2, outcome: 'Explicit vs Implicit', explain: '"He must have been planning" uses "must have been" which signals an inference, not a direct fact.' },
+          3: null,
+          4: { q: '"Jake slammed his locker shut and stormed down the hallway." What is implicit?', opts: ['Jake has a locker', 'Jake is in a hallway', 'Jake is angry or upset', 'Jake slammed his locker'], ans: 2, outcome: 'Explicit vs Implicit', explain: 'Jake\'s emotion (anger/upset) is implicit. We infer it from slamming and storming — his actions suggest strong negative feelings.' }
+        },
+        remediation: {
+          'Inference': {
+            video: 'https://www.youtube.com/embed/lKqmDJbIjfg',
+            questions: [
+              { q: 'An inference is best described as:', opts: ['A fact from the text', 'A conclusion from clues', 'A title of a book', 'A vocabulary word'], ans: 1, explain: 'An inference is a conclusion drawn from clues in the text combined with what you already know.' },
+              { q: '"The lights were off, and the house was silent." What might you infer?', opts: ['A party is happening', 'No one is home or everyone is asleep', 'The house is for sale', 'It\'s a school'], ans: 1, explain: 'Dark and silent house suggests nobody home or asleep.' },
+              { q: 'To make a good inference, you need:', opts: ['Only your opinion', 'Text clues AND your knowledge', 'The author\'s biography', 'A dictionary'], ans: 1, explain: 'Good inferences require text evidence combined with background knowledge, not just opinion.' }
+            ]
+          },
+          'Explicit vs Implicit': {
+            video: 'https://www.youtube.com/embed/lKqmDJbIjfg',
+            questions: [
+              { q: 'Explicit information is:', opts: ['Hidden in the text', 'Stated directly', 'Something you guess', 'Always the main idea'], ans: 1, explain: 'Explicit means clearly stated — you can point to the exact words.' },
+              { q: '"Tom has brown hair." This is:', opts: ['Implicit', 'An inference', 'Explicit', 'A metaphor'], ans: 2, explain: 'This directly states a fact about Tom — it\'s explicit information.' },
+              { q: 'Implicit information requires the reader to:', opts: ['Read the title only', 'Make an inference', 'Ask the author', 'Skip the paragraph'], ans: 1, explain: 'Implicit information is not stated directly — you must infer it from context.' }
+            ]
+          }
+        }
+      }
+    };
+
+    // ===== PROGRESS TRACKING =====
+    function updateProgress() {
+      const total = 8;
+      let passed = 0;
+      for (let i = 1; i <= total; i++) {
+        if (localStorage.getItem(`g6-unitela-comp-lesson${i}-passed`)) {
+          passed++;
+          const navItems = document.querySelectorAll(`.nav-item[data-page="lesson${i}"]`);
+          navItems.forEach(n => n.classList.add('completed'));
+        }
+      }
+      const pct = Math.round(passed / total * 100);
+      const fill = document.getElementById('unitProgressFill');
+      if (fill) fill.style.width = pct + '%';
+    }
+
+    // ===== PAGE LOAD CALLBACK =====
+    function onPageLoad(page) {
+      if (page === 'lesson1') {
+        initAct1();
+        // Restore saved text
+        const cr = document.getElementById('l1-cr');
+        if (cr) cr.value = localStorage.getItem('g6-unitela-comp-l1-cr') || '';
+      }
+      if (page === 'lesson1-quiz') {
+        initQuiz('quiz1', quizBanks);
+      }
+      if (page === 'teacher') {
+        renderTeacherDashboard();
+      }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProgress();
+      initAct1();
+      // Restore saved constructed response
+      const cr = document.getElementById('l1-cr');
+      if (cr) cr.value = localStorage.getItem('g6-unitela-comp-l1-cr') || '';
+    });
+  </script>
+</body>
+</html>
