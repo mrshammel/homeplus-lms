@@ -54,7 +54,7 @@
     /* Grade Cards */
     .grade-grid {
       display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
-      gap:28px; max-width:800px; margin:40px auto 0; padding:0 24px;
+      gap:28px; max-width:900px; margin:40px auto 0; padding:0 24px;
     }
     .grade-card {
       background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
@@ -93,12 +93,29 @@
       padding:12px 36px; border-radius:10px; font-weight:700; font-size:.95rem;
       transition:opacity .2s,transform .15s; text-decoration:none;
     }
-    .grade-card .enter-btn:hover { opacity:.88; transform:scale(1.03); }
+    .grade-card:not(.coming-soon) .enter-btn:hover { opacity:.88; transform:scale(1.03); }
 
     /* Card accent overrides */
     .grade-card.g6 { --card-accent:#f472b6; --card-gradient:linear-gradient(90deg,#f472b6,#a78bfa,#38bdf8); }
     .grade-card.g6 .subject-tag { background:rgba(244,114,182,.08); border-color:rgba(244,114,182,.2); color:#f472b6; }
     .grade-card.g7 { --card-accent:#4ade80; --card-gradient:linear-gradient(90deg,#4ade80,#38bdf8,#a78bfa); }
+    .grade-card.g8 { --card-accent:#f59e0b; --card-gradient:linear-gradient(90deg,#f59e0b,#fbbf24,#f97316); }
+    .grade-card.g8 .subject-tag { background:rgba(245,158,11,.08); border-color:rgba(245,158,11,.2); color:#f59e0b; }
+    .grade-card.g9 { --card-accent:#94a3b8; --card-gradient:linear-gradient(90deg,#94a3b8,#64748b,#475569); }
+    .grade-card.g9 .subject-tag { background:rgba(148,163,184,.08); border-color:rgba(148,163,184,.2); color:#94a3b8; }
+
+    /* Coming Soon cards */
+    .grade-card.coming-soon { cursor:default; opacity:.85; }
+    .grade-card.coming-soon:hover { transform:none; box-shadow:var(--shadow); }
+    .grade-card.coming-soon .enter-btn {
+      background:var(--border); color:var(--text3); cursor:default;
+      pointer-events:none; opacity:.7;
+    }
+    .grade-card.coming-soon .coming-badge {
+      display:inline-block; background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.25);
+      color:#f59e0b; font-size:.72rem; font-weight:700; text-transform:uppercase;
+      letter-spacing:1.5px; padding:4px 14px; border-radius:20px; margin-bottom:12px;
+    }
 
     /* Sign-in overlay */
     .signin-overlay {
@@ -171,7 +188,7 @@
       <span class="grade-emoji">📖</span>
       <h2>Grade 6</h2>
       <div class="grade-tagline">Alberta Curriculum</div>
-      <p>English Language Arts with mastery-based lessons, interactive activities, and progress tracking.</p>
+      <p>Master Grade 6 learning in English Language Arts, Math, Science, and Social Studies through clear lessons, interactive activities, and visible progress tracking.</p>
       <div class="subjects">
         <span class="subject-tag">📖 ELA</span>
         <span class="subject-tag">🔢 Math</span>
@@ -186,7 +203,7 @@
       <span class="grade-emoji">🔬</span>
       <h2>Grade 7</h2>
       <div class="grade-tagline">Alberta Curriculum</div>
-      <p>Science with five complete units — Ecosystems, Plants, Heat, Structures, and Earth's Crust.</p>
+      <p>Explore Grade 7 learning in English Language Arts, Math, Science, and Social Studies with mastery-based lessons, interactive activities, and progress tracking.</p>
       <div class="subjects">
         <span class="subject-tag">🔬 Science</span>
         <span class="subject-tag">📖 ELA</span>
@@ -194,6 +211,38 @@
         <span class="subject-tag">🌍 Social Studies</span>
       </div>
       <span class="enter-btn">Enter Grade 7 →</span>
+    </div>
+
+    <!-- Grade 8 (Coming Soon) -->
+    <div class="grade-card g8 coming-soon">
+      <span class="grade-emoji">🧪</span>
+      <h2>Grade 8</h2>
+      <div class="grade-tagline">Alberta Curriculum</div>
+      <span class="coming-badge">🔒 Coming Soon</span>
+      <p>Grade 8 courses are currently being developed and will include English Language Arts, Math, Science, and Social Studies.</p>
+      <div class="subjects">
+        <span class="subject-tag">📖 ELA</span>
+        <span class="subject-tag">🔢 Math</span>
+        <span class="subject-tag">🔬 Science</span>
+        <span class="subject-tag">🌍 Social Studies</span>
+      </div>
+      <span class="enter-btn" aria-disabled="true">Coming Soon</span>
+    </div>
+
+    <!-- Grade 9 (Under Construction) -->
+    <div class="grade-card g9 coming-soon">
+      <span class="grade-emoji">🏗️</span>
+      <h2>Grade 9</h2>
+      <div class="grade-tagline">Alberta Curriculum</div>
+      <span class="coming-badge">🚧 Under Construction</span>
+      <p>Grade 9 courses are under construction and will include English Language Arts, Math, Science, and Social Studies.</p>
+      <div class="subjects">
+        <span class="subject-tag">📖 ELA</span>
+        <span class="subject-tag">🔢 Math</span>
+        <span class="subject-tag">🔬 Science</span>
+        <span class="subject-tag">🌍 Social Studies</span>
+      </div>
+      <span class="enter-btn" aria-disabled="true">Under Construction</span>
     </div>
   </div>
 
