@@ -108,19 +108,37 @@ enum ActivityType {
 
 // ============= STUDENT DATA =============
 model Submission {
-  id          String   @id @default(cuid())
-  studentId   String   @map("student_id")
-  activityId  String   @map("activity_id")
-  response    Json?
-  score       Float?
-  maxScore    Float?   @map("max_score")
-  reviewed    Boolean  @default(false)
-  submittedAt DateTime @default(now()) @map("submitted_at")
+  id              String         @id @default(cuid())
+  studentId       String         @map("student_id")
+  activityId      String         @map("activity_id")
+  response        Json?
+  writtenResponse String?        @map("written_response")  // Full text of student written work
+  fileUrl         String?        @map("file_url")           // Uploaded artifact URL
+  fileName        String?        @map("file_name")          // Original file name
+  submissionType  SubmissionType @default(QUIZ_RESPONSE)    @map("submission_type")
+  score           Float?
+  maxScore        Float?         @map("max_score")
+  reviewed        Boolean        @default(false)
+  teacherFeedback String?        @map("teacher_feedback")
+  submittedAt     DateTime       @default(now()) @map("submitted_at")
 
-  student  User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student          User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  activity         Activity          @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  masteryJudgments MasteryJudgment[]
 
   @@map("submissions")
+}
+
+enum SubmissionType {
+  QUIZ_RESPONSE
+  SHORT_ANSWER
+  PARAGRAPH_RESPONSE
+  ESSAY
+  REFLECTION
+  UPLOADED_WORKSHEET
+  IMAGE_ARTIFACT
+  PROJECT_FILE
+  PORTFOLIO_EVIDENCE
 }
 
 model StudentProgress {
@@ -143,11 +161,50 @@ enum ProgressStatus {
   COMPLETE
 }
 
+// ============= LEARNING OUTCOMES =============
+model LearningOutcome {
+  id          String @id @default(cuid())
+  code        String @unique              // e.g. "7.1.1", "SCI.7.A.2"
+  description String
+  subjectArea String @map("subject_area") // e.g. "Science", "ELA"
+  gradeLevel  Int    @map("grade_level")
+  unitContext String? @map("unit_context") // e.g. "Unit A — Ecosystems"
+
+  masteryJudgments MasteryJudgment[]
+
+  @@map("learning_outcomes")
+}
+
+// ============= MASTERY JUDGMENTS =============
+model MasteryJudgment {
+  id            String       @id @default(cuid())
+  outcomeId     String       @map("outcome_id")
+  submissionId  String?      @map("submission_id")
+  studentId     String       @map("student_id")
+  teacherId     String       @map("teacher_id")
+  masteryLevel  MasteryLevel @default(NOT_YET_ASSESSED) @map("mastery_level")
+  teacherNote   String?      @map("teacher_note")
+  assessedAt    DateTime     @default(now()) @map("assessed_at")
+
+  outcome    LearningOutcome @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+  submission Submission?     @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+
+  @@map("mastery_judgments")
+}
+
+enum MasteryLevel {
+  NOT_YET_ASSESSED
+  EMERGING
+  APPROACHING
+  MEETING
+  EXCEEDING
+}
+
 // ============= PACING =============
 model PacingTarget {
   id              String   @id @default(cuid())
   unitId          String   @map("unit_id")
-  expectedWeek    Int      @map("expected_week")   // Week of the school year this unit should be completed by
+  expectedWeek    Int      @map("expected_week")
   schoolYearStart DateTime @default(dbgenerated("'2025-09-01'::timestamp")) @map("school_year_start")
   schoolYearEnd   DateTime @default(dbgenerated("'2026-06-01'::timestamp")) @map("school_year_end")
 
@@ -171,3 +228,4 @@ model TeacherNote {
 
   @@map("teacher_notes")
 }
+

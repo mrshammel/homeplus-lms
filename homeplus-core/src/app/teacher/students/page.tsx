@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from '../teacher.module.css';
 import { getStudentsWithPacing } from '@/lib/teacher-data';
-import { getAcademicPacingStyle, getEngagementStyle, formatDaysSinceActive } from '@/lib/pacing';
+import { getAcademicPacingStyle, getEngagementStyle } from '@/lib/pacing';
 
 export default async function StudentsPage() {
   const students = await getStudentsWithPacing();
@@ -14,9 +14,11 @@ export default async function StudentsPage() {
         <select className={styles.filterSelect}>
           <option value="">All Pacing</option>
           <option value="ON_PACE">On Pace</option>
-          <option value="BEHIND">Behind</option>
+          <option value="SLIGHTLY_BEHIND">Slightly Behind</option>
+          <option value="SIGNIFICANTLY_BEHIND">Significantly Behind</option>
           <option value="AHEAD">Ahead</option>
           <option value="NEWLY_ENROLLED">Newly Enrolled</option>
+          <option value="COMPLETE">Complete</option>
         </select>
         <select className={styles.filterSelect}>
           <option value="">All Engagement</option>
@@ -51,7 +53,7 @@ export default async function StudentsPage() {
                   <th>Current Unit</th>
                   <th>Progress</th>
                   <th>Avg Score</th>
-                  <th>Last Academic Activity</th>
+                  <th>Days Since Active</th>
                   <th>Pacing</th>
                   <th>Engagement</th>
                 </tr>
@@ -60,46 +62,68 @@ export default async function StudentsPage() {
                 {students.map((s) => {
                   const aStyle = getAcademicPacingStyle(s.pacing.academicStatus);
                   const eStyle = getEngagementStyle(s.pacing.engagementStatus);
-                  const progressColor = s.pacing.actualProgress >= 70 ? '#059669'
-                    : s.pacing.actualProgress >= 40 ? '#d97706' : '#dc2626';
 
                   return (
                     <tr key={s.id} className={styles.clickableRow}>
                       <td>
-                        <Link href={`/teacher/students/${s.id}`} className={styles.studentName} style={{ textDecoration: 'none', color: 'inherit' }}>
-                          <div className={styles.tableAvatar}>
-                            {s.name.split(' ').map((n) => n[0]).join('')}
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <div className={styles.studentName}>
+                            <div className={styles.tableAvatar}>
+                              {s.name.split(' ').map((n) => n[0]).join('')}
+                            </div>
+                            {s.name}
                           </div>
-                          {s.name}
                         </Link>
                       </td>
-                      <td style={{ fontSize: '0.85rem' }}>{s.gradeLevel || '—'}</td>
-                      <td style={{ fontSize: '0.85rem' }}>{s.currentUnit || '—'}</td>
                       <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div className={styles.progressBarWrap} style={{ width: 80 }}>
-                            <div className={styles.progressBarFill} style={{ width: `${Math.min(100, s.pacing.actualProgress)}%`, background: progressColor }} />
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span style={{ fontSize: '0.85rem' }}>{s.gradeLevel || '—'}</span>
+                        </Link>
+                      </td>
+                      <td>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span style={{ fontSize: '0.85rem' }}>{s.currentUnit || '—'}</span>
+                        </Link>
+                      </td>
+                      <td>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <div className={styles.progressBarWrap} style={{ width: 80 }}>
+                              <div className={styles.progressBarFill} style={{ width: `${Math.min(100, s.pacing.actualProgress)}%`, background: aStyle.color }} />
+                            </div>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>
+                              {Math.round(s.pacing.actualProgress)}%
+                            </span>
                           </div>
-                          <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>
-                            {Math.round(s.pacing.actualProgress)}%
+                        </Link>
+                      </td>
+                      <td>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                            {s.avgScore !== null ? `${Math.round(s.avgScore)}%` : '—'}
                           </span>
-                        </div>
-                      </td>
-                      <td style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                        {s.avgScore !== null ? `${Math.round(s.avgScore)}%` : '—'}
-                      </td>
-                      <td style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                        {formatDaysSinceActive(s.pacing.daysSinceActive)}
+                        </Link>
                       </td>
                       <td>
-                        <span className={styles.pacingBadge} style={{ background: aStyle.bg, color: aStyle.color }}>
-                          {aStyle.icon} {s.pacing.academicLabel}
-                        </span>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span style={{ fontSize: '0.82rem', color: s.pacing.engagementStatus === 'STALLED' ? '#dc2626' : '#64748b' }}>
+                            {s.pacing.daysSinceActive !== null ? `${s.pacing.daysSinceActive}d` : '—'}
+                          </span>
+                        </Link>
                       </td>
                       <td>
-                        <span className={styles.pacingBadge} style={{ background: eStyle.bg, color: eStyle.color }}>
-                          {eStyle.icon} {s.pacing.engagementStatus === 'STALLED' ? 'Stalled' : 'Active'}
-                        </span>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span className={styles.pacingBadge} style={{ background: aStyle.bg, color: aStyle.color }}>
+                            {aStyle.icon} {s.pacing.academicLabel}
+                          </span>
+                        </Link>
+                      </td>
+                      <td>
+                        <Link href={`/teacher/students/${s.id}`} className={styles.rowLink}>
+                          <span className={styles.pacingBadge} style={{ background: eStyle.bg, color: eStyle.color }}>
+                            {eStyle.icon} {s.pacing.engagementStatus === 'STALLED' ? 'Stalled' : 'Active'}
+                          </span>
+                        </Link>
                       </td>
                     </tr>
                   );

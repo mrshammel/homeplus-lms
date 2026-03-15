@@ -796,6 +796,144 @@
   line-height: 1.2;
 }
 
+/* ===== ROW LINK (whole row clickable) ===== */
+.rowLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== EVIDENCE CARDS ===== */
+.evidenceCard {
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--hp-border);
+  border-left: 4px solid var(--hp-primary);
+  border-radius: 10px;
+  background: #fafbfc;
+  transition: box-shadow 0.15s;
+}
+
+.evidenceCard:hover {
+  box-shadow: var(--hp-shadow);
+}
+
+.evidenceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.evidenceTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--hp-text);
+}
+
+.evidenceMeta {
+  font-size: 0.78rem;
+  color: var(--hp-text3);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.evidenceTypeBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.evidencePreview {
+  font-size: 0.85rem;
+  color: var(--hp-text2);
+  line-height: 1.6;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--hp-border);
+  border-radius: 8px;
+  max-height: 90px;
+  overflow: hidden;
+  position: relative;
+}
+
+.evidencePreview::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(transparent, #fff);
+}
+
+.evidenceScore {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--hp-text);
+  white-space: nowrap;
+}
+
+.teacherFeedback {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #d1fae5;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #065f46;
+  line-height: 1.5;
+}
+
+/* ===== ARTIFACT ITEMS ===== */
+.artifactItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hp-border);
+}
+
+.artifactItem:last-child {
+  border-bottom: none;
+}
+
+.artifactIcon {
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.artifactInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.artifactName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--hp-text);
+}
+
+.artifactMeta {
+  font-size: 0.78rem;
+  color: var(--hp-text3);
+  margin-top: 2px;
+}
+
 /* ===== MOBILE OVERLAY ===== */
 .overlay {
   display: none;
