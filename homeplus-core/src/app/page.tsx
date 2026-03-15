@@ -80,6 +80,18 @@ export default function HomePage() {
 
       {/* ===== HERO SECTION ===== */}
       <section className={styles.hero} id="about">
+        {/* Centered logo banner */}
+        <div className={`${styles.heroBanner} animate-in`}>
+          <Image
+            src="/images/hpln-logo.png"
+            alt="Home Plus Online Learning"
+            width={480}
+            height={150}
+            className={styles.heroBannerLogo}
+            priority
+          />
+        </div>
+
         <div className={styles.heroContainer}>
           {/* Left: Headline + Description + CTAs */}
           <div className={styles.heroLeft}>

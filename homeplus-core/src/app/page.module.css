@@ -205,6 +205,21 @@
   pointer-events: none;
 }
 
+/* Centered logo banner */
+.heroBanner {
+  text-align: center;
+  padding: 0 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroBannerLogo {
+  width: auto;
+  height: auto;
+  max-width: 440px;
+  object-fit: contain;
+}
+
 .heroContainer {
   position: relative;
   z-index: 1;
@@ -723,7 +738,15 @@
   }
 
   .hero {
-    padding: 40px 0 0;
+    padding: 32px 0 0;
+  }
+
+  .heroBannerLogo {
+    max-width: 360px;
+  }
+
+  .heroBanner {
+    padding: 0 32px 16px;
   }
 
   .featureGrid {
@@ -784,7 +807,15 @@
   }
 
   .hero {
-    padding: 28px 0 0;
+    padding: 24px 0 0;
+  }
+
+  .heroBannerLogo {
+    max-width: 260px;
+  }
+
+  .heroBanner {
+    padding: 0 20px 12px;
   }
 
   .howItWorks,
@@ -849,6 +880,10 @@
 @media (max-width: 380px) {
   .heroTagline {
     font-size: 1.3rem;
+  }
+
+  .heroBannerLogo {
+    max-width: 210px;
   }
 
   .pillarsImage {
