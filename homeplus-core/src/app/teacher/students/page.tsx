@@ -2,9 +2,11 @@ import Link from 'next/link';
 import styles from '../teacher.module.css';
 import { getStudentsWithPacing } from '@/lib/teacher-data';
 import { getAcademicPacingStyle, getEngagementStyle } from '@/lib/pacing';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 export default async function StudentsPage() {
-  const students = await getStudentsWithPacing();
+  const teacherId = await getTeacherId();
+  const students = await getStudentsWithPacing(teacherId);
 
   return (
     <>

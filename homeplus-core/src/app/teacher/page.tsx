@@ -2,11 +2,13 @@ import Link from 'next/link';
 import styles from './teacher.module.css';
 import { getStudentsWithPacing, getOverviewMetrics, getUnitProgress } from '@/lib/teacher-data';
 import { getAcademicPacingStyle, getEngagementStyle, formatDaysSinceActive } from '@/lib/pacing';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 export default async function TeacherOverview() {
-  const students = await getStudentsWithPacing();
-  const metrics = await getOverviewMetrics(students);
-  const unitProgress = getUnitProgress(students);
+  const teacherId = await getTeacherId();
+  const students = await getStudentsWithPacing(teacherId);
+  const metrics = await getOverviewMetrics(students, teacherId);
+  const unitProgress = await getUnitProgress(students, teacherId);
 
   // Needs attention: significantly behind OR stalled
   const needsAttention = students

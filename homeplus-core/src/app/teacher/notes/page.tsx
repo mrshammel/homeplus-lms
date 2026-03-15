@@ -1,8 +1,10 @@
 import styles from '../teacher.module.css';
 import { getTeacherNotes } from '@/lib/teacher-data';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 export default async function NotesPage() {
-  const notes = await getTeacherNotes();
+  const teacherId = await getTeacherId();
+  const notes = await getTeacherNotes(teacherId);
 
   const tagColors: Record<string, { bg: string; color: string }> = {
     'Needs Check-In': { bg: '#fee2e2', color: '#dc2626' },

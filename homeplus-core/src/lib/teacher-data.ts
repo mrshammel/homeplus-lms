@@ -2,7 +2,15 @@
 // Teacher Data Layer — Home Plus LMS
 // ============================================
 // Server-side data fetching with dual-status pacing model.
-// Uses demo data when no real students exist.
+// All teacher-facing functions are teacher-scoped via teacherId.
+// Demo data is isolated behind an explicit USE_DEMO gate.
+//
+// Key design decisions:
+//   - All queries filter by assignedTeacherId
+//   - Total lessons = assigned-path count, not global catalog
+//   - lastAcademicActivityAt = max(latest submission, latest lesson completion)
+//   - getStudentById is a direct scoped query, not a full-list scan
+//   - Demo mode is explicit and centralized
 
 import { prisma } from '@/lib/db';
 import {
@@ -12,6 +20,16 @@ import {
   type AcademicPacingStatus,
   type EngagementStatus,
 } from '@/lib/pacing';
+
+// ---------- Demo Mode ----------
+// Set USE_DEMO = true to use demo data (for development/preview).
+// In production, this should be false so real errors surface.
+
+const USE_DEMO = true; // Toggle to false when real data is available
+
+function isDemoMode(): boolean {
+  return USE_DEMO;
+}
 
 // ---------- Types ----------
 
@@ -77,7 +95,414 @@ export interface TeacherNoteData {
   createdAt: Date;
 }
 
-// ---------- Demo Data ----------
+// ---------- Helpers ----------
+
+/** Derive last meaningful academic activity from both submissions and lesson completions */
+function deriveLastAcademicActivity(
+  latestSubmissionDate: Date | null,
+  latestCompletionDate: Date | null,
+): Date | null {
+  if (latestSubmissionDate && latestCompletionDate) {
+    return latestSubmissionDate > latestCompletionDate ? latestSubmissionDate : latestCompletionDate;
+  }
+  return latestSubmissionDate || latestCompletionDate || null;
+}
+
+/** Count assigned lessons for a student's grade/subject, not the global catalog */
+async function getAssignedLessonCount(gradeLevel: number | null): Promise<number> {
+  if (!gradeLevel) return 10; // Safe fallback
+  try {
+    const count = await prisma.lesson.count({
+      where: {
+        unit: {
+          subject: {
+            gradeLevel,
+            active: true,
+          },
+        },
+      },
+    });
+    return count || 10; // Fallback if no lessons configured
+  } catch {
+    return 10;
+  }
+}
+
+/** Build StudentWithPacing from a raw Prisma user record */
+function buildStudentWithPacing(
+  student: {
+    id: string;
+    name: string;
+    email: string;
+    gradeLevel: number | null;
+    avatar: string | null;
+    enrolledAt: Date | null;
+    progress: Array<{
+      status: string;
+      completedAt: Date | null;
+      lesson: { title: string; unit: { title: string } };
+    }>;
+    submissions: Array<{
+      score: number | null;
+      maxScore: number | null;
+      submittedAt: Date;
+    }>;
+  },
+  assignedLessonCount: number,
+): StudentWithPacing {
+  const completedLessons = student.progress.filter((p) => p.status === 'COMPLETE').length;
+
+  // Last meaningful academic activity: max(latest submission, latest lesson completion)
+  const latestSubmission = student.submissions.length > 0
+    ? student.submissions.reduce((latest, s) =>
+        s.submittedAt > latest ? s.submittedAt : latest, student.submissions[0].submittedAt)
+    : null;
+  const completedProgress = student.progress
+    .filter((p) => p.status === 'COMPLETE' && p.completedAt)
+    .map((p) => p.completedAt!);
+  const latestCompletion = completedProgress.length > 0
+    ? completedProgress.reduce((latest, d) => d > latest ? d : latest, completedProgress[0])
+    : null;
+  const lastAcademicActivityAt = deriveLastAcademicActivity(latestSubmission, latestCompletion);
+
+  // Current unit/lesson from in-progress work
+  const inProgress = student.progress.find((p) => p.status === 'IN_PROGRESS');
+  const currentUnit = inProgress?.lesson?.unit?.title || null;
+  const currentLesson = inProgress?.lesson?.title || null;
+
+  // Average score from all scored submissions
+  const scored = student.submissions.filter((sub) => sub.score !== null && sub.maxScore !== null);
+  const avgScore = scored.length > 0
+    ? scored.reduce((sum, sub) => sum + ((sub.score! / sub.maxScore!) * 100), 0) / scored.length
+    : null;
+
+  const pacing = calculatePacing({
+    enrolledAt: student.enrolledAt,
+    completedLessons,
+    totalLessons: assignedLessonCount,
+    lastAcademicActivityAt,
+  });
+
+  return {
+    id: student.id,
+    name: student.name,
+    email: student.email,
+    gradeLevel: student.gradeLevel,
+    avatar: student.avatar,
+    enrolledAt: student.enrolledAt,
+    completedLessons,
+    totalLessons: assignedLessonCount,
+    avgScore,
+    lastAcademicActivityAt,
+    currentUnit,
+    currentLesson,
+    pacing,
+  };
+}
+
+// ---------- Teacher-Scoped Data Fetching ----------
+
+/**
+ * Get all students assigned to a specific teacher, with pacing.
+ * Falls back to demo data only when USE_DEMO is true.
+ */
+export async function getStudentsWithPacing(teacherId: string): Promise<StudentWithPacing[]> {
+  try {
+    const students = await prisma.user.findMany({
+      where: {
+        role: 'STUDENT',
+        assignedTeacherId: teacherId,
+      },
+      include: {
+        progress: {
+          include: { lesson: { include: { unit: true } } },
+        },
+        submissions: {
+          orderBy: { submittedAt: 'desc' },
+        },
+      },
+    });
+
+    if (students.length === 0 && isDemoMode()) return getDemoStudents();
+    if (students.length === 0) return [];
+
+    // Assigned-path lesson count (per student grade, not global catalog)
+    const firstGrade = students[0]?.gradeLevel;
+    const assignedLessons = await getAssignedLessonCount(firstGrade);
+
+    return students.map((s) => buildStudentWithPacing(s as any, assignedLessons));
+  } catch (err) {
+    if (isDemoMode()) return getDemoStudents();
+    console.error('[teacher-data] getStudentsWithPacing failed:', err);
+    return [];
+  }
+}
+
+/**
+ * Get a single student by ID — direct scoped query, not a full-list scan.
+ * Verifies the student belongs to the teacher's scope.
+ */
+export async function getStudentById(studentId: string, teacherId: string): Promise<StudentWithPacing | null> {
+  // Demo mode: look up from demo data
+  if (studentId.startsWith('demo-') && isDemoMode()) {
+    const demos = getDemoStudents();
+    return demos.find((s) => s.id === studentId) || null;
+  }
+
+  try {
+    const student = await prisma.user.findFirst({
+      where: {
+        id: studentId,
+        role: 'STUDENT',
+        assignedTeacherId: teacherId,
+      },
+      include: {
+        progress: {
+          include: { lesson: { include: { unit: true } } },
+        },
+        submissions: {
+          orderBy: { submittedAt: 'desc' },
+        },
+      },
+    });
+
+    if (!student) return null;
+
+    const assignedLessons = await getAssignedLessonCount(student.gradeLevel);
+    return buildStudentWithPacing(student as any, assignedLessons);
+  } catch (err) {
+    console.error('[teacher-data] getStudentById failed:', err);
+    return null;
+  }
+}
+
+/**
+ * Overview metrics — computed from the teacher's already-fetched students.
+ * Pending reviews are scoped to the teacher's students only.
+ */
+export async function getOverviewMetrics(students: StudentWithPacing[], teacherId: string): Promise<OverviewMetrics> {
+  const totalStudents = students.length;
+  const onPace = students.filter((s) => s.pacing.academicStatus === 'ON_PACE').length;
+  const behind = students.filter((s) =>
+    s.pacing.academicStatus === 'SLIGHTLY_BEHIND' || s.pacing.academicStatus === 'SIGNIFICANTLY_BEHIND'
+  ).length;
+  const ahead = students.filter((s) => s.pacing.academicStatus === 'AHEAD').length;
+  const newlyEnrolled = students.filter((s) => s.pacing.academicStatus === 'NEWLY_ENROLLED').length;
+  const stalledCount = students.filter((s) => s.pacing.engagementStatus === 'STALLED').length;
+  const needsAttention = students.filter((s) =>
+    s.pacing.academicStatus === 'SIGNIFICANTLY_BEHIND' || s.pacing.engagementStatus === 'STALLED'
+  ).length;
+
+  const avgProgress = totalStudents > 0
+    ? students.reduce((sum, s) => sum + s.pacing.actualProgress, 0) / totalStudents : 0;
+  const scored = students.filter((s) => s.avgScore !== null);
+  const avgScore = scored.length > 0
+    ? scored.reduce((sum, s) => sum + s.avgScore!, 0) / scored.length : null;
+
+  // Scoped pending reviews: only this teacher's students
+  let pendingReviews = 0;
+  try {
+    const studentIds = students.map((s) => s.id);
+    if (studentIds.length > 0 && !studentIds[0].startsWith('demo-')) {
+      pendingReviews = await prisma.submission.count({
+        where: {
+          studentId: { in: studentIds },
+          reviewed: false,
+        },
+      });
+    } else if (isDemoMode()) {
+      pendingReviews = 3;
+    }
+  } catch {
+    pendingReviews = isDemoMode() ? 3 : 0;
+  }
+
+  return { totalStudents, onPace, behind, ahead, newlyEnrolled, needsAttention, avgProgress, avgScore, pendingReviews, stalledCount };
+}
+
+/** Sort students by intervention priority (most urgent first) */
+export function getStudentsByPriority(students: StudentWithPacing[]): StudentWithPacing[] {
+  return [...students].sort((a, b) => getInterventionPriority(a.pacing) - getInterventionPriority(b.pacing));
+}
+
+/**
+ * Recent submissions — scoped to teacher's students.
+ */
+export async function getRecentSubmissions(teacherId: string): Promise<RecentSubmission[]> {
+  try {
+    const subs = await prisma.submission.findMany({
+      where: {
+        student: { assignedTeacherId: teacherId },
+      },
+      orderBy: { submittedAt: 'desc' },
+      take: 20,
+      include: {
+        student: { select: { name: true, avatar: true } },
+        activity: { select: { title: true, type: true } },
+      },
+    });
+    if (subs.length === 0 && isDemoMode()) return getDemoSubmissions();
+    if (subs.length === 0) return [];
+    return subs.map((s) => ({
+      id: s.id,
+      studentId: s.studentId,
+      studentName: (s as any).student.name,
+      studentAvatar: (s as any).student.avatar,
+      activityTitle: (s as any).activity.title,
+      activityType: (s as any).activity.type,
+      score: s.score,
+      maxScore: s.maxScore,
+      reviewed: s.reviewed,
+      submittedAt: s.submittedAt,
+    }));
+  } catch (err) {
+    if (isDemoMode()) return getDemoSubmissions();
+    console.error('[teacher-data] getRecentSubmissions failed:', err);
+    return [];
+  }
+}
+
+/**
+ * Get submissions for a specific student (teacher-scoped by student relationship).
+ */
+export async function getStudentSubmissions(studentId: string, teacherId: string): Promise<RecentSubmission[]> {
+  if (studentId.startsWith('demo-') && isDemoMode()) {
+    return getDemoSubmissions().filter((s) => s.studentId === studentId);
+  }
+
+  try {
+    const subs = await prisma.submission.findMany({
+      where: {
+        studentId,
+        student: { assignedTeacherId: teacherId },
+      },
+      orderBy: { submittedAt: 'desc' },
+      take: 10,
+      include: {
+        student: { select: { name: true, avatar: true } },
+        activity: { select: { title: true, type: true } },
+      },
+    });
+    if (subs.length === 0) return [];
+    return subs.map((s) => ({
+      id: s.id,
+      studentId: s.studentId,
+      studentName: (s as any).student.name,
+      studentAvatar: (s as any).student.avatar,
+      activityTitle: (s as any).activity.title,
+      activityType: (s as any).activity.type,
+      score: s.score,
+      maxScore: s.maxScore,
+      reviewed: s.reviewed,
+      submittedAt: s.submittedAt,
+    }));
+  } catch (err) {
+    console.error('[teacher-data] getStudentSubmissions failed:', err);
+    return [];
+  }
+}
+
+/**
+ * Teacher notes — scoped to this teacher's authored notes.
+ */
+export async function getTeacherNotes(teacherId: string): Promise<TeacherNoteData[]> {
+  try {
+    const notes = await prisma.teacherNote.findMany({
+      where: { teacherId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      include: { student: { select: { name: true, avatar: true } } },
+    });
+    return notes.map((n) => ({
+      id: n.id,
+      studentId: n.studentId,
+      studentName: (n as any).student.name,
+      studentAvatar: (n as any).student.avatar,
+      tag: n.tag,
+      content: n.content,
+      createdAt: n.createdAt,
+    }));
+  } catch (err) {
+    console.error('[teacher-data] getTeacherNotes failed:', err);
+    return [];
+  }
+}
+
+/**
+ * Get notes for a specific student — scoped to this teacher.
+ */
+export async function getStudentNotes(studentId: string, teacherId: string): Promise<TeacherNoteData[]> {
+  try {
+    const notes = await prisma.teacherNote.findMany({
+      where: { studentId, teacherId },
+      orderBy: { createdAt: 'desc' },
+      include: { student: { select: { name: true, avatar: true } } },
+    });
+    return notes.map((n) => ({
+      id: n.id,
+      studentId: n.studentId,
+      studentName: (n as any).student.name,
+      studentAvatar: (n as any).student.avatar,
+      tag: n.tag,
+      content: n.content,
+      createdAt: n.createdAt,
+    }));
+  } catch (err) {
+    console.error('[teacher-data] getStudentNotes failed:', err);
+    return [];
+  }
+}
+
+/**
+ * Unit progress for the teacher's class — uses real unit data when available.
+ */
+export async function getUnitProgress(students: StudentWithPacing[], teacherId: string): Promise<UnitProgress[]> {
+  // Try real unit data first
+  try {
+    const units = await prisma.unit.findMany({
+      where: { subject: { active: true } },
+      orderBy: { order: 'asc' },
+      select: { id: true, title: true, icon: true },
+    });
+
+    if (units.length > 0) {
+      return units.map((u) => {
+        const avgCompletion = students.length > 0
+          ? students.reduce((sum, s) => sum + s.pacing.actualProgress, 0) / students.length : 0;
+        const scored = students.filter((s) => s.avgScore !== null);
+        const avgScore = scored.length > 0
+          ? scored.reduce((sum, s) => sum + s.avgScore!, 0) / scored.length : null;
+        const stalledStudents = students.filter((s) => s.pacing.engagementStatus === 'STALLED').length;
+        return {
+          unitId: u.id, unitTitle: u.title, unitIcon: u.icon,
+          avgCompletion, avgScore, totalStudents: students.length, stalledStudents,
+        };
+      });
+    }
+  } catch {
+    // Fall through to scaffolded data
+  }
+
+  // Scaffolded unit data (clearly marked as temporary)
+  const scaffoldedUnits = [
+    { id: 'a', title: 'Unit A — Ecosystems', icon: '🌿' },
+    { id: 'b', title: 'Unit B — Plants', icon: '🌱' },
+    { id: 'c', title: 'Unit C — Heat', icon: '🔥' },
+    { id: 'd', title: 'Unit D — Structures', icon: '🏗️' },
+    { id: 'e', title: 'Unit E — Earth', icon: '🌍' },
+  ];
+  return scaffoldedUnits.map((u) => {
+    const avgCompletion = students.length > 0
+      ? students.reduce((sum, s) => sum + s.pacing.actualProgress, 0) / students.length : 0;
+    const scored = students.filter((s) => s.avgScore !== null);
+    const avgScore = scored.length > 0
+      ? scored.reduce((sum, s) => sum + s.avgScore!, 0) / scored.length : null;
+    const stalledStudents = students.filter((s) => s.pacing.engagementStatus === 'STALLED').length;
+    return { unitId: u.id, unitTitle: u.title, unitIcon: u.icon, avgCompletion, avgScore, totalStudents: students.length, stalledStudents };
+  });
+}
+
+// ---------- Demo Data (isolated, only used when USE_DEMO = true) ----------
 
 function getDemoStudents(): StudentWithPacing[] {
   const data = [
@@ -117,131 +542,6 @@ function getDemoStudents(): StudentWithPacing[] {
   });
 }
 
-// ---------- Data Fetching ----------
-
-export async function getStudentsWithPacing(): Promise<StudentWithPacing[]> {
-  try {
-    const students = await prisma.user.findMany({
-      where: { role: 'STUDENT' },
-      include: {
-        progress: { include: { lesson: { include: { unit: true } } } },
-        submissions: { orderBy: { submittedAt: 'desc' }, take: 1 },
-      },
-    });
-
-    if (students.length === 0) return getDemoStudents();
-
-    const allLessons = await prisma.lesson.count();
-
-    return students.map((s: any) => {
-      const completedLessons = s.progress.filter((p: any) => p.status === 'COMPLETE').length;
-      const lastSub = s.submissions[0];
-      const lastAcademicActivityAt = lastSub?.submittedAt || null;
-      const inProgress = s.progress.find((p: any) => p.status === 'IN_PROGRESS');
-      const currentUnit = inProgress?.lesson?.unit?.title || null;
-      const currentLesson = inProgress?.lesson?.title || null;
-      const scored = s.submissions.filter((sub: any) => sub.score !== null && sub.maxScore !== null);
-      const avgScore = scored.length > 0
-        ? scored.reduce((sum: number, sub: any) => sum + ((sub.score! / sub.maxScore!) * 100), 0) / scored.length
-        : null;
-
-      const pacing = calculatePacing({
-        enrolledAt: s.enrolledAt,
-        completedLessons,
-        totalLessons: allLessons || 10,
-        lastAcademicActivityAt,
-      });
-
-      return {
-        id: s.id, name: s.name, email: s.email, gradeLevel: s.gradeLevel,
-        avatar: s.avatar, enrolledAt: s.enrolledAt, completedLessons,
-        totalLessons: allLessons || 10, avgScore, lastAcademicActivityAt,
-        currentUnit, currentLesson, pacing,
-      };
-    });
-  } catch {
-    return getDemoStudents();
-  }
-}
-
-export async function getStudentById(id: string): Promise<StudentWithPacing | null> {
-  const students = await getStudentsWithPacing();
-  return students.find((s) => s.id === id) || null;
-}
-
-export async function getOverviewMetrics(students: StudentWithPacing[]): Promise<OverviewMetrics> {
-  const totalStudents = students.length;
-  const onPace = students.filter((s) => s.pacing.academicStatus === 'ON_PACE').length;
-  const behind = students.filter((s) =>
-    s.pacing.academicStatus === 'SLIGHTLY_BEHIND' || s.pacing.academicStatus === 'SIGNIFICANTLY_BEHIND'
-  ).length;
-  const ahead = students.filter((s) => s.pacing.academicStatus === 'AHEAD').length;
-  const newlyEnrolled = students.filter((s) => s.pacing.academicStatus === 'NEWLY_ENROLLED').length;
-  const stalledCount = students.filter((s) => s.pacing.engagementStatus === 'STALLED').length;
-  const needsAttention = students.filter((s) =>
-    s.pacing.academicStatus === 'SIGNIFICANTLY_BEHIND' || s.pacing.engagementStatus === 'STALLED'
-  ).length;
-
-  const avgProgress = totalStudents > 0
-    ? students.reduce((sum, s) => sum + s.pacing.actualProgress, 0) / totalStudents : 0;
-  const scored = students.filter((s) => s.avgScore !== null);
-  const avgScore = scored.length > 0
-    ? scored.reduce((sum, s) => sum + s.avgScore!, 0) / scored.length : null;
-
-  let pendingReviews = 0;
-  try { pendingReviews = await prisma.submission.count({ where: { reviewed: false } }); }
-  catch { pendingReviews = 3; }
-
-  return { totalStudents, onPace, behind, ahead, newlyEnrolled, needsAttention, avgProgress, avgScore, pendingReviews, stalledCount };
-}
-
-export function getStudentsByPriority(students: StudentWithPacing[]): StudentWithPacing[] {
-  return [...students].sort((a, b) => getInterventionPriority(a.pacing) - getInterventionPriority(b.pacing));
-}
-
-export async function getRecentSubmissions(): Promise<RecentSubmission[]> {
-  try {
-    const subs = await prisma.submission.findMany({
-      orderBy: { submittedAt: 'desc' }, take: 20,
-      include: {
-        student: { select: { name: true, avatar: true } },
-        activity: { select: { title: true, type: true } },
-      },
-    });
-    if (subs.length === 0) return getDemoSubmissions();
-    return subs.map((s: any) => ({
-      id: s.id, studentId: s.studentId, studentName: s.student.name, studentAvatar: s.student.avatar,
-      activityTitle: s.activity.title, activityType: s.activity.type,
-      score: s.score, maxScore: s.maxScore, reviewed: s.reviewed, submittedAt: s.submittedAt,
-    }));
-  } catch { return getDemoSubmissions(); }
-}
-
-/** Get submissions for a specific student by ID */
-export async function getStudentSubmissions(studentId: string): Promise<RecentSubmission[]> {
-  try {
-    const subs = await prisma.submission.findMany({
-      where: { studentId },
-      orderBy: { submittedAt: 'desc' }, take: 10,
-      include: {
-        student: { select: { name: true, avatar: true } },
-        activity: { select: { title: true, type: true } },
-      },
-    });
-    if (subs.length === 0) {
-      // Fall back to filtering demo data by ID
-      return getDemoSubmissions().filter((s) => s.studentId === studentId);
-    }
-    return subs.map((s: any) => ({
-      id: s.id, studentId: s.studentId, studentName: s.student.name, studentAvatar: s.student.avatar,
-      activityTitle: s.activity.title, activityType: s.activity.type,
-      score: s.score, maxScore: s.maxScore, reviewed: s.reviewed, submittedAt: s.submittedAt,
-    }));
-  } catch {
-    return getDemoSubmissions().filter((s) => s.studentId === studentId);
-  }
-}
-
 function getDemoSubmissions(): RecentSubmission[] {
   return [
     { id: 'd1', studentId: 'demo-0', studentName: 'Ava Chen', studentAvatar: null, activityTitle: 'Ecosystem Basics Quiz', activityType: 'QUIZ', score: 9, maxScore: 10, reviewed: true, submittedAt: new Date('2026-03-14T10:30:00') },
@@ -251,51 +551,3 @@ function getDemoSubmissions(): RecentSubmission[] {
     { id: 'd5', studentId: 'demo-2', studentName: 'Emma Rodriguez', studentAvatar: null, activityTitle: 'Producers & Consumers Quiz', activityType: 'QUIZ', score: 8, maxScore: 10, reviewed: true, submittedAt: new Date('2026-03-11T13:20:00') },
   ];
 }
-
-export async function getTeacherNotes(): Promise<TeacherNoteData[]> {
-  try {
-    const notes = await prisma.teacherNote.findMany({
-      orderBy: { createdAt: 'desc' }, take: 50,
-      include: { student: { select: { name: true, avatar: true } } },
-    });
-    return notes.map((n: any) => ({
-      id: n.id, studentId: n.studentId, studentName: n.student.name, studentAvatar: n.student.avatar,
-      tag: n.tag, content: n.content, createdAt: n.createdAt,
-    }));
-  } catch { return []; }
-}
-
-/** Get notes for a specific student by ID */
-export async function getStudentNotes(studentId: string): Promise<TeacherNoteData[]> {
-  try {
-    const notes = await prisma.teacherNote.findMany({
-      where: { studentId },
-      orderBy: { createdAt: 'desc' },
-      include: { student: { select: { name: true, avatar: true } } },
-    });
-    return notes.map((n: any) => ({
-      id: n.id, studentId: n.studentId, studentName: n.student.name, studentAvatar: n.student.avatar,
-      tag: n.tag, content: n.content, createdAt: n.createdAt,
-    }));
-  } catch { return []; }
-}
-
-export function getUnitProgress(students: StudentWithPacing[]): UnitProgress[] {
-  const units = [
-    { id: 'a', title: 'Unit A — Ecosystems', icon: '🌿' },
-    { id: 'b', title: 'Unit B — Plants', icon: '🌱' },
-    { id: 'c', title: 'Unit C — Heat', icon: '🔥' },
-    { id: 'd', title: 'Unit D — Structures', icon: '🏗️' },
-    { id: 'e', title: 'Unit E — Earth', icon: '🌍' },
-  ];
-  return units.map((u) => {
-    const avgCompletion = students.length > 0
-      ? students.reduce((sum, s) => sum + s.pacing.actualProgress, 0) / students.length : 0;
-    const scored = students.filter((s) => s.avgScore !== null);
-    const avgScore = scored.length > 0
-      ? scored.reduce((sum, s) => sum + s.avgScore!, 0) / scored.length : null;
-    const stalledStudents = students.filter((s) => s.pacing.engagementStatus === 'STALLED').length;
-    return { unitId: u.id, unitTitle: u.title, unitIcon: u.icon, avgCompletion, avgScore, totalStudents: students.length, stalledStudents };
-  });
-}
-

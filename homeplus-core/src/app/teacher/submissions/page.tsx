@@ -1,8 +1,10 @@
 import styles from '../teacher.module.css';
 import { getRecentSubmissions } from '@/lib/teacher-data';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 export default async function SubmissionsPage() {
-  const submissions = await getRecentSubmissions();
+  const teacherId = await getTeacherId();
+  const submissions = await getRecentSubmissions(teacherId);
   const pending = submissions.filter((s) => !s.reviewed);
   const reviewed = submissions.filter((s) => s.reviewed);
 

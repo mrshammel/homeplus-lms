@@ -16,6 +16,7 @@ import {
   getSubmissionTypeLabel,
 } from '@/lib/evidence-data';
 import { getInitials, getEngagementLabel, formatDate, formatShortDate } from '@/lib/helpers';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 // ---------- Types ----------
 
@@ -27,7 +28,8 @@ interface PageProps {
 
 export default async function StudentDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const student = await getStudentById(id);
+  const teacherId = await getTeacherId();
+  const student = await getStudentById(id, teacherId);
 
   if (!student) {
     return (
@@ -57,8 +59,8 @@ export default async function StudentDetailPage({ params }: PageProps) {
     getStudentOutcomeMastery(id),
     getStudentUnitProgress(id),
     getLastAcademicEvent(id),
-    getStudentSubmissions(id),
-    getStudentNotes(id),
+    getStudentSubmissions(id, teacherId),
+    getStudentNotes(id, teacherId),
   ]);
 
   // ---------- Derived Values ----------

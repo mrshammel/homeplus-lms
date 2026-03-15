@@ -2,9 +2,11 @@ import Link from 'next/link';
 import styles from '../teacher.module.css';
 import { getStudentsWithPacing, getStudentsByPriority } from '@/lib/teacher-data';
 import { getAcademicPacingStyle, getEngagementStyle, formatDaysOffset, formatDaysSinceActive } from '@/lib/pacing';
+import { getTeacherId } from '@/lib/teacher-auth';
 
 export default async function PacingPage() {
-  const students = await getStudentsWithPacing();
+  const teacherId = await getTeacherId();
+  const students = await getStudentsWithPacing(teacherId);
   const sorted = getStudentsByPriority(students);
 
   const counts = {
