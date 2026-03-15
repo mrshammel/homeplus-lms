@@ -1,30 +1,35 @@
 /* ===================================
-   Home Plus Homepage — CSS Module
+   Home Plus Homepage — Redesigned CSS
    ===================================
-   Mobile-first, tablet-optimized, desktop-polished
+   Full-width composition, spacious layout,
+   warm school-oriented design
 */
 
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--hp-bg);
 }
 
-/* ===== HERO ===== */
+/* ===========================
+   HERO SECTION
+   =========================== */
 .hero {
   position: relative;
-  background: var(--hp-hero-bg);
-  padding: 64px 0 100px;
+  background: linear-gradient(165deg, #eef3ff 0%, #e6f4ea 35%, #fdf8ef 65%, #f0f4ff 100%);
+  padding: 80px 0 0;
   overflow: hidden;
+  min-height: 600px;
 }
 
 .hero::before {
   content: '';
   position: absolute;
-  top: -120px;
-  right: -80px;
-  width: 400px;
-  height: 400px;
+  top: -200px;
+  right: -150px;
+  width: 600px;
+  height: 600px;
   background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
@@ -33,154 +38,214 @@
 .hero::after {
   content: '';
   position: absolute;
-  bottom: 40px;
-  left: -60px;
-  width: 300px;
-  height: 300px;
+  bottom: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
 
-.heroInner {
+.heroContainer {
   position: relative;
   z-index: 1;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
   align-items: center;
 }
 
-/* Logo */
-.logo {
+/* Hero Left — Logo, text, CTAs */
+.heroLeft {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .logoImage {
-  width: auto;
-  height: auto;
-  max-width: 320px;
-  object-fit: contain;
-}
-
-.logoIcon {
-  width: 56px;
-  height: 56px;
-  background: var(--hp-gradient-warm);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-}
-
-.logoText {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: var(--hp-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Title */
-.heroTitle {
-  font-size: 3.2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--hp-text);
-  margin-bottom: 16px;
-  line-height: 1.15;
-}
-
-/* Pillars */
-.pillars {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 28px;
-}
-
-.pillarsImage {
   width: auto;
   height: auto;
   max-width: 420px;
   object-fit: contain;
 }
 
-/* Description */
-.heroDesc {
-  max-width: 680px;
-  font-size: 1.08rem;
-  color: var(--hp-text2);
-  line-height: 1.75;
-  margin-bottom: 36px;
+.heroTagline {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--hp-text);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  margin: 0;
 }
 
-/* CTA Buttons */
+.heroTaglineAccent {
+  background: var(--hp-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroDesc {
+  font-size: 1.05rem;
+  color: var(--hp-text2);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0;
+}
+
 .heroCta {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
-/* Wave */
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 36px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  line-height: 1.4;
+  min-height: 54px;
+  min-width: 180px;
+}
+
+.ctaBtn:active { transform: scale(0.98); }
+
+.ctaStudent {
+  background: var(--hp-primary);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+}
+.ctaStudent:hover {
+  background: var(--hp-primary-dark);
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.35);
+  transform: translateY(-2px);
+}
+
+.ctaTeacher {
+  background: var(--hp-accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+}
+.ctaTeacher:hover {
+  background: var(--hp-accent-dark);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Hero Right — Pillars graphic */
+.heroRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  padding: 32px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 75%);
+}
+
+.pillarsImage {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+/* Hero Wave */
 .heroWave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: relative;
+  margin-top: -1px;
   line-height: 0;
 }
-
 .heroWave svg {
   width: 100%;
-  height: 60px;
+  height: 80px;
+  display: block;
 }
 
-/* ===== PROGRAM OVERVIEW ===== */
-.overview {
+/* ===========================
+   HOW IT WORKS SECTION
+   =========================== */
+.howItWorks {
+  padding: 88px 0;
   background: var(--hp-bg);
+}
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.sectionTitle {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--hp-text);
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: -0.025em;
+}
+
+.sectionSubtitle {
+  font-size: 1.05rem;
+  color: var(--hp-text2);
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px;
+  line-height: 1.7;
 }
 
 .featureGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
 }
 
 .feature {
   background: var(--hp-surface);
   border: 1px solid var(--hp-border);
-  border-radius: var(--hp-radius-lg);
-  padding: 32px;
+  border-radius: 20px;
+  padding: 36px 28px;
   text-align: center;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
 .feature:hover {
-  box-shadow: var(--hp-shadow-lg);
-  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
   border-color: transparent;
 }
 
 .featureIcon {
-  font-size: 2.4rem;
-  margin-bottom: 16px;
-  display: inline-block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--hp-primary-light) 0%, #e8f5e9 100%);
 }
 
 .featureTitle {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--hp-text);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .featureDesc {
@@ -189,21 +254,28 @@
   line-height: 1.65;
 }
 
-/* ===== AUDIENCE CARDS ===== */
+/* ===========================
+   AUDIENCE SECTION
+   =========================== */
 .audience {
-  background: linear-gradient(180deg, var(--hp-bg) 0%, #f1f5f9 100%);
+  padding: 88px 0;
+  background: linear-gradient(180deg, #f0f4ff06 0%, #f8fafc 100%);
 }
 
 .audienceGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 32px;
 }
 
 .audienceCard {
+  background: var(--hp-surface);
+  border: 1px solid var(--hp-border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  text-align: left;
 }
 
 .audienceCard::before {
@@ -213,246 +285,337 @@
   left: 0;
   right: 0;
   height: 4px;
-  border-radius: var(--hp-radius-lg) var(--hp-radius-lg) 0 0;
+  border-radius: 20px 20px 0 0;
 }
 
 .studentCard::before {
-  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  background: var(--hp-primary);
 }
-
 .teacherCard::before {
-  background: linear-gradient(90deg, #10b981, #34d399);
+  background: var(--hp-accent);
+}
+.familyCard::before {
+  background: var(--hp-warm);
 }
 
-.familyCard::before {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+.audienceCard:hover {
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: transparent;
 }
 
 .audienceIcon {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   margin-bottom: 16px;
 }
 
 .audienceTitle {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--hp-text);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .audienceDesc {
   font-size: 0.92rem;
   color: var(--hp-text2);
-  line-height: 1.65;
-  margin-bottom: 16px;
+  line-height: 1.7;
+  margin-bottom: 20px;
 }
 
 .audienceList {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .audienceList li {
-  position: relative;
-  padding-left: 22px;
   font-size: 0.88rem;
   color: var(--hp-text2);
-  line-height: 1.5;
+  padding-left: 24px;
+  position: relative;
 }
 
 .audienceList li::before {
   content: '✓';
   position: absolute;
   left: 0;
-  font-weight: 700;
   color: var(--hp-accent);
-  font-size: 0.85rem;
+  font-weight: 700;
 }
 
-/* ===== FOOTER ===== */
+/* ===========================
+   CTA BANNER
+   =========================== */
+.ctaBanner {
+  padding: 72px 0;
+  background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%);
+  text-align: center;
+}
+
+.ctaBannerTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.ctaBannerDesc {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+.ctaBannerActions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ===========================
+   FOOTER
+   =========================== */
 .footer {
-  background: #1e293b;
-  color: #cbd5e1;
+  background: #0f172a;
+  color: #94a3b8;
   padding: 56px 0 0;
-  margin-top: auto;
 }
 
 .footerInner {
-  display: flex;
-  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 48px;
 }
 
 .footerBrand {
-  margin-bottom: 36px;
-}
-
-.footerLogo {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .footerLogoImg {
-  width: auto;
+  max-width: 160px;
   height: auto;
-  max-width: 140px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
   opacity: 0.9;
 }
 
 .footerTagline {
-  font-size: 0.88rem;
-  color: #94a3b8;
-  font-style: italic;
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.6;
 }
 
 .footerLinks {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  margin-bottom: 36px;
 }
 
 .footerCol h4 {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #e2e8f0;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 14px;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
 }
 
 .footerCol a {
   display: block;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #94a3b8;
-  padding: 4px 0;
+  margin-bottom: 10px;
   transition: color 0.2s;
 }
 
 .footerCol a:hover {
-  color: #e2e8f0;
+  color: #ffffff;
 }
 
 .footerBottom {
-  border-top: 1px solid #334155;
-  padding: 20px 0;
+  grid-column: 1 / -1;
+  border-top: 1px solid #1e293b;
+  margin-top: 40px;
+  padding: 24px 0;
   text-align: center;
-}
-
-.footerBottom p {
   font-size: 0.82rem;
-  color: #64748b;
+  color: #475569;
 }
 
-/* ===================================
-   RESPONSIVE — Tablet (iPad)
-   =================================== */
+/* ===========================
+   RESPONSIVE — TABLET
+   =========================== */
 @media (max-width: 1024px) {
-  .heroTitle {
-    font-size: 2.6rem;
+  .heroContainer {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 0 32px;
+    text-align: center;
+  }
+
+  .heroLeft {
+    align-items: center;
+  }
+
+  .logoImage {
+    max-width: 360px;
+  }
+
+  .heroDesc {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .heroCta {
+    justify-content: center;
+  }
+
+  .heroRight {
+    order: -1;
+  }
+
+  .pillarsImage {
+    max-width: 380px;
+  }
+
+  .hero {
+    padding: 56px 0 0;
+    min-height: auto;
   }
 
   .featureGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
   }
 
-  .audienceGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .sectionContainer {
+    padding: 0 32px;
   }
 
-  .audienceGrid > :last-child {
-    grid-column: 1 / -1;
-    max-width: 480px;
-    justify-self: center;
+  .footerInner {
+    grid-template-columns: 1fr;
+    padding: 0 32px;
+  }
+
+  .footerLinks {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* ===================================
-   RESPONSIVE — Mobile
-   =================================== */
-@media (max-width: 768px) {
-  .hero {
-    padding: 48px 0 80px;
-  }
-
-  .logo {
-    margin-bottom: 20px;
+/* ===========================
+   RESPONSIVE — MOBILE
+   =========================== */
+@media (max-width: 640px) {
+  .heroContainer {
+    padding: 0 20px;
+    gap: 32px;
   }
 
   .logoImage {
-    max-width: 240px;
+    max-width: 280px;
   }
 
-  .pillarsImage {
-    max-width: 300px;
-  }
-
-  .heroTitle {
-    font-size: 2.1rem;
-    margin-bottom: 12px;
-  }
-
-  .pillars {
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .pillar {
-    font-size: 1.1rem;
+  .heroTagline {
+    font-size: 1.2rem;
   }
 
   .heroDesc {
     font-size: 0.95rem;
-    margin-bottom: 28px;
-    padding: 0 8px;
   }
 
   .heroCta {
     flex-direction: column;
     width: 100%;
-    max-width: 340px;
     gap: 12px;
   }
 
-  .featureGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .feature {
-    padding: 24px;
-  }
-
-  .audienceGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .audienceGrid > :last-child {
-    max-width: none;
-  }
-
-  .footerLinks {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  .heroTitle {
-    font-size: 1.75rem;
-  }
-
-  .logoImage {
-    max-width: 200px;
+  .ctaBtn {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 1rem;
+    min-width: auto;
   }
 
   .pillarsImage {
     max-width: 260px;
+  }
+
+  .hero {
+    padding: 40px 0 0;
+  }
+
+  .howItWorks,
+  .audience {
+    padding: 56px 0;
+  }
+
+  .sectionContainer {
+    padding: 0 20px;
+  }
+
+  .sectionTitle {
+    font-size: 1.6rem;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .feature {
+    padding: 28px 24px;
+  }
+
+  .audienceGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .audienceCard {
+    padding: 32px 24px;
+  }
+
+  .ctaBanner {
+    padding: 56px 20px;
+  }
+
+  .ctaBannerTitle {
+    font-size: 1.5rem;
+  }
+
+  .ctaBannerActions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ctaBannerActions .ctaBtn {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .footerLinks {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .footerBottom {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .logoImage {
+    max-width: 220px;
   }
 }

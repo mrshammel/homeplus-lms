@@ -6,79 +6,80 @@ export default function HomePage() {
     <div className={styles.page}>
       {/* ===== HERO SECTION ===== */}
       <section className={styles.hero}>
-        <div className={`hp-container ${styles.heroInner}`}>
-          {/* Logo */}
-          <div className={`${styles.logo} animate-in`}>
+        <div className={styles.heroContainer}>
+          {/* Left: Logo + Tagline + Description + CTAs */}
+          <div className={`${styles.heroLeft} animate-in`}>
             <Image
               src="/images/hpln-logo.png"
               alt="Home Plus Online Learning"
-              width={320}
-              height={100}
+              width={420}
+              height={132}
               className={styles.logoImage}
               priority
             />
+
+            <h1 className={styles.heroTagline}>
+              Flexible learning with{" "}
+              <span className={styles.heroTaglineAccent}>
+                guidance and support
+              </span>
+            </h1>
+
+            <p className={`${styles.heroDesc} animate-in delay-1`}>
+              Home Plus is a flexible, asynchronous learning program that
+              supports students in building strong academic skills through
+              guided independent learning at home. It is designed to offer
+              families greater choice while ensuring students remain engaged
+              in meaningful, high-quality learning with clear direction and
+              support.
+            </p>
+
+            <div className={`${styles.heroCta} animate-in delay-2`}>
+              <a
+                href="/api/auth/signin/google?callbackUrl=/dashboard"
+                className={`${styles.ctaBtn} ${styles.ctaStudent}`}
+              >
+                🎒 Student Sign In
+              </a>
+              <a
+                href="/api/auth/signin/google?callbackUrl=/teacher"
+                className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
+              >
+                👩‍🏫 Teacher Sign In
+              </a>
+            </div>
           </div>
 
-          {/* Welcome */}
-          <h1 className={`${styles.heroTitle} animate-in delay-1`}>
-            Welcome to Home Plus
-          </h1>
-
-          {/* 3 Pillars */}
-          <div className={`${styles.pillars} animate-in delay-2`}>
+          {/* Right: Learn. Grow. Succeed. pillars */}
+          <div className={`${styles.heroRight} animate-in delay-2`}>
             <Image
               src="/images/pillars-lgs.png"
               alt="Learn. Grow. Succeed."
-              width={480}
-              height={180}
+              width={500}
+              height={350}
               className={styles.pillarsImage}
             />
           </div>
-
-          {/* Intro paragraph */}
-          <p className={`${styles.heroDesc} animate-in delay-2`}>
-            Home Plus is a flexible, asynchronous learning program that supports
-            students in building strong academic skills through guided
-            independent learning at home. It is designed to offer families
-            greater choice while ensuring students remain engaged in meaningful,
-            high-quality learning with clear direction and support.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className={`${styles.heroCta} animate-in delay-3`}>
-            <a
-              href="/api/auth/signin/google?callbackUrl=/dashboard"
-              className="hp-btn hp-btn-primary hp-btn-lg"
-            >
-              🎒 Student Sign In
-            </a>
-            <a
-              href="/api/auth/signin/google?callbackUrl=/teacher"
-              className="hp-btn hp-btn-accent hp-btn-lg"
-            >
-              👩‍🏫 Teacher Sign In
-            </a>
-          </div>
         </div>
 
-        {/* Decorative wave */}
+        {/* Decorative wave transition */}
         <div className={styles.heroWave}>
-          <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path
-              d="M0,40 C320,100 420,0 720,50 C1020,100 1200,20 1440,60 L1440,100 L0,100 Z"
+              d="M0,32 C360,80 540,0 720,40 C900,80 1080,16 1440,48 L1440,80 L0,80 Z"
               fill="var(--hp-bg)"
             />
           </svg>
         </div>
       </section>
 
-      {/* ===== PROGRAM OVERVIEW ===== */}
-      <section className={`hp-section ${styles.overview}`}>
-        <div className="hp-container">
-          <h2 className="hp-section-title">How Home Plus Works</h2>
-          <p className="hp-section-subtitle">
-            A structured, supportive approach to learning at home — designed for
-            real families and real students.
+      {/* ===== HOW IT WORKS ===== */}
+      <section className={styles.howItWorks}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.sectionTitle}>How Home Plus Works</h2>
+          <p className={styles.sectionSubtitle}>
+            A structured, supportive approach to learning at home — designed
+            for real families and real students.
           </p>
 
           <div className={styles.featureGrid}>
@@ -86,9 +87,9 @@ export default function HomePage() {
               <div className={styles.featureIcon}>📚</div>
               <h3 className={styles.featureTitle}>Flexible Learning</h3>
               <p className={styles.featureDesc}>
-                Students learn at their own pace with structured lessons they can
-                access anytime, anywhere — designed for home learning that fits
-                family schedules.
+                Students learn at their own pace with structured lessons they
+                can access anytime, anywhere — designed for home learning that
+                fits family schedules.
               </p>
             </div>
 
@@ -96,9 +97,9 @@ export default function HomePage() {
               <div className={styles.featureIcon}>🧭</div>
               <h3 className={styles.featureTitle}>Clear Direction</h3>
               <p className={styles.featureDesc}>
-                Every lesson has defined learning targets, step-by-step guidance,
-                and built-in checkpoints so students always know where they are
-                and what to do next.
+                Every lesson has defined learning targets, step-by-step
+                guidance, and built-in checkpoints so students always know
+                where they are and what to do next.
               </p>
             </div>
 
@@ -113,7 +114,7 @@ export default function HomePage() {
 
             <div className={styles.feature}>
               <div className={styles.featureIcon}>⭐</div>
-              <h3 className={styles.featureTitle}>High-Quality Content</h3>
+              <h3 className={styles.featureTitle}>Quality Curriculum</h3>
               <p className={styles.featureDesc}>
                 Aligned to the Alberta curriculum with engaging activities,
                 videos, quizzes, and meaningful assessments that build mastery.
@@ -124,23 +125,22 @@ export default function HomePage() {
       </section>
 
       {/* ===== AUDIENCE CARDS ===== */}
-      <section className={`hp-section ${styles.audience}`}>
-        <div className="hp-container">
-          <h2 className="hp-section-title">Built for Everyone</h2>
-          <p className="hp-section-subtitle">
-            Whether you&apos;re a student, teacher, or family — Home Plus is designed
-            with you in mind.
+      <section className={styles.audience}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.sectionTitle}>Built for Everyone</h2>
+          <p className={styles.sectionSubtitle}>
+            Whether you&apos;re a student, teacher, or family — Home Plus is
+            designed with you in mind.
           </p>
 
           <div className={styles.audienceGrid}>
-            {/* Students */}
-            <div className={`hp-card ${styles.audienceCard} ${styles.studentCard}`}>
+            <div className={`${styles.audienceCard} ${styles.studentCard}`}>
               <div className={styles.audienceIcon}>🎒</div>
               <h3 className={styles.audienceTitle}>For Students</h3>
               <p className={styles.audienceDesc}>
                 Learn at your own speed with engaging lessons, interactive
-                activities, and clear progress tracking. You&apos;ll always know what
-                to work on next and can see how far you&apos;ve come.
+                activities, and clear progress tracking. You&apos;ll always
+                know what to work on next.
               </p>
               <ul className={styles.audienceList}>
                 <li>Interactive lessons with videos and activities</li>
@@ -149,13 +149,12 @@ export default function HomePage() {
               </ul>
             </div>
 
-            {/* Teachers */}
-            <div className={`hp-card ${styles.audienceCard} ${styles.teacherCard}`}>
+            <div className={`${styles.audienceCard} ${styles.teacherCard}`}>
               <div className={styles.audienceIcon}>👩‍🏫</div>
               <h3 className={styles.audienceTitle}>For Teachers</h3>
               <p className={styles.audienceDesc}>
-                Monitor student progress in real time, access grade reports, and
-                identify students who need support — all from one dashboard.
+                Monitor student progress in real time, access grade reports,
+                and identify students who need support — all from one dashboard.
               </p>
               <ul className={styles.audienceList}>
                 <li>Real-time student progress dashboard</li>
@@ -164,14 +163,13 @@ export default function HomePage() {
               </ul>
             </div>
 
-            {/* Families */}
-            <div className={`hp-card ${styles.audienceCard} ${styles.familyCard}`}>
+            <div className={`${styles.audienceCard} ${styles.familyCard}`}>
               <div className={styles.audienceIcon}>🏡</div>
               <h3 className={styles.audienceTitle}>For Families</h3>
               <p className={styles.audienceDesc}>
                 Home Plus gives families the flexibility to support their
-                child&apos;s learning at home while knowing they&apos;re following a
-                proven, structured curriculum.
+                child&apos;s learning at home while following a proven,
+                structured curriculum.
               </p>
               <ul className={styles.audienceList}>
                 <li>Aligned to Alberta curriculum standards</li>
@@ -183,20 +181,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== CTA BANNER ===== */}
+      <section className={styles.ctaBanner}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.ctaBannerTitle}>Ready to get started?</h2>
+          <p className={styles.ctaBannerDesc}>
+            Sign in to access your lessons, track your progress, and start
+            learning today.
+          </p>
+          <div className={styles.ctaBannerActions}>
+            <a
+              href="/api/auth/signin/google?callbackUrl=/dashboard"
+              className={`${styles.ctaBtn} ${styles.ctaStudent}`}
+            >
+              🎒 Student Sign In
+            </a>
+            <a
+              href="/api/auth/signin/google?callbackUrl=/teacher"
+              className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
+            >
+              👩‍🏫 Teacher Sign In
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
       <footer className={styles.footer}>
-        <div className={`hp-container ${styles.footerInner}`}>
+        <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
-            <div className={styles.footerLogo}>
-              <Image
-                src="/images/hpln-logo.png"
-                alt="Home Plus"
-                width={140}
-                height={44}
-                className={styles.footerLogoImg}
-              />
-            </div>
-            <p className={styles.footerTagline}>Learn. Grow. Succeed.</p>
+            <Image
+              src="/images/hpln-logo.png"
+              alt="Home Plus"
+              width={160}
+              height={50}
+              className={styles.footerLogoImg}
+            />
+            <p className={styles.footerTagline}>
+              Learn. Grow. Succeed.
+            </p>
           </div>
 
           <div className={styles.footerLinks}>
