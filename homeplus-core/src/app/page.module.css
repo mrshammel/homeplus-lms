@@ -10,6 +10,8 @@
   display: flex;
   flex-direction: column;
   background: var(--hp-bg);
+  scroll-padding-top: 80px;
+  scroll-behavior: smooth;
 }
 
 /* ===========================
@@ -49,7 +51,7 @@
 
 .headerLogo {
   width: auto;
-  height: 48px;
+  height: 54px;
   object-fit: contain;
 }
 
@@ -189,7 +191,7 @@
 .hero {
   position: relative;
   background: linear-gradient(165deg, #eef3ff 0%, #e6f4ea 35%, #fdf8ef 65%, #f0f4ff 100%);
-  padding: 36px 0 0;
+  padding: 28px 0 0;
   overflow: hidden;
 }
 
@@ -214,7 +216,7 @@
   padding: 0 40px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 }
 
 /* Top branded row: logo + pillars side by side */
@@ -396,9 +398,10 @@
    HOW IT WORKS
    =========================== */
 .howItWorks {
-  padding: 80px 0 72px;
+  padding: 72px 0 64px;
   background: var(--hp-bg);
   position: relative;
+  scroll-margin-top: 80px;
 }
 
 .howItWorks::before {
@@ -423,9 +426,27 @@
   background: var(--hp-surface);
   border: 1px solid #e8ecf1;
   border-radius: 16px;
-  padding: 28px 22px 24px;
+  padding: 26px 20px 22px;
   text-align: center;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--hp-primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature:hover::after {
+  opacity: 0.4;
 }
 
 .feature:hover {
@@ -479,7 +500,7 @@
    AUDIENCE SECTION
    =========================== */
 .audience {
-  padding: 72px 0 80px;
+  padding: 64px 0 72px;
   background: #f3f6fb;
 }
 
@@ -493,7 +514,7 @@
   background: var(--hp-surface);
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 32px 26px 28px;
+  padding: 28px 24px 24px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -567,11 +588,12 @@
    CTA BANNER
    =========================== */
 .ctaBanner {
-  padding: 64px 0;
-  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+  padding: 52px 0;
+  background: linear-gradient(145deg, #1a3355 0%, #162544 50%, #0f172a 100%);
   text-align: center;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 80px;
 }
 
 .ctaBanner::before {
@@ -599,20 +621,20 @@
 }
 
 .ctaBannerTitle {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   letter-spacing: -0.02em;
   position: relative;
   z-index: 1;
 }
 
 .ctaBannerDesc {
-  font-size: 0.98rem;
-  color: rgba(255, 255, 255, 0.65);
-  max-width: 460px;
-  margin: 0 auto 28px;
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 440px;
+  margin: 0 auto 22px;
   line-height: 1.7;
   position: relative;
   z-index: 1;
