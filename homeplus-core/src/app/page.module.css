@@ -205,38 +205,53 @@
   pointer-events: none;
 }
 
-/* Centered logo banner */
-.heroBanner {
-  text-align: center;
-  padding: 0 40px 12px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.heroBannerLogo {
-  width: auto;
-  height: auto;
-  max-width: 440px;
-  object-fit: contain;
-}
-
-.heroContainer {
+/* Hero inner container */
+.heroInner {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 40px;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 36px;
-  align-items: center;
-}
-
-/* Hero Left */
-.heroLeft {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+/* Top branded row: logo + pillars side by side */
+.heroBrandRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.heroBrandLogo {
+  width: auto;
+  height: auto;
+  max-width: 380px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.heroPillars {
+  width: auto;
+  height: auto;
+  max-width: 280px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.03));
+}
+
+/* Full-width content below branded row */
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 14px;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .heroBadge {
@@ -253,7 +268,7 @@
 }
 
 .heroTagline {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   font-weight: 800;
   color: var(--hp-text);
   letter-spacing: -0.03em;
@@ -269,10 +284,10 @@
 }
 
 .heroDesc {
-  font-size: 1.02rem;
+  font-size: 1rem;
   color: var(--hp-text2);
   line-height: 1.75;
-  max-width: 520px;
+  max-width: 640px;
   margin: 0;
 }
 
@@ -280,7 +295,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .ctaBtn {
@@ -698,54 +713,29 @@
     display: flex;
   }
 
-  .heroContainer {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 0 32px;
-    text-align: center;
-    min-height: auto;
-  }
-
-  .heroLeft {
-    align-items: center;
-  }
-
-  .heroBadge {
-    margin: 0 auto;
-  }
-
-  .heroTagline {
-    font-size: 1.9rem;
-  }
-
-  .heroDesc {
-    max-width: 540px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .heroCta {
-    justify-content: center;
-  }
-
-  .heroRight {
-    order: -1;
-  }
-
-  .pillarsImage {
-    max-width: 300px;
-  }
-
   .hero {
     padding: 24px 0 0;
   }
 
-  .heroBannerLogo {
-    max-width: 360px;
+  .heroInner {
+    padding: 0 32px;
+    gap: 20px;
   }
 
-  .heroBanner {
-    padding: 0 32px 10px;
+  .heroBrandRow {
+    gap: 24px;
+  }
+
+  .heroBrandLogo {
+    max-width: 300px;
+  }
+
+  .heroPillars {
+    max-width: 200px;
+  }
+
+  .heroTagline {
+    font-size: 1.85rem;
   }
 
   .featureGrid {
@@ -775,9 +765,21 @@
     height: 34px;
   }
 
-  .heroContainer {
+  .heroInner {
     padding: 0 20px;
-    gap: 24px;
+    gap: 16px;
+  }
+
+  .heroBrandRow {
+    gap: 16px;
+  }
+
+  .heroBrandLogo {
+    max-width: 220px;
+  }
+
+  .heroPillars {
+    max-width: 160px;
   }
 
   .heroTagline {
@@ -801,20 +803,8 @@
     justify-content: center;
   }
 
-  .pillarsImage {
-    max-width: 220px;
-  }
-
   .hero {
     padding: 16px 0 0;
-  }
-
-  .heroBannerLogo {
-    max-width: 260px;
-  }
-
-  .heroBanner {
-    padding: 0 20px 8px;
   }
 
   .howItWorks,
@@ -881,11 +871,11 @@
     font-size: 1.3rem;
   }
 
-  .heroBannerLogo {
-    max-width: 200px;
+  .heroBrandLogo {
+    max-width: 180px;
   }
 
-  .pillarsImage {
-    max-width: 180px;
+  .heroPillars {
+    max-width: 130px;
   }
 }

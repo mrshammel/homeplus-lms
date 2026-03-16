@@ -80,39 +80,44 @@ export default function HomePage() {
 
       {/* ===== HERO SECTION ===== */}
       <section className={styles.hero} id="about">
-        {/* Centered logo banner */}
-        <div className={`${styles.heroBanner} animate-in`}>
-          <Image
-            src="/images/hpln-logo.png"
-            alt="Home Plus Online Learning"
-            width={440}
-            height={138}
-            className={styles.heroBannerLogo}
-            priority
-          />
-        </div>
+        <div className={styles.heroInner}>
+          {/* Top branded row: Logo + Pillars side by side */}
+          <div className={`${styles.heroBrandRow} animate-in`}>
+            <Image
+              src="/images/hpln-logo.png"
+              alt="Home Plus Online Learning"
+              width={400}
+              height={125}
+              className={styles.heroBrandLogo}
+              priority
+            />
+            <Image
+              src="/images/pillars-lgs.png"
+              alt="Learn. Grow. Succeed."
+              width={340}
+              height={145}
+              className={styles.heroPillars}
+            />
+          </div>
 
-        <div className={styles.heroContainer}>
-          {/* Left: Headline + Description + CTAs */}
-          <div className={styles.heroLeft}>
-            <div className={`${styles.heroBadge} animate-in`}>
+          {/* Full-width content below */}
+          <div className={styles.heroContent}>
+            <div className={`${styles.heroBadge} animate-in delay-1`}>
               Alberta Curriculum · Grades 1–9
             </div>
 
-            <h1 className={`${styles.heroTagline} animate-in`}>
+            <h1 className={`${styles.heroTagline} animate-in delay-1`}>
               Structured learning at home,{" "}
               <span className={styles.heroTaglineAccent}>
                 supported every step of the way
               </span>
             </h1>
 
-            <p className={`${styles.heroDesc} animate-in delay-1`}>
+            <p className={`${styles.heroDesc} animate-in delay-2`}>
               Home Plus is a flexible, asynchronous learning program that
               supports students in building strong academic skills through
-              guided independent learning at home. It is designed to offer
-              families greater choice while ensuring students remain engaged
-              in meaningful, high-quality learning with clear direction and
-              support.
+              guided independent learning at home — offering families greater
+              choice with clear direction and teacher support.
             </p>
 
             <div className={`${styles.heroCta} animate-in delay-2`}>
@@ -129,17 +134,6 @@ export default function HomePage() {
                 👩‍🏫 Teacher Sign In
               </a>
             </div>
-          </div>
-
-          {/* Right: Pillars artwork */}
-          <div className={`${styles.heroRight} animate-in delay-1`}>
-            <Image
-              src="/images/pillars-lgs.png"
-              alt="Learn. Grow. Succeed."
-              width={420}
-              height={180}
-              className={styles.pillarsImage}
-            />
           </div>
         </div>
       </section>
