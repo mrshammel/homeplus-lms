@@ -18,6 +18,7 @@ export const authOptions: NextAuthOptions = {
         // Check if user exists in our database
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email },
+          select: { id: true, googleId: true, avatar: true },
         });
 
         if (!existingUser) {
@@ -44,12 +45,18 @@ export const authOptions: NextAuthOptions = {
             });
           }
         }
-
-        return true;
-      } catch (error) {
-        console.error('[Auth] Sign-in error:', error);
-        return false;
+      } catch (error: any) {
+        // Log full error details but DON'T block sign-in
+        console.error('[Auth] DB sync error (sign-in still allowed):', {
+          message: error?.message,
+          code: error?.code,
+          meta: error?.meta,
+          email: user.email,
+        });
       }
+
+      // Always allow Google sign-in — DB issues shouldn't lock users out
+      return true;
     },
 
     async jwt({ token, user }) {
