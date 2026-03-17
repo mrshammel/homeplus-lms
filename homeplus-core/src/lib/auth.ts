@@ -62,14 +62,24 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // On initial sign-in, fetch role from DB and embed in token
       if (user?.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email },
-          select: { id: true, role: true, gradeLevel: true },
-        });
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role;
-          token.gradeLevel = dbUser.gradeLevel;
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: user.email },
+            select: { id: true, role: true, gradeLevel: true },
+          });
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.role = dbUser.role;
+            token.gradeLevel = dbUser.gradeLevel;
+          } else {
+            // User not in DB yet (signIn may have failed to create) — default to STUDENT
+            token.role = 'STUDENT';
+            console.warn('[Auth] JWT: user not found in DB, defaulting to STUDENT:', user.email);
+          }
+        } catch (error: any) {
+          // DB query failed — default to STUDENT so they still get routed
+          token.role = 'STUDENT';
+          console.error('[Auth] JWT DB error (defaulting to STUDENT):', error?.message);
         }
       }
       return token;
