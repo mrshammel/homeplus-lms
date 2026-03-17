@@ -1,3 +1,5 @@
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 
 // Prevent multiple instances in development (hot reload)
@@ -6,11 +8,16 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  // Prisma v7: datasource url lives in prisma.config.ts for CLI,
-  // but at runtime we must pass it via the constructor.
-  return new PrismaClient({
-    datasourceUrl: process.env.DATABASE_URL,
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // Supabase requires SSL for remote (Vercel) connections
+    ssl: process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : undefined,
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const adapter = new PrismaPg(pool as any);
+  return new PrismaClient({ adapter });
 }
 
 export const prisma =
