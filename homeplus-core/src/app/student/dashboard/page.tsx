@@ -5,6 +5,7 @@
 // and renders the full dashboard. All 9 sections.
 
 import { getStudentDashboardData } from '@/lib/student-data';
+import { subjectColorVars } from '@/lib/subject-colors';
 import styles from '../student.module.css';
 
 export default async function StudentDashboard() {
@@ -40,29 +41,33 @@ export default async function StudentDashboard() {
       <section className={styles.statRow} aria-label="Quick stats">
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: '#2563eb' }}>{stats.activeCourses}</div>
-          <div className={styles.statLabel}>Active Courses</div>
+          <div className={styles.statLabel}>My Courses</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: '#059669' }}>{stats.overallProgress}%</div>
-          <div className={styles.statLabel}>Overall Progress</div>
+          <div className={styles.statLabel}>Progress</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: stats.averageGrade != null && stats.averageGrade >= 75 ? '#059669' : '#d97706' }}>
             {stats.averageGrade != null ? `${stats.averageGrade}%` : '—'}
           </div>
-          <div className={styles.statLabel}>Average Grade</div>
+          <div className={styles.statLabel}>My Grade</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: stats.assignmentsDue > 0 ? '#dc2626' : '#64748b' }}>
             {stats.assignmentsDue}
           </div>
-          <div className={styles.statLabel}>Items Due</div>
+          <div className={styles.statLabel}>To Do</div>
         </div>
       </section>
 
       {/* ===== C. CONTINUE LEARNING ===== */}
       {enrollments.length > 0 && enrollments[0].currentLesson && (
-        <section className={styles.dashCard} style={{ marginBottom: 20 }} aria-label="Continue learning">
+        <section
+          className={styles.dashCard}
+          style={{ marginBottom: 20, borderLeft: `5px solid`, ...subjectColorVars(enrollments[0].subjectName) }}
+          aria-label="Continue learning"
+        >
           <h3 className={styles.cardTitle}>
             ▶️ Continue Learning
           </h3>
@@ -89,23 +94,24 @@ export default async function StudentDashboard() {
       {/* ===== D. ENROLLED COURSES ===== */}
       <section aria-label="Enrolled courses" style={{ marginBottom: 20 }}>
         <h3 className={styles.sectionHeading}>📚 My Courses</h3>
-        <div className={styles.courseGrid}>
+      <div className={styles.courseGrid}>
           {enrollments.map((course) => (
             <a
               key={course.subjectId}
               href={`/student/courses/${course.subjectId}`}
               className={styles.courseCard}
+              style={subjectColorVars(course.subjectName)}
             >
               <div className={styles.courseCardHeader}>
                 <span className={styles.courseCardIcon}>{course.subjectIcon}</span>
                 <span className={styles.courseCardGrade}>Grade {course.gradeLevel}</span>
               </div>
               <h4 className={styles.courseCardTitle}>{course.subjectName}</h4>
-              <div className={styles.courseCardUnit}>{course.currentUnit || 'All units complete'}</div>
+              <div className={styles.courseCardUnit}>{course.currentUnit || '✅ All units complete'}</div>
 
               {/* Progress bar */}
               <div className={styles.courseCardProgress}>
-                <div className={styles.progressBar} style={{ width: '100%', height: 6 }}>
+                <div className={styles.progressBar} style={{ width: '100%', height: 8 }}>
                   <div className={styles.progressFill} style={{ width: `${course.progressPercent}%` }} />
                 </div>
                 <div className={styles.courseCardProgressRow}>
@@ -114,17 +120,18 @@ export default async function StudentDashboard() {
                 </div>
               </div>
 
-              {/* Grade + Pacing */}
+              {/* Grade + Status */}
               <div className={styles.courseCardFooter}>
                 <span className={styles.courseCardGradeLabel}>
-                  {course.averageScore != null ? `${course.averageScore}% · ${course.gradeLabel}` : 'No grades yet'}
+                  {course.averageScore != null ? `${course.averageScore}%` : 'No grades yet'}
                 </span>
-                <span
-                  className={styles.pacingBadge}
-                  style={{ background: course.pacingStyle.bg, color: course.pacingStyle.color }}
-                >
-                  {course.pacingStyle.icon} {course.pacing.academicLabel}
-                </span>
+                {course.progressPercent === 100 ? (
+                  <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
+                ) : course.progressPercent > 0 ? (
+                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+                ) : (
+                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start →</span>
+                )}
               </div>
 
               {course.missingAssignments > 0 && (
@@ -137,27 +144,28 @@ export default async function StudentDashboard() {
         </div>
       </section>
 
-      {/* ===== E + F. GRADES, PROGRESS & PACING BY COURSE ===== */}
-      <section aria-label="Grades and pacing by course" style={{ marginBottom: 20 }}>
-        <h3 className={styles.sectionHeading}>📊 Grades, Progress & Pacing</h3>
+      {/* ===== E + F. MY GRADES & PROGRESS ===== */}
+      <section aria-label="Grades and progress by course" style={{ marginBottom: 20 }}>
+        <h3 className={styles.sectionHeading}>📊 My Grades & Progress</h3>
         <div className={styles.dashCard}>
           {enrollments.map((course, i) => (
-            <div key={course.subjectId} className={styles.courseDetailRow} style={i > 0 ? { borderTop: '1px solid #f1f5f9', paddingTop: 16, marginTop: 16 } : undefined}>
+            <div key={course.subjectId} className={styles.courseDetailRow} style={{ ...subjectColorVars(course.subjectName), ...(i > 0 ? { borderTop: '1px solid #f1f5f9', paddingTop: 16, marginTop: 16 } : {}) }}>
               <div className={styles.courseDetailHeader}>
                 <span className={styles.courseDetailIcon}>{course.subjectIcon}</span>
                 <div className={styles.courseDetailName}>{course.subjectName}</div>
-                <span
-                  className={styles.pacingBadge}
-                  style={{ background: course.pacingStyle.bg, color: course.pacingStyle.color }}
-                >
-                  {course.pacingStyle.icon} {course.pacing.academicLabel}
-                </span>
+                {course.progressPercent === 100 ? (
+                  <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
+                ) : course.progressPercent > 0 ? (
+                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+                ) : (
+                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Not Started</span>
+                )}
               </div>
 
               <div className={styles.courseDetailGrid}>
                 {/* Grade */}
                 <div className={styles.courseDetailStat}>
-                  <div className={styles.courseDetailStatLabel}>Grade</div>
+                  <div className={styles.courseDetailStatLabel}>My Grade</div>
                   <div className={styles.courseDetailStatValue}>
                     {course.averageScore != null ? `${course.averageScore}%` : '—'}
                   </div>
@@ -173,32 +181,32 @@ export default async function StudentDashboard() {
                   </div>
                 </div>
 
-                {/* Pacing */}
+                {/* Status */}
                 <div className={styles.courseDetailStat}>
-                  <div className={styles.courseDetailStatLabel}>Pacing</div>
+                  <div className={styles.courseDetailStatLabel}>Status</div>
                   <div className={styles.courseDetailStatValue} style={{ color: course.pacingStyle.color }}>
-                    {course.pacing.daysBehindOrAhead >= 0 ? '+' : ''}{course.pacing.daysBehindOrAhead}d
+                    {course.pacing.academicLabel}
                   </div>
                   <div className={styles.courseDetailStatNote}>{course.pacing.pacingSummary}</div>
                 </div>
 
                 {/* Missing */}
                 <div className={styles.courseDetailStat}>
-                  <div className={styles.courseDetailStatLabel}>Missing</div>
+                  <div className={styles.courseDetailStatLabel}>To Do</div>
                   <div className={styles.courseDetailStatValue} style={{ color: course.missingAssignments > 0 ? '#dc2626' : '#059669' }}>
-                    {course.missingAssignments}
+                    {course.missingAssignments > 0 ? course.missingAssignments : '✅'}
                   </div>
                   <div className={styles.courseDetailStatNote}>
-                    {course.missingAssignments > 0 ? 'Need attention' : 'All submitted'}
+                    {course.missingAssignments > 0 ? 'Need attention' : 'All done!'}
                   </div>
                 </div>
               </div>
 
-              {/* Expected vs actual progress */}
+              {/* How I'm Doing bar */}
               <div className={styles.pacingBar}>
                 <div className={styles.pacingBarLabel}>
-                  <span>Expected: {Math.round(course.pacing.expectedProgress)}%</span>
-                  <span>Actual: {Math.round(course.pacing.actualProgress)}%</span>
+                  <span>Where I should be: {Math.round(course.pacing.expectedProgress)}%</span>
+                  <span>Where I am: {Math.round(course.pacing.actualProgress)}%</span>
                 </div>
                 <div className={styles.pacingBarTrack}>
                   <div className={styles.pacingBarExpected} style={{ width: `${course.pacing.expectedProgress}%` }} />

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getUnitDetail } from '@/lib/unit-detail-data';
 import { getLessonStateUI } from '@/lib/lesson-progress';
+import { subjectColorVars } from '@/lib/subject-colors';
 import styles from '../../../../student.module.css';
 
 interface Props {
@@ -42,7 +43,7 @@ export default async function UnitDetailPage({ params }: Props) {
     : 'Complete each lesson to unlock the next one.';
 
   return (
-    <>
+    <div style={subjectColorVars(courseName)}>
       {/* ===== A. UNIT HEADER ===== */}
       <section className={styles.welcomeSection} aria-label="Unit header">
         {/* Breadcrumb */}
@@ -79,7 +80,7 @@ export default async function UnitDetailPage({ params }: Props) {
       {/* ===== B. UNIT PROGRESS SUMMARY ===== */}
       <section className={styles.statRow} aria-label="Unit progress summary" style={{ marginBottom: 20 }}>
         <div className={styles.statCard}>
-          <div className={styles.statValue} style={{ color: '#2563eb' }}>{progressPercent}%</div>
+          <div className={styles.statValue} style={{ color: 'var(--subject-primary)' }}>{progressPercent}%</div>
           <div className={styles.statLabel}>Progress</div>
         </div>
         <div className={styles.statCard}>
@@ -91,7 +92,7 @@ export default async function UnitDetailPage({ params }: Props) {
             {unitStatus === 'completed' ? '✅' : unitStatus === 'in-progress' ? '📝' : '⬜'}
           </div>
           <div className={styles.statLabel}>
-            {unitStatus === 'completed' ? 'Complete' : unitStatus === 'in-progress' ? 'In Progress' : 'Not Started'}
+            {unitStatus === 'completed' ? 'Complete!' : unitStatus === 'in-progress' ? 'In Progress' : 'Not Started'}
           </div>
         </div>
       </section>
@@ -100,7 +101,7 @@ export default async function UnitDetailPage({ params }: Props) {
       {nextLessonTitle && nextLessonId && unitStatus !== 'completed' && (
         <section
           className={`${styles.dashCard} ${styles.dashCardFull}`}
-          style={{ marginBottom: 20, borderLeft: '4px solid #2563eb' }}
+          style={{ marginBottom: 20, borderLeft: '5px solid var(--subject-primary)' }}
           aria-label="Continue learning"
         >
           <div className={styles.continueCard}>
@@ -108,7 +109,7 @@ export default async function UnitDetailPage({ params }: Props) {
               <div className={styles.continueCourse}>Next Up</div>
               <div className={styles.continueLesson}>{nextLessonTitle}</div>
               <div className={styles.continueProgress}>
-                <div className={styles.progressBar} style={{ width: 140, height: 6 }}>
+                <div className={styles.progressBar} style={{ width: 140, height: 8 }}>
                   <div className={styles.progressFill} style={{ width: `${progressPercent}%` }} />
                 </div>
                 <span className={styles.progressPercent}>{completedLessons}/{totalLessons}</span>
@@ -169,7 +170,7 @@ export default async function UnitDetailPage({ params }: Props) {
       {/* ===== G. LESSONS LIST ===== */}
       <section aria-label="Unit lessons">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-          <h3 className={styles.sectionHeading} style={{ marginBottom: 0 }}>📋 Lessons</h3>
+          <h3 className={styles.sectionHeading} style={{ marginBottom: 0 }}>📚 Lessons</h3>
           <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontStyle: 'italic' }}>{unlockHint}</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -178,29 +179,17 @@ export default async function UnitDetailPage({ params }: Props) {
             const isLocked = lesson.displayState === 'LOCKED';
             const isNext = lesson.isNextLesson;
 
-            // Wrappers: locked = div, clickable = Link
+            const statusClass = lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED'
+              ? styles.statusComplete
+              : lesson.displayState === 'IN_PROGRESS' || lesson.displayState === 'AVAILABLE' ? styles.statusInProgress
+              : lesson.displayState === 'NEEDS_RETEACH' ? styles.statusInProgress
+              : styles.statusLocked;
+
             const CardContent = (
-              <div
-                className={styles.dashCard}
-                style={{
-                  borderLeft: `4px solid ${isNext ? '#2563eb' : ui.color}`,
-                  background: ui.bg,
-                  opacity: isLocked ? 0.55 : 1,
-                  cursor: isLocked ? 'default' : 'pointer',
-                  transition: 'transform 0.15s, box-shadow 0.15s',
-                  position: 'relative' as const,
-                }}
-              >
+              <div className={`${styles.lessonCard} ${isLocked ? styles.lessonCardLocked : ''}`}>
                 {/* Next lesson indicator */}
                 {isNext && (
-                  <div style={{
-                    position: 'absolute' as const, top: -8, right: 12,
-                    background: '#2563eb', color: '#fff',
-                    fontSize: '0.68rem', fontWeight: 700,
-                    padding: '2px 10px', borderRadius: 10,
-                  }}>
-                    ▶ NEXT
-                  </div>
+                  <div className={styles.nextBadge}>▶ NEXT</div>
                 )}
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
@@ -208,7 +197,8 @@ export default async function UnitDetailPage({ params }: Props) {
                   <div
                     style={{
                       width: 36, height: 36, borderRadius: '50%',
-                      background: isLocked ? '#cbd5e1' : ui.color, color: '#fff',
+                      background: isLocked ? '#cbd5e1' : lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED' ? '#059669' : 'var(--subject-primary)',
+                      color: '#fff',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontWeight: 700, fontSize: '0.85rem', flexShrink: 0,
                     }}
@@ -229,18 +219,7 @@ export default async function UnitDetailPage({ params }: Props) {
                       }}>
                         {lesson.title}
                       </h4>
-                      <span
-                        className={styles.pacingBadge}
-                        style={{
-                          background: isLocked ? '#f1f5f9'
-                            : lesson.displayState === 'NEEDS_RETEACH' ? '#fef3c7'
-                            : lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED' ? '#d1fae5'
-                            : lesson.displayState === 'IN_PROGRESS' || lesson.displayState === 'AVAILABLE' ? '#dbeafe'
-                            : '#f3f4f6',
-                          color: ui.color,
-                          fontSize: '0.72rem',
-                        }}
-                      >
+                      <span className={`${styles.statusChip} ${statusClass}`}>
                         {ui.badge}
                       </span>
                     </div>
@@ -256,14 +235,14 @@ export default async function UnitDetailPage({ params }: Props) {
                       <p style={{
                         fontSize: '0.75rem', color: '#059669', fontWeight: 600, margin: '4px 0 0',
                       }}>
-                        Mastery Score: {Math.round(lesson.masteryScore)}%
+                        ⭐ Score: {Math.round(lesson.masteryScore)}%
                       </p>
                     )}
 
                     {/* Reteach explanation */}
                     {lesson.displayState === 'NEEDS_RETEACH' && (
                       <p style={{ fontSize: '0.78rem', color: '#d97706', fontWeight: 600, margin: '4px 0 0' }}>
-                        You must complete the review before moving to the next lesson.
+                        ⚠️ Complete the review to continue.
                       </p>
                     )}
 
@@ -298,11 +277,10 @@ export default async function UnitDetailPage({ params }: Props) {
                         <span
                           className={styles.lessonCta}
                           style={{
-                            color: ui.color,
+                            color: lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED' ? '#059669' : 'var(--subject-primary)',
                             borderColor: lesson.displayState === 'NEEDS_RETEACH' ? '#fbbf24'
                               : lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED' ? '#86efac'
-                              : lesson.displayState === 'IN_PROGRESS' || lesson.displayState === 'AVAILABLE' ? '#93c5fd'
-                              : '#e2e8f0',
+                              : 'var(--subject-light)',
                           }}
                         >
                           {ui.cta}
@@ -314,7 +292,6 @@ export default async function UnitDetailPage({ params }: Props) {
               </div>
             );
 
-            // Locked lessons get a non-clickable div; clickable lessons get a Link
             if (isLocked) {
               return <div key={lesson.id}>{CardContent}</div>;
             }
@@ -336,24 +313,25 @@ export default async function UnitDetailPage({ params }: Props) {
       {unitStatus === 'completed' && (
         <section
           className={`${styles.dashCard} ${styles.dashCardFull}`}
-          style={{ marginTop: 20, background: '#f0fdf4', borderLeft: '4px solid #059669', textAlign: 'center', padding: '24px 20px' }}
+          style={{ marginTop: 20, background: '#f0fdf4', borderLeft: '5px solid #059669', textAlign: 'center', padding: '24px 20px' }}
           aria-label="Unit complete"
         >
-          <div style={{ fontSize: '2rem', marginBottom: 8 }}>🎉</div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#059669', margin: '0 0 4px' }}>
-            Unit Complete!
+          <div style={{ fontSize: '2.2rem', marginBottom: 8 }}>🎉</div>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#059669', margin: '0 0 4px' }}>
+            Unit Complete! 🌟
           </h3>
-          <p style={{ fontSize: '0.85rem', color: '#475569' }}>
+          <p style={{ fontSize: '0.88rem', color: '#475569' }}>
             You&apos;ve finished all lessons in {unitTitle}. Great work!
           </p>
           <Link
             href={`/student/courses/${courseId}`}
-            style={{ display: 'inline-block', marginTop: 12, fontSize: '0.85rem', fontWeight: 600, color: '#2563eb' }}
+            className={styles.continueBtn}
+            style={{ display: 'inline-block', marginTop: 12 }}
           >
-            ← Back to Course Overview
+            ← Back to Course
           </Link>
         </section>
       )}
-    </>
+    </div>
   );
 }

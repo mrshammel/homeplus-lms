@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from '../student.module.css';
 import { getStudentDashboardData } from '@/lib/student-data';
+import { subjectColorVars } from '@/lib/subject-colors';
 
 export default async function CoursesPage() {
   const data = await getStudentDashboardData();
@@ -19,6 +20,7 @@ export default async function CoursesPage() {
             key={course.subjectId}
             href={`/student/courses/${course.subjectId}`}
             className={styles.courseCard}
+            style={subjectColorVars(course.subjectName)}
             aria-label={`Open ${course.subjectName}`}
           >
             <div className={styles.courseCardHeader}>
@@ -26,10 +28,10 @@ export default async function CoursesPage() {
               <span className={styles.courseCardGrade}>Grade {course.gradeLevel}</span>
             </div>
             <h4 className={styles.courseCardTitle}>{course.subjectName}</h4>
-            <div className={styles.courseCardUnit}>{course.currentUnit || 'All units complete'}</div>
+            <div className={styles.courseCardUnit}>{course.currentUnit || '✅ All done!'}</div>
 
             <div className={styles.courseCardProgress}>
-              <div className={styles.progressBar} style={{ width: '100%', height: 6 }}>
+              <div className={styles.progressBar} style={{ width: '100%', height: 8 }}>
                 <div className={styles.progressFill} style={{ width: `${course.progressPercent}%` }} />
               </div>
               <div className={styles.courseCardProgressRow}>
@@ -40,18 +42,19 @@ export default async function CoursesPage() {
 
             <div className={styles.courseCardFooter}>
               <span className={styles.courseCardGradeLabel}>
-                {course.averageScore != null ? `${course.averageScore}% · ${course.gradeLabel}` : 'No grades yet'}
+                {course.averageScore != null ? `${course.averageScore}%` : 'No grades yet'}
               </span>
-              <span
-                className={styles.pacingBadge}
-                style={{ background: course.pacingStyle.bg, color: course.pacingStyle.color }}
-              >
-                {course.pacingStyle.icon} {course.pacing.academicLabel}
-              </span>
+              {course.progressPercent === 100 ? (
+                <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
+              ) : course.progressPercent > 0 ? (
+                <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+              ) : (
+                <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start →</span>
+              )}
             </div>
 
             <div className={styles.courseCardCta}>
-              Open Course →
+              {course.progressPercent > 0 ? 'Continue →' : 'Start Course →'}
             </div>
           </Link>
         ))}
