@@ -143,6 +143,54 @@ async function main() {
     },
   });
 
+  const lesson5 = await prisma.lesson.upsert({
+    where: { id: 'g7-sci-ua-l5' },
+    update: {},
+    create: {
+      id: 'g7-sci-ua-l5',
+      unitId: unitA.id,
+      title: 'Food Webs & Energy Pyramids',
+      subtitle: 'Discover how energy flows through complex food webs and why energy is lost at each level.',
+      order: 5,
+    },
+  });
+
+  const lesson6 = await prisma.lesson.upsert({
+    where: { id: 'g7-sci-ua-l6' },
+    update: {},
+    create: {
+      id: 'g7-sci-ua-l6',
+      unitId: unitA.id,
+      title: 'Ecosystem Change & Human Impact',
+      subtitle: 'Explore how ecosystems change naturally and through human activity.',
+      order: 6,
+    },
+  });
+
+  const lesson7 = await prisma.lesson.upsert({
+    where: { id: 'g7-sci-ua-l7' },
+    update: {},
+    create: {
+      id: 'g7-sci-ua-l7',
+      unitId: unitA.id,
+      title: 'Monitoring & Indicator Species',
+      subtitle: 'Learn how scientists monitor ecosystem health using living indicators.',
+      order: 7,
+    },
+  });
+
+  const lesson8 = await prisma.lesson.upsert({
+    where: { id: 'g7-sci-ua-l8' },
+    update: {},
+    create: {
+      id: 'g7-sci-ua-l8',
+      unitId: unitA.id,
+      title: 'Conservation & Stewardship — Final Unit Project',
+      subtitle: 'Design a conservation plan for an Alberta ecosystem using everything you have learned.',
+      order: 8,
+    },
+  });
+
   // --- Unit B: Plants ---
   const unitB = await prisma.unit.upsert({
     where: { id: 'g7-sci-unit-b' },
