@@ -10,7 +10,7 @@ import Link from 'next/link';
 import LessonFrame from '@/components/lesson/LessonFrame';
 import { subjectColorVars, getSubjectColors } from '@/lib/subject-colors';
 import type { SubjectMode, MasteryConfig, SectionsData, LessonSectionType } from '@/lib/lesson-types';
-import styles from '../../../../student.module.css';
+import styles from '../../../../../../student.module.css';
 
 interface LessonFrameClientProps {
   lessonId: string;
