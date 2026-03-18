@@ -105,38 +105,72 @@ export default async function UnitDetailPage({ params }: Props) {
         {/* --- LEFT SIDEBAR: Lesson Navigator --- */}
         <aside className={styles.lessonSidebar}>
           <div className={styles.lessonSidebarTitle}>Lessons</div>
+
+          {/* Progress summary */}
+          <div className={styles.lessonSidebarProgress}>
+            <div className={styles.lessonSidebarProgressBar}>
+              <div className={styles.lessonSidebarProgressFill} style={{ width: `${progressPercent}%` }} />
+            </div>
+            <span className={styles.lessonSidebarProgressText}>{completedLessons}/{totalLessons}</span>
+          </div>
+
           <ol className={styles.lessonSidebarList}>
             {lessons.map((lesson, i) => {
               const ui = getLessonStateUI(lesson.displayState);
               const isLocked = lesson.displayState === 'LOCKED';
-              const isComplete = lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED';
+              const isMastered = lesson.displayState === 'MASTERED';
+              const isComplete = isMastered || lesson.displayState === 'COMPLETED';
+              const isReteach = lesson.displayState === 'NEEDS_RETEACH';
               const isCurrent = lesson.isNextLesson;
 
-              const numClass = isComplete ? styles.lessonSidebarNumComplete
+              // Number circle class
+              const numClass = isMastered ? styles.lessonSidebarNumMastered
+                : isComplete ? styles.lessonSidebarNumComplete
+                : isReteach ? styles.lessonSidebarNumReteach
                 : isCurrent ? styles.lessonSidebarNumActive
                 : isLocked ? styles.lessonSidebarNumLocked
                 : '';
 
+              // Item row class
               const itemClass = `${styles.lessonSidebarItem} ${
                 isCurrent ? styles.lessonSidebarItemActive
+                : isMastered ? styles.lessonSidebarItemMastered
                 : isComplete ? styles.lessonSidebarItemComplete
+                : isReteach ? styles.lessonSidebarItemReteach
                 : isLocked ? styles.lessonSidebarItemLocked
                 : ''
               }`;
 
+              // Number circle content
+              const numContent = isMastered ? '⭐'
+                : isComplete ? '✓'
+                : isReteach ? '⚠'
+                : isLocked ? '🔒'
+                : i + 1;
+
               const inner = (
                 <>
                   <span className={`${styles.lessonSidebarNum} ${numClass}`}>
-                    {isComplete ? '✓' : isLocked ? '🔒' : i + 1}
+                    {numContent}
                   </span>
                   <span className={styles.lessonSidebarItemLabel}>{lesson.title}</span>
+                  {isReteach && (
+                    <span className={`${styles.lessonSidebarStatus} ${styles.lessonSidebarStatusReteach}`}>
+                      Review
+                    </span>
+                  )}
+                  {isMastered && (
+                    <span className={`${styles.lessonSidebarStatus} ${styles.lessonSidebarStatusMastered}`}>
+                      ⭐
+                    </span>
+                  )}
                 </>
               );
 
               if (isLocked) {
                 return (
                   <li key={lesson.id}>
-                    <div className={itemClass} title="Locked">{inner}</div>
+                    <div className={itemClass} title="Complete previous lessons to unlock" aria-disabled="true">{inner}</div>
                   </li>
                 );
               }
@@ -146,6 +180,7 @@ export default async function UnitDetailPage({ params }: Props) {
                   <Link
                     href={`/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
                     className={itemClass}
+                    aria-current={isCurrent ? 'step' : undefined}
                   >
                     {inner}
                   </Link>
@@ -155,9 +190,7 @@ export default async function UnitDetailPage({ params }: Props) {
           </ol>
 
           {/* Unlock hint */}
-          <div style={{ padding: '12px 20px 0', fontSize: '0.72rem', color: '#94a3b8', fontStyle: 'italic' }}>
-            {unlockHint}
-          </div>
+          <div className={styles.lessonSidebarHint}>{unlockHint}</div>
         </aside>
 
         {/* --- RIGHT: Main Content --- */}
