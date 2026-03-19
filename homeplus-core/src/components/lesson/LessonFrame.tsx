@@ -219,13 +219,45 @@ export default function LessonFrame({
       setMasteryResult(result);
       if (result.passed) {
         setOverallStatus('MASTERED');
-        markSection('CHECK');
+        const nextSections = { ...sectionsCompleted, check: true };
+        setSectionsCompleted(nextSections);
+
+        // Directly send MASTERED status to the progress API
+        // (markSection would use stale overallStatus from current render)
+        try {
+          await fetch(`/api/lesson/${lessonId}/progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sectionsData: nextSections,
+              status: 'MASTERED',
+              masteryScore: result.score,
+            }),
+          });
+        } catch (e) {
+          console.error('Progress update failed:', e);
+        }
       } else if (result.needsReteach && result.reteachOutcome) {
         setReteachOutcome(result.reteachOutcome);
         setOverallStatus('NEEDS_RETEACH');
+
+        // Send NEEDS_RETEACH status directly
+        try {
+          await fetch(`/api/lesson/${lessonId}/progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sectionsData: sectionsCompleted,
+              status: 'NEEDS_RETEACH',
+              masteryScore: result.score,
+            }),
+          });
+        } catch (e) {
+          console.error('Progress update failed:', e);
+        }
       }
     },
-    [markSection],
+    [lessonId, sectionsCompleted],
   );
 
   // Handle reteach completion
