@@ -122,7 +122,7 @@ async function seedLesson5() {
       content: {
         url: 'https://www.youtube.com/watch?v=GibiNy4d4gc',
         title: 'Food Webs & Energy Pyramids Explained',
-        aiSummary: 'This video explains how food webs work, why they are more realistic than simple food chains, and how energy decreases at each trophic level following the 10% rule.',
+        aiSummary: 'A food web shows how multiple food chains in an ecosystem overlap and connect. Unlike a single food chain (which is a simple straight line), a food web is more realistic because most organisms eat more than one thing and are eaten by more than one predator. Energy enters the food web through producers (plants) that capture sunlight via photosynthesis. At each trophic level, only about 10% of the energy is passed on to the next level — the rest is lost as heat through life processes like movement and body temperature. This is called the 10% Rule. An energy pyramid is a diagram that shows this decrease: the bottom level (producers) has the most energy, and each level above has less. This is why there are always more producers than top predators in any ecosystem.',
       },
     },
     {
@@ -472,7 +472,7 @@ async function seedLesson6() {
       content: {
         url: 'https://www.youtube.com/watch?v=HrVhit3Wziw',
         title: 'Human Impact on Biodiversity',
-        aiSummary: 'This video explores how human activities like deforestation, pollution, and urbanization affect biodiversity and ecosystem health around the world.',
+        aiSummary: 'Humans affect ecosystems and biodiversity in many significant ways. Deforestation removes habitat for thousands of species and reduces the number of trees available to absorb carbon dioxide. Pollution — including air pollution, water pollution, and soil contamination — can poison organisms and disrupt food chains. Urbanization (building cities, roads, and factories) replaces natural habitats with concrete and pavement. Introducing invasive species — organisms that are brought to a new environment where they have no natural predators — can outcompete native species and collapse food webs. Climate change, driven by burning fossil fuels, is warming the planet and shifting weather patterns, which forces species to migrate, adapt, or face extinction. However, humans can also help through conservation efforts like protected areas, habitat restoration, sustainable agriculture, and reducing pollution.',
       },
     },
     {
@@ -689,7 +689,7 @@ async function seedLesson7() {
       content: {
         url: 'https://www.youtube.com/watch?v=hIJdNGKiSIk',
         title: 'What Are Indicator Species?',
-        aiSummary: 'This video explains how indicator species work, why they matter for ecosystem monitoring, and how scientists use them to assess environmental health.',
+        aiSummary: 'Indicator species are organisms whose presence, absence, or health tells scientists about the overall condition of an ecosystem. For example, mayfly larvae can only survive in clean, well-oxygenated water — if you find them in a stream, the water quality is excellent. If they disappear, something is wrong. Lichens are indicator species for air quality — they are very sensitive to air pollution and will not grow in polluted areas. Frogs and amphibians are indicators of wetland health because they absorb water and pollutants through their skin, making them very sensitive to environmental changes. Scientists use indicator species as a quick, efficient way to monitor ecosystem health without having to test every single factor. If the indicator species are thriving, the ecosystem is likely healthy. If they are declining, it signals that something in the environment has changed and needs investigation.',
       },
     },
     {

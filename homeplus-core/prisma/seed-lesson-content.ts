@@ -101,6 +101,7 @@ async function main() {
         url: 'https://www.youtube.com/embed/6v5VPpg-kMU',
         title: 'Ecosystems for Kids — Science Video',
         transcript: 'This video introduces the concept of ecosystems, explaining biotic and abiotic factors with real-world examples from forests, oceans, and deserts.',
+        aiSummary: 'An ecosystem is a community of living things (biotic factors) interacting with non-living things (abiotic factors) in a specific environment. Biotic factors include plants, animals, fungi, and bacteria. Abiotic factors include sunlight, water, temperature, soil, and air. Every ecosystem — from a forest to a puddle — contains both. These factors are constantly interacting: plants need sunlight and water (abiotic) to grow, and animals (biotic) depend on plants for food. If one factor changes, it can affect the whole ecosystem. For example, a drought (abiotic change) reduces plant growth, which means less food for herbivores, which affects predators too.',
       },
     },
     {

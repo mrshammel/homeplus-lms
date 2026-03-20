@@ -154,6 +154,7 @@ async function seedLesson2() {
         url: 'https://www.youtube.com/embed/MuKs9o1s8h8',
         title: 'Food Chains & Food Webs — Crash Course Kids',
         transcript: 'This video explains how energy flows through food chains and food webs, using examples from grassland and ocean ecosystems. It covers producers, primary consumers, secondary consumers, and decomposers.',
+        aiSummary: 'A food chain shows how energy moves from one organism to the next in a straight line. It always starts with a producer (like grass), which captures energy from the sun through photosynthesis. That energy passes to a primary consumer (herbivore, like a rabbit), then to a secondary consumer (carnivore, like a fox), and sometimes to a tertiary consumer (top predator, like an eagle). Decomposers (like fungi and bacteria) break down dead organisms at every level, recycling nutrients back into the soil. A food web is more realistic than a single food chain — it shows how multiple food chains in an ecosystem are interconnected because most organisms eat more than one thing and are eaten by more than one predator.',
       },
     },
     {
@@ -615,6 +616,7 @@ async function seedLesson3() {
         url: 'https://www.youtube.com/embed/ysa5OBhXz-Q',
         title: 'How Wolves Changed Rivers — Yellowstone',
         transcript: 'This short documentary shows how reintroducing wolves to Yellowstone in 1995 caused a trophic cascade: wolves reduced the deer population, which allowed vegetation to recover, which stabilized riverbanks and changed the physical geography of the park. It demonstrates the power of predator-prey relationships.',
+        aiSummary: 'In 1995, wolves were reintroduced to Yellowstone National Park after being absent for 70 years. Without wolves, the deer population had grown too large and overgrazed the vegetation — especially along riverbanks. When wolves returned, they hunted deer and also changed deer behaviour, causing them to avoid certain areas. This allowed trees and shrubs to grow back along rivers. The roots of these plants stabilized the riverbanks, reducing erosion and actually changing the course of rivers. This is called a trophic cascade — when a change at the top of the food chain (adding a predator) causes a chain reaction that affects the entire ecosystem, all the way down to the physical landscape. This is a powerful example of how predator-prey relationships shape ecosystems.',
       },
     },
     {
