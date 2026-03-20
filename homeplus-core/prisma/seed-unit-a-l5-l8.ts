@@ -173,7 +173,7 @@ async function seedLesson5() {
       order: 8,
       content: {
         prompt: 'Look at the food web you just drew. Imagine that a disease kills most of the mice in this prairie ecosystem. Using your food web, explain:\n\n1. Which organisms would be DIRECTLY affected? (Name at least 2)\n2. Would the grasshopper population increase or decrease? Why?\n3. What would happen to the hawk population? Explain using the food web connections.',
-        rubricHint: 'Use specific organisms from your food web. Show cause-and-effect reasoning through at least 2 connections.',
+        rubricHint: 'Names specific organisms from the food web drawing (e.g. snake, hawk, grasshopper). Shows cause-and-effect reasoning through at least 2 food web connections. Uses vocabulary (food web, trophic level, consumer, energy). Explains how removing one species cascades through the web.',
         minLength: 80,
         teacherReviewRequired: false,
       },
@@ -505,7 +505,7 @@ async function seedLesson6() {
       id: 'l6-practice-2', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 7,
       content: {
         prompt: 'Read this scenario:\n\nA wetland near a city is being drained to build a new housing development. The wetland currently contains: cattails, frogs, dragonflies, muskrats, herons, and many species of bacteria in the soil.\n\nUsing what you learned about habitat loss and food webs:\n1. Name at least 3 organisms that would lose their habitat.\n2. Explain how removing the wetland would affect the heron population specifically.\n3. Suggest ONE way the development could be designed to reduce harm to the ecosystem.',
-        rubricHint: 'Reference specific organisms from the scenario. Show cause-effect reasoning through the food web.',
+        rubricHint: 'Names at least 3 organisms from the wetland scenario (cattails, frogs, herons, etc.). Explains habitat loss cause-and-effect on herons via food web connections. Suggestion for reducing harm is specific and realistic. Uses vocabulary (habitat loss, biodiversity, food web, population).',
         minLength: 80,
         teacherReviewRequired: false,
       },
@@ -722,7 +722,7 @@ async function seedLesson7() {
       id: 'l7-practice-2', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 7,
       content: {
         prompt: 'You are a scientist hired to check the health of a lake near a farm. Design a simple monitoring plan:\n\n1. Name TWO indicator species you would look for and explain what they would tell you.\n2. Name TWO abiotic factors you would measure (think back to Lesson 1).\n3. Explain why monitoring BOTH biotic and abiotic factors gives a more complete picture of ecosystem health.\n\nUse specific vocabulary from today\'s and previous lessons.',
-        rubricHint: 'References indicator species by name, connects biotic/abiotic concept from L1, explains the value of combined monitoring.',
+        rubricHint: 'Names specific indicator species (frogs, mayfly larvae, lichens, tubifex worms) and explains what each indicates. References abiotic factors from Lesson 1 (temperature, pH, dissolved oxygen, sunlight, etc.). Connects biotic monitoring to abiotic monitoring with clear reasoning. Uses vocabulary (indicator species, biotic, abiotic, biodiversity, water quality, ecosystem health).',
         minLength: 80,
         teacherReviewRequired: false,
       },
@@ -940,7 +940,7 @@ async function seedLesson8() {
       id: 'l8-practice-1', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 6,
       content: {
         prompt: 'PART 1: Ecosystem Analysis\n\nFor your chosen Alberta ecosystem, answer these questions using concepts from the ENTIRE unit:\n\n1. Name at least 3 biotic factors and 2 abiotic factors in this ecosystem (Lesson 1).\n2. Draw or describe 1 food chain AND 1 food web in this ecosystem, labelling producers, consumers, and decomposers (Lessons 2 & 5).\n3. Name at least 1 symbiotic relationship between organisms in this ecosystem (Lesson 3).\n4. Explain how the 10% rule affects the number of top predators in this ecosystem (Lesson 5).',
-        rubricHint: 'Must reference specific concepts from Lessons 1-5. Use correct vocabulary. Show connections between concepts.',
+        rubricHint: 'Correctly names at least 3 biotic and 2 abiotic factors for the chosen ecosystem. Food chain/web labels producers, consumers, and decomposers correctly. Symbiotic relationship is accurately classified. 10% rule explanation connects to predator numbers. Uses vocabulary from Lessons 1-5 accurately (biotic, abiotic, producer, consumer, decomposer, food web, trophic level, 10% rule, symbiosis).',
         minLength: 120,
         teacherReviewRequired: true,
       },
@@ -949,7 +949,7 @@ async function seedLesson8() {
       id: 'l8-practice-2', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 7,
       content: {
         prompt: 'PART 2: Threats & Monitoring\n\nFor your chosen ecosystem:\n\n1. Identify at least 2 specific human impacts threatening this ecosystem (Lesson 6).\n2. Explain how each impact would affect the food web you described in Part 1.\n3. Design a monitoring plan: name 2 indicator species AND 2 abiotic measurements you would use (Lesson 7).\n4. Explain WHAT changes in your indicator species would tell you the ecosystem is in trouble.',
-        rubricHint: 'Must reference specific concepts from Lessons 6-7. Connect threats to the food web from Part 1. Name specific indicator species.',
+        rubricHint: 'Identifies 2+ specific and realistic human impacts on the chosen ecosystem (e.g. pollution, habitat loss, invasive species). Explains how each impact cascades through the food web from Part 1. Monitoring plan names specific indicator species and explains what each indicates. Abiotic measurements are appropriate for the ecosystem. Uses vocabulary (habitat loss, invasive species, pollution, indicator species, biodiversity, water quality).',
         minLength: 120,
         teacherReviewRequired: true,
       },
@@ -958,7 +958,7 @@ async function seedLesson8() {
       id: 'l8-practice-3', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 8,
       content: {
         prompt: 'PART 3: Conservation Plan\n\nDesign your conservation plan:\n\n1. Propose at least 3 specific conservation strategies to protect your ecosystem.\n   For each strategy, explain HOW it addresses a specific threat from Part 2.\n2. Explain how your plan balances human needs (jobs, development) with ecosystem health.\n3. Describe one way STUDENTS your age could practice stewardship for this ecosystem.\n4. Predict: If your conservation plan is implemented, what would your indicator species look like in 10 years?',
-        rubricHint: 'Strategies must directly address threats from Part 2. Must discuss balance between human needs and ecosystem protection. Prediction must use indicator species from Part 2.',
+        rubricHint: 'Each conservation strategy directly addresses a specific threat from Part 2 (not generic). Discusses real trade-offs between human needs and ecosystem health. Student stewardship suggestion is realistic and specific. Prediction uses indicator species from Part 2 with logical reasoning. Uses vocabulary (conservation, stewardship, sustainability, biodiversity, indicator species, ecosystem health).',
         minLength: 120,
         teacherReviewRequired: true,
       },
@@ -973,7 +973,7 @@ async function seedLesson8() {
       id: 'l8-practice-4', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 10,
       content: {
         prompt: 'FINAL REFLECTION: Unit Synthesis\n\nLook back at your warm-up prediction from Lesson 1 (what would happen if sunlight was blocked from a pond). Compare your thinking THEN to your understanding NOW.\n\n1. How has your understanding of ecosystems changed from Lesson 1 to Lesson 8?\n2. What concept from this unit do you think is most important for humans to understand? Why?\n3. If you could teach one lesson from this unit to a younger student, which would it be and why?',
-        rubricHint: 'Must reference specific content from at least 3 different lessons. Shows genuine reflection on learning growth.',
+        rubricHint: 'References specific content from at least 3 different lessons by name or concept. Shows genuine, specific reflection on how understanding changed (not generic statements like "I learned a lot"). Explains WHY the chosen concept matters with reasoning. Teaching choice shows understanding of what makes that lesson important.',
         minLength: 80,
         teacherReviewRequired: false,
       },

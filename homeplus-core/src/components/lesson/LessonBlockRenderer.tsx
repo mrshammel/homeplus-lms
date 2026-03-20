@@ -32,9 +32,10 @@ interface BlockProps {
   showFeedback?: boolean;
   lessonId?: string; // needed for AI feedback on constructed responses
   blockId?: string;  // block identifier for tracking
+  subjectMode?: string; // subject for calibrated AI feedback
 }
 
-export default function LessonBlockRenderer({ blockType, content, onAnswer, readOnly, showFeedback, lessonId, blockId }: BlockProps) {
+export default function LessonBlockRenderer({ blockType, content, onAnswer, readOnly, showFeedback, lessonId, blockId, subjectMode }: BlockProps) {
   switch (blockType) {
     case 'TEXT':
       return <TextBlock content={content as TextBlockContent} />;
@@ -55,7 +56,7 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
     case 'MULTIPLE_CHOICE':
       return <MultipleChoiceBlock content={content as MultipleChoiceBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
     case 'CONSTRUCTED_RESPONSE':
-      return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
+      return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} subjectMode={subjectMode} />;
     case 'DRAWING':
       return <DrawingBlock content={content as DrawingBlockContent} onAnswer={onAnswer} />;
     case 'PHOTO_UPLOAD':
@@ -460,21 +461,24 @@ function MultipleChoiceBlock({ content, onAnswer, readOnly }: {
   );
 }
 
-// ---- Constructed Response Block (with AI Feedback) ----
+// ---- Constructed Response Block (with Calibrated AI Feedback) ----
 interface AIFeedback {
   score: number;
   feedback: string;
   strengths: string[];
   improvements: string[];
+  nextStep?: string;
+  criteriaScores?: Record<string, number>;
   disclaimer: string;
 }
 
-function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId }: {
+function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId, subjectMode }: {
   content: ConstructedResponseBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
   lessonId?: string;
   blockId?: string;
+  subjectMode?: string;
 }) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -498,6 +502,8 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
           studentResponse: text,
           minLength: content.minLength,
           teacherReviewRequired: content.teacherReviewRequired,
+          subjectMode: subjectMode || 'GENERAL',
+          gradeLevel: 7,
         }),
       });
 
@@ -645,6 +651,20 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
                 <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: '#334155', lineHeight: 1.6 }}>
                   {feedback.improvements.map((s, i) => <li key={i}>{s}</li>)}
                 </ul>
+              </div>
+            )}
+
+            {/* Next Step */}
+            {feedback.nextStep && (
+              <div style={{
+                marginBottom: 10,
+                padding: '10px 14px',
+                background: '#eff6ff',
+                borderRadius: 8,
+                border: '1px solid #bfdbfe',
+              }}>
+                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1d4ed8', margin: '0 0 2px' }}>🎯 Next Step:</p>
+                <p style={{ fontSize: '0.82rem', color: '#334155', margin: 0, lineHeight: 1.5 }}>{feedback.nextStep}</p>
               </div>
             )}
 
