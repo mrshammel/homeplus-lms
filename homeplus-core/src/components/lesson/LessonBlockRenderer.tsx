@@ -53,7 +53,7 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
     case 'MATCHING':
       return <MatchingBlock content={content as MatchingBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
     case 'MULTIPLE_CHOICE':
-      return <MultipleChoiceBlock content={content as MultipleChoiceBlockContent} onAnswer={onAnswer} readOnly={readOnly} showFeedback={showFeedback} />;
+      return <MultipleChoiceBlock content={content as MultipleChoiceBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
     case 'CONSTRUCTED_RESPONSE':
       return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
     case 'DRAWING':
@@ -174,48 +174,120 @@ function WorkedExampleBlock({ content }: { content: WorkedExampleBlockContent })
   );
 }
 
-// ---- Fill in the Blank Block ----
+// ---- Fill in the Blank Block (AUTO_AI) ----
 function FillInBlankBlock({ content, onAnswer, readOnly }: {
   content: FillInBlankBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [checked, setChecked] = useState(false);
+  const [results, setResults] = useState<Record<string, boolean>>({});
 
   const handleChange = (id: string, val: string) => {
+    if (checked) return;
     const next = { ...answers, [id]: val };
     setAnswers(next);
-    onAnswer?.(next);
   };
+
+  const allFilled = (content.blanks || []).every((b) => (answers[b.id] || '').trim().length > 0);
+
+  const handleCheck = () => {
+    const res: Record<string, boolean> = {};
+    for (const b of content.blanks || []) {
+      const studentAnswer = (answers[b.id] || '').trim().toLowerCase();
+      const correctAnswer = b.correctAnswer.trim().toLowerCase();
+      // Accept answers that are close enough (handle plurals, minor spelling)
+      res[b.id] = studentAnswer === correctAnswer ||
+        correctAnswer.includes(studentAnswer) ||
+        studentAnswer.includes(correctAnswer);
+    }
+    setResults(res);
+    setChecked(true);
+    const correctCount = Object.values(res).filter(Boolean).length;
+    onAnswer?.({ answers, results: res, score: correctCount, total: (content.blanks || []).length });
+  };
+
+  const correctCount = Object.values(results).filter(Boolean).length;
+  const total = (content.blanks || []).length;
 
   return (
     <div className={styles.interactiveBlock}>
       <p className={styles.interactivePrompt}>{content.prompt}</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {(content.blanks || []).map((b) => (
-          <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {b.hint && <span style={{ fontSize: '0.82rem', color: '#64748b' }}>{b.hint}:</span>}
+          <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            {b.hint && <span style={{ fontSize: '0.82rem', color: '#64748b', minWidth: 80 }}>{b.hint}:</span>}
             <input
               className={styles.fillBlank}
               value={answers[b.id] || ''}
               onChange={(e) => handleChange(b.id, e.target.value)}
-              disabled={readOnly}
+              disabled={readOnly || checked}
               placeholder="..."
+              style={{
+                borderColor: checked
+                  ? results[b.id] ? '#22c55e' : '#ef4444'
+                  : undefined,
+                background: checked
+                  ? results[b.id] ? '#f0fdf4' : '#fef2f2'
+                  : undefined,
+              }}
             />
+            {checked && (
+              <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>
+                {results[b.id]
+                  ? <span style={{ color: '#059669' }}>✓</span>
+                  : <span style={{ color: '#dc2626' }}>✗ <span style={{ fontWeight: 400, fontSize: '0.78rem', color: '#475569' }}>{b.correctAnswer}</span></span>
+                }
+              </span>
+            )}
           </div>
         ))}
       </div>
+
+      {!checked && (
+        <button
+          onClick={handleCheck}
+          disabled={!allFilled}
+          className={styles.btnPrimary}
+          style={{
+            marginTop: 14,
+            background: allFilled ? '#2563eb' : '#cbd5e1',
+            cursor: allFilled ? 'pointer' : 'not-allowed',
+          }}
+        >
+          ✓ Check Answers
+        </button>
+      )}
+
+      {checked && (
+        <div style={{
+          marginTop: 12,
+          padding: '10px 14px',
+          borderRadius: 10,
+          background: correctCount === total ? '#f0fdf4' : '#fffbeb',
+          border: `1px solid ${correctCount === total ? '#86efac' : '#fde68a'}`,
+        }}>
+          <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: correctCount === total ? '#059669' : '#92400e' }}>
+            {correctCount === total
+              ? '🎉 All correct!'
+              : `${correctCount}/${total} correct — review the answers above.`}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
 
-// ---- Matching Block ----
+// ---- Matching Block (AUTO_AI) ----
 function MatchingBlock({ content, onAnswer, readOnly }: {
   content: MatchingBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
 }) {
   const [matches, setMatches] = useState<Record<string, string>>({});
+  const [checked, setChecked] = useState(false);
+  const [results, setResults] = useState<Record<string, boolean>>({});
   // Memoize the shuffled right-side options so they don't reshuffle on every render
   const rights = useMemo(
     () => (content.pairs || []).map((p) => p.right).sort(() => Math.random() - 0.5),
@@ -223,11 +295,26 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
   );
 
   const handleSelect = (left: string, right: string) => {
-    if (readOnly) return;
+    if (readOnly || checked) return;
     const next = { ...matches, [left]: right };
     setMatches(next);
-    onAnswer?.(next);
   };
+
+  const allMatched = (content.pairs || []).every((p) => matches[p.left]);
+
+  const handleCheck = () => {
+    const res: Record<string, boolean> = {};
+    for (const p of content.pairs || []) {
+      res[p.left] = matches[p.left] === p.right;
+    }
+    setResults(res);
+    setChecked(true);
+    const correctCount = Object.values(res).filter(Boolean).length;
+    onAnswer?.({ matches, results: res, score: correctCount, total: (content.pairs || []).length });
+  };
+
+  const correctCount = Object.values(results).filter(Boolean).length;
+  const total = (content.pairs || []).length;
 
   return (
     <div className={styles.interactiveBlock}>
@@ -239,32 +326,89 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
           <select
             value={matches[p.left] || ''}
             onChange={(e) => handleSelect(p.left, e.target.value)}
-            disabled={readOnly}
-            style={{ flex: '1 1 150px', padding: '6px 10px', fontSize: '0.85rem', borderRadius: 8, border: '1.5px solid #e2e8f0' }}
+            disabled={readOnly || checked}
+            style={{
+              flex: '1 1 150px',
+              padding: '6px 10px',
+              fontSize: '0.85rem',
+              borderRadius: 8,
+              border: `1.5px solid ${checked ? (results[p.left] ? '#22c55e' : '#ef4444') : '#e2e8f0'}`,
+              background: checked ? (results[p.left] ? '#f0fdf4' : '#fef2f2') : '#fff',
+            }}
           >
             <option value="">Select...</option>
             {rights.map((r, j) => <option key={j} value={r}>{r}</option>)}
           </select>
+          {checked && (
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, minWidth: 20 }}>
+              {results[p.left]
+                ? <span style={{ color: '#059669' }}>✓</span>
+                : <span style={{ color: '#dc2626' }}>✗</span>
+              }
+            </span>
+          )}
+          {checked && !results[p.left] && (
+            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>→ {p.right}</span>
+          )}
         </div>
       ))}
+
+      {!checked && (
+        <button
+          onClick={handleCheck}
+          disabled={!allMatched}
+          className={styles.btnPrimary}
+          style={{
+            marginTop: 14,
+            background: allMatched ? '#2563eb' : '#cbd5e1',
+            cursor: allMatched ? 'pointer' : 'not-allowed',
+          }}
+        >
+          ✓ Check Answers
+        </button>
+      )}
+
+      {checked && (
+        <div style={{
+          marginTop: 12,
+          padding: '10px 14px',
+          borderRadius: 10,
+          background: correctCount === total ? '#f0fdf4' : '#fffbeb',
+          border: `1px solid ${correctCount === total ? '#86efac' : '#fde68a'}`,
+        }}>
+          <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: correctCount === total ? '#059669' : '#92400e' }}>
+            {correctCount === total
+              ? '🎉 All correct!'
+              : `${correctCount}/${total} correct — check the answers marked ✗ above.`}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
 
-// ---- Multiple Choice Block ----
-function MultipleChoiceBlock({ content, onAnswer, readOnly, showFeedback }: {
+// ---- Multiple Choice Block (AUTO_AI) ----
+function MultipleChoiceBlock({ content, onAnswer, readOnly }: {
   content: MultipleChoiceBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
-  showFeedback?: boolean;
 }) {
   const [selected, setSelected] = useState<string>('');
+  const [checked, setChecked] = useState(false);
 
   const handleSelect = (val: string) => {
-    if (readOnly) return;
+    if (readOnly || checked) return;
     setSelected(val);
-    onAnswer?.(val);
   };
+
+  const handleCheck = () => {
+    setChecked(true);
+    const correct = !!content.options?.find((o) => o.value === selected)?.correct;
+    onAnswer?.({ selected, correct });
+  };
+
+  const selectedOpt = content.options?.find((o) => o.value === selected);
+  const isCorrect = selectedOpt?.correct;
 
   return (
     <div className={styles.interactiveBlock}>
@@ -272,21 +416,45 @@ function MultipleChoiceBlock({ content, onAnswer, readOnly, showFeedback }: {
       {(content.options || []).map((opt, i) => {
         let cls = styles.mcOption;
         if (selected === opt.value) cls += ' ' + styles.mcOptionSelected;
-        if (showFeedback && selected === opt.value) {
+        if (checked && selected === opt.value) {
           cls += ' ' + (opt.correct ? styles.mcOptionCorrect : styles.mcOptionIncorrect);
+        }
+        if (checked && opt.correct) {
+          cls += ' ' + styles.mcOptionCorrect;
         }
 
         return (
-          <div key={i} className={cls} onClick={() => handleSelect(opt.value)}>
+          <div key={i} className={cls} onClick={() => handleSelect(opt.value)} style={{ cursor: checked ? 'default' : 'pointer' }}>
             <div className={styles.mcRadio} style={selected === opt.value ? { background: '#2563eb', borderColor: '#2563eb' } : {}} />
             <span>{opt.label}</span>
+            {checked && opt.correct && <span style={{ marginLeft: 'auto', color: '#059669', fontWeight: 700, fontSize: '0.8rem' }}>✓ Correct</span>}
           </div>
         );
       })}
-      {showFeedback && content.explanation && selected && (
-        <p style={{ fontSize: '0.82rem', color: '#475569', marginTop: 10, padding: '8px 12px', background: '#f8fafc', borderRadius: 8 }}>
-          💡 {content.explanation}
-        </p>
+
+      {!checked && selected && (
+        <button onClick={handleCheck} className={styles.btnPrimary} style={{ marginTop: 10 }}>
+          ✓ Check Answer
+        </button>
+      )}
+
+      {checked && (
+        <div style={{
+          marginTop: 10,
+          padding: '10px 14px',
+          borderRadius: 10,
+          background: isCorrect ? '#f0fdf4' : '#fef2f2',
+          border: `1px solid ${isCorrect ? '#86efac' : '#fca5a5'}`,
+        }}>
+          <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: isCorrect ? '#059669' : '#dc2626' }}>
+            {isCorrect ? '✓ Correct!' : '✗ Not quite.'}
+          </p>
+          {content.explanation && (
+            <p style={{ fontSize: '0.82rem', color: '#475569', margin: '6px 0 0', lineHeight: 1.5 }}>
+              💡 {content.explanation}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );
