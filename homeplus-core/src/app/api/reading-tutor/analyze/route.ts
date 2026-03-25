@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
       });
       if (profile?.isCalibrated) {
         voiceProfile = {
-          speechPatterns: profile.speechPatterns as VoiceProfileData['speechPatterns'],
-          calibrationWords: profile.calibrationWords as VoiceProfileData['calibrationWords'],
+          speechPatterns: profile.speechPatterns as unknown as VoiceProfileData['speechPatterns'],
+          calibrationWords: profile.calibrationWords as unknown as VoiceProfileData['calibrationWords'],
           isCalibrated: true,
         };
       }
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
           transcript,
           accuracyRate: analysis.adjustedAccuracy,
           wordsPerMinute: analysis.wordsPerMinute,
-          miscues: analysis.miscues as unknown as Record<string, unknown>[],
+          miscues: JSON.parse(JSON.stringify(analysis.miscues)),
           lexileEstimate: lexile,
           durationSeconds: durationSeconds || 60,
         },
