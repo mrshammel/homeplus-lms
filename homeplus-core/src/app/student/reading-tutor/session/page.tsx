@@ -36,7 +36,7 @@ interface ChatMessage {
   text: string;
 }
 
-type SessionPhase = 'LOADING' | 'READY' | 'RECORDING' | 'ANALYZING' | 'RESULTS' | 'COMPREHENSION' | 'SUMMARY';
+type SessionPhase = 'LOADING' | 'READY' | 'RECORDING' | 'ANALYZING' | 'RESULTS' | 'CHOOSE_MODE' | 'COMPREHENSION' | 'SUMMARY';
 
 // ---------- Component ----------
 export default function ReadingSessionPage() {
@@ -795,11 +795,54 @@ export default function ReadingSessionPage() {
             )}
 
             <div style={{ textAlign: 'center' }}>
-              <button onClick={startComprehension} className={styles.btnPrimary}>
+              <button onClick={() => setPhase('CHOOSE_MODE')} className={styles.btnPrimary}>
                 💬 Let&apos;s Talk About What You Read →
               </button>
             </div>
           </>
+        )}
+
+        {/* Choose Mode: Talk or Type */}
+        {phase === 'CHOOSE_MODE' && (
+          <div className={styles.card}>
+            <div style={{ textAlign: 'center', padding: '16px 0' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>💬</div>
+              <h3 style={{ color: '#1e293b', marginBottom: '8px' }}>How would you like to chat with Mrs. Hammel?</h3>
+              <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '24px' }}>Pick whichever is more comfortable — you can always switch later!</p>
+              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { setChatMode('voice'); startComprehension(); }}
+                  style={{
+                    padding: '20px 32px', border: '2px solid #7c5ce0', borderRadius: '16px', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, #f0e6ff 0%, #e8f4fd 100%)', color: '#7c5ce0',
+                    fontSize: '1.1rem', fontWeight: 700, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                    transition: 'transform 0.15s, box-shadow 0.15s', minWidth: '160px',
+                  }}
+                  onMouseOver={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(124,92,224,0.25)'; }}
+                  onMouseOut={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ''; (e.currentTarget as HTMLButtonElement).style.boxShadow = ''; }}
+                >
+                  <span style={{ fontSize: '2rem' }}>🎤</span>
+                  Talk to Me
+                  <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#94a3b8' }}>I&apos;ll speak and listen</span>
+                </button>
+                <button
+                  onClick={() => { setChatMode('text'); startComprehension(); }}
+                  style={{
+                    padding: '20px 32px', border: '2px solid #34d399', borderRadius: '16px', cursor: 'pointer',
+                    background: 'linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%)', color: '#059669',
+                    fontSize: '1.1rem', fontWeight: 700, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                    transition: 'transform 0.15s, box-shadow 0.15s', minWidth: '160px',
+                  }}
+                  onMouseOver={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(52,211,153,0.25)'; }}
+                  onMouseOut={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ''; (e.currentTarget as HTMLButtonElement).style.boxShadow = ''; }}
+                >
+                  <span style={{ fontSize: '2rem' }}>⌨️</span>
+                  Type My Answers
+                  <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#94a3b8' }}>I&apos;ll read and type</span>
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Comprehension Chat */}
