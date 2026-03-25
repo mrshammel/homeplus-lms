@@ -76,28 +76,33 @@ export default async function UnitDetailPage({ params }: Props) {
       </section>
 
       {/* ===== HERO CONTINUE ===== */}
-      {nextLessonTitle && nextLessonId && unitStatus !== 'completed' && (
-        <Link
-          href={`/student/courses/${courseId}/units/${unitId}/lessons/${nextLessonId}`}
-          className={styles.heroCard}
-          aria-label="Continue to next lesson"
-        >
-          <div className={styles.heroIcon}>{unitIcon || '📖'}</div>
-          <div className={styles.heroInfo}>
-            <div className={styles.heroLabel}>▶ {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}</div>
-            <div className={styles.heroTitle}>{nextLessonTitle}</div>
-            <div className={styles.heroProgress}>
-              <div className={styles.heroProgressBar}>
-                <div className={styles.heroProgressFill} style={{ width: `${progressPercent}%` }} />
+      {nextLessonTitle && nextLessonId && unitStatus !== 'completed' && (() => {
+        const nextLesson = lessons.find((l) => l.id === nextLessonId);
+        const nextHref = nextLesson?.externalUrl || `/student/courses/${courseId}/units/${unitId}/lessons/${nextLessonId}`;
+        return (
+          <Link
+            href={nextHref}
+            className={styles.heroCard}
+            aria-label="Continue to next lesson"
+            {...(nextLesson?.externalUrl ? { target: '_blank' } : {})}
+          >
+            <div className={styles.heroIcon}>{unitIcon || '📖'}</div>
+            <div className={styles.heroInfo}>
+              <div className={styles.heroLabel}>▶ {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}</div>
+              <div className={styles.heroTitle}>{nextLessonTitle}</div>
+              <div className={styles.heroProgress}>
+                <div className={styles.heroProgressBar}>
+                  <div className={styles.heroProgressFill} style={{ width: `${progressPercent}%` }} />
+                </div>
+                <span className={styles.heroProgressText}>{completedLessons}/{totalLessons} lessons</span>
               </div>
-              <span className={styles.heroProgressText}>{completedLessons}/{totalLessons} lessons</span>
             </div>
-          </div>
-          <span className={styles.heroBtn}>
-            {completedLessons === 0 ? 'Start →' : 'Continue →'}
-          </span>
-        </Link>
-      )}
+            <span className={styles.heroBtn}>
+              {completedLessons === 0 ? 'Start →' : 'Continue →'}
+            </span>
+          </Link>
+        );
+      })()}
 
       {/* ===== TWO-COLUMN LAYOUT ===== */}
       <div className={styles.unitPageLayout}>
@@ -178,9 +183,10 @@ export default async function UnitDetailPage({ params }: Props) {
               return (
                 <li key={lesson.id}>
                   <Link
-                    href={`/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
+                    href={lesson.externalUrl || `/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
                     className={itemClass}
                     aria-current={isCurrent ? 'step' : undefined}
+                    {...(lesson.externalUrl ? { target: '_blank' } : {})}
                   >
                     {inner}
                   </Link>
@@ -375,8 +381,9 @@ export default async function UnitDetailPage({ params }: Props) {
                 return (
                   <Link
                     key={lesson.id}
-                    href={`/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
+                    href={lesson.externalUrl || `/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
                     style={{ textDecoration: 'none', color: 'inherit' }}
+                    {...(lesson.externalUrl ? { target: '_blank' } : {})}
                   >
                     {CardContent}
                   </Link>

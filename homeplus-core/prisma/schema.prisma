@@ -33,6 +33,10 @@ model User {
   unitAccess    StudentUnitAccess[] @relation("StudentUnitAccess")
   unitOverrides StudentUnitAccess[] @relation("TeacherUnitOverrides")
 
+  // Reading Tutor
+  voiceProfile    VoiceProfile?
+  readingSessions ReadingSession[]
+
   @@map("users")
 }
 
@@ -78,6 +82,7 @@ model Lesson {
   title            String
   subtitle         String?
   order            Int          @default(0)
+  externalUrl      String?      @map("external_url")  // If set, lesson links to this static page URL
 
   // ─── Universal Lesson Frame fields ───
   estimatedMinutes Int?         @map("estimated_minutes")
@@ -417,5 +422,83 @@ enum UnitOverrideState {
   UNLOCKED
   COMPLETED
   EXEMPT
+}
+
+// ============= AI READING TUTOR =============
+
+/// Student voice calibration profile — filters speech patterns from reading errors
+model VoiceProfile {
+  id                  String   @id @default(cuid())
+  studentId           String   @unique @map("student_id")
+  isCalibrated        Boolean  @default(false)
+  /// JSON: detected speech patterns e.g. [{"target":"/θ/","actual":"/f/","examples":["think→fink"]}]
+  speechPatterns      Json     @default("[]") @map("speech_patterns")
+  /// JSON: words used in calibration and how they were pronounced
+  calibrationWords    Json     @default("[]") @map("calibration_words")
+  sampleCount         Int      @default(0) @map("sample_count")
+  calibratedAt        DateTime? @map("calibrated_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("voice_profiles")
+}
+
+/// A single daily reading session — tracks read-aloud performance
+model ReadingSession {
+  id                  String   @id @default(cuid())
+  studentId           String   @map("student_id")
+  passageId           String   @map("passage_id")
+  sessionDate         DateTime @default(now()) @map("session_date")
+  /// The raw transcript from speech-to-text
+  transcript          String   @default("")
+  /// Accuracy rate adjusted for voice profile (0-100)
+  accuracyRate        Float?   @map("accuracy_rate")
+  /// Words per minute
+  wordsPerMinute      Float?   @map("words_per_minute")
+  /// JSON: [{"word":"cat","expected":"can","type":"SUBSTITUTION","position":5}]
+  miscues             Json     @default("[]") @map("miscues")
+  /// Comprehension score (0-100)
+  comprehensionScore  Float?   @map("comprehension_score")
+  /// JSON: [{"question":"...","answer":"...","correct":true}]
+  comprehensionDetail Json     @default("[]") @map("comprehension_detail")
+  /// Estimated Lexile level based on this session
+  lexileEstimate      Int?     @map("lexile_estimate")
+  /// AI tutor summary feedback for this session
+  aiTutorFeedback     String?  @map("ai_tutor_feedback")
+  /// Duration in seconds
+  durationSeconds     Int?     @map("duration_seconds")
+  completedAt         DateTime? @map("completed_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  student User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  passage ReadingPassage @relation(fields: [passageId], references: [id])
+
+  @@map("reading_sessions")
+}
+
+/// Leveled reading passages for the AI tutor
+model ReadingPassage {
+  id                    String  @id @default(cuid())
+  title                 String
+  text                  String
+  wordCount             Int     @map("word_count")
+  /// Lexile level (e.g. 200, 450, 650)
+  lexileLevel           Int     @map("lexile_level")
+  /// Approximate grade level (1-6)
+  gradeLevel            Int     @map("grade_level")
+  /// JSON: [{"question":"...","options":["a","b","c"],"correct":0,"type":"literal"}]
+  comprehensionQuestions Json   @default("[]") @map("comprehension_questions")
+  /// JSON: ["word1","word2"] — key vocabulary in this passage
+  keyVocabulary         Json    @default("[]") @map("key_vocabulary")
+  /// Genre/topic tag for variety
+  genre                 String  @default("fiction")
+  isActive              Boolean @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  sessions ReadingSession[]
+
+  @@map("reading_passages")
 }
 

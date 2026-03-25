@@ -112,8 +112,7 @@ export async function getCourseDetail(courseId: string): Promise<CourseDetail | 
   });
 
   if (!dbUser) return null;
-  const studentGrade = dbUser.gradeLevel || 7;
-  if (subject.gradeLevel !== studentGrade) return null;
+  // Allow access to all active subjects (no grade filter)
 
   // Fetch progress for this student's lessons in this subject
   const allLessonIds = subject.units.flatMap((u) => u.lessons.map((l) => l.id));

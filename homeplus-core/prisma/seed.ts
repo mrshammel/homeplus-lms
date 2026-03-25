@@ -247,6 +247,71 @@ async function main() {
   console.log(`✅ Lessons: 6 total`);
 
   // ╔═══════════════════════════════════════════╗
+  // ║ 3b. CURRICULUM — Grade 6 ELA              ║
+  // ╚═══════════════════════════════════════════╝
+
+  const ela6 = await prisma.subject.upsert({
+    where: { id: 'g6-ela' },
+    update: {},
+    create: {
+      id: 'g6-ela',
+      gradeLevel: 6,
+      name: 'English Language Arts',
+      icon: '📖',
+      order: 2,
+      active: true,
+    },
+  });
+  console.log(`\n✅ Subject: ${ela6.name} (Grade ${ela6.gradeLevel})`);
+
+  // --- Unit 1: Identity, Belonging, and Voice ---
+  const elaU1 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u1' },
+    update: {},
+    create: {
+      id: 'g6-ela-u1',
+      subjectId: ela6.id,
+      title: 'Identity, Belonging, and Voice',
+      description: 'Explore how experiences, relationships, and culture shape who we are. Read stories, build vocabulary, draft a personal narrative, and share your voice.',
+      icon: '🪞',
+      order: 0,
+    },
+  });
+
+  const elaLessonData = [
+    { id: 'g6-ela-u1-l1', title: 'Who Am I?', subtitle: 'Explore identity-themed texts using reading strategies.', order: 1, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson1' },
+    { id: 'g6-ela-u1-l2', title: 'Words That Shape Us', subtitle: 'Explore how vocabulary carries cultural and personal meaning.', order: 2, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson2' },
+    { id: 'g6-ela-u1-l3', title: 'Theme & Message', subtitle: 'Learn the difference between theme and topic. Identify deeper messages in identity texts.', order: 3, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson3' },
+    { id: 'g6-ela-u1-l4', title: 'Narrative Structure', subtitle: 'Learn the parts of a narrative and how authors structure stories.', order: 4, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson4' },
+    { id: 'g6-ela-u1-l5', title: 'Drafting My Narrative', subtitle: 'Plan and write the first draft of your personal identity narrative.', order: 5, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson5' },
+    { id: 'g6-ela-u1-l6', title: 'Revision & Voice', subtitle: 'Strengthen your writing with show-don\'t-tell, power words, and sentence variety.', order: 6, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson6' },
+    { id: 'g6-ela-u1-l7', title: 'Discussion Circle', subtitle: 'Share your narrative, practice active listening, and reflect on the unit.', order: 7, url: '/courses/grade-6-ela/unit-1-identity/index.html#lesson7' },
+  ];
+
+  for (const l of elaLessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: {
+        title: l.title,
+        subtitle: l.subtitle,
+        order: l.order,
+        subjectMode: 'ELA',
+        externalUrl: l.url,
+      },
+      create: {
+        id: l.id,
+        unitId: elaU1.id,
+        title: l.title,
+        subtitle: l.subtitle,
+        order: l.order,
+        subjectMode: 'ELA',
+        externalUrl: l.url,
+      },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU1.title} (7 lessons)`);
+
+  // ╔═══════════════════════════════════════════╗
   // ║ 4. ACTIVITIES                               ║
   // ╚═══════════════════════════════════════════╝
 

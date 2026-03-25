@@ -37,6 +37,8 @@ export interface LessonItem {
   activityCount: number;
   completedActivities: number;
   isNextLesson: boolean;
+  /** If set, lesson links to this static page URL instead of internal route */
+  externalUrl: string | null;
   activities: {
     id: string;
     type: string;
@@ -113,8 +115,7 @@ export async function getUnitDetail(
     select: { gradeLevel: true },
   });
   if (!dbUser) return null;
-  const studentGrade = dbUser.gradeLevel || 7;
-  if (unit.subject.gradeLevel !== studentGrade) return null;
+  // Allow access to all active subjects (no grade filter)
 
   // Resolve subject mode from subject name
   const subjectMode = resolveSubjectMode(null, unit.subject.name);
@@ -171,6 +172,7 @@ export async function getUnitDetail(
       activityCount: activities.length,
       completedActivities: activities.filter((a) => a.submitted).length,
       isNextLesson: false, // set below
+      externalUrl: lesson.externalUrl ?? null,
       activities,
     };
   });
@@ -395,6 +397,7 @@ function getDemoUnitDetail(courseId: string, unitId: string): UnitPageData | nul
     activityCount: l.activities.length,
     completedActivities: 0,
     isNextLesson: i === 0,
+    externalUrl: null,
     activities: l.activities.map((a, j) => ({
       id: `${unitId}-l${i}-a${j}`,
       type: a.type,

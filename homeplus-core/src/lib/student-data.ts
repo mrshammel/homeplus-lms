@@ -155,10 +155,10 @@ export async function getStudentDashboardData(): Promise<StudentDashboardData> {
   // Determine grade level for course lookup
   const grade = dbUser.gradeLevel || 7;
 
-  // Fetch subjects for this grade level with full curriculum tree
+  // Fetch all active subjects (multi-grade)
   const subjects = await prisma.subject.findMany({
-    where: { gradeLevel: grade, active: true },
-    orderBy: { order: 'asc' },
+    where: { active: true },
+    orderBy: [{ gradeLevel: 'asc' }, { order: 'asc' }],
     include: {
       units: {
         orderBy: { order: 'asc' },
@@ -568,6 +568,26 @@ function getDemoDashboardData(): StudentDashboardData {
         pacingStyle: getAcademicPacingStyle(mathPacing.academicStatus),
         missingAssignments: 0,
         latestReviewedItem: 'Fraction Operations Quiz',
+      },
+      {
+        subjectId: 'g6-ela',
+        subjectName: 'English Language Arts',
+        subjectIcon: '📖',
+        gradeLevel: 6,
+        units: [
+          { id: 'g6-ela-u1', title: 'Unit 1 — Identity, Belonging, and Voice', icon: '🪞', order: 0, lessonCount: 7 },
+        ],
+        totalLessons: 7,
+        completedLessons: 0,
+        progressPercent: 0,
+        currentUnit: 'Unit 1 — Identity, Belonging, and Voice',
+        currentLesson: 'Lesson 1 — Who Am I?',
+        averageScore: null,
+        gradeLabel: 'No grades yet',
+        pacing: calculatePacing({ enrolledAt: daysAgo(120), completedLessons: 0, totalLessons: 7, lastAcademicActivityAt: null }),
+        pacingStyle: getAcademicPacingStyle('ON_PACE'),
+        missingAssignments: 0,
+        latestReviewedItem: null,
       },
     ],
     upcoming: [
