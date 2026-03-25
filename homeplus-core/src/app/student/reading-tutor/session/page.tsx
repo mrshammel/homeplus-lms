@@ -63,6 +63,60 @@ export default function ReadingSessionPage() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [comprehensionScore, setComprehensionScore] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [chatMode, setChatMode] = useState<'text' | 'voice'>('text');
+  const [voiceListening, setVoiceListening] = useState(false);
+  const [voiceTranscript, setVoiceTranscript] = useState('');
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const voiceRecRef = useRef<SpeechRecognition | null>(null);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const chatModeRef = useRef(chatMode);
+  const prevMsgCountRef = useRef(0);
+
+  // Keep ref in sync for use in effects
+  useEffect(() => { chatModeRef.current = chatMode; }, [chatMode]);
+
+  // ---------- Text-to-Speech ----------
+  const speakText = useCallback((text: string) => {
+    if (!window.speechSynthesis) return;
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.95;
+    utterance.pitch = 1.1;
+    utterance.volume = 1;
+    utterance.lang = 'en-US';
+
+    // Try to pick a warm female voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find((v) =>
+      /female|samantha|zira|karen|victoria|fiona/i.test(v.name) && v.lang.startsWith('en')
+    ) || voices.find((v) => v.lang.startsWith('en') && v.name.includes('Google'));
+    if (preferred) utterance.voice = preferred;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
+  // Speak new tutor messages when in voice mode
+  useEffect(() => {
+    if (chatModeRef.current !== 'voice') {
+      prevMsgCountRef.current = chatMessages.length;
+      return;
+    }
+    // Only speak newly added messages
+    const newMessages = chatMessages.slice(prevMsgCountRef.current);
+    prevMsgCountRef.current = chatMessages.length;
+
+    const tutorMessages = newMessages.filter((m) => m.role === 'tutor');
+    if (tutorMessages.length > 0) {
+      // Speak the latest tutor message
+      speakText(tutorMessages[tutorMessages.length - 1].text);
+    }
+  }, [chatMessages, speakText]);
 
   // Summary state
   const [sessionSummary, setSessionSummary] = useState('');
@@ -275,16 +329,37 @@ export default function ReadingSessionPage() {
     setChatLoading(false);
   }, [passage, analysis, buildFallbackQuestions, loadQuestionsIntoChat]);
 
-  const sendAnswer = useCallback(async () => {
-    if (!chatInput.trim()) return;
+  // Core answer submission — used by both text and voice modes
+  const submitAnswer = useCallback(async (answer: string) => {
+    if (!answer.trim()) return;
 
-    const answer = chatInput.trim();
-    setChatInput('');
-    setChatMessages((prev) => [...prev, { role: 'student', text: answer }]);
+    setChatMessages((prev) => [...prev, { role: 'student', text: answer.trim() }]);
     setChatLoading(true);
 
     const questions = JSON.parse(sessionStorage.getItem('rt-questions') || '[]');
     const currentQuestion = questions[questionIndex];
+
+    const advanceToNext = (feedback: string) => {
+      setChatMessages((prev) => [...prev, { role: 'tutor', text: feedback }]);
+
+      const nextIdx = questionIndex + 1;
+      if (nextIdx < questions.length) {
+        setQuestionIndex(nextIdx);
+        setTimeout(() => {
+          setChatMessages((prev) => [
+            ...prev,
+            { role: 'tutor', text: questions[nextIdx].question },
+          ]);
+          setChatLoading(false);
+        }, 2000);
+      } else {
+        // All questions done — go to summary
+        setChatLoading(false);
+        setTimeout(() => {
+          finishSession();
+        }, 2000);
+      }
+    };
 
     try {
       const res = await fetch('/api/reading-tutor/comprehension', {
@@ -295,7 +370,7 @@ export default function ReadingSessionPage() {
           question: currentQuestion?.question,
           questionType: currentQuestion?.type,
           expectedAnswer: currentQuestion?.expectedAnswer,
-          studentAnswer: answer,
+          studentAnswer: answer.trim(),
           gradeLevel: passage?.gradeLevel,
         }),
       });
@@ -303,37 +378,105 @@ export default function ReadingSessionPage() {
       if (res.ok) {
         const data = await res.json();
         setComprehensionScore((prev) => prev + (data.score || 0));
+        advanceToNext(data.feedback || "Great answer! Let's keep going. 😊");
+      } else {
+        console.error('[Comprehension] API error', res.status);
+        setComprehensionScore((prev) => prev + 50);
+        advanceToNext("That's a thoughtful answer! I can tell you were really thinking about it. 😊");
+      }
+    } catch (err) {
+      console.error('[Comprehension] Network error:', err);
+      setComprehensionScore((prev) => prev + 50);
+      advanceToNext("That's a thoughtful answer! Let's keep going. 😊");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionIndex, passage]);
 
-        setChatMessages((prev) => [
-          ...prev,
-          { role: 'tutor', text: data.feedback },
-        ]);
+  const sendAnswer = useCallback(() => {
+    if (!chatInput.trim()) return;
+    const answer = chatInput.trim();
+    setChatInput('');
+    submitAnswer(answer);
+  }, [chatInput, submitAnswer]);
 
-        const nextIdx = questionIndex + 1;
-        if (nextIdx < questions.length) {
-          setQuestionIndex(nextIdx);
-          setTimeout(() => {
-            setChatMessages((prev) => [
-              ...prev,
-              { role: 'tutor', text: questions[nextIdx].question },
-            ]);
-          }, 2000);
+  // ---------- Voice Chat ----------
+  const startVoiceAnswer = useCallback(() => {
+    const SpeechRecognition =
+      (window as unknown as { SpeechRecognition?: typeof window.SpeechRecognition }).SpeechRecognition ||
+      (window as unknown as { webkitSpeechRecognition?: typeof window.SpeechRecognition }).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setChatMode('text');
+      return;
+    }
+
+    if (voiceRecRef.current) {
+      try { voiceRecRef.current.abort(); } catch { /* ignore */ }
+    }
+
+    const rec = new SpeechRecognition();
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.lang = 'en-US';
+
+    let finalText = '';
+
+    rec.onresult = (event: SpeechRecognitionEvent) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const t = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalText += t + ' ';
         } else {
-          // All questions done — go to summary
-          setTimeout(() => {
-            finishSession();
-          }, 2000);
+          interim = t;
         }
       }
-    } catch {
-      setChatMessages((prev) => [
-        ...prev,
-        { role: 'tutor', text: "That's a thoughtful answer! Let's keep going. 😊" },
-      ]);
+      setVoiceTranscript(finalText + interim);
+    };
+
+    rec.onerror = (event: SpeechRecognitionErrorEvent) => {
+      if (event.error !== 'aborted' && event.error !== 'no-speech') {
+        console.error('Voice chat error:', event.error);
+      }
+    };
+
+    rec.onend = () => {
+      setVoiceListening(false);
+    };
+
+    rec.start();
+    voiceRecRef.current = rec;
+    setVoiceListening(true);
+    setVoiceTranscript('');
+  }, []);
+
+  const stopVoiceAnswer = useCallback(() => {
+    if (voiceRecRef.current) {
+      voiceRecRef.current.stop();
+      voiceRecRef.current = null;
     }
-    setChatLoading(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatInput, questionIndex, passage]);
+    setVoiceListening(false);
+    // Submit whatever was captured
+    if (voiceTranscript.trim()) {
+      submitAnswer(voiceTranscript.trim());
+      setVoiceTranscript('');
+    }
+  }, [voiceTranscript, submitAnswer]);
+
+  // Stop TTS when switching away from voice mode or leaving comprehension
+  useEffect(() => {
+    if (chatMode !== 'voice' || phase !== 'COMPREHENSION') {
+      window.speechSynthesis?.cancel();
+      setIsSpeaking(false);
+    }
+  }, [chatMode, phase]);
+
+  // Auto-scroll chat
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatMessages, chatLoading]);
 
   const finishSession = useCallback(async () => {
     setPhase('SUMMARY');
@@ -587,8 +730,30 @@ export default function ReadingSessionPage() {
         {/* Comprehension Chat */}
         {phase === 'COMPREHENSION' && (
           <div className={styles.card}>
-            <h3>💬 Mrs. Hammel&apos;s Questions</h3>
-            <div className={styles.chatArea}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ margin: 0 }}>💬 Mrs. Hammel&apos;s Questions</h3>
+              <div style={{ display: 'flex', gap: '4px', background: '#f1f5f9', borderRadius: '10px', padding: '3px' }}>
+                <button
+                  onClick={() => setChatMode('text')}
+                  style={{
+                    padding: '6px 14px', border: 'none', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
+                    background: chatMode === 'text' ? 'white' : 'transparent',
+                    color: chatMode === 'text' ? '#7c5ce0' : '#94a3b8',
+                    boxShadow: chatMode === 'text' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                  }}
+                >⌨️ Type</button>
+                <button
+                  onClick={() => setChatMode('voice')}
+                  style={{
+                    padding: '6px 14px', border: 'none', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
+                    background: chatMode === 'voice' ? 'white' : 'transparent',
+                    color: chatMode === 'voice' ? '#7c5ce0' : '#94a3b8',
+                    boxShadow: chatMode === 'voice' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                  }}
+                >🎤 Talk</button>
+              </div>
+            </div>
+            <div className={styles.chatArea} style={{ maxHeight: '400px', overflowY: 'auto' }}>
               {chatMessages.map((msg, i) => (
                 <div
                   key={i}
@@ -606,20 +771,58 @@ export default function ReadingSessionPage() {
                   Mrs. Hammel is thinking... 💭
                 </div>
               )}
-
-              {!chatLoading && questionIndex < totalQuestions && (
-                <div className={styles.chatInput}>
-                  <input
-                    type="text"
-                    placeholder="Type your answer..."
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && sendAnswer()}
-                  />
-                  <button onClick={sendAnswer}>Send</button>
-                </div>
-              )}
+              <div ref={chatEndRef} />
             </div>
+
+            {/* Text input mode */}
+            {!chatLoading && questionIndex < totalQuestions && chatMode === 'text' && (
+              <div className={styles.chatInput}>
+                <input
+                  type="text"
+                  placeholder="Type your answer..."
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && sendAnswer()}
+                />
+                <button onClick={sendAnswer}>Send</button>
+              </div>
+            )}
+
+            {/* Voice input mode */}
+            {!chatLoading && questionIndex < totalQuestions && chatMode === 'voice' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '12px' }}>
+                {isSpeaking && (
+                  <div style={{ fontSize: '0.85rem', color: '#7c5ce0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ animation: 'pulse 1.5s ease-in-out infinite', display: 'inline-block' }}>🔊</span>
+                    Mrs. Hammel is talking...
+                  </div>
+                )}
+                {voiceTranscript && (
+                  <div style={{ fontSize: '0.9rem', color: '#475569', background: '#f8fafc', padding: '10px 16px', borderRadius: '10px', width: '100%', minHeight: '40px' }}>
+                    {voiceTranscript}
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <button
+                    onClick={voiceListening ? stopVoiceAnswer : startVoiceAnswer}
+                    disabled={isSpeaking}
+                    style={{
+                      width: '56px', height: '56px', borderRadius: '50%', border: 'none', cursor: isSpeaking ? 'not-allowed' : 'pointer',
+                      background: isSpeaking ? '#cbd5e1' : voiceListening ? 'linear-gradient(135deg, #ef4444, #dc2626)' : 'linear-gradient(135deg, #7c5ce0, #a78bfa)',
+                      color: 'white', fontSize: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      boxShadow: voiceListening ? '0 0 0 4px rgba(239,68,68,0.2)' : '0 2px 8px rgba(124,92,224,0.3)',
+                      animation: voiceListening ? 'pulse 1.5s ease-in-out infinite' : 'none',
+                      opacity: isSpeaking ? 0.5 : 1,
+                    }}
+                  >
+                    {voiceListening ? '⏹' : '🎤'}
+                  </button>
+                  <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
+                    {isSpeaking ? 'Wait for Mrs. Hammel to finish...' : voiceListening ? 'Listening... tap to send' : 'Tap to answer'}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
