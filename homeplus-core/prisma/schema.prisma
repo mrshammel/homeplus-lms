@@ -37,6 +37,10 @@ model User {
   voiceProfile    VoiceProfile?
   readingSessions ReadingSession[]
 
+  // Mastery Retrofit
+  skillMastery    StudentSkillMastery[]
+  dashboardSummary StudentDashboardSummary?
+
   @@map("users")
 }
 
@@ -101,6 +105,11 @@ model Lesson {
   quizQuestions    QuizQuestion[]
   masteryAttempts  MasteryAttempt[]
   reteachSessions  ReteachSession[]
+
+  // Mastery Retrofit
+  lessonSkills     LessonSkill[]
+  masteryEvidence  MasteryEvidence[]
+  reflectionEntries ReflectionEntry[]
 
   @@map("lessons")
 }
@@ -233,8 +242,9 @@ model Activity {
   points    Int          @default(0)
   order     Int          @default(0)
 
-  lesson      Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  submissions Submission[]
+  lesson         Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  submissions    Submission[]
+  activitySkills ActivitySkill[]
 
   @@map("activities")
 }
@@ -502,3 +512,232 @@ model ReadingPassage {
   @@map("reading_passages")
 }
 
+// ============= MASTERY RETROFIT =============
+// Phase 1a: Skill-based mastery, spaced review, metacognition, interleaving
+
+model Skill {
+  id                    String   @id @default(cuid())
+  code                  String   @unique
+  title                 String
+  description           String?
+  subject               String
+  gradeLevel            Int      @map("grade_level")
+  strand                String?
+  curriculumOutcomeCode String?  @map("curriculum_outcome_code")
+  parentSkillId         String?  @map("parent_skill_id")
+  isCorePrerequisite    Boolean  @default(false) @map("is_core_prerequisite")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  parent         Skill?  @relation("SkillHierarchy", fields: [parentSkillId], references: [id])
+  children       Skill[] @relation("SkillHierarchy")
+  lessonSkills   LessonSkill[]
+  activitySkills ActivitySkill[]
+  studentMastery StudentSkillMastery[]
+  reviewItems    ReviewQueueItem[]
+  evidence       MasteryEvidence[]
+
+  @@map("skills")
+}
+
+model LessonSkill {
+  id               String            @id @default(cuid())
+  lessonId         String            @map("lesson_id")
+  skillId          String            @map("skill_id")
+  relationshipType SkillRelationship @map("relationship_type")
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  skill  Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, skillId, relationshipType])
+  @@map("lesson_skills")
+}
+
+enum SkillRelationship {
+  TARGET
+  PREREQUISITE
+  REVIEW
+  TRANSFER
+}
+
+model ActivitySkill {
+  id         String @id @default(cuid())
+  activityId String @map("activity_id")
+  skillId    String @map("skill_id")
+  weight     Float  @default(1.0)
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  skill    Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, skillId])
+  @@map("activity_skills")
+}
+
+model StudentSkillMastery {
+  id                      String            @id @default(cuid())
+  studentId               String            @map("student_id")
+  skillId                 String            @map("skill_id")
+  masteryState            SkillMasteryState @default(NOT_INTRODUCED) @map("mastery_state")
+  masteryScore            Float             @default(0) @map("mastery_score")
+  confidenceScore         Float?            @map("confidence_score")
+  independenceScore       Float?            @map("independence_score")
+  lastEvidenceAt          DateTime?         @map("last_evidence_at")
+  lastReviewedAt          DateTime?         @map("last_reviewed_at")
+  nextReviewAt            DateTime?         @map("next_review_at")
+  consecutiveSuccessCount Int               @default(0) @map("consecutive_success_count")
+  failedRetrievalCount    Int               @default(0) @map("failed_retrieval_count")
+  helpRequestedCount      Int               @default(0) @map("help_requested_count")
+  needsTeacherReview      Boolean           @default(false) @map("needs_teacher_review")
+  createdAt               DateTime          @default(now()) @map("created_at")
+  updatedAt               DateTime          @updatedAt @map("updated_at")
+
+  student User  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  skill   Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, skillId])
+  @@index([nextReviewAt])
+  @@index([masteryState])
+  @@map("student_skill_mastery")
+}
+
+enum SkillMasteryState {
+  NOT_INTRODUCED
+  PRACTICING
+  DEVELOPING
+  MASTERED
+  REVIEW_DUE
+  NEEDS_SUPPORT
+}
+
+model MasteryEvidence {
+  id              String         @id @default(cuid())
+  studentId       String         @map("student_id")
+  skillId         String         @map("skill_id")
+  sourceType      EvidenceSource @map("source_type")
+  sourceId        String?        @map("source_id")
+  lessonId        String?        @map("lesson_id")
+  score           Float
+  maxScore        Float          @map("max_score")
+  normalizedScore Float          @map("normalized_score")
+  confidenceAtTime Float?        @map("confidence_at_time")
+  submittedAt     DateTime       @default(now()) @map("submitted_at")
+
+  skill  Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id])
+
+  @@index([studentId, skillId, submittedAt])
+  @@map("mastery_evidence")
+}
+
+enum EvidenceSource {
+  RETRIEVAL
+  GUIDED_PRACTICE
+  MIXED_PRACTICE
+  MASTERY_CHECK
+  ASSIGNMENT
+  TEACHER_OBSERVATION
+}
+
+model ReviewQueueItem {
+  id             String       @id @default(cuid())
+  studentId      String       @map("student_id")
+  skillId        String       @map("skill_id")
+  sourceLessonId String?      @map("source_lesson_id")
+  dueDate        DateTime     @map("due_date")
+  priority       Int          @default(5)
+  status         ReviewStatus @default(DUE)
+  generatedAt    DateTime     @default(now()) @map("generated_at")
+  completedAt    DateTime?    @map("completed_at")
+
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, dueDate, status])
+  @@map("review_queue_items")
+}
+
+enum ReviewStatus {
+  DUE
+  COMPLETED
+  SKIPPED
+  EXPIRED
+}
+
+model ReflectionEntry {
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  lessonId         String   @map("lesson_id")
+  activityId       String?  @map("activity_id")
+  confidenceBefore Int?     @map("confidence_before")
+  confidenceAfter  Int?     @map("confidence_after")
+  reflectionText   String?  @map("reflection_text")
+  helpRequested    Boolean  @default(false) @map("help_requested")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("reflection_entries")
+}
+
+// ============= MASTERY SUMMARY TABLES =============
+// Precomputed aggregates for fast dashboard/page loading.
+// Refreshed by summary-service on evidence writes and background jobs.
+
+model StudentDashboardSummary {
+  id                   String   @id @default(cuid())
+  studentId            String   @unique @map("student_id")
+  masteredCount        Int      @default(0) @map("mastered_count")
+  developingCount      Int      @default(0) @map("developing_count")
+  reviewDueCount       Int      @default(0) @map("review_due_count")
+  needsSupportCount    Int      @default(0) @map("needs_support_count")
+  reviewCompletedToday Int      @default(0) @map("review_completed_today")
+  reviewStreak         Int      @default(0) @map("review_streak")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("student_dashboard_summaries")
+}
+
+model CourseMasterySummary {
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  subjectId        String   @map("subject_id")
+  masteredSkills   Int      @default(0) @map("mastered_skills")
+  developingSkills Int      @default(0) @map("developing_skills")
+  reviewDue        Int      @default(0) @map("review_due")
+  needsSupport     Int      @default(0) @map("needs_support")
+  totalSkills      Int      @default(0) @map("total_skills")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, subjectId])
+  @@map("course_mastery_summaries")
+}
+
+model UnitMasterySummary {
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  unitId           String   @map("unit_id")
+  masteredSkills   Int      @default(0) @map("mastered_skills")
+  developingSkills Int      @default(0) @map("developing_skills")
+  reviewDue        Int      @default(0) @map("review_due")
+  needsSupport     Int      @default(0) @map("needs_support")
+  totalSkills      Int      @default(0) @map("total_skills")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, unitId])
+  @@map("unit_mastery_summaries")
+}
+
+model TeacherAlertSummary {
+  id                  String   @id @default(cuid())
+  studentId           String   @map("student_id")
+  teacherId           String   @map("teacher_id")
+  mismatchCount       Int      @default(0) @map("mismatch_count")
+  helpRequestCount    Int      @default(0) @map("help_request_count")
+  overdueReviewCount  Int      @default(0) @map("overdue_review_count")
+  needsSupportCount   Int      @default(0) @map("needs_support_count")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, teacherId])
+  @@map("teacher_alert_summaries")
+}
