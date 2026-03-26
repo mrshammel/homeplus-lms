@@ -381,6 +381,15 @@ export default function LessonFrame({
                   ? warmUpConfig.prompt
                   : 'Think about what you already know about this topic.'}
               </p>
+              {warmUpConfig?.imageUrl && (
+                <div style={{ marginTop: 12, borderRadius: 12, overflow: 'hidden' }}>
+                  <img
+                    src={warmUpConfig.imageUrl}
+                    alt="Warm-up visual"
+                    style={{ width: '100%', maxHeight: 340, objectFit: 'cover', borderRadius: 12 }}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
