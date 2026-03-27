@@ -21,6 +21,7 @@ import {
   type BlockType,
   type SubjectMode,
 } from '@/lib/lesson-types';
+import { BlockEditor } from '@/components/block-editor';
 
 interface Block {
   id: string;
@@ -83,7 +84,7 @@ export default function TeacherLessonEditorPage() {
 
   // Edit block
   const [editingBlock, setEditingBlock] = useState<string | null>(null);
-  const [editBlockContent, setEditBlockContent] = useState('');
+  const [editBlockContent, setEditBlockContent] = useState<any>(null);
 
   const apiBase = `/api/teacher/courses/${courseId}/units/${unitId}/lessons/${lessonId}`;
 
@@ -170,20 +171,14 @@ export default function TeacherLessonEditorPage() {
   // Update block content
   const handleSaveBlock = async (blockId: string) => {
     try {
-      let parsed: any;
-      try {
-        parsed = JSON.parse(editBlockContent);
-      } catch {
-        setSaveMsg('⚠️ Invalid JSON');
-        return;
-      }
       const res = await fetch(`${apiBase}/blocks`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ blockId, content: parsed }),
+        body: JSON.stringify({ blockId, content: editBlockContent }),
       });
       if (res.ok) {
         setEditingBlock(null);
+        setEditBlockContent(null);
         fetchBlocks();
       }
     } catch (e) { console.error(e); }
@@ -342,12 +337,17 @@ export default function TeacherLessonEditorPage() {
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button
                         onClick={() => {
-                          setEditingBlock(editingBlock === block.id ? null : block.id);
-                          setEditBlockContent(JSON.stringify(block.content, null, 2));
+                          if (editingBlock === block.id) {
+                            setEditingBlock(null);
+                            setEditBlockContent(null);
+                          } else {
+                            setEditingBlock(block.id);
+                            setEditBlockContent(structuredClone(block.content));
+                          }
                         }}
-                        style={{ padding: '4px 10px', fontSize: '0.75rem', color: '#2563eb', background: '#eff6ff', border: '1px solid #dbeafe', borderRadius: 6, cursor: 'pointer' }}
+                        style={{ padding: '4px 10px', fontSize: '0.75rem', color: editingBlock === block.id ? '#64748b' : '#2563eb', background: editingBlock === block.id ? '#f1f5f9' : '#eff6ff', border: `1px solid ${editingBlock === block.id ? '#e2e8f0' : '#dbeafe'}`, borderRadius: 6, cursor: 'pointer' }}
                       >
-                        ✏️ Edit
+                        {editingBlock === block.id ? '✕ Close' : '✏️ Edit'}
                       </button>
                       <button
                         onClick={() => handleDeleteBlock(block.id)}
@@ -358,20 +358,19 @@ export default function TeacherLessonEditorPage() {
                     </div>
                   </div>
 
-                  {/* Inline JSON editor */}
-                  {editingBlock === block.id && (
-                    <div style={{ marginTop: 10 }}>
-                      <textarea
-                        value={editBlockContent}
-                        onChange={(e) => setEditBlockContent(e.target.value)}
-                        rows={8}
-                        style={{ ...inputStyle, fontFamily: 'monospace', fontSize: '0.78rem', resize: 'vertical' }}
+                  {/* Visual block editor */}
+                  {editingBlock === block.id && editBlockContent !== null && (
+                    <div style={{ marginTop: 12, padding: '14px 16px', background: '#f8fafc', borderRadius: 10, border: '1px solid #e2e8f0' }}>
+                      <BlockEditor
+                        blockType={block.blockType}
+                        content={editBlockContent}
+                        onChange={setEditBlockContent}
                       />
-                      <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
-                        <button onClick={() => handleSaveBlock(block.id)} style={{ ...btnPrimary, fontSize: '0.78rem', padding: '6px 14px', background: '#059669' }}>
-                          ✓ Save
+                      <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 12, borderTop: '1px solid #e2e8f0' }}>
+                        <button onClick={() => handleSaveBlock(block.id)} style={{ ...btnPrimary, fontSize: '0.82rem', padding: '8px 18px', background: '#059669' }}>
+                          💾 Save Block
                         </button>
-                        <button onClick={() => setEditingBlock(null)} style={{ padding: '6px 14px', fontSize: '0.78rem', color: '#64748b', background: '#f1f5f9', border: 'none', borderRadius: 6, cursor: 'pointer' }}>
+                        <button onClick={() => { setEditingBlock(null); setEditBlockContent(null); }} style={{ padding: '8px 18px', fontSize: '0.82rem', fontWeight: 600, color: '#64748b', background: '#f1f5f9', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
                           Cancel
                         </button>
                       </div>
