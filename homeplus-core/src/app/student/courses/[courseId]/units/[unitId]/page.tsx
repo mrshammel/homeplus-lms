@@ -51,7 +51,7 @@ export default async function UnitDetailPage({ params }: Props) {
           {courseIcon} {courseName}
         </Link>
         <span className={styles.breadcrumbSep}>›</span>
-        <span className={styles.breadcrumbCurrent}>{unitIcon} Unit {unitOrder + 1}</span>
+        <span className={styles.breadcrumbCurrent}>{unitIcon} Unit {unitOrder}</span>
       </nav>
 
       {/* ===== UNIT HEADER ===== */}

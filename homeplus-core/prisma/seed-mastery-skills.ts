@@ -1,9 +1,12 @@
 // ============================================
-// Mastery Skill Seeder — Home Plus LMS
+// Mastery Skill Seeder — Hybrid Parent/Child Tree
 // ============================================
-// Phase 1b: Seeds Skill records from existing LearningOutcome data
-// and outcomeCode patterns found in QuizQuestions.
-// Also creates LessonSkill and ActivitySkill mappings.
+// Phase 4: Seeds the full hybrid skill tree.
+//
+// Architecture:
+//   Parent skills = reporting containers (dashboard, unit summaries, family reporting)
+//   Child skills  = assessable targets (lesson tagging, quiz tagging, mastery evidence,
+//                   retrieval, review scheduling, interleaving)
 //
 // Run: npx tsx prisma/seed-mastery-skills.ts
 
@@ -13,55 +16,87 @@ config({ path: '.env.local' });
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
+import { parentSkills } from './skill-data-parents';
+import { scienceChildSkills } from './skill-data-children-science';
+import { elaChildSkills } from './skill-data-children-ela';
 
-// Use the pg adapter to match the app's db.ts configuration
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const adapter = new PrismaPg(pool as any);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🌱 Mastery Skill Seeder — Phase 1b');
-  console.log('====================================\n');
+  console.log('🌱 Mastery Skill Seeder — Phase 4 (Hybrid Tree)');
+  console.log('=================================================\n');
 
-  // ─── 1. Seed Skills ───
+  // ─── 1. Seed Parent Skills ───
+  console.log('── Step 1: Parent Skills ──');
 
-  const skills = [
-    // ── Grade 7 Science — Unit A: Interactions & Ecosystems ──
-    { id: 'skill-sci7-a1', code: 'SCI.7.A.1', title: 'Ecosystems & Interactions', description: 'Describe ecosystems and identify biotic/abiotic components and their interactions', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.1', isCorePrerequisite: true },
-    { id: 'skill-sci7-a2', code: 'SCI.7.A.2', title: 'Ecological Relationships', description: 'Identify examples of predator-prey and symbiotic relationships', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.2', isCorePrerequisite: false },
-    { id: 'skill-sci7-a3', code: 'SCI.7.A.3', title: 'Ecosystem Change & Human Impact', description: 'Explain succession, invasive species, and human impacts on ecosystems', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.3', isCorePrerequisite: false },
-    { id: 'skill-sci7-a4', code: 'SCI.7.A.4', title: 'Conservation & Stewardship', description: 'Describe conservation strategies and explain stewardship responsibilities', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.4', isCorePrerequisite: false },
-
-    // ── Grade 7 Science — Unit B: Plants for Food & Fibre ──
-    { id: 'skill-sci7-b1', code: 'SCI.7.B.1', title: 'Plant Growth & Requirements', description: 'Describe the conditions and processes needed for plant growth', subject: 'Science', gradeLevel: 7, strand: 'Plants for Food & Fibre', curriculumOutcomeCode: 'SCI.7.B.1', isCorePrerequisite: true },
-    { id: 'skill-sci7-b2', code: 'SCI.7.B.2', title: 'Plant Adaptations', description: 'Examine plant adaptations to different environments', subject: 'Science', gradeLevel: 7, strand: 'Plants for Food & Fibre', curriculumOutcomeCode: 'SCI.7.B.2', isCorePrerequisite: false },
-
-    // ── Grade 7 Science — Unit C: Heat & Temperature ──
-    { id: 'skill-sci7-c1', code: 'SCI.7.C.1', title: 'Heat & Heat Transfer', description: 'Describe heat as a form of energy and identify methods of heat transfer', subject: 'Science', gradeLevel: 7, strand: 'Heat & Temperature', curriculumOutcomeCode: 'SCI.7.C.1', isCorePrerequisite: true },
-
-    // ── Grade 6 ELA — Unit 1: Identity, Belonging & Voice ──
-    { id: 'skill-ela6-1', code: 'ELA.6.1', title: 'Reading Comprehension & Inference', description: 'Make inferences, distinguish explicit from implicit information, and make text connections', subject: 'ELA', gradeLevel: 6, strand: 'Reading & Comprehension', curriculumOutcomeCode: 'ELA.6.1', isCorePrerequisite: true },
-    { id: 'skill-ela6-2', code: 'ELA.6.2', title: 'Vocabulary & Word Analysis', description: 'Understand and use context clues, figurative language, and vocabulary strategies', subject: 'ELA', gradeLevel: 6, strand: 'Vocabulary & Language', curriculumOutcomeCode: 'ELA.6.2', isCorePrerequisite: true },
-    { id: 'skill-ela6-3', code: 'ELA.6.3', title: 'Literary Analysis & Theme', description: 'Identify theme, plot structure, and analyze literary elements in narrative texts', subject: 'ELA', gradeLevel: 6, strand: 'Literary Analysis', curriculumOutcomeCode: 'ELA.6.3', isCorePrerequisite: false },
-    { id: 'skill-ela6-4', code: 'ELA.6.4', title: 'Writing Craft & Conventions', description: 'Apply grammar, punctuation, figurative language, and narrative writing techniques', subject: 'ELA', gradeLevel: 6, strand: 'Writing & Conventions', curriculumOutcomeCode: 'ELA.6.4', isCorePrerequisite: false },
-    { id: 'skill-ela6-5', code: 'ELA.6.5', title: 'Communication & Collaboration', description: 'Practice active listening, constructive feedback, and collaborative discussion skills', subject: 'ELA', gradeLevel: 6, strand: 'Oral Communication', curriculumOutcomeCode: 'ELA.6.5', isCorePrerequisite: false },
-  ];
-
-  let skillCount = 0;
-  for (const s of skills) {
+  let parentCount = 0;
+  for (const s of parentSkills) {
     await prisma.skill.upsert({
       where: { code: s.code },
       update: { title: s.title, description: s.description, strand: s.strand },
       create: s,
     });
-    skillCount++;
+    parentCount++;
   }
-  console.log(`✅ Skills: ${skillCount} upserted`);
+  console.log(`✅ Parent Skills: ${parentCount} upserted (${parentSkills.filter(s => s.subject === 'Science').length} Science, ${parentSkills.filter(s => s.subject === 'ELA').length} ELA)`);
 
-  // ─── 2. Create LessonSkill Mappings ───
+  // ─── 2. Build parent code → id lookup ───
+  const parentLookup = new Map<string, string>();
+  for (const s of parentSkills) {
+    const dbSkill = await prisma.skill.findUnique({ where: { code: s.code } });
+    if (dbSkill) parentLookup.set(s.code, dbSkill.id);
+  }
 
-  // Query all lessons and their quiz questions to infer skill mappings
+  // ─── 3. Seed Child Skills ───
+  console.log('\n── Step 2: Child Skills ──');
+
+  const allChildren = [...scienceChildSkills, ...elaChildSkills];
+  let childCount = 0;
+  let missingParents = 0;
+
+  for (const child of allChildren) {
+    const parentId = parentLookup.get(child.parentCode);
+    if (!parentId) {
+      console.warn(`⚠️  No parent found for ${child.code} (expected parent: ${child.parentCode})`);
+      missingParents++;
+      continue;
+    }
+
+    await prisma.skill.upsert({
+      where: { code: child.code },
+      update: {
+        title: child.title,
+        description: child.description,
+        strand: child.strand,
+        parentSkillId: parentId,
+      },
+      create: {
+        id: child.id,
+        code: child.code,
+        title: child.title,
+        description: child.description,
+        subject: child.subject,
+        gradeLevel: child.gradeLevel,
+        strand: child.strand,
+        curriculumOutcomeCode: child.curriculumOutcomeCode,
+        isCorePrerequisite: false,
+        parentSkillId: parentId,
+      },
+    });
+    childCount++;
+  }
+
+  const sciChildCount = scienceChildSkills.length;
+  const elaChildCount = elaChildSkills.length;
+  console.log(`✅ Child Skills: ${childCount} upserted (${sciChildCount} Science, ${elaChildCount} ELA)`);
+  if (missingParents > 0) console.warn(`⚠️  ${missingParents} children had missing parents`);
+
+  // ─── 4. Create LessonSkill Mappings ───
+  console.log('\n── Step 3: LessonSkill Mappings ──');
+
   const lessons = await prisma.lesson.findMany({
     include: {
       quizQuestions: { select: { outcomeCode: true } },
@@ -72,7 +107,6 @@ async function main() {
   let lessonSkillCount = 0;
 
   for (const lesson of lessons) {
-    // Get unique outcome codes from this lesson's quiz questions
     const outcomeCodes = [...new Set(
       lesson.quizQuestions
         .map((q) => q.outcomeCode)
@@ -81,13 +115,12 @@ async function main() {
 
     if (outcomeCodes.length === 0) continue;
 
-    // Find matching skills
+    // Match against both parent AND child skills
     const matchedSkills = await prisma.skill.findMany({
       where: { code: { in: outcomeCodes } },
     });
 
     for (const skill of matchedSkills) {
-      // Create TARGET mapping
       try {
         await prisma.lessonSkill.upsert({
           where: {
@@ -110,22 +143,20 @@ async function main() {
       }
     }
 
-    // If this lesson has prerequisite skills (earlier skills in same subject)
-    // Mark previous unit skills as PREREQUISITE for later lessons
+    // Prerequisite mapping for later units
     const unitOrder = lesson.unit.order;
     if (unitOrder > 0) {
-      const prerequisiteSkills = skills.filter(
+      const prerequisiteSkills = parentSkills.filter(
         (s) =>
-          s.subject === lesson.unit.subject.name.split(' ')[0] && // Match subject
+          s.subject === lesson.unit.subject.name.split(' ')[0] &&
           s.isCorePrerequisite &&
-          !outcomeCodes.includes(s.code) // Don't mark target skills as prereqs
+          !outcomeCodes.includes(s.code)
       );
 
       for (const prereqSkill of prerequisiteSkills) {
         const dbSkill = await prisma.skill.findUnique({ where: { code: prereqSkill.code } });
         if (!dbSkill) continue;
 
-        // Only mark as prerequisite if the skill is from an earlier unit
         const prereqStrand = prereqSkill.strand || '';
         const lessonStrand = matchedSkills[0]?.strand || '';
         if (prereqStrand !== lessonStrand) {
@@ -155,9 +186,9 @@ async function main() {
   }
   console.log(`✅ LessonSkill mappings: ${lessonSkillCount} created`);
 
-  // ─── 3. Create ActivitySkill Mappings ───
+  // ─── 5. Create ActivitySkill Mappings ───
+  console.log('\n── Step 4: ActivitySkill Mappings ──');
 
-  // Map activities to skills through their parent lesson's target skills
   const activities = await prisma.activity.findMany({
     include: {
       lesson: {
@@ -183,7 +214,6 @@ async function main() {
       where: { code: { in: outcomeCodes } },
     });
 
-    // Weight based on activity type
     const weightMap: Record<string, number> = {
       QUIZ: 1.0,
       ASSIGNMENT: 0.8,
@@ -215,20 +245,39 @@ async function main() {
   }
   console.log(`✅ ActivitySkill mappings: ${activitySkillCount} created`);
 
-  // ─── 4. Summary ───
+  // ─── 6. Verification ───
+  console.log('\n── Step 5: Verification ──');
 
   const totalSkills = await prisma.skill.count();
+  const totalParents = await prisma.skill.count({ where: { parentSkillId: null } });
+  const totalChildren = await prisma.skill.count({ where: { NOT: { parentSkillId: null } } });
+  const orphanChildren = await prisma.skill.count({
+    where: {
+      NOT: { parentSkillId: null },
+      parent: null,
+    },
+  });
   const totalLessonSkills = await prisma.lessonSkill.count();
   const totalActivitySkills = await prisma.activitySkill.count();
 
   console.log(`
-╔════════════════════════════════════╗
-║     MASTERY SEED COMPLETE         ║
-╠════════════════════════════════════╣
-║ Skills:          ${String(totalSkills).padStart(4)}             ║
-║ LessonSkills:    ${String(totalLessonSkills).padStart(4)}             ║
-║ ActivitySkills:  ${String(totalActivitySkills).padStart(4)}             ║
-╚════════════════════════════════════╝`);
+╔═══════════════════════════════════════════╗
+║     HYBRID SKILL TREE — SEED COMPLETE    ║
+╠═══════════════════════════════════════════╣
+║ Total Skills:        ${String(totalSkills).padStart(4)}                ║
+║   ├ Parents:         ${String(totalParents).padStart(4)}                ║
+║   └ Children:        ${String(totalChildren).padStart(4)}                ║
+║ Orphan Children:     ${String(orphanChildren).padStart(4)}                ║
+║ LessonSkills:        ${String(totalLessonSkills).padStart(4)}                ║
+║ ActivitySkills:      ${String(totalActivitySkills).padStart(4)}                ║
+╚═══════════════════════════════════════════╝`);
+
+  if (orphanChildren > 0) {
+    console.error(`\n❌ ERROR: ${orphanChildren} child skills have invalid parentSkillId!`);
+    process.exit(1);
+  }
+
+  console.log('\n✅ All parent/child relationships verified.');
 }
 
 main()
@@ -238,4 +287,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    pool.end();
   });

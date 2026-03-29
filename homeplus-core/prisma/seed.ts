@@ -191,7 +191,7 @@ async function main() {
     },
   });
 
-  // --- Unit B: Plants ---
+  // --- Unit B: Plants for Food & Fibre (7 lessons) ---
   const unitB = await prisma.unit.upsert({
     where: { id: 'g7-sci-unit-b' },
     update: {},
@@ -205,19 +205,20 @@ async function main() {
     },
   });
 
-  const lesson3 = await prisma.lesson.upsert({
-    where: { id: 'g7-sci-ub-l1' },
-    update: {},
-    create: {
-      id: 'g7-sci-ub-l1',
-      unitId: unitB.id,
-      title: 'Factors Affecting Plant Growth',
-      subtitle: 'Explore light, water, soil, and temperature.',
-      order: 1,
-    },
-  });
+  const ubLessons = [
+    { id: 'g7-sci-ub-l1', title: 'Plant Survival', subtitle: 'Needs, structures & roles of plants in ecosystems', order: 1 },
+    { id: 'g7-sci-ub-l2', title: 'Growth & Reproduction', subtitle: 'Germination, pollination, seed dispersal & growth factors', order: 2 },
+    { id: 'g7-sci-ub-l3', title: 'Classification & Adaptations', subtitle: 'Vascular vs. non-vascular, flowering vs. non-flowering, Alberta plant ID', order: 3 },
+    { id: 'g7-sci-ub-l4', title: 'Growing Conditions', subtitle: 'Soil, light, water, temperature, greenhouses & hydroponics', order: 4 },
+    { id: 'g7-sci-ub-l5', title: 'Agriculture & Pest Control', subtitle: 'Chemical vs. biological, monocultures, organic farming', order: 5 },
+    { id: 'g7-sci-ub-l6', title: 'Plants, People & Sustainability', subtitle: 'Selective breeding, Indigenous knowledge, forestry & food security', order: 6 },
+    { id: 'g7-sci-ub-l7', title: 'Performance Task', subtitle: 'Design a sustainable school garden plan', order: 7 },
+  ];
+  for (const l of ubLessons) {
+    await prisma.lesson.upsert({ where: { id: l.id }, update: {}, create: { id: l.id, unitId: unitB.id, title: l.title, subtitle: l.subtitle, order: l.order } });
+  }
 
-  // --- Unit C: Heat ---
+  // --- Unit C: Heat & Temperature (6 lessons) ---
   const unitC = await prisma.unit.upsert({
     where: { id: 'g7-sci-unit-c' },
     update: {},
@@ -231,20 +232,75 @@ async function main() {
     },
   });
 
-  const lesson4 = await prisma.lesson.upsert({
-    where: { id: 'g7-sci-uc-l1' },
+  const ucLessons = [
+    { id: 'g7-sci-uc-l1', title: 'Hot & Cold: The Particle Model', subtitle: 'Distinguish heat from temperature using the particle model of matter', order: 1 },
+    { id: 'g7-sci-uc-l2', title: 'Heat on the Move', subtitle: 'Conduction, convection & radiation — how heat travels', order: 2 },
+    { id: 'g7-sci-uc-l3', title: 'Conductors, Insulators & Thermal Materials', subtitle: 'Compare materials that transfer or block heat', order: 3 },
+    { id: 'g7-sci-uc-l4', title: 'Heating & Cooling Technology', subtitle: 'Thermometers, thermostats, furnaces & home heating', order: 4 },
+    { id: 'g7-sci-uc-l5', title: 'Energy Sources & Climate', subtitle: 'Compare energy sources and their environmental impacts', order: 5 },
+    { id: 'g7-sci-uc-l6', title: 'Performance Task', subtitle: 'Design an energy-efficient shelter', order: 6 },
+  ];
+  for (const l of ucLessons) {
+    await prisma.lesson.upsert({ where: { id: l.id }, update: {}, create: { id: l.id, unitId: unitC.id, title: l.title, subtitle: l.subtitle, order: l.order } });
+  }
+
+  // --- Unit D: Structures & Forces (8 lessons) ---
+  const unitD = await prisma.unit.upsert({
+    where: { id: 'g7-sci-unit-d' },
     update: {},
     create: {
-      id: 'g7-sci-uc-l1',
-      unitId: unitC.id,
-      title: 'Conductors and Insulators',
-      subtitle: 'Compare how different materials transfer heat.',
-      order: 1,
+      id: 'g7-sci-unit-d',
+      subjectId: science.id,
+      title: 'Structures & Forces',
+      description: 'Explore structural types, forces, and engineering design.',
+      icon: '🏗️',
+      order: 4,
     },
   });
 
-  console.log(`✅ Units: ${unitA.title}, ${unitB.title}, ${unitC.title}`);
-  console.log(`✅ Lessons: 6 total`);
+  const udLessons = [
+    { id: 'g7-sci-ud-l1', title: 'Types of Structures', subtitle: 'Frame, shell, and combination structures in nature and design', order: 1 },
+    { id: 'g7-sci-ud-l2', title: 'Forces on Structures', subtitle: 'Internal and external forces — tension, compression, shearing', order: 2 },
+    { id: 'g7-sci-ud-l3', title: 'Stability & Centre of Gravity', subtitle: 'How mass distribution and foundations affect stability', order: 3 },
+    { id: 'g7-sci-ud-l4', title: 'Material Properties', subtitle: 'Strength, flexibility, and choosing the right material', order: 4 },
+    { id: 'g7-sci-ud-l5', title: 'Joints & Connections', subtitle: 'Fixed vs. flexible joints, fastening methods', order: 5 },
+    { id: 'g7-sci-ud-l6', title: 'Natural & Cultural Structures', subtitle: 'Structures in nature and across cultures', order: 6 },
+    { id: 'g7-sci-ud-l7', title: 'Strengthening & Safety', subtitle: 'Corrugation, lamination, and environmental factors', order: 7 },
+    { id: 'g7-sci-ud-l8', title: 'Performance Task', subtitle: 'Structural design & analysis report', order: 8 },
+  ];
+  for (const l of udLessons) {
+    await prisma.lesson.upsert({ where: { id: l.id }, update: {}, create: { id: l.id, unitId: unitD.id, title: l.title, subtitle: l.subtitle, order: l.order } });
+  }
+
+  // --- Unit E: Planet Earth (7 lessons) ---
+  const unitE = await prisma.unit.upsert({
+    where: { id: 'g7-sci-unit-e' },
+    update: {},
+    create: {
+      id: 'g7-sci-unit-e',
+      subjectId: science.id,
+      title: 'Planet Earth',
+      description: 'Explore Earth layers, rocks, plate tectonics, and fossils.',
+      icon: '🌍',
+      order: 5,
+    },
+  });
+
+  const ueLessons = [
+    { id: 'g7-sci-ue-l1', title: 'Earth Inside Out', subtitle: 'Layers of the Earth — crust, mantle, core', order: 1 },
+    { id: 'g7-sci-ue-l2', title: 'Rocks & Minerals', subtitle: 'Identifying and classifying igneous, sedimentary, and metamorphic rocks', order: 2 },
+    { id: 'g7-sci-ue-l3', title: 'Weathering, Erosion & Soil', subtitle: 'How rocks break down and form soil', order: 3 },
+    { id: 'g7-sci-ue-l4', title: 'Plate Tectonics', subtitle: 'Moving plates, earthquakes, and volcanoes', order: 4 },
+    { id: 'g7-sci-ue-l5', title: 'Mountain Building', subtitle: 'Fold and fault mountains, the Canadian Rockies', order: 5 },
+    { id: 'g7-sci-ue-l6', title: 'Fossils & Geological Time', subtitle: 'How fossils form, the fossil record, and deep time', order: 6 },
+    { id: 'g7-sci-ue-l7', title: 'Performance Task', subtitle: 'Geological cross-section interpretation', order: 7 },
+  ];
+  for (const l of ueLessons) {
+    await prisma.lesson.upsert({ where: { id: l.id }, update: {}, create: { id: l.id, unitId: unitE.id, title: l.title, subtitle: l.subtitle, order: l.order } });
+  }
+
+  console.log(`✅ Units: ${unitA.title}, ${unitB.title}, ${unitC.title}, ${unitD.title}, ${unitE.title}`);
+  console.log(`✅ Lessons: ${8 + ubLessons.length + ucLessons.length + udLessons.length + ueLessons.length} total`);
 
   // ╔═══════════════════════════════════════════╗
   // ║ 3b. CURRICULUM — Grade 6 ELA              ║
@@ -311,6 +367,174 @@ async function main() {
   }
   console.log(`✅ ELA Unit: ${elaU1.title} (7 lessons)`);
 
+  // --- Unit 2: Story Power ---
+  const elaU2 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u2' },
+    update: {},
+    create: {
+      id: 'g6-ela-u2',
+      subjectId: ela6.id,
+      title: 'Story Power',
+      description: 'Study fiction as both a reader and writer. Analyze mentor texts for narrative craft, then create your own original short story.',
+      icon: '📕',
+      order: 1,
+    },
+  });
+
+  const elaU2LessonData = [
+    { id: 'g6-ela-u2-l1', title: 'What Makes a Great Story?', subtitle: 'Analyze fiction to identify protagonist, antagonist, conflict, and plot elements.', order: 1 },
+    { id: 'g6-ela-u2-l2', title: 'Story Structures', subtitle: 'Explore subplot, flashback, flash-forward, and story-within-a-story.', order: 2 },
+    { id: 'g6-ela-u2-l3', title: 'Exploring Sub-Genres', subtitle: 'Compare fantasy, sci-fi, historical fiction, mystery, and comedy.', order: 3 },
+    { id: 'g6-ela-u2-l4', title: 'The Writer\'s Toolbox', subtitle: 'Sensory detail, dialogue, figurative language, and show-don\'t-tell.', order: 4 },
+    { id: 'g6-ela-u2-l5', title: 'Building My Story', subtitle: 'Plan and draft a multi-paragraph short story using a story map.', order: 5 },
+    { id: 'g6-ela-u2-l6', title: 'Crafting Conflict & Character', subtitle: 'Create compelling conflict and develop round characters with motivation.', order: 6 },
+    { id: 'g6-ela-u2-l7', title: 'Editing Lab', subtitle: 'Capitalization, colon usage, clause identification, and sentence variety.', order: 7 },
+    { id: 'g6-ela-u2-l8', title: 'Story Showcase', subtitle: 'Final revision, peer feedback, publish and share.', order: 8 },
+  ];
+
+  for (const l of elaU2LessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: { title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+      create: { id: l.id, unitId: elaU2.id, title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU2.title} (8 lessons)`);
+
+  // --- Unit 3: Truth, Evidence, and Information ---
+  const elaU3 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u3' },
+    update: {},
+    create: {
+      id: 'g6-ela-u3',
+      subjectId: ela6.id,
+      title: 'Truth, Evidence, and Information',
+      description: 'Identify main ideas, evaluate source reliability, and write evidence-based research responses. Build media literacy and nonfiction reading skills.',
+      icon: '🔎',
+      order: 2,
+    },
+  });
+
+  const elaU3LessonData = [
+    { id: 'g6-ela-u3-l1', title: 'Reading Non-Fiction', subtitle: 'Non-fiction text features, structures, and main idea identification.', order: 1 },
+    { id: 'g6-ela-u3-l2', title: 'Word Roots & Origins', subtitle: 'Greek/Latin roots, prefixes, suffixes, and morphology.', order: 2 },
+    { id: 'g6-ela-u3-l3', title: 'Academic Vocabulary', subtitle: 'Tier 2/3 words across subjects and precise communication.', order: 3 },
+    { id: 'g6-ela-u3-l4', title: 'Fact vs Opinion', subtitle: 'Evaluating claims, identifying bias, and checking reliability.', order: 4 },
+    { id: 'g6-ela-u3-l5', title: 'Research Skills', subtitle: 'Narrowing questions, finding multiple sources, and note-taking.', order: 5 },
+    { id: 'g6-ela-u3-l6', title: 'Evidence-Based Writing', subtitle: 'Writing paragraphs supported by evidence from sources.', order: 6 },
+    { id: 'g6-ela-u3-l7', title: 'Spelling Lab', subtitle: 'Spelling patterns, bases, affixes, and derivations.', order: 7 },
+    { id: 'g6-ela-u3-l8', title: 'Research Report', subtitle: 'Draft, revise, and publish an evidence-based research report.', order: 8 },
+  ];
+
+  for (const l of elaU3LessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: { title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+      create: { id: l.id, unitId: elaU3.id, title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU3.title} (8 lessons)`);
+
+  // --- Unit 4: Perspectives and Justice ---
+  const elaU4 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u4' },
+    update: {},
+    create: {
+      id: 'g6-ela-u4',
+      subjectId: ela6.id,
+      title: 'Perspectives and Justice',
+      description: 'Compare viewpoints, discuss ideas, and write persuasive responses about school community, fairness, belonging, and local responsibility.',
+      icon: '⚖️',
+      order: 3,
+    },
+  });
+
+  const elaU4LessonData = [
+    { id: 'g6-ela-u4-l1', title: 'Walking in Others\' Shoes', subtitle: 'Perspective-taking through fiction and empathy development.', order: 1 },
+    { id: 'g6-ela-u4-l2', title: 'Whose Voice Is Missing?', subtitle: 'Bias, representation, and audience influence in texts.', order: 2 },
+    { id: 'g6-ela-u4-l3', title: 'Building Arguments', subtitle: 'Claims, evidence, reasoning, and persuasive structure.', order: 3 },
+    { id: 'g6-ela-u4-l4', title: 'Effective Communication', subtitle: 'Verbal, non-verbal, and paraverbal communication cues.', order: 4 },
+    { id: 'g6-ela-u4-l5', title: 'The Art of Persuasion', subtitle: 'Analyzing persuasive texts, speeches, and rhetorical strategies.', order: 5 },
+    { id: 'g6-ela-u4-l6', title: 'Presentation Planning', subtitle: 'Structure, audience awareness, and delivery preparation.', order: 6 },
+    { id: 'g6-ela-u4-l7', title: 'Collaborative Discussion', subtitle: 'Dialogue protocols, active listening, and constructive feedback.', order: 7 },
+    { id: 'g6-ela-u4-l8', title: 'Perspectives Showcase', subtitle: 'Present argument, receive peer feedback, and reflect.', order: 8 },
+  ];
+
+  for (const l of elaU4LessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: { title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+      create: { id: l.id, unitId: elaU4.id, title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU4.title} (8 lessons)`);
+
+  // --- Unit 5: Wonder, Discovery, and Imagination ---
+  const elaU5 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u5' },
+    update: {},
+    create: {
+      id: 'g6-ela-u5',
+      subjectId: ela6.id,
+      title: 'Wonder, Discovery, and Imagination',
+      description: 'Connect informational reading, poetry, and imaginative thinking. Explore figurative language, original expression, and the joy of language itself.',
+      icon: '🌿',
+      order: 4,
+    },
+  });
+
+  const elaU5LessonData = [
+    { id: 'g6-ela-u5-l1', title: 'The Power of Poetry', subtitle: 'Poetic structures, rhythm, rhyme, and free verse.', order: 1 },
+    { id: 'g6-ela-u5-l2', title: 'Figurative Language Deep Dive', subtitle: 'Extended metaphor, symbolism, imagery, and sound devices.', order: 2 },
+    { id: 'g6-ela-u5-l3', title: 'Drama & Performance', subtitle: 'Reading and viewing dramatic works including comedy and tragedy.', order: 3 },
+    { id: 'g6-ela-u5-l4', title: 'Land as Text', subtitle: 'FNMI land literacy — how structures of land carry meaning.', order: 4 },
+    { id: 'g6-ela-u5-l5', title: 'Speaking With Power', subtitle: 'Rhetoric, persuasion, and elements of public speaking.', order: 5 },
+    { id: 'g6-ela-u5-l6', title: 'Writing Poetry', subtitle: 'Crafting original poems with voice, imagery, and structure.', order: 6 },
+    { id: 'g6-ela-u5-l7', title: 'Creative Performance', subtitle: 'Dramatic reading, spoken word preparation, and rehearsal.', order: 7 },
+    { id: 'g6-ela-u5-l8', title: 'Wonder Showcase', subtitle: 'Perform original work and reflect on creative growth.', order: 8 },
+  ];
+
+  for (const l of elaU5LessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: { title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+      create: { id: l.id, unitId: elaU5.id, title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU5.title} (8 lessons)`);
+
+  // --- Unit 6: Publish and Reflect ---
+  const elaU6 = await prisma.unit.upsert({
+    where: { id: 'g6-ela-u6' },
+    update: {},
+    create: {
+      id: 'g6-ela-u6',
+      subjectId: ela6.id,
+      title: 'Publish and Reflect',
+      description: 'Analyze revision choices, select and polish your strongest work, build a portfolio, and present your learning journey with confidence.',
+      icon: '🎓',
+      order: 5,
+    },
+  });
+
+  const elaU6LessonData = [
+    { id: 'g6-ela-u6-l1', title: 'Looking Back', subtitle: 'Review growth across all units, identify strengths and areas for improvement.', order: 1 },
+    { id: 'g6-ela-u6-l2', title: 'Portfolio Selection', subtitle: 'Choose, justify, and organize portfolio pieces from Units 1–5.', order: 2 },
+    { id: 'g6-ela-u6-l3', title: 'Revision Masterclass', subtitle: 'Deep revision of 2 selected pieces for clarity, voice, and impact.', order: 3 },
+    { id: 'g6-ela-u6-l4', title: 'Publishing Lab', subtitle: 'Add text features, graphics, captions, and final formatting.', order: 4 },
+    { id: 'g6-ela-u6-l5', title: 'Learning Story', subtitle: 'Present your growth narrative to an audience with confidence.', order: 5 },
+    { id: 'g6-ela-u6-l6', title: 'Celebration & Next Steps', subtitle: 'Final reflection, goal-setting for Grade 7, and celebration.', order: 6 },
+  ];
+
+  for (const l of elaU6LessonData) {
+    await prisma.lesson.upsert({
+      where: { id: l.id },
+      update: { title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+      create: { id: l.id, unitId: elaU6.id, title: l.title, subtitle: l.subtitle, order: l.order, subjectMode: 'ELA', externalUrl: null },
+    });
+  }
+  console.log(`✅ ELA Unit: ${elaU6.title} (6 lessons)`);
+
   // ╔═══════════════════════════════════════════╗
   // ║ 4. ACTIVITIES                               ║
   // ╚═══════════════════════════════════════════╝
@@ -361,7 +585,7 @@ async function main() {
     update: {},
     create: {
       id: 'g7-sci-ub-l1-reflect',
-      lessonId: lesson3.id,
+      lessonId: 'g7-sci-ub-l1',
       type: 'REFLECTION',
       title: 'Plant Growth Reflection',
       points: 10,
@@ -375,7 +599,7 @@ async function main() {
     update: {},
     create: {
       id: 'g7-sci-uc-l1-lab',
-      lessonId: lesson4.id,
+      lessonId: 'g7-sci-uc-l1',
       type: 'ASSIGNMENT',
       title: 'Heat Transfer Lab',
       points: 20,
@@ -431,7 +655,7 @@ async function main() {
     // Ava — strong, ahead
     { studentId: 'student-1', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-20') },
     { studentId: 'student-1', lessonId: lesson2.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-28') },
-    { studentId: 'student-1', lessonId: lesson3.id, status: 'IN_PROGRESS' as const },
+    { studentId: 'student-1', lessonId: 'g7-sci-ub-l1', status: 'IN_PROGRESS' as const },
     // Liam — on pace
     { studentId: 'student-2', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-22') },
     { studentId: 'student-2', lessonId: lesson2.id, status: 'IN_PROGRESS' as const },
@@ -442,12 +666,12 @@ async function main() {
     // Sophia — ahead
     { studentId: 'student-5', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-18') },
     { studentId: 'student-5', lessonId: lesson2.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-25') },
-    { studentId: 'student-5', lessonId: lesson3.id, status: 'COMPLETE' as const, completedAt: new Date('2025-10-05') },
-    { studentId: 'student-5', lessonId: lesson4.id, status: 'IN_PROGRESS' as const },
+    { studentId: 'student-5', lessonId: 'g7-sci-ub-l1', status: 'COMPLETE' as const, completedAt: new Date('2025-10-05') },
+    { studentId: 'student-5', lessonId: 'g7-sci-uc-l1', status: 'IN_PROGRESS' as const },
     // Jackson — on pace
     { studentId: 'student-6', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-21') },
     { studentId: 'student-6', lessonId: lesson2.id, status: 'COMPLETE' as const, completedAt: new Date('2025-10-01') },
-    { studentId: 'student-6', lessonId: lesson3.id, status: 'IN_PROGRESS' as const },
+    { studentId: 'student-6', lessonId: 'g7-sci-ub-l1', status: 'IN_PROGRESS' as const },
   ];
 
   for (const p of progressData) {

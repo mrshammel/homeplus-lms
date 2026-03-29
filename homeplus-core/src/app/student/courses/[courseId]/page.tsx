@@ -196,7 +196,7 @@ export default async function CourseDetailPage({ params }: Props) {
                     </div>
                     <div className={styles.unitCardTitleGroup}>
                       <div className={styles.unitCardLabel}>
-                        Unit {unit.order + 1}
+                        Unit {unit.order}
                       </div>
                       <h4 className={styles.unitCardTitle}>{unit.title}</h4>
                     </div>
