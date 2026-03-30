@@ -49,6 +49,7 @@ interface LessonFrameClientProps {
     sectionsData: SectionsData | null;
   } | null;
   warmUpConfig: any;
+  gradeLevel: number;
 }
 
 export default function LessonFrameClient(props: LessonFrameClientProps) {

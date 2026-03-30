@@ -302,7 +302,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'c',
       explanation: 'Algae is a producer because it makes its own food through photosynthesis. Rabbits and hawks are consumers, and mushrooms are decomposers.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -317,7 +317,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'b',
       explanation: 'The small fish eats phytoplankton (the producer), making it the primary consumer — the first organism in the chain that eats rather than makes food.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -332,7 +332,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'b',
       explanation: 'Decomposers break down dead material (plants, animals, waste) and release nutrients back into the soil. Producers then use those nutrients to grow, restarting the cycle.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -347,7 +347,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'c',
       explanation: 'At each level, organisms use energy for movement, growth, and body heat. Only about 10% of the energy passes to the next consumer, which is why food chains are usually short.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -362,7 +362,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'd',
       explanation: 'The mushroom is growing on dead wood (the stump), breaking it down and releasing nutrients — that\'s exactly what decomposers do.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -377,7 +377,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'c',
       explanation: 'Algae make their own food from sunlight through photosynthesis, just like land plants. That makes them producers — the base of aquatic food chains.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -392,7 +392,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'b',
       explanation: 'Arrows in food chains always point in the direction energy flows: from the organism being eaten to the organism doing the eating.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -407,7 +407,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'c',
       explanation: 'Bears eat both plants (berries) and animals (salmon, insects), making them omnivores. Omnivores can feed at multiple levels of a food chain.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -422,7 +422,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'b',
       explanation: 'Primary consumers eat producers directly, so they lose their food source first. The effect then ripples up: secondary consumers lose food, then tertiary consumers.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -437,7 +437,7 @@ async function seedLesson2() {
       ],
       correctAnswer: 'b',
       explanation: 'About 90% of energy is lost as heat at each trophic level. After 4-5 levels, there simply is not enough energy left to support another level of consumers.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
   ];
@@ -740,7 +740,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'c',
       explanation: 'Both organisms benefit: the bee gets food (nectar) and the flower gets pollinated. This is mutualism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -755,7 +755,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'a',
       explanation: 'Less prey means less food for predators, so their population declines too. This is part of the predator-prey population cycle.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -770,7 +770,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'c',
       explanation: 'The tapeworm benefits (gets nutrients) while the dog is harmed (becomes malnourished). One benefits, one is harmed = parasitism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -785,7 +785,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'd',
       explanation: 'Both plants need the same resource (sunlight), and the taller plant outcompetes the shorter one. This is competition.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -800,7 +800,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'a',
       explanation: 'The remora benefits (free ride + food scraps) while the shark is unaffected. One benefits, the other is unaffected = commensalism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -815,7 +815,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'c',
       explanation: 'The barnacles benefit (free transportation and access to food), but the whale is unaffected. One benefits, the other is neutral = commensalism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -830,7 +830,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'b',
       explanation: 'Wolves hunted deer and elk, reducing their numbers. With fewer grazers, trees and shrubs could regrow along riverbanks. This is a trophic cascade.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -845,7 +845,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'c',
       explanation: 'Both organisms benefit: the clownfish gets protection, and the anemone gets defense from predators. Both benefit = mutualism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -860,7 +860,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'b',
       explanation: 'More prey means more food for predators, allowing more predators to survive and reproduce. This is the predator-prey cycle.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -875,7 +875,7 @@ async function seedLesson3() {
       ],
       correctAnswer: 'b',
       explanation: 'The lice benefit by feeding on blood, but the human is harmed (itching, discomfort). One benefits + one is harmed = parasitism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
   ];
@@ -1117,7 +1117,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'b',
       explanation: 'Losing producers triggers a ripple effect through the food chain: herbivores lose their food source, which means predators also lose food. As organisms die, decomposers break them down. This connects L1 (biotic-abiotic interactions), L2 (food chains), and L3 (predator-prey).',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -1132,7 +1132,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'c',
       explanation: 'Lichen benefits from growing on the tree while the tree is unaffected — that is commensalism. Squirrels and blue jays both need acorns (same resource) — that is competition. This question synthesizes relationship types from Lesson 3.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -1147,7 +1147,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'c',
       explanation: 'Both organisms benefit: the fungi get sugars from the plant, and the plant gets better water and mineral absorption. Both benefit = mutualism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -1162,7 +1162,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'b',
       explanation: 'Removing a predator (tuna) means less hunting of the prey (small fish), so the small fish population would grow. This could then lead to overgrazing of phytoplankton.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -1177,7 +1177,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'c',
       explanation: 'Decomposers recycle nutrients from dead material back into the soil. Producers (plants) then absorb these nutrients through their roots to grow, completing the nutrient cycle.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -1192,7 +1192,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'b',
       explanation: 'Sea otters eat sea urchins. Fewer otters = fewer predators for urchins = urchin population increases. This could then lead to overgrazing of seaweed.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 2,
     },
     {
@@ -1207,7 +1207,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'c',
       explanation: 'Bees get food (nectar) and flowers get pollinated (reproduction). Both organisms benefit, which defines mutualism.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -1222,7 +1222,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'b',
       explanation: 'Decomposers recycle nutrients from dead material back into the soil. Without them, the nutrient cycle breaks — soil becomes depleted and producers cannot grow.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -1237,7 +1237,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'c',
       explanation: 'Both species need the same limited resources (acorns and nesting sites). When species compete for the same resources, it is interspecific competition.',
-      outcomeCode: 'SCI.7.A.2',
+      outcomeCode: 'SCI.7.A.K.2',
       difficulty: 1,
     },
     {
@@ -1252,7 +1252,7 @@ async function seedLesson4() {
       ],
       correctAnswer: 'b',
       explanation: 'Ecosystems are interconnected webs. Removing any species — producer, consumer, or decomposer — causes ripple effects through food chains and ecological relationships.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
   ];
@@ -1291,7 +1291,7 @@ async function main() {
   console.log('   Lesson 3: 11 blocks + 5 quiz questions');
   console.log('   Lesson 4:  8 blocks + 5 quiz questions');
   console.log('   Total: 30 content blocks, 15 mastery check questions');
-  console.log('   Outcomes covered: SCI.7.A.1 (L2, L4), SCI.7.A.2 (L3, L4)');
+  console.log('   Outcomes covered: SCI.7.A.K.1 (L2, L4), SCI.7.A.K.2 (L3, L4)');
   console.log('\n   Navigate: Student Dashboard → Science → Interactions & Ecosystems');
 }
 

@@ -263,7 +263,7 @@ async function main() {
       ],
       correctAnswer: 'c',
       explanation: 'A mushroom is a living organism (fungus), making it a biotic factor. Water, sunlight, and temperature are abiotic.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -278,7 +278,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'Biotic means living (plants, animals, fungi). Abiotic means non-living (water, air, sunlight, rocks).',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -293,7 +293,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'The 3 abiotic (non-living) factors are: water, sunlight, and mud. Fish, algae, and insects are biotic (living).',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -308,7 +308,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'Plants depend directly on sunlight for photosynthesis. Without it, plants die first, which then affects the animals that depend on them for food.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -323,7 +323,7 @@ async function main() {
       ],
       correctAnswer: 'c',
       explanation: 'An ecosystem includes BOTH the community of living organisms AND the non-living environment they interact with.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -338,7 +338,7 @@ async function main() {
       ],
       correctAnswer: 'c',
       explanation: 'Rocks are non-living (abiotic). Moss, dragonflies, and bacteria are all living organisms (biotic).',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
@@ -353,7 +353,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'A habitat is one organism\'s home (e.g. a beaver lives in rivers). An ecosystem is bigger — it includes all organisms and their non-living environment interacting together.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -368,7 +368,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'Water is an abiotic factor that ALL organisms need. Removing it creates a ripple effect — fish die, plants wilt, and the entire ecosystem collapses.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -383,7 +383,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'A community = all the different species living together. An ecosystem = the community PLUS the abiotic factors (water, sunlight, soil, etc.) they interact with.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
     {
@@ -398,7 +398,7 @@ async function main() {
       ],
       correctAnswer: 'b',
       explanation: 'Trees are biotic factors. Removing them directly removes a key living component and also affects the animals, insects, and fungi that depend on trees for shelter and food.',
-      outcomeCode: 'SCI.7.A.1',
+      outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
   ];

@@ -6,7 +6,8 @@
 // Renders individual lesson blocks by type.
 // Used inside the universal lesson frame.
 
-import { useState, useRef, useMemo, useCallback } from 'react';
+import { useState, useRef, useMemo, useCallback, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import styles from './lesson.module.css';
 import type {
   BlockType,
@@ -24,6 +25,9 @@ import type {
   MicroCheckBlockContent,
 } from '@/lib/lesson-types';
 
+// Lazy-load DrawingCanvas — it's large and only needed for DRAWING blocks
+const DrawingCanvas = dynamic(() => import('./DrawingCanvas'), { ssr: false });
+
 interface BlockProps {
   blockType: BlockType;
   content: any; // JSON from DB, typed per block-type
@@ -33,9 +37,10 @@ interface BlockProps {
   lessonId?: string; // needed for AI feedback on constructed responses
   blockId?: string;  // block identifier for tracking
   subjectMode?: string; // subject for calibrated AI feedback
+  gradeLevel?: number; // grade level for AI calibration
 }
 
-export default function LessonBlockRenderer({ blockType, content, onAnswer, readOnly, showFeedback, lessonId, blockId, subjectMode }: BlockProps) {
+export default function LessonBlockRenderer({ blockType, content, onAnswer, readOnly, showFeedback, lessonId, blockId, subjectMode, gradeLevel }: BlockProps) {
   switch (blockType) {
     case 'TEXT':
       return <TextBlock content={content as TextBlockContent} />;
@@ -56,9 +61,9 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
     case 'MULTIPLE_CHOICE':
       return <MultipleChoiceBlock content={content as MultipleChoiceBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
     case 'CONSTRUCTED_RESPONSE':
-      return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} subjectMode={subjectMode} />;
+      return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} subjectMode={subjectMode} gradeLevel={gradeLevel} />;
     case 'DRAWING':
-      return <DrawingBlock content={content as DrawingBlockContent} onAnswer={onAnswer} />;
+      return <DrawingCanvas content={content as DrawingBlockContent} lessonId={lessonId || ''} blockId={blockId || ''} onAnswer={onAnswer} readOnly={readOnly} />;
     case 'PHOTO_UPLOAD':
     case 'TAKE_PHOTO':
       return <UploadBlock content={content as UploadBlockContent} type="photo" onAnswer={onAnswer} />;
@@ -74,11 +79,184 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
   }
 }
 
+// ---- Read Aloud Hook (Text-to-Speech) ----
+// Uses Web Speech API with localStorage-persisted rate preference.
+// Returns null controls when speechSynthesis is unavailable.
+
+const TTS_RATE_KEY = 'hpln-tts-rate';
+
+function useReadAloud() {
+  const [speaking, setSpeaking] = useState(false);
+  const [rate, setRate] = useState(0.9);
+  const [showRateSlider, setShowRateSlider] = useState(false);
+  const supported = typeof window !== 'undefined' && 'speechSynthesis' in window;
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  // Load saved rate on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const saved = localStorage.getItem(TTS_RATE_KEY);
+    if (saved) {
+      const parsed = parseFloat(saved);
+      if (!isNaN(parsed) && parsed >= 0.5 && parsed <= 1.5) setRate(parsed);
+    }
+  }, []);
+
+  const updateRate = useCallback((newRate: number) => {
+    setRate(newRate);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(TTS_RATE_KEY, String(newRate));
+    }
+  }, []);
+
+  const speak = useCallback((text: string) => {
+    if (!supported) return;
+    // Stop any current speech first
+    window.speechSynthesis.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = rate;
+    utt.pitch = 1;
+    utt.onend = () => setSpeaking(false);
+    utt.onerror = () => setSpeaking(false);
+    utteranceRef.current = utt;
+    setSpeaking(true);
+    window.speechSynthesis.speak(utt);
+  }, [supported, rate]);
+
+  const stop = useCallback(() => {
+    if (!supported) return;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  }, [supported]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (supported) window.speechSynthesis.cancel();
+    };
+  }, [supported]);
+
+  return { supported, speaking, speak, stop, rate, updateRate, showRateSlider, setShowRateSlider };
+}
+
+/** Read Aloud button + rate slider, shared by TEXT and VOCABULARY blocks */
+function ReadAloudButton({ getText }: { getText: () => string }) {
+  const { supported, speaking, speak, stop, rate, updateRate, showRateSlider, setShowRateSlider } = useReadAloud();
+  if (!supported) return null;
+
+  return (
+    <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', alignItems: 'center', gap: 6, zIndex: 2 }}>
+      {speaking ? (
+        <button
+          onClick={stop}
+          aria-label="Stop reading"
+          title="Stop reading"
+          style={{
+            background: '#fee2e2',
+            border: '1px solid #fca5a5',
+            borderRadius: 8,
+            padding: '5px 10px',
+            cursor: 'pointer',
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            color: '#dc2626',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            transition: 'all 0.15s',
+          }}
+        >
+          ⏹ Stop
+        </button>
+      ) : (
+        <button
+          onClick={() => speak(getText())}
+          aria-label="Read aloud"
+          title="Read this section aloud"
+          style={{
+            background: '#eff6ff',
+            border: '1px solid #bfdbfe',
+            borderRadius: 8,
+            padding: '5px 10px',
+            cursor: 'pointer',
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            color: '#2563eb',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            transition: 'all 0.15s',
+          }}
+        >
+          🔊 Read to Me
+        </button>
+      )}
+      <button
+        onClick={() => setShowRateSlider(!showRateSlider)}
+        aria-label="Adjust reading speed"
+        title="Adjust reading speed"
+        style={{
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          fontSize: '0.85rem',
+          color: '#94a3b8',
+          padding: '2px 4px',
+        }}
+      >
+        ⚙️
+      </button>
+      {showRateSlider && (
+        <div style={{
+          position: 'absolute',
+          top: '100%',
+          right: 0,
+          marginTop: 6,
+          background: '#fff',
+          border: '1px solid #e2e8f0',
+          borderRadius: 10,
+          padding: '10px 14px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+          width: 200,
+          zIndex: 10,
+        }}>
+          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '0 0 6px', fontWeight: 600 }}>
+            Reading speed: {rate.toFixed(1)}×
+          </p>
+          <input
+            type="range"
+            min="0.5"
+            max="1.5"
+            step="0.1"
+            value={rate}
+            onChange={(e) => updateRate(parseFloat(e.target.value))}
+            style={{ width: '100%', accentColor: '#2563eb' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8' }}>
+            <span>Slower</span>
+            <span>Faster</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---- Text Block ----
 function TextBlock({ content }: { content: TextBlockContent }) {
   if (!content?.html) return null;
+
+  const getPlainText = useCallback(() => {
+    // Strip HTML to plain text for speech synthesis
+    const div = document.createElement('div');
+    div.innerHTML = content.html;
+    return div.textContent || div.innerText || '';
+  }, [content.html]);
+
   return (
-    <div className={`${styles.blockCard} ${styles.textBlock}`}>
+    <div className={`${styles.blockCard} ${styles.textBlock}`} style={{ position: 'relative' }}>
+      <ReadAloudButton getText={getPlainText} />
       <div dangerouslySetInnerHTML={{ __html: content.html }} />
     </div>
   );
@@ -174,8 +352,17 @@ function AISummaryBlock({ content }: { content: { summary: string; source?: stri
 
 // ---- Vocabulary Block ----
 function VocabularyBlock({ content }: { content: VocabularyBlockContent }) {
+  const getPlainText = useCallback(() => {
+    return (content.terms || []).map((t) => {
+      let text = `${t.term}. ${t.definition}`;
+      if (t.example) text += `. Example: ${t.example}`;
+      return text;
+    }).join('. ');
+  }, [content.terms]);
+
   return (
-    <div className={styles.blockCard}>
+    <div className={styles.blockCard} style={{ position: 'relative' }}>
+      <ReadAloudButton getText={getPlainText} />
       <p style={{ fontWeight: 700, color: '#166534', fontSize: '0.82rem', margin: '0 0 10px' }}>📗 Key Vocabulary</p>
       {(content.terms || []).map((t, i) => (
         <div key={i} className={styles.vocabCard}>
@@ -498,15 +685,18 @@ interface AIFeedback {
   nextStep?: string;
   criteriaScores?: Record<string, number>;
   disclaimer: string;
+  flagForTeacher?: boolean;
+  relevanceScore?: number;
 }
 
-function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId, subjectMode }: {
+function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId, subjectMode, gradeLevel }: {
   content: ConstructedResponseBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
   lessonId?: string;
   blockId?: string;
   subjectMode?: string;
+  gradeLevel?: number;
 }) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -537,9 +727,10 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
           rubricHint: content.rubricHint || '',
           studentResponse: text,
           minLength: content.minLength,
+          minExpectedWords: content.minExpectedWords,
           teacherReviewRequired: content.teacherReviewRequired,
           subjectMode: subjectMode || 'GENERAL',
-          gradeLevel: 7,
+          gradeLevel: gradeLevel || 6,
         }),
       });
 
@@ -704,6 +895,25 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
               </div>
             )}
 
+            {/* Teacher flag — shown when scorer flags response as borderline */}
+            {feedback.flagForTeacher && (
+              <div style={{
+                marginTop: 10,
+                padding: '10px 14px',
+                background: '#fefce8',
+                borderRadius: 8,
+                border: '1px solid #fde68a',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}>
+                <span style={{ fontSize: '1.1rem' }}>📋</span>
+                <p style={{ fontSize: '0.78rem', color: '#92400e', margin: 0, lineHeight: 1.5 }}>
+                  <strong>Teacher Review Requested:</strong> Your teacher will look at this response to give you personalized feedback.
+                </p>
+              </div>
+            )}
+
             {/* Teacher review disclaimer — always shown */}
             <div style={{
               marginTop: 10,
@@ -740,83 +950,7 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
 }
 
 // ---- Drawing Block ----
-function DrawingBlock({ content, onAnswer }: { content: DrawingBlockContent; onAnswer?: (value: any) => void }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
-
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setFileName(file.name);
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = (ev) => setPreview(ev.target?.result as string);
-    reader.readAsDataURL(file);
-    onAnswer?.({ fileName: file.name, fileSize: file.size, fileType: file.type, uploaded: true });
-  };
-
-  return (
-    <div className={styles.interactiveBlock}>
-      <p className={styles.interactivePrompt}>🎨 {content.instruction}</p>
-      {content.backgroundImage && (
-        <div style={{ marginBottom: 10, textAlign: 'center' }}>
-          <img src={content.backgroundImage} alt="Template" style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e2e8f0' }} />
-        </div>
-      )}
-
-      {/* Photo preview */}
-      {preview ? (
-        <div style={{ textAlign: 'center', marginBottom: 12 }}>
-          <img
-            src={preview}
-            alt="Your uploaded work"
-            style={{ maxWidth: '100%', maxHeight: 400, borderRadius: 12, border: '2px solid #22c55e', objectFit: 'contain' }}
-          />
-          <p style={{ fontSize: '0.82rem', color: '#059669', fontWeight: 600, margin: '8px 0 0' }}>✓ {fileName}</p>
-        </div>
-      ) : null}
-
-      {/* Upload zone */}
-      <div
-        onClick={() => inputRef.current?.click()}
-        style={{
-          border: preview ? '2px solid #22c55e' : '2px dashed #cbd5e1',
-          borderRadius: 12,
-          padding: preview ? '14px 20px' : '40px 20px',
-          textAlign: 'center',
-          background: preview ? '#f0fdf4' : '#fafbfc',
-          cursor: 'pointer',
-          transition: 'all 0.2s',
-        }}
-      >
-        {preview ? (
-          <p style={{ color: '#059669', fontSize: '0.85rem', margin: 0, fontWeight: 600 }}>
-            📷 Click to replace photo
-          </p>
-        ) : (
-          <>
-            <p style={{ fontSize: '1.5rem', margin: '0 0 8px' }}>📷</p>
-            <p style={{ color: '#334155', fontSize: '0.88rem', fontWeight: 600, margin: '0 0 4px' }}>
-              Take a photo or upload your work
-            </p>
-            <p style={{ color: '#64748b', fontSize: '0.8rem', margin: 0 }}>
-              Draw on paper or a tablet, then tap here to upload a photo
-            </p>
-          </>
-        )}
-      </div>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={handleUpload}
-        style={{ display: 'none' }}
-      />
-    </div>
-  );
-}
+// DrawingBlock removed — replaced by DrawingCanvas component (./DrawingCanvas.tsx)
 
 // ---- Upload Block (photo/video/file) ----
 function UploadBlock({ content, type, onAnswer }: {

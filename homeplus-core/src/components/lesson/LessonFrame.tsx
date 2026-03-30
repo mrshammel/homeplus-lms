@@ -75,6 +75,9 @@ interface LessonFrameProps {
 
   // Warm-up
   warmUpConfig: any | null;
+
+  // Grade level for AI feedback calibration
+  gradeLevel: number;
 }
 
 // ---------- Section Observer Hook ----------
@@ -127,6 +130,7 @@ export default function LessonFrame({
   questions,
   initialProgress,
   warmUpConfig,
+  gradeLevel,
 }: LessonFrameProps) {
   const config = masteryConfig || DEFAULT_MASTERY_CONFIG[subjectMode];
 
@@ -448,7 +452,7 @@ export default function LessonFrame({
             <span style={{ fontSize: '1.2rem', color: '#94a3b8', transition: 'transform 0.2s', transform: collapsedSections['LEARN'] ? 'rotate(-90deg)' : 'rotate(0deg)' }}>▼</span>
           </div>
           {!collapsedSections['LEARN'] && blocksBySection.LEARN.map((b) => (
-            <LessonBlockRenderer key={b.id} blockType={b.blockType as any} content={b.content} lessonId={lessonId} blockId={b.id} subjectMode={subjectMode} onAnswer={(val) => { if (val) handleBlockComplete(b.id); }} />
+            <LessonBlockRenderer key={b.id} blockType={b.blockType as any} content={b.content} lessonId={lessonId} blockId={b.id} subjectMode={subjectMode} gradeLevel={gradeLevel} onAnswer={(val) => { if (val) handleBlockComplete(b.id); }} />
           ))}
         </div>
       )}
@@ -473,7 +477,7 @@ export default function LessonFrame({
             <span style={{ fontSize: '1.2rem', color: '#94a3b8', transition: 'transform 0.2s', transform: collapsedSections['PRACTICE'] ? 'rotate(-90deg)' : 'rotate(0deg)' }}>▼</span>
           </div>
           {!collapsedSections['PRACTICE'] && blocksBySection.PRACTICE.map((b) => (
-            <LessonBlockRenderer key={b.id} blockType={b.blockType as any} content={b.content} lessonId={lessonId} blockId={b.id} subjectMode={subjectMode} onAnswer={(val) => { if (val) handleBlockComplete(b.id); }} />
+            <LessonBlockRenderer key={b.id} blockType={b.blockType as any} content={b.content} lessonId={lessonId} blockId={b.id} subjectMode={subjectMode} gradeLevel={gradeLevel} onAnswer={(val) => { if (val) handleBlockComplete(b.id); }} />
           ))}
         </div>
       )}

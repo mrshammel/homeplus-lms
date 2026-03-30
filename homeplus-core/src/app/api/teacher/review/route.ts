@@ -52,6 +52,63 @@ export async function POST(req: NextRequest) {
       data: updateData,
     });
 
+    // ── MasteryEvidence: TEACHER_OBSERVATION ──
+    // When a teacher reviews a submission with a score, record mastery evidence
+    // for all TARGET skills linked to the lesson. This is critical for drawing
+    // submissions which have no AI scoring path — teacher review IS the evidence.
+    if (score !== undefined && score !== null) {
+      const numericScore = parseFloat(score);
+      
+      // Get the submission's lesson via activity, then get TARGET skills
+      const submissionWithLesson = await prisma.submission.findUnique({
+        where: { id: submissionId },
+        select: {
+          activity: {
+            select: {
+              lessonId: true,
+              lesson: {
+                select: {
+                  id: true,
+                  lessonSkills: {
+                    where: { relationshipType: 'TARGET' },
+                    select: { skillId: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const lessonId = submissionWithLesson?.activity?.lesson?.id;
+      const targetSkills = submissionWithLesson?.activity?.lesson?.lessonSkills || [];
+
+      if (lessonId && targetSkills.length > 0) {
+        // Determine maxScore — default 100 for drawings, use submission maxScore if available
+        const maxScoreValue = updated.maxScore ?? 100;
+        const normalizedScore = Math.min(1, Math.max(0, numericScore / (maxScoreValue as number)));
+
+        for (const ls of targetSkills) {
+          await prisma.masteryEvidence.create({
+            data: {
+              studentId: submission.studentId,
+              skillId: ls.skillId,
+              sourceType: 'TEACHER_OBSERVATION',
+              sourceId: submissionId,
+              lessonId,
+              score: numericScore,
+              maxScore: maxScoreValue as number,
+              normalizedScore,
+            },
+          });
+        }
+
+        console.log(
+          `[Teacher Review] Created ${targetSkills.length} MasteryEvidence(TEACHER_OBSERVATION) entries for submission ${submissionId}`
+        );
+      }
+    }
+
     // Upsert mastery judgments if provided
     if (masteryUpdates && Array.isArray(masteryUpdates)) {
       for (const mu of masteryUpdates) {

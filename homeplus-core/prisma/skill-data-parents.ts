@@ -60,6 +60,11 @@ export const parentSkills: SkillDef[] = [
   { id: 'skill-sci7-e4', code: 'SCI.7.E.4', title: 'Fossils', description: 'Describe, interpret and evaluate evidence from the fossil record', subject: 'Science', gradeLevel: 7, strand: 'Planet Earth', curriculumOutcomeCode: 'SCI.7.E.4', isCorePrerequisite: false },
 
   // ══════════════════════════════════════════
+  // Grade 6 Science — Life Science (Retrieval Prerequisite)
+  // ══════════════════════════════════════════
+  { id: 'skill-sci6-ls', code: 'SCI.6.LS', title: 'Life Science: Ecosystems', description: 'Grade 6 Life Science — basic ecosystem concepts (food chains, ecosystem components, habitats)', subject: 'Science', gradeLevel: 6, strand: 'Life Science', curriculumOutcomeCode: 'SCI.6.LS', isCorePrerequisite: false },
+
+  // ══════════════════════════════════════════
   // Grade 6 ELA — Legacy Parent Skills (preserved)
   // ══════════════════════════════════════════
   { id: 'skill-ela6-1', code: 'ELA.6.1', title: 'Reading Comprehension & Inference', description: 'Make inferences, distinguish explicit from implicit information, and make text connections', subject: 'ELA', gradeLevel: 6, strand: 'Reading & Comprehension', curriculumOutcomeCode: 'ELA.6.1', isCorePrerequisite: true },

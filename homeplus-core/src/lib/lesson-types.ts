@@ -162,14 +162,94 @@ export interface MultipleChoiceBlockContent {
 export interface ConstructedResponseBlockContent {
   prompt: string;
   minLength?: number;
+  minExpectedWords?: number; // prompt-aware minimum — set by author (e.g. 10 for "define X", 50 for "explain with evidence")
   rubricHint?: string;
   teacherReviewRequired?: boolean;
 }
 
 export interface DrawingBlockContent {
-  instruction: string;
-  backgroundImage?: string; // optional template/diagram
+  prompt: string;
+  rubricHint?: string;
+  canvasHeight?: number;        // default 400
+  overlay?: DrawingOverlayType;
+  overlayConfig?: DrawingOverlayConfig;
+  tools?: DrawingToolConfig;
+  minExpectedMarks?: number;    // minimum strokes before submit is meaningful, default 3
+  // Legacy field — kept for backward compat
+  instruction?: string;
+  backgroundImage?: string;
 }
+
+export type DrawingOverlayType =
+  | 'none'
+  | 'square-grid'
+  | 'dot-grid'
+  | 'isometric-grid'
+  | 'coordinate-plane'
+  | 'number-line'
+  | 'fraction-model'
+  | 'data-table'
+  | 'baseline-lines'
+  | 'stem-leaf'
+  | 'circle-graph'
+  | 'map-alberta'
+  | 'map-canada'
+  | 'map-world'
+  | 'map-blank';
+
+export interface DrawingOverlayConfig {
+  // square-grid / dot-grid
+  gridSize?: number;            // pixels per cell, default 20
+  gridColor?: string;           // default '#e0e0e0'
+  // coordinate-plane
+  xMin?: number; xMax?: number;
+  yMin?: number; yMax?: number;
+  xStep?: number; yStep?: number;
+  xLabel?: string; yLabel?: string;
+  quadrants?: '1' | '1-4';
+  showGridLines?: boolean;
+  // number-line
+  min?: number; max?: number;
+  step?: number; labelEvery?: number;
+  showArrows?: boolean;
+  // fraction-model
+  type?: 'bar' | 'area';
+  rows?: number; cols?: number;
+  // data-table
+  headers?: string[];
+  rowHeaders?: string[];
+  cellHeight?: number;
+  // baseline-lines
+  lineSpacing?: number;
+  marginLine?: boolean;
+  // stem-leaf
+  stems?: number[];
+  // circle-graph
+  sectors?: number;
+}
+
+export interface DrawingToolConfig {
+  pen?: boolean;
+  eraser?: boolean;
+  colours?: DrawingColour[];
+  strokeWidths?: StrokeWidthOption[];
+  highlighter?: boolean;
+  textLabel?: boolean;
+  arrow?: boolean;
+  // Tier 2
+  ruler?: boolean;
+  circle?: boolean;
+  shapes?: boolean;
+  protractor?: boolean;
+  symmetryLine?: boolean;
+  // Tier 3
+  compass?: boolean;
+  angleBisector?: boolean;
+  perpendicularBisector?: boolean;
+}
+
+export type DrawingColour = 'black' | 'blue' | 'red' | 'green' | 'orange' | 'purple' | 'grey';
+export type StrokeWidthOption = 'thin' | 'medium' | 'thick';
 
 export interface UploadBlockContent {
   instruction: string;

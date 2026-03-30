@@ -97,96 +97,96 @@ async function main() {
 
   const lesson1 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l1' },
-    update: {},
+    update: { title: 'What Is an Ecosystem?', subtitle: 'Identify biotic and abiotic components and explain how they interact.' },
     create: {
       id: 'g7-sci-ua-l1',
       unitId: unitA.id,
       title: 'What Is an Ecosystem?',
-      subtitle: 'Understand the components of ecosystems and how they interact.',
+      subtitle: 'Identify biotic and abiotic components and explain how they interact.',
       order: 1,
     },
   });
 
   const lesson2 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l2' },
-    update: {},
+    update: { title: 'Producers, Consumers, & Decomposers', subtitle: 'Classify organisms by their role and trace energy through food chains.' },
     create: {
       id: 'g7-sci-ua-l2',
       unitId: unitA.id,
-      title: 'Producers, Consumers, and Decomposers',
-      subtitle: 'Learn about the roles organisms play in food chains and food webs.',
+      title: 'Producers, Consumers, & Decomposers',
+      subtitle: 'Classify organisms by their role and trace energy through food chains.',
       order: 2,
     },
   });
 
   const lesson2a = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l3' },
-    update: {},
+    update: { title: 'Food Webs: When One Thing Changes', subtitle: 'Construct food webs and predict cascade effects when populations change.' },
     create: {
       id: 'g7-sci-ua-l3',
       unitId: unitA.id,
-      title: 'Relationships in Ecosystems',
-      subtitle: 'Explore predator-prey, symbiotic, and competitive relationships.',
+      title: 'Food Webs: When One Thing Changes',
+      subtitle: 'Construct food webs and predict cascade effects when populations change.',
       order: 3,
     },
   });
 
   const lesson2b = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l4' },
-    update: {},
+    update: { title: 'Cycles: Water and Carbon', subtitle: 'Trace how water and carbon cycle through ecosystems and how human activity disrupts them.' },
     create: {
       id: 'g7-sci-ua-l4',
       unitId: unitA.id,
-      title: 'Ecosystem Connections — Unit Project',
-      subtitle: 'Apply what you learned to analyze a real ecosystem.',
+      title: 'Cycles: Water and Carbon',
+      subtitle: 'Trace how water and carbon cycle through ecosystems and how human activity disrupts them.',
       order: 4,
     },
   });
 
   const lesson5 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l5' },
-    update: {},
+    update: { title: 'Monitoring My Backyard', subtitle: 'Design and conduct a mini field study of a local ecosystem.' },
     create: {
       id: 'g7-sci-ua-l5',
       unitId: unitA.id,
-      title: 'Food Webs & Energy Pyramids',
-      subtitle: 'Discover how energy flows through complex food webs and why energy is lost at each level.',
+      title: 'Monitoring My Backyard',
+      subtitle: 'Design and conduct a mini field study of a local ecosystem.',
       order: 5,
     },
   });
 
   const lesson6 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l6' },
-    update: {},
+    update: { title: 'Succession: How Ecosystems Recover', subtitle: 'Describe the stages of ecological succession and identify signs in Alberta ecosystems.' },
     create: {
       id: 'g7-sci-ua-l6',
       unitId: unitA.id,
-      title: 'Ecosystem Change & Human Impact',
-      subtitle: 'Explore how ecosystems change naturally and through human activity.',
+      title: 'Succession: How Ecosystems Recover',
+      subtitle: 'Describe the stages of ecological succession and identify signs in Alberta ecosystems.',
       order: 6,
     },
   });
 
   const lesson7 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l7' },
-    update: {},
+    update: { title: 'Human Impacts: Intended & Unintended', subtitle: 'Analyze environmental issues from multiple perspectives and write an evidence-based position.' },
     create: {
       id: 'g7-sci-ua-l7',
       unitId: unitA.id,
-      title: 'Monitoring & Indicator Species',
-      subtitle: 'Learn how scientists monitor ecosystem health using living indicators.',
+      title: 'Human Impacts: Intended & Unintended',
+      subtitle: 'Analyze environmental issues from multiple perspectives and write an evidence-based position.',
       order: 7,
     },
   });
 
   const lesson8 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l8' },
-    update: {},
+    update: { title: 'Synthesis: Ecosystem Action Plan', subtitle: 'Apply everything you have learned to design a conservation action plan for an Alberta ecosystem.' },
     create: {
       id: 'g7-sci-ua-l8',
       unitId: unitA.id,
-      title: 'Conservation & Stewardship — Final Unit Project',
-      subtitle: 'Design a conservation plan for an Alberta ecosystem using everything you have learned.',
+      title: 'Synthesis: Ecosystem Action Plan',
+      subtitle: 'Apply everything you have learned to design a conservation action plan for an Alberta ecosystem.',
       order: 8,
     },
   });

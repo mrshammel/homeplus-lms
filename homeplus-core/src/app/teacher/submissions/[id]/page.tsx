@@ -138,36 +138,60 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
             </div>
           )}
 
-          {/* Artifact Display */}
+          {/* Artifact Display — Drawing submissions show inline as images */}
           {isArtifact && (
             <div className={styles.dashCard}>
-              <h3 className={styles.cardTitle}>📎 Submitted Artifact</h3>
-              <div className={styles.artifactPreview}>
-                <div className={styles.artifactPreviewIcon}>
-                  {submission.submissionType === 'IMAGE_ARTIFACT' ? '🖼️'
-                    : submission.submissionType === 'UPLOADED_WORKSHEET' ? '📄' : '📁'}
+              <h3 className={styles.cardTitle}>
+                {submission.submissionType === 'IMAGE_ARTIFACT' ? '🎨 Student Drawing' : '📎 Submitted Artifact'}
+              </h3>
+              {/* Inline image preview for drawings and image artifacts */}
+              {(submission.submissionType === 'IMAGE_ARTIFACT' && submission.fileUrl) ? (
+                <div style={{ textAlign: 'center', padding: '12px 0' }}>
+                  <img
+                    src={submission.fileUrl}
+                    alt="Student drawing submission"
+                    style={{
+                      maxWidth: '100%',
+                      borderRadius: 10,
+                      border: '1px solid #e2e8f0',
+                      cursor: 'zoom-in',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    }}
+                    onClick={(e) => {
+                      // Open full-size in a new tab for detailed review
+                      const w = window.open('', '_blank');
+                      if (w) {
+                        w.document.write(`<img src="${submission.fileUrl}" style="max-width:100%;background:#f8fafc" />`);
+                        w.document.title = 'Drawing Review';
+                      }
+                    }}
+                  />
+                  <p style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: 8 }}>
+                    Click image to zoom in for detailed review
+                  </p>
                 </div>
-                <div className={styles.artifactPreviewInfo}>
-                  <div className={styles.artifactPreviewName}>{submission.fileName || 'Uploaded file'}</div>
-                  <div className={styles.artifactPreviewType}>{typeLabel}</div>
+              ) : (
+                <div className={styles.artifactPreview}>
+                  <div className={styles.artifactPreviewIcon}>
+                    {submission.submissionType === 'UPLOADED_WORKSHEET' ? '📄' : '📁'}
+                  </div>
+                  <div className={styles.artifactPreviewInfo}>
+                    <div className={styles.artifactPreviewName}>{submission.fileName || 'Uploaded file'}</div>
+                    <div className={styles.artifactPreviewType}>{typeLabel}</div>
+                  </div>
+                  {submission.fileUrl && submission.fileUrl !== '#' && (
+                    <a
+                      href={submission.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.smallBtn}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem', textDecoration: 'none' }}
+                    >
+                      📥 Download
+                    </a>
+                  )}
                 </div>
-                {submission.fileUrl && submission.fileUrl !== '#' && (
-                  <a
-                    href={submission.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.smallBtn}
-                    style={{ padding: '8px 16px', fontSize: '0.85rem', textDecoration: 'none' }}
-                  >
-                    📥 Download
-                  </a>
-                )}
-                {submission.fileUrl === '#' && (
-                  <span className={styles.smallBtn} style={{ padding: '8px 16px', fontSize: '0.85rem', opacity: 0.6, cursor: 'default' }}>
-                    📥 Preview
-                  </span>
-                )}
-              </div>
+              )}
             </div>
           )}
 

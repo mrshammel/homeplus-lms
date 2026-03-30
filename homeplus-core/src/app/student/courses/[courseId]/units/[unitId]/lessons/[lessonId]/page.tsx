@@ -105,6 +105,7 @@ export default async function LessonPage({ params }: Props) {
           : null
       }
       warmUpConfig={lesson.warmUpConfig}
+      gradeLevel={lesson.unit.subject.gradeLevel}
     />
   );
 }

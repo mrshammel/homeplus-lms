@@ -1,0 +1,331 @@
+/* ============================================
+   Drawing Canvas Styles — Home Plus LMS
+   ============================================ */
+
+.canvasContainer {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* ─── Prompt ─── */
+.prompt {
+  padding: 14px 18px 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* ─── Toolbar ─── */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding-right: 8px;
+  margin-right: 4px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.toolGroup:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.toolBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.12s ease;
+  padding: 0;
+}
+
+.toolBtn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.toolBtnActive {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+/* ─── Colour Palette ─── */
+.colorBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.12s ease;
+}
+
+.colorBtn:hover {
+  transform: scale(1.15);
+}
+
+.colorBtnActive {
+  border-color: #1e293b;
+  box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.2);
+  transform: scale(1.15);
+}
+
+/* ─── Stroke Width ─── */
+.widthBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  padding: 0;
+}
+
+.widthBtn:hover {
+  background: #f1f5f9;
+}
+
+.widthBtnActive {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.widthDot {
+  border-radius: 50%;
+  background: #1e293b;
+}
+
+/* ─── Canvas Wrapper ─── */
+.canvasWrapper {
+  position: relative;
+  background: #fff;
+  cursor: crosshair;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvasLocked {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* ─── Text Input Overlay ─── */
+.textInput {
+  position: absolute;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 14px;
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: rgba(255, 255, 255, 0.95);
+  outline: none;
+  min-width: 60px;
+  z-index: 5;
+}
+
+/* ─── Submit Bar ─── */
+.submitBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.submitBtn:hover {
+  background: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.submitBtn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.photoLink {
+  font-size: 0.82rem;
+  color: #6b7280;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.photoLink:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* ─── Submitted State ─── */
+.submittedBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: #f0fdf4;
+  border-top: 1px solid #86efac;
+  color: #15803d;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ─── Confirmation Dialog ─── */
+.confirmOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 0 0 12px 12px;
+}
+
+.confirmDialog {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 320px;
+}
+
+.confirmTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px;
+}
+
+.confirmDesc {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirmCancel {
+  padding: 8px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirmDanger {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ─── Shape Sub-Menu ─── */
+.shapeMenu {
+  position: absolute;
+  top: 42px;
+  left: 0;
+  display: flex;
+  gap: 3px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  white-space: nowrap;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .toolbar {
+    padding: 8px 10px;
+    gap: 3px;
+  }
+
+  .toolBtn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.82rem;
+  }
+
+  .colorBtn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .submitBar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .submitBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -32,6 +32,7 @@ interface FeedbackRequest {
   rubricHint?: string;
   studentResponse: string;
   minLength?: number;
+  minExpectedWords?: number;
   teacherReviewRequired?: boolean;
   subjectMode?: SubjectMode;
   gradeLevel?: number;
@@ -45,6 +46,8 @@ interface FeedbackResponse {
   nextStep: string;
   criteriaScores: Record<string, number>;
   disclaimer: string;
+  flagForTeacher: boolean;
+  relevanceScore: number;
 }
 
 // ─── Gemini API feedback (calibrated) ───
@@ -56,6 +59,7 @@ async function getGeminiFeedback(
   gradeLevel: number,
   rubricType: RubricTaskType,
   teacherReviewRequired: boolean,
+  minExpectedWords?: number,
 ): Promise<FeedbackResponse> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('No Gemini API key');
@@ -68,7 +72,7 @@ async function getGeminiFeedback(
     teacherReviewRequired,
   });
 
-  const userPrompt = `PROMPT THE STUDENT WAS ASKED:\n${prompt}\n\nSTUDENT'S RESPONSE:\n${studentResponse}`;
+  const userPrompt = `PROMPT THE STUDENT WAS ASKED:\n${prompt}\n\n${minExpectedWords ? `EXPECTED MINIMUM RESPONSE LENGTH: approximately ${minExpectedWords} words for this prompt.\n\n` : ''}STUDENT'S RESPONSE:\n${studentResponse}`;
 
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
@@ -107,6 +111,8 @@ async function getGeminiFeedback(
     nextStep: parsed.nextStep || 'Review your answer and add one more specific detail.',
     criteriaScores: parsed.criteriaScores || {},
     disclaimer: DISCLAIMER,
+    flagForTeacher: !!parsed.flagForTeacher,
+    relevanceScore: Math.max(0, Math.min(100, Number(parsed.relevanceScore) || 50)),
   };
 }
 
@@ -147,6 +153,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     rubricHint,
     studentResponse,
     minLength,
+    minExpectedWords,
     teacherReviewRequired,
     subjectMode,
     gradeLevel,
@@ -172,6 +179,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
         grade,
         rubricType,
         !!teacherReviewRequired,
+        minExpectedWords,
       );
     } else {
       result = getRubricFallback(
@@ -180,7 +188,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
         studentResponse,
         subject,
         rubricType,
-        minLength || 40,
+        minExpectedWords || minLength || 40,
       );
     }
   } catch (e) {
@@ -191,7 +199,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
       studentResponse,
       subject,
       rubricType,
-      minLength || 40,
+      minExpectedWords || minLength || 40,
     );
   }
 

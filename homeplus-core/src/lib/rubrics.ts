@@ -466,6 +466,13 @@ export function buildAIPrompt(opts: {
 
   return `You are a supportive Grade ${gradeLevel} ${subjectName} teacher providing formative feedback.
 
+CRITICAL — RELEVANCE GATE (evaluate FIRST):
+Before scoring, determine if the student's response ADDRESSES THE PROMPT.
+- If the response is off-topic, nonsensical, random characters, or does not attempt to answer the question asked, the score MUST be 0-10 regardless of length, vocabulary, or writing quality.
+- If the response copies the prompt back without adding original thought, score 5-15.
+- A well-written response about the WRONG TOPIC scores 5-15, not 40+.
+- Only score above 15 if the response genuinely attempts to answer what was asked.
+
 FEEDBACK PHILOSOPHY:
 - Be encouraging and specific — what they did well FIRST
 - Be concise — ${tone.maxFeedbackSentences} sentences max for the summary
@@ -473,6 +480,14 @@ FEEDBACK PHILOSOPHY:
 - Give 1-2 actionable improvements (not vague)
 - Give exactly 1 clear next step the student can act on
 - ${tone.style}
+
+ANTI-PATTERNS — do NOT do these:
+- Do NOT give 40+ to a response that does not address the prompt
+- Do NOT list "You attempted the response" as a strength — that is not a strength
+- Do NOT inflate scores because the student wrote many words
+- Do NOT deflate scores for short responses IF they are accurate, specific, and complete
+- Do NOT give vague feedback like "good job" — reference specific words the student used
+- Do NOT be overly generous — a mediocre response should score 45-60, not 70+
 
 SUBJECT PRIORITIES FOR ${subjectName.toUpperCase()}:
 ${cal.priorities.map((p) => `- ${p}`).join('\n')}
@@ -485,12 +500,13 @@ ${criteriaText}
 
 ${rubricHint ? `TASK-SPECIFIC RUBRIC HINT:\n${rubricHint}` : ''}
 
-SCORING BANDS:
-- 90-100 Excellent: thorough, accurate, well-explained
-- 75-89 Good: mostly complete, minor gaps
-- 60-74 Developing: basic understanding, needs more depth
-- 40-59 Beginning: partial understanding, significant gaps
-- 0-39 Incomplete: major content missing or incorrect
+SCORING CALIBRATION (Grade ${gradeLevel}):
+- 85-100 Excellent: Directly answers the prompt with specific evidence from the lesson. Uses key vocabulary correctly. Shows original thinking beyond restated definitions.
+- 65-84 Good: Addresses the prompt with some evidence or specificity. Good effort with room for more depth or precision.
+- 45-64 Developing: Partially addresses the prompt but is vague, lacks evidence, or shows only surface-level understanding. May be missing key parts of what was asked.
+- 20-44 Beginning: Attempts the topic but has major gaps, misconceptions, or minimal relevant content.
+- 5-19 Minimal: Off-topic, copies the prompt back, or barely engages with the question.
+- 0-4 Non-attempt: Gibberish, blank, or completely unrelated content.
 
 AUTHENTIC LEARNING:
 - Reward lesson-specific evidence and original thinking
@@ -502,6 +518,8 @@ ${teacherReviewRequired ? 'NOTE: This is a major assignment that will also be re
 Respond ONLY with valid JSON:
 {
   "score": <number 0-100>,
+  "relevanceScore": <number 0-100, how well does the response address what was asked>,
+  "flagForTeacher": <true if score is borderline (30-55) or response quality is ambiguous>,
   "feedback": "<${tone.maxFeedbackSentences} sentence summary>",
   "strengths": ["<strength 1>", "<strength 2>"],
   "improvements": ["<improvement 1>"],
@@ -558,9 +576,189 @@ export function getSubjectVocab(subject: SubjectMode): string[] {
   return SUBJECT_VOCAB[subject] || SUBJECT_VOCAB.GENERAL;
 }
 
+// ============ RELEVANCE GATE ============
+
+/** Result of the relevance check — determines whether scoring should proceed normally. */
+export interface RelevanceResult {
+  relevant: boolean;
+  relevanceScore: number; // 0-100
+  reason: string;
+  isGibberish: boolean;
+  isCopiedPrompt: boolean;
+}
+
+/**
+ * Check if a student response is relevant to the prompt.
+ * This is the single most important quality gate — it catches:
+ * - Off-topic responses
+ * - Gibberish / random characters
+ * - Copy-pasted prompts
+ * - Filler text with no substance
+ */
+export function checkRelevance(
+  studentResponse: string,
+  prompt: string,
+  rubricHint: string,
+): RelevanceResult {
+  const response = studentResponse.trim();
+  const responseLower = response.toLowerCase();
+  const promptLower = prompt.toLowerCase();
+  const wordCount = response.split(/\s+/).filter(Boolean).length;
+
+  // ── 1. Gibberish detection ──
+  // Check for high ratio of non-alphabetic characters
+  const alphaChars = response.replace(/[^a-zA-Z]/g, '').length;
+  const totalChars = response.length;
+  const alphaRatio = totalChars > 0 ? alphaChars / totalChars : 0;
+
+  // Check for repeated character patterns (e.g. "asdfasdf", "aaaaaa")
+  const repeatedPattern = /(.{2,})\1{2,}/i.test(response);
+  const singleCharRepeat = /(.)(\1){4,}/i.test(response);
+
+  // Check for very short "words" that suggest keyboard mashing
+  const words = response.split(/\s+/).filter(Boolean);
+  const avgWordLength = words.length > 0
+    ? words.reduce((sum, w) => sum + w.length, 0) / words.length
+    : 0;
+  const tooManyShortWords = words.length > 3 && avgWordLength < 2.5;
+
+  if (
+    (alphaRatio < 0.5 && totalChars > 5) ||
+    repeatedPattern ||
+    singleCharRepeat ||
+    tooManyShortWords
+  ) {
+    return {
+      relevant: false,
+      relevanceScore: 0,
+      reason: 'Response appears to be random characters or gibberish.',
+      isGibberish: true,
+      isCopiedPrompt: false,
+    };
+  }
+
+  // ── 2. Copy-paste detection ──
+  // Check if the response is mostly the prompt repeated back
+  if (promptLower.length > 15 && responseLower.length > 10) {
+    // Normalize whitespace for comparison
+    const normPrompt = promptLower.replace(/\s+/g, ' ').trim();
+    const normResponse = responseLower.replace(/\s+/g, ' ').trim();
+
+    // Check if response starts with or is mostly the prompt
+    const overlapLength = Math.min(normPrompt.length, normResponse.length);
+    let matchingChars = 0;
+    for (let i = 0; i < overlapLength; i++) {
+      if (normPrompt[i] === normResponse[i]) matchingChars++;
+    }
+    const overlapRatio = matchingChars / Math.max(normResponse.length, 1);
+
+    // Also check if response contains the entire prompt
+    const containsFullPrompt = normResponse.includes(normPrompt);
+    const responseWithoutPrompt = containsFullPrompt
+      ? normResponse.replace(normPrompt, '').trim()
+      : normResponse;
+    const addedContent = responseWithoutPrompt.split(/\s+/).filter(Boolean).length;
+
+    if (overlapRatio > 0.8 || (containsFullPrompt && addedContent < 5)) {
+      return {
+        relevant: false,
+        relevanceScore: 10,
+        reason: 'Response appears to copy the prompt without adding original thought.',
+        isGibberish: false,
+        isCopiedPrompt: true,
+      };
+    }
+  }
+
+  // ── 3. Content relevance ──
+  // Extract meaningful content words from the prompt (skip stop words)
+  const stopWords = new Set([
+    'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+    'should', 'may', 'might', 'shall', 'can', 'to', 'of', 'in', 'for',
+    'on', 'with', 'at', 'by', 'from', 'as', 'into', 'about', 'between',
+    'through', 'and', 'but', 'or', 'nor', 'not', 'so', 'yet', 'both',
+    'this', 'that', 'these', 'those', 'it', 'its', 'you', 'your', 'we',
+    'our', 'they', 'their', 'what', 'which', 'who', 'how', 'why', 'when',
+    'where', 'if', 'then', 'than', 'more', 'most', 'some', 'any', 'all',
+    'each', 'every', 'other', 'one', 'two', 'three', 'new', 'use', 'used',
+    'write', 'explain', 'describe', 'discuss', 'identify', 'list', 'name',
+    'give', 'using', 'based', 'make', 'response', 'answer', 'question',
+  ]);
+
+  const extractContentWords = (text: string): string[] => {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, '')
+      .split(/\s+/)
+      .filter((w) => w.length > 2 && !stopWords.has(w));
+  };
+
+  const promptContentWords = extractContentWords(prompt + ' ' + rubricHint);
+  const responseContentWords = extractContentWords(response);
+
+  if (promptContentWords.length === 0) {
+    // Can't assess relevance without prompt content — give benefit of the doubt
+    return {
+      relevant: true,
+      relevanceScore: 50,
+      reason: 'Unable to assess relevance — prompt has no distinctive content words.',
+      isGibberish: false,
+      isCopiedPrompt: false,
+    };
+  }
+
+  // Count how many prompt content words appear in the response
+  const uniquePromptWords = [...new Set(promptContentWords)];
+  const matchedPromptWords = uniquePromptWords.filter((w) =>
+    responseContentWords.includes(w),
+  );
+  const promptWordCoverage = matchedPromptWords.length / uniquePromptWords.length;
+
+  // Also check for topical overlap using 2-word phrases
+  const getPhrasePairs = (wordList: string[]): string[] => {
+    const pairs: string[] = [];
+    for (let i = 0; i < wordList.length - 1; i++) {
+      pairs.push(`${wordList[i]} ${wordList[i + 1]}`);
+    }
+    return pairs;
+  };
+  const promptPhrases = getPhrasePairs(promptContentWords);
+  const responsePhrases = getPhrasePairs(responseContentWords);
+  const phraseOverlap = promptPhrases.length > 0
+    ? promptPhrases.filter((p) => responsePhrases.includes(p)).length / promptPhrases.length
+    : 0;
+
+  // Compute relevance score
+  // Weight: 60% word coverage, 40% phrase overlap
+  const rawRelevance = Math.round(promptWordCoverage * 60 + phraseOverlap * 40);
+  const relevanceScore = Math.max(0, Math.min(100, rawRelevance));
+
+  // Minimum 1 prompt word must appear for the response to be considered relevant
+  const isRelevant = matchedPromptWords.length >= 1 && relevanceScore >= 15;
+
+  return {
+    relevant: isRelevant,
+    relevanceScore,
+    reason: isRelevant
+      ? `Response addresses the prompt (matched: ${matchedPromptWords.slice(0, 5).join(', ')}).`
+      : `Response does not appear to address the prompt. Expected topics: ${uniquePromptWords.slice(0, 5).join(', ')}.`,
+    isGibberish: false,
+    isCopiedPrompt: false,
+  };
+}
+
+// ============ FALLBACK SCORING ============
+
 /**
  * Calibrated fallback scoring using rubric criteria weights.
  * Used when no Gemini API key is available.
+ *
+ * v2 — Overhauled with:
+ * - Relevance gate (catches off-topic / gibberish)
+ * - Reduced baselines (20, not 50)
+ * - Prompt-aware content matching
+ * - Teacher flagging for borderline responses
  */
 export function scoreFallback(opts: {
   studentResponse: string;
@@ -576,6 +774,8 @@ export function scoreFallback(opts: {
   strengths: string[];
   improvements: string[];
   nextStep: string;
+  flagForTeacher: boolean;
+  relevanceScore: number;
 } {
   const { studentResponse, prompt, rubricHint, subject, rubricType, minLength } = opts;
   const response = studentResponse.trim();
@@ -583,12 +783,49 @@ export function scoreFallback(opts: {
   const sentenceCount = response.split(/[.!?]+/).filter(Boolean).length;
   const responseLower = response.toLowerCase();
 
-  // Get vocabulary terms from subject + rubric hint + prompt
+  // ── RELEVANCE GATE — must pass before real scoring ──
+  const relevance = checkRelevance(response, prompt, rubricHint);
+
+  // If response is gibberish, return immediately with score 0
+  if (relevance.isGibberish) {
+    const template = getRubricTemplate(rubricType);
+    const zeroCriteria: Record<string, number> = {};
+    for (const c of template.criteria) zeroCriteria[c.name] = 0;
+    return {
+      score: 0,
+      criteriaScores: zeroCriteria,
+      feedback: 'This response doesn\'t appear to contain a real answer. Please re-read the question and try writing a thoughtful response.',
+      strengths: [],
+      improvements: ['Write a response that answers the question asked.'],
+      nextStep: 'Re-read the question carefully and write at least 2-3 sentences that directly answer what is being asked.',
+      flagForTeacher: true,
+      relevanceScore: 0,
+    };
+  }
+
+  // If response copies the prompt, return with minimal score
+  if (relevance.isCopiedPrompt) {
+    const template = getRubricTemplate(rubricType);
+    const lowCriteria: Record<string, number> = {};
+    for (const c of template.criteria) lowCriteria[c.name] = 5;
+    return {
+      score: 5,
+      criteriaScores: lowCriteria,
+      feedback: 'Your response repeats the question but doesn\'t add your own thinking. Try answering in your own words.',
+      strengths: [],
+      improvements: ['Use your own words to explain your thinking instead of repeating the question.'],
+      nextStep: 'Put the question aside and write what you actually think or know about this topic.',
+      flagForTeacher: true,
+      relevanceScore: 10,
+    };
+  }
+
+  // ── VOCABULARY AND CONTENT ANALYSIS ──
   const subjectTerms = getSubjectVocab(subject);
   const contextTerms = (rubricHint + ' ' + prompt).toLowerCase();
   const relevantTerms = subjectTerms.filter((t) => contextTerms.includes(t));
   const matchedTerms = relevantTerms.filter((t) => responseLower.includes(t));
-  const vocabCoverage = relevantTerms.length > 0 ? matchedTerms.length / relevantTerms.length : 0.5;
+  const vocabCoverage = relevantTerms.length > 0 ? matchedTerms.length / relevantTerms.length : 0.3;
 
   // Explanation quality
   const reasoningWords = ['because', 'therefore', 'this means', 'for example', 'such as', 'which shows', 'this is why', 'as a result', 'this causes', 'this leads to', 'in contrast', 'similarly', 'however', 'specifically'];
@@ -599,94 +836,187 @@ export function scoreFallback(opts: {
   const targetWords = Math.max(minLength || 40, 30);
   const lengthRatio = Math.min(wordCount / targetWords, 1.2);
 
-  // Score each criterion based on rubric type
+  // ── RELEVANCE MULTIPLIER ──
+  // If response is not relevant, cap all scores at 15
+  // If borderline relevant (score 15-40), apply a penalty multiplier
+  let relevanceMultiplier = 1.0;
+  if (!relevance.relevant) {
+    relevanceMultiplier = 0.15; // Cap effective scores at ~15
+  } else if (relevance.relevanceScore < 40) {
+    relevanceMultiplier = 0.4 + (relevance.relevanceScore / 40) * 0.6; // Scale 0.4 to 1.0
+  }
+
+  // ── SCORE EACH CRITERION ──
   const template = getRubricTemplate(rubricType);
   const criteriaScores: Record<string, number> = {};
 
   for (const c of template.criteria) {
-    let cScore = 50; // baseline
+    let cScore = 20; // baseline — was 50, now 20 ("you showed up")
     const cName = c.name.toLowerCase();
 
     if (cName.includes('accuracy') || cName.includes('correctness') || cName.includes('concept')) {
-      cScore = Math.round(vocabCoverage * 70 + (hasReasoning ? 20 : 0) + (sentenceCount >= 2 ? 10 : 0));
+      // Accuracy depends heavily on relevance + vocab + reasoning
+      cScore = Math.round(
+        vocabCoverage * 50 +
+        (hasReasoning ? 25 : 0) +
+        (sentenceCount >= 2 ? 10 : 0) +
+        (relevance.relevanceScore > 50 ? 15 : 0),
+      );
     } else if (cName.includes('completeness') || cName.includes('development')) {
-      cScore = Math.round(lengthRatio * 60 + vocabCoverage * 25 + (sentenceCount >= 3 ? 15 : 0));
+      cScore = Math.round(
+        lengthRatio * 40 +
+        vocabCoverage * 25 +
+        (sentenceCount >= 3 ? 15 : 0) +
+        (relevance.relevanceScore > 40 ? 20 : 0),
+      );
     } else if (cName.includes('evidence') || cName.includes('support')) {
-      cScore = Math.round(vocabCoverage * 50 + (hasReasoning ? 30 : 0) + (usedReasoningCount >= 2 ? 20 : 0));
+      cScore = Math.round(
+        vocabCoverage * 35 +
+        (hasReasoning ? 30 : 0) +
+        (usedReasoningCount >= 2 ? 15 : 0) +
+        (matchedTerms.length >= 2 ? 20 : 0),
+      );
     } else if (cName.includes('clarity') || cName.includes('organization') || cName.includes('communication')) {
-      cScore = Math.round((sentenceCount >= 3 ? 50 : sentenceCount >= 2 ? 35 : 15) + (hasReasoning ? 30 : 0) + (lengthRatio >= 0.8 ? 20 : 0));
+      cScore = Math.round(
+        (sentenceCount >= 3 ? 40 : sentenceCount >= 2 ? 25 : 10) +
+        (hasReasoning ? 25 : 0) +
+        (lengthRatio >= 0.8 ? 15 : 0) +
+        (wordCount >= 10 ? 10 : 0),
+      );
     } else if (cName.includes('language') || cName.includes('convention')) {
-      cScore = Math.round(60 + (sentenceCount >= 2 ? 20 : 0) + (lengthRatio >= 0.7 ? 20 : 0));
+      // Language/conventions — can only really assess length and structure without AI
+      cScore = Math.round(
+        30 +
+        (sentenceCount >= 2 ? 25 : 0) +
+        (lengthRatio >= 0.7 ? 20 : 0) +
+        (wordCount >= 15 ? 15 : 0),
+      );
     } else if (cName.includes('audience') || cName.includes('purpose') || cName.includes('alignment')) {
-      cScore = Math.round(vocabCoverage * 40 + lengthRatio * 30 + (hasReasoning ? 30 : 0));
+      cScore = Math.round(
+        vocabCoverage * 30 +
+        (relevance.relevanceScore > 40 ? 30 : relevance.relevanceScore > 20 ? 15 : 0) +
+        (hasReasoning ? 20 : 0) +
+        (lengthRatio >= 0.6 ? 15 : 0),
+      );
     } else {
       // Generic fallback
-      cScore = Math.round(lengthRatio * 40 + vocabCoverage * 40 + (hasReasoning ? 20 : 0));
+      cScore = Math.round(
+        lengthRatio * 30 +
+        vocabCoverage * 30 +
+        (hasReasoning ? 20 : 0) +
+        (relevance.relevanceScore > 30 ? 15 : 0),
+      );
     }
 
+    // Apply relevance multiplier and clamp
+    cScore = Math.round(cScore * relevanceMultiplier);
     criteriaScores[c.name] = Math.max(0, Math.min(100, cScore));
   }
 
-  // Weighted total
+  // ── WEIGHTED TOTAL ──
   const totalScore = Math.round(
     template.criteria.reduce((sum, c) => sum + (criteriaScores[c.name] * c.weight) / 100, 0),
   );
 
-  // Build feedback
+  // ── BUILD FEEDBACK ──
   const strengths: string[] = [];
   const improvements: string[] = [];
 
-  if (vocabCoverage >= 0.5) {
-    strengths.push('You used important key vocabulary from the lesson.');
-  } else if (relevantTerms.length > 0) {
-    const missing = relevantTerms.filter((t) => !responseLower.includes(t)).slice(0, 3);
-    improvements.push(`Include more key terms like: ${missing.join(', ')}.`);
+  // Only give content-specific strengths if the response is relevant
+  if (relevance.relevant) {
+    if (vocabCoverage >= 0.5 && matchedTerms.length > 0) {
+      strengths.push(`You used key vocabulary like "${matchedTerms.slice(0, 2).join('" and "')}".`);
+    }
+    if (hasReasoning) {
+      strengths.push('You supported your ideas with reasoning and explanation.');
+    }
+    if (sentenceCount >= 3 && lengthRatio >= 0.8) {
+      strengths.push('Your response is well-developed with good detail.');
+    } else if (sentenceCount >= 2) {
+      strengths.push('You provided a multi-sentence response.');
+    }
   }
 
-  if (hasReasoning) {
-    strengths.push('You explained your thinking with reasoning words.');
-  } else {
-    improvements.push('Add reasoning words like "because", "for example", or "this means" to explain your thinking.');
+  // Improvements
+  if (!relevance.relevant) {
+    improvements.push('Make sure your response directly answers the question that was asked.');
+  }
+  if (relevantTerms.length > 0 && vocabCoverage < 0.3) {
+    const missing = relevantTerms.filter((t) => !responseLower.includes(t)).slice(0, 2);
+    if (missing.length > 0) {
+      improvements.push(`Try including key terms like "${missing.join('" or "')}" from the lesson.`);
+    }
+  }
+  if (!hasReasoning && relevance.relevant) {
+    improvements.push('Explain your thinking using words like "because", "for example", or "this means".');
+  }
+  if (lengthRatio < 0.6 && relevance.relevant) {
+    improvements.push(`Expand your answer — aim for at least ${targetWords} words (you wrote ${wordCount}).`);
   }
 
-  if (lengthRatio >= 1) {
-    strengths.push('Your response has good detail and length.');
-  } else if (lengthRatio < 0.6) {
-    improvements.push(`Write more — aim for at least ${targetWords} words (you wrote ${wordCount}).`);
+  // Ensure at least one item in each list, but never fake praise
+  if (strengths.length === 0) {
+    if (wordCount >= 5 && relevance.relevant) {
+      strengths.push('You made an effort to answer the question.');
+    }
+    // No strengths for irrelevant/gibberish responses — that's intentional
+  }
+  if (improvements.length === 0) {
+    improvements.push('Add one more specific detail or example from the lesson to strengthen your answer.');
   }
 
-  if (sentenceCount >= 3) {
-    strengths.push('Your answer is well-structured with multiple sentences.');
-  }
-
-  if (strengths.length === 0) strengths.push('You attempted the response.');
-  if (improvements.length === 0) improvements.push('Keep building on this strong work!');
-
-  // Summary feedback
-  const band = getScoringBand(totalScore);
+  // ── SUMMARY FEEDBACK ──
   let feedback: string;
-  if (totalScore >= 80) {
-    feedback = `Strong response! You showed good understanding. ${band.descriptor}.`;
+  if (!relevance.relevant) {
+    feedback = `This response doesn't seem to address the question. ${improvements[0]}`;
+  } else if (totalScore >= 80) {
+    feedback = `Strong response — you showed clear understanding and used specific details.`;
   } else if (totalScore >= 60) {
-    feedback = `Good start! You covered important ideas. ${improvements[0] || 'Adding more detail would help.'}`;
+    feedback = `Good effort! You addressed the topic. ${improvements[0] || 'Adding more specific details from the lesson would strengthen it.'}`;
   } else if (totalScore >= 40) {
-    feedback = `You're on the right track. ${improvements[0] || 'Try adding more specific details from the lesson.'}`;
+    feedback = `You're starting to address the topic. ${improvements[0] || 'Try adding more specific details from the lesson.'}`;
+  } else if (totalScore >= 20) {
+    feedback = `Your response needs more development. ${improvements[0] || 'Review the lesson content and try to be more specific.'}`;
   } else {
-    feedback = `Good effort starting this. ${improvements[0] || 'Review the lesson content and try to be more specific.'}`;
+    feedback = `${improvements[0] || 'Please re-read the question and write a response that directly answers what is being asked.'}`;
   }
 
-  // Next step
+  // ── NEXT STEP ──
   let nextStep: string;
-  if (!hasReasoning) {
+  if (!relevance.relevant) {
+    nextStep = 'Re-read the question carefully. Then write 2-3 sentences that directly answer what is being asked.';
+  } else if (!hasReasoning) {
     nextStep = 'Add one sentence that starts with "because" or "for example" to explain your thinking.';
-  } else if (vocabCoverage < 0.5 && relevantTerms.length > 0) {
+  } else if (vocabCoverage < 0.3 && relevantTerms.length > 0) {
     const missing = relevantTerms.filter((t) => !responseLower.includes(t))[0];
-    nextStep = missing ? `Try using the term "${missing}" in your explanation.` : 'Add one more specific detail from the lesson.';
+    nextStep = missing
+      ? `Try explaining the concept of "${missing}" in your own words.`
+      : 'Add one more specific detail from the lesson.';
   } else if (lengthRatio < 0.8) {
     nextStep = 'Expand your answer by adding one more specific example from the lesson.';
   } else {
     nextStep = 'Review your answer and check that every claim is supported with a specific example.';
   }
 
-  return { score: totalScore, criteriaScores, feedback, strengths, improvements, nextStep };
+  // ── TEACHER FLAGGING ──
+  // Flag for teacher review when:
+  // - Borderline scores (30-55) where heuristic confidence is low
+  // - Low relevance but non-zero (might be a valid tangential response)
+  // - Very short responses that scored moderately (might be correct but insufficient)
+  const flagForTeacher =
+    (totalScore >= 30 && totalScore <= 55) ||
+    (relevance.relevanceScore > 0 && relevance.relevanceScore < 40) ||
+    (wordCount < 10 && totalScore > 25) ||
+    !relevance.relevant;
+
+  return {
+    score: totalScore,
+    criteriaScores,
+    feedback,
+    strengths,
+    improvements,
+    nextStep,
+    flagForTeacher,
+    relevanceScore: relevance.relevanceScore,
+  };
 }

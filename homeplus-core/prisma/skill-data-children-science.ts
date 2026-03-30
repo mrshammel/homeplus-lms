@@ -18,6 +18,28 @@ export interface ChildSkillDef extends Omit<SkillDef, 'isCorePrerequisite'> {
 export const scienceChildSkills: ChildSkillDef[] = [
   // ── Unit A: Interactions & Ecosystems ──
 
+  // ── Spec-level Knowledge Outcomes (SCI.7.A.K.x) ──
+  // These are the outcome codes used by quiz questions and blocks in the new spec.
+  // They map to the parent GLO skills (SCI.7.A.1–4) but carry the .K. qualifier
+  // to distinguish Knowledge outcomes from Skills outcomes.
+  { id: 'skill-sci7-ak1', code: 'SCI.7.A.K.1', parentCode: 'SCI.7.A.1', title: 'Ecosystem Relationships & Issues', description: 'Investigate and describe relationships between humans and their environments; identify related issues and scientific questions', iCanStatement: 'I can identify living and non-living parts of an ecosystem and explain how they depend on each other', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.K.1' },
+  { id: 'skill-sci7-ak2', code: 'SCI.7.A.K.2', parentCode: 'SCI.7.A.2', title: 'Energy & Material Flow', description: 'Trace and interpret the flow of energy and materials within an ecosystem (biotic/abiotic, producers/consumers/decomposers, food webs, carbon/water cycles, pollutant concentration)', iCanStatement: 'I can trace how energy and materials flow through an ecosystem', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.K.2' },
+  { id: 'skill-sci7-ak3', code: 'SCI.7.A.K.3', parentCode: 'SCI.7.A.3', title: 'Environmental Monitoring', description: 'Monitor a local environment; assess impacts of environmental factors on organisms; identify succession', iCanStatement: 'I can observe and record living and non-living things in a local area and explain the patterns I find', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.K.3' },
+  { id: 'skill-sci7-ak4', code: 'SCI.7.A.K.4', parentCode: 'SCI.7.A.4', title: 'Human Impacts & Management', description: 'Investigate and analyze the effects of human activities on ecosystems; evaluate methods of environmental management', iCanStatement: 'I can analyze a real environmental issue from multiple perspectives and write an evidence-based position', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.K.4' },
+
+  // ── Spec-level Skills Outcomes (SCI.7.A.S.x) ──
+  { id: 'skill-sci7-as1', code: 'SCI.7.A.S.1', parentCode: 'SCI.7.A.1', title: 'Initiating & Planning', description: 'Formulate questions, design investigations, select tools', iCanStatement: 'I can ask scientific questions and plan investigations', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.S.1' },
+  { id: 'skill-sci7-as2', code: 'SCI.7.A.S.2', parentCode: 'SCI.7.A.2', title: 'Performing & Recording', description: 'Collect qualitative and quantitative data, use data tables', iCanStatement: 'I can collect and record data accurately', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.S.2' },
+  { id: 'skill-sci7-as3', code: 'SCI.7.A.S.3', parentCode: 'SCI.7.A.3', title: 'Analyzing & Interpreting', description: 'Compile and display data, identify explanations, develop flow charts and diagrams', iCanStatement: 'I can analyze data and explain what it means', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.S.3' },
+  { id: 'skill-sci7-as4', code: 'SCI.7.A.S.4', parentCode: 'SCI.7.A.4', title: 'Communication', description: 'Communicate findings using multiple formats', iCanStatement: 'I can communicate my findings clearly', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.S.4' },
+
+  // ── Grade 6 Retrieval Prerequisite ──
+  // Referenced by retrieval questions in Unit A mastery checks
+  { id: 'skill-sci6-ls1', code: 'SCI.6.LS.1', parentCode: 'SCI.6.LS', title: 'Grade 6 Ecosystems', description: 'Basic ecosystem concepts from Grade 6 Science — food chains, ecosystem components', iCanStatement: 'I can describe basic ecosystem components and food chains from Grade 6', subject: 'Science', gradeLevel: 6, strand: 'Life Science', curriculumOutcomeCode: 'SCI.6.LS.1' },
+
+  // ── Existing Instructional-Level Children (preserved) ──
+  // These provide finer-grained skill tracking within each GLO.
+
   // Parent: SCI.7.A.1
   { id: 'skill-sci7-a1-1', code: 'SCI.7.A.1.1', parentCode: 'SCI.7.A.1', title: 'Needs of Living Things', description: 'Illustrate how life-supporting environments meet the needs of living things for nutrients, energy sources, moisture, suitable habitat, and exchange of gases', iCanStatement: 'I can explain how environments meet the needs of living things', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.1.1' },
   { id: 'skill-sci7-a1-2', code: 'SCI.7.A.1.2', parentCode: 'SCI.7.A.1', title: 'Interactions & Interdependency', description: 'Describe examples of interaction and interdependency within an ecosystem', iCanStatement: 'I can describe how species depend on each other in an ecosystem', subject: 'Science', gradeLevel: 7, strand: 'Interactions & Ecosystems', curriculumOutcomeCode: 'SCI.7.A.1.2' },
