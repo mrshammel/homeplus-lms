@@ -28,6 +28,7 @@ import {
   type ShapeType,
   TOOL_DEFS,
   SHAPE_OPTIONS,
+  STAMP_CATEGORIES,
   resolveColor,
   resolveStrokeWidth,
   renderStroke,
@@ -74,6 +75,11 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
   const [activeShapeType, setActiveShapeType] = useState<ShapeType>('rectangle');
   const [showShapeMenu, setShowShapeMenu] = useState(false);
   const [shapeFilled, setShapeFilled] = useState(false);
+
+  // Stamp tool state
+  const [activeStamp, setActiveStamp] = useState<string>('🌱');
+  const [showStampMenu, setShowStampMenu] = useState(false);
+  const [stampSize, setStampSize] = useState(32);
   const shiftHeldRef = useRef(false);
 
   // Text label state
@@ -102,6 +108,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
   const showRuler = tools?.ruler === true;
   const showCircle = tools?.circle === true;
   const showShapes = tools?.shapes === true;
+  const showStamps = tools?.stamps !== false; // on by default
 
   // Prompt text (support legacy `instruction` field)
   const promptText = content.prompt || content.instruction || '';
@@ -245,13 +252,31 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
       return;
     }
 
+    // Stamp tool — place emoji
+    if (activeTool === 'stamp') {
+      const stampStroke: StrokeObject = {
+        id: nextStrokeId(),
+        tool: 'stamp',
+        color: '',
+        strokeWidth: 0,
+        opacity: 1,
+        points: [],
+        stamp: activeStamp,
+        stampPosition: pos,
+        stampSize: stampSize,
+      };
+      setStrokes(prev => [...prev, stampStroke]);
+      setRedoStack([]);
+      return;
+    }
+
     setIsDrawing(true);
     currentStrokeRef.current = [pos];
     activeEraserPathRef.current = activeTool === 'eraser' ? [pos] : [];
 
     // Capture pointer for smooth tracking
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
-  }, [submitted, readOnly, activeTool, getPointerPos]);
+  }, [submitted, readOnly, activeTool, getPointerPos, activeStamp, stampSize]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!isDrawing || submitted || readOnly) return;
@@ -609,6 +634,49 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
                     >
                       {shapeFilled ? '■' : '□'}
                     </button>
+                  </div>
+                )}
+              </div>
+            )}
+            {showStamps && (
+              <div style={{ position: 'relative' }}>
+                <button
+                  className={`${styles.toolBtn} ${activeTool === 'stamp' ? styles.toolBtnActive : ''}`}
+                  onClick={() => { setActiveTool('stamp'); setShowStampMenu(prev => !prev); }}
+                  title="Emoji Stamp"
+                  aria-label="Emoji stamp tool"
+                >
+                  {activeStamp}
+                </button>
+                {showStampMenu && activeTool === 'stamp' && (
+                  <div className={styles.shapeMenu} style={{ width: 240, padding: 8 }}>
+                    {STAMP_CATEGORIES.map(cat => (
+                      <div key={cat.label} style={{ marginBottom: 6 }}>
+                        <p style={{ fontSize: '0.65rem', fontWeight: 700, color: '#64748b', margin: '0 0 3px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{cat.label}</p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                          {cat.stamps.map(s => (
+                            <button
+                              key={s}
+                              className={`${styles.toolBtn} ${activeStamp === s ? styles.toolBtnActive : ''}`}
+                              onClick={() => { setActiveStamp(s); setShowStampMenu(false); }}
+                              style={{ fontSize: '1.1rem', padding: '3px 5px', minWidth: 32 }}
+                              title={s}
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 6, marginTop: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap' }}>Size:</span>
+                      <input
+                        type="range" min="20" max="56" step="4" value={stampSize}
+                        onChange={e => setStampSize(Number(e.target.value))}
+                        style={{ flex: 1, accentColor: '#2563eb' }}
+                      />
+                      <span style={{ fontSize: '0.7rem', color: '#94a3b8', minWidth: 28 }}>{stampSize}px</span>
+                    </div>
                   </div>
                 )}
               </div>

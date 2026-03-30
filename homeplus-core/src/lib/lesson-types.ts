@@ -240,6 +240,7 @@ export interface DrawingToolConfig {
   ruler?: boolean;
   circle?: boolean;
   shapes?: boolean;
+  stamps?: boolean;
   protractor?: boolean;
   symmetryLine?: boolean;
   // Tier 3

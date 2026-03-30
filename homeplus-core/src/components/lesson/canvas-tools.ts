@@ -25,10 +25,14 @@ export interface StrokeObject {
   shapeWidth?: number;
   shapeHeight?: number;
   filled?: boolean;
+  // Stamp metadata
+  stamp?: string;         // emoji character
+  stampPosition?: Point;
+  stampSize?: number;     // font size in px, default 32
 }
 
 export type ToolType = 'pen' | 'eraser' | 'highlighter' | 'arrow' | 'text'
-  | 'ruler' | 'circle' | 'shape';
+  | 'ruler' | 'circle' | 'shape' | 'stamp';
 
 export type ShapeType = 'rectangle' | 'square' | 'triangle' | 'circle' | 'pentagon' | 'hexagon' | 'octagon';
 
@@ -131,6 +135,9 @@ export function renderStroke(ctx: CanvasRenderingContext2D, stroke: StrokeObject
     case 'shape':
       renderShapeStroke(ctx, stroke, dpr);
       break;
+    case 'stamp':
+      renderStampStroke(ctx, stroke, dpr);
+      break;
     // eraser strokes are not rendered — they remove other strokes
   }
 }
@@ -227,6 +234,22 @@ function renderTextLabel(ctx: CanvasRenderingContext2D, stroke: StrokeObject, dp
   ctx.restore();
 }
 
+// ─── Stamp (Emoji) rendering ───
+
+function renderStampStroke(ctx: CanvasRenderingContext2D, stroke: StrokeObject, dpr: number): void {
+  if (!stroke.stamp || !stroke.stampPosition) return;
+
+  const size = (stroke.stampSize || 32) * dpr;
+
+  ctx.save();
+  ctx.globalAlpha = stroke.opacity;
+  ctx.font = `${size}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(stroke.stamp, stroke.stampPosition.x * dpr, stroke.stampPosition.y * dpr);
+  ctx.restore();
+}
+
 // ─── Eraser: Stroke intersection check ───
 
 export function strokeIntersectsPath(stroke: StrokeObject, eraserPoints: Point[], eraserRadius: number): boolean {
@@ -244,6 +267,15 @@ export function strokeIntersectsPath(stroke: StrokeObject, eraserPoints: Point[]
       const dx = ep.x - stroke.textPosition.x;
       const dy = ep.y - stroke.textPosition.y;
       if (dx * dx + dy * dy < (eraserRadius + 20) * (eraserRadius + 20)) {
+        return true;
+      }
+    }
+    // Also check stamps
+    if (stroke.tool === 'stamp' && stroke.stampPosition) {
+      const dx = ep.x - stroke.stampPosition.x;
+      const dy = ep.y - stroke.stampPosition.y;
+      const stampHitRadius = (stroke.stampSize || 32) / 2 + eraserRadius;
+      if (dx * dx + dy * dy < stampHitRadius * stampHitRadius) {
         return true;
       }
     }
@@ -436,6 +468,7 @@ export const TOOL_DEFS: Record<ToolType, CanvasTool> = {
   ruler: { name: 'ruler', icon: '📏', label: 'Line', cursor: 'crosshair' },
   circle: { name: 'circle', icon: '⭕', label: 'Circle', cursor: 'crosshair' },
   shape: { name: 'shape', icon: '⬡', label: 'Shapes', cursor: 'crosshair' },
+  stamp: { name: 'stamp', icon: '😀', label: 'Stamp', cursor: 'pointer' },
 };
 
 // ─── Shape palette for the shapes sub-menu ───
@@ -446,6 +479,27 @@ export const SHAPE_OPTIONS: { type: ShapeType; icon: string; label: string }[] =
   { type: 'circle', icon: '○', label: 'Circle' },
   { type: 'pentagon', icon: '⬠', label: 'Pentagon' },
   { type: 'hexagon', icon: '⬡', label: 'Hexagon' },
+];
+
+// ─── Stamp / Emoji Palette ───
+
+export const STAMP_CATEGORIES: { label: string; stamps: string[] }[] = [
+  {
+    label: 'Science',
+    stamps: ['🌱', '🌿', '🌲', '🌻', '🍄', '🦠', '🧬', '🔬', '🧪', '⚗️', '🌡️', '💧'],
+  },
+  {
+    label: 'Animals',
+    stamps: ['🐛', '🦋', '🐝', '🐞', '🐸', '🐟', '🦅', '🐺', '🦌', '🐇', '🐻', '🦎'],
+  },
+  {
+    label: 'Nature',
+    stamps: ['☀️', '🌧️', '❄️', '🌊', '🏔️', '🌋', '🪨', '🔥', '💨', '⚡', '🌈', '🌍'],
+  },
+  {
+    label: 'Labels',
+    stamps: ['⬆️', '⬇️', '⬅️', '➡️', '⭐', '❌', '✅', '❓', '❗', '🔴', '🟢', '🔵'],
+  },
 ];
 
 // ─── Unique ID generator ───
