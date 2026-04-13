@@ -80,28 +80,31 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user }) {
-      // On initial sign-in, fetch role from DB and embed in token
-      if (user?.email) {
+      // Always re-fetch onboardingStatus from DB so a completed onboarding
+      // is reflected immediately without requiring a full sign-out/sign-in.
+      // On first sign-in we also pull role, gradeLevel, etc.
+      const lookupEmail = user?.email || (token.email as string | undefined);
+      if (lookupEmail) {
         try {
           const dbUser = await prisma.user.findUnique({
-             where: { email: user.email },
-             select: { id: true, role: true, gradeLevel: true, onboardingStatus: true, onboardingStep: true },
+            where: { email: lookupEmail },
+            select: { id: true, role: true, gradeLevel: true, onboardingStatus: true, onboardingStep: true },
           });
           if (dbUser) {
             token.id = dbUser.id;
             token.role = dbUser.role;
             token.gradeLevel = dbUser.gradeLevel;
+            // Always overwrite — this is the key fix for the stale-session bug
             token.onboardingStatus = dbUser.onboardingStatus;
             token.onboardingStep = dbUser.onboardingStep;
-          } else {
-            // User not in DB yet (signIn may have failed to create) — default to STUDENT
+          } else if (user?.email) {
+            // First sign-in but not in DB yet
             token.role = 'STUDENT';
             console.warn('[Auth] JWT: user not found in DB, defaulting to STUDENT:', user.email);
           }
         } catch (error: any) {
-          // DB query failed — default to STUDENT so they still get routed
-          token.role = 'STUDENT';
-          console.error('[Auth] JWT DB error (defaulting to STUDENT):', error?.message);
+          if (user?.email) token.role = 'STUDENT';
+          console.error('[Auth] JWT DB error:', error?.message);
         }
       }
       return token;

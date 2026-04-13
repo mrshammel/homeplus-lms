@@ -25,14 +25,13 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  // Redirect to onboarding if not completed
+  // Redirect to onboarding if not yet completed.
+  // Only act once session is confirmed — never redirect while loading.
   if (status === 'authenticated' && session?.user) {
     const user = session.user as any;
     const isOnboardingPage = pathname.startsWith('/student/onboarding');
-    
-    // Explicitly check for 'COMPLETED' (in case it evaluates to undefined or NOT_STARTED)
-    if (user.onboardingStatus !== 'COMPLETED' && !isOnboardingPage && pathname !== '/student/onboarding/complete') {
-      router.push('/student/onboarding');
+    if (user.onboardingStatus !== 'COMPLETED' && !isOnboardingPage) {
+      router.replace('/student/onboarding');
     }
   }
 
