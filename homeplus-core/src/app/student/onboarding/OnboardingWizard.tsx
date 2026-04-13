@@ -493,32 +493,119 @@ function MathSection({ initial, onComplete, onBack }: {
 // SECTION: ELA Baseline
 // ════════════════════════════════════════════════════════════════════════════
 
-const ELA_STEPS = [
+// ── Writing / conventions tasks (textarea) ──────────────────────────────────
+
+const ELA_WRITING_TASKS = [
   {
     id: 'writing_sample',
     title: 'Writing Sample',
     instruction: 'Write a paragraph about a time you felt proud of something you did. Try to include a beginning, middle, and end.',
-    hint: 'Aim for at least 5 sentences. Don\'t worry about being perfect — just write!',
-    type: 'textarea',
+    hint: "Aim for at least 5 sentences. Don't worry about being perfect — just write!",
     minWords: 40,
   },
   {
     id: 'story_elements',
     title: 'Story Elements',
-    instruction: 'Think of a book, movie, or story you know. In 2–3 sentences, identify the PROTAGONIST (main character) and the CONFLICT (main problem) in that story.',
-    hint: 'Example: "In Charlotte\'s Web, the protagonist is Wilbur the pig. The conflict is that Wilbur is going to be sold and killed, and Charlotte tries to save him."',
-    type: 'textarea',
+    instruction: 'Think of a book, movie, or story you know. In 2\u20133 sentences, identify the PROTAGONIST (main character) and the CONFLICT (main problem) in that story.',
+    hint: "Example: \"In Charlotte's Web, the protagonist is Wilbur the pig. The conflict is that Wilbur is going to be sold and killed, and Charlotte tries to save him.\"",
     minWords: 15,
   },
   {
     id: 'conventions',
     title: 'Language Conventions',
     instruction: 'Rewrite this sentence correctly, fixing any spelling, capitalization, or punctuation errors:\n\n"their going to the store on saterday but they dont have alot of mony"',
-    hint: 'Look for spelling mistakes, missing apostrophes, and capitalization.',
-    type: 'textarea',
+    hint: 'Look for: spelling mistakes, missing apostrophes, and capitalization.',
     minWords: 8,
   },
 ];
+
+// ── Figurative Language (MC) ─────────────────────────────────────────────────
+
+const FIGURATIVE_LANGUAGE_QUESTIONS = [
+  {
+    id: 'fig1',
+    strand: 'Figurative Language',
+    text: 'Read this sentence: "The wind howled through the trees like a wolf in the night." What type of figurative language is used?',
+    options: ['Metaphor', 'Simile', 'Personification', 'Hyperbole'],
+  },
+  {
+    id: 'fig2',
+    strand: 'Figurative Language',
+    text: 'Read this sentence: "The old car coughed and sputtered to life." What type of figurative language is this?',
+    options: ['Simile', 'Alliteration', 'Personification', 'Metaphor'],
+  },
+  {
+    id: 'fig3',
+    strand: 'Figurative Language',
+    text: '"I\'ve told you a million times to clean your room!" What type of figurative language is used?',
+    options: ['Onomatopoeia', 'Hyperbole', 'Simile', 'Alliteration'],
+  },
+  {
+    id: 'fig4',
+    strand: 'Figurative Language',
+    text: '"Life is a roller coaster \u2014 full of highs and lows." What type of figurative language is used?',
+    options: ['Simile', 'Alliteration', 'Personification', 'Metaphor'],
+  },
+  {
+    id: 'fig5',
+    strand: 'Figurative Language',
+    text: '"Sally sells seashells by the seashore." What device is used in this sentence?',
+    options: ['Onomatopoeia', 'Hyperbole', 'Alliteration', 'Metaphor'],
+  },
+];
+
+// ── Prefix & Suffix (MC — choose the correct meaning) ───────────────────────
+
+const PREFIX_SUFFIX_QUESTIONS = [
+  {
+    id: 'pref1',
+    strand: 'Prefix / Suffix',
+    prompt: 'The prefix "un-" means NOT. What does the word UNHAPPY mean?',
+    options: ['Very happy', 'Not happy', 'Somewhat happy', 'Was happy before'],
+  },
+  {
+    id: 'pref2',
+    strand: 'Prefix / Suffix',
+    prompt: 'The prefix "re-" means AGAIN. What does REWRITE mean?',
+    options: ['Write beautifully', 'Write before', 'Write again', 'Not write'],
+  },
+  {
+    id: 'pref3',
+    strand: 'Prefix / Suffix',
+    prompt: 'The suffix "-ful" means FULL OF. What does HOPEFUL mean?',
+    options: ['Without hope', 'Full of hope', 'Against hope', 'Too much hope'],
+  },
+  {
+    id: 'pref4',
+    strand: 'Prefix / Suffix',
+    prompt: 'The prefix "mis-" means WRONG or INCORRECTLY. Which word means "to spell incorrectly"?',
+    options: ['Misspell', 'Unspell', 'Respell', 'Despell'],
+  },
+  {
+    id: 'pref5',
+    strand: 'Prefix / Suffix',
+    prompt: 'The suffix "-less" means WITHOUT. What does CARELESS mean?',
+    options: ['Full of care', 'Without care', 'Too careful', 'More careful'],
+  },
+];
+
+// ── Total item count & completion helper ─────────────────────────────────────
+
+const TOTAL_ELA_ITEMS =
+  ELA_WRITING_TASKS.length +
+  FIGURATIVE_LANGUAGE_QUESTIONS.length +
+  PREFIX_SUFFIX_QUESTIONS.length;
+
+function countELACompleted(answers: Record<string, string>): number {
+  const writing = ELA_WRITING_TASKS.filter(
+    s => (answers[s.id] || '').trim().split(/\s+/).filter(Boolean).length >= s.minWords,
+  ).length;
+  const fig = FIGURATIVE_LANGUAGE_QUESTIONS.filter(q => answers[q.id]).length;
+  const pre = PREFIX_SUFFIX_QUESTIONS.filter(q => answers[q.id]).length;
+  return writing + fig + pre;
+}
+
+// ── ELA Section Component ────────────────────────────────────────────────────
 
 function ELASection({ initial, onComplete, onBack }: {
   initial: Record<string, string>;
@@ -526,22 +613,31 @@ function ELASection({ initial, onComplete, onBack }: {
   onBack: () => void;
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>(initial);
-  const answered = ELA_STEPS.filter(s => (answers[s.id] || '').trim().split(/\s+/).filter(Boolean).length >= s.minWords).length;
-  const allAnswered = answered === ELA_STEPS.length;
+  const answered = countELACompleted(answers);
+  const allAnswered = answered === TOTAL_ELA_ITEMS;
+
+  const set = (id: string, val: string) => setAnswers(prev => ({ ...prev, [id]: val }));
+
+  let itemIdx = 0;
 
   return (
-    <SectionShell title="ELA Baseline" icon="✏️" progress={answered} total={ELA_STEPS.length} onBack={onBack}>
+    <SectionShell title="ELA Baseline" icon="✏️" progress={answered} total={TOTAL_ELA_ITEMS} onBack={onBack}>
       <p className={styles.sectionIntro}>
-        Three short writing tasks. Your teacher will review these — no AI grading here. Just write in your own words!
+        Three parts: writing tasks, figurative language, and word parts (prefixes &amp; suffixes).
+        Your teacher reviews the writing — just do your best on everything!
       </p>
+
+      {/* ── Part 1: Writing Tasks ── */}
+      <div className={styles.partHeading}>Part 1 — Writing Tasks</div>
       <div className={styles.questionList}>
-        {ELA_STEPS.map((step, i) => {
+        {ELA_WRITING_TASKS.map((step) => {
+          itemIdx++;
           const wordCount = (answers[step.id] || '').trim().split(/\s+/).filter(Boolean).length;
           const met = wordCount >= step.minWords;
           return (
             <div key={step.id} className={styles.questionBlock}>
               <div className={styles.questionMeta}>
-                <span className={styles.questionNum}>{i + 1}</span>
+                <span className={styles.questionNum}>{itemIdx}</span>
                 <span className={styles.strandBadge}>{step.title}</span>
               </div>
               <div className={styles.questionLabel} style={{ whiteSpace: 'pre-line' }}>{step.instruction}</div>
@@ -549,26 +645,86 @@ function ELASection({ initial, onComplete, onBack }: {
               <textarea
                 className={styles.textArea}
                 value={answers[step.id] || ''}
-                onChange={e => setAnswers(prev => ({ ...prev, [step.id]: e.target.value }))}
+                onChange={e => set(step.id, e.target.value)}
                 placeholder="Write your response here..."
                 rows={5}
               />
               <div className={styles.wordCount} style={{ color: met ? '#059669' : '#94a3b8' }}>
-                {wordCount} words {!met && `— aim for ${step.minWords}+ words`}
+                {wordCount} words{!met && ` — aim for ${step.minWords}+ words`}
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* ── Part 2: Figurative Language ── */}
+      <div className={styles.partHeading}>Part 2 — Figurative Language</div>
+      <div className={styles.questionList}>
+        {FIGURATIVE_LANGUAGE_QUESTIONS.map((q) => {
+          itemIdx++;
+          return (
+            <div key={q.id} className={styles.questionBlock}>
+              <div className={styles.questionMeta}>
+                <span className={styles.questionNum}>{itemIdx}</span>
+                <span className={styles.strandBadge}>{q.strand}</span>
+              </div>
+              <div className={styles.questionLabel}>{q.text}</div>
+              <div className={styles.mcGrid}>
+                {q.options.map(opt => (
+                  <button
+                    key={opt}
+                    className={`${styles.mcBtn} ${answers[q.id] === opt ? styles.mcBtnSelected : ''}`}
+                    onClick={() => set(q.id, opt)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Part 3: Prefix / Suffix ── */}
+      <div className={styles.partHeading}>Part 3 — Word Parts: Prefixes &amp; Suffixes</div>
+      <div className={styles.questionList}>
+        {PREFIX_SUFFIX_QUESTIONS.map((q) => {
+          itemIdx++;
+          return (
+            <div key={q.id} className={styles.questionBlock}>
+              <div className={styles.questionMeta}>
+                <span className={styles.questionNum}>{itemIdx}</span>
+                <span className={styles.strandBadge}>{q.strand}</span>
+              </div>
+              <div className={styles.questionLabel}>{q.prompt}</div>
+              <div className={styles.mcGrid} style={{ gridTemplateColumns: '1fr 1fr' }}>
+                {q.options.map(opt => (
+                  <button
+                    key={opt}
+                    className={`${styles.mcBtn} ${answers[q.id] === opt ? styles.mcBtnSelected : ''}`}
+                    onClick={() => set(q.id, opt)}
+                    style={{ textAlign: 'left', justifyContent: 'flex-start' }}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save & Return →
+          Save &amp; Return →
         </button>
       </div>
     </SectionShell>
   );
 }
+
+
 
 // ════════════════════════════════════════════════════════════════════════════
 // SECTION: Reading Check
