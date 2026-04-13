@@ -648,6 +648,7 @@ function ELASection({ initial, onComplete, onBack }: {
                 onChange={e => set(step.id, e.target.value)}
                 placeholder="Write your response here..."
                 rows={5}
+                spellCheck={false}
               />
               <div className={styles.wordCount} style={{ color: met ? '#059669' : '#94a3b8' }}>
                 {wordCount} words{!met && ` — aim for ${step.minWords}+ words`}
