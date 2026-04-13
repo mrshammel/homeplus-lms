@@ -185,9 +185,20 @@ export async function getStudentDashboardData(): Promise<StudentDashboardData> {
   // Determine grade level for course lookup
   const grade = dbUser.gradeLevel || 7;
 
-  // Fetch all active subjects (multi-grade)
+  // Check if this student has explicit SubjectEnrollment records
+  const enrollmentRecords = await (prisma as any).subjectEnrollment.findMany({
+    where: { studentId: userId },
+    select: { subjectId: true },
+  }).catch(() => [] as { subjectId: string }[]);
+
+  const hasExplicitEnrollments = enrollmentRecords.length > 0;
+  const enrolledSubjectIds = enrollmentRecords.map((e: { subjectId: string }) => e.subjectId);
+
+  // Fetch enrolled subjects only — or fall back to all active at grade level
   const subjects = await prisma.subject.findMany({
-    where: { active: true },
+    where: hasExplicitEnrollments
+      ? { id: { in: enrolledSubjectIds }, active: true }
+      : { active: true, gradeLevel: grade },
     orderBy: [{ gradeLevel: 'asc' }, { order: 'asc' }],
     include: {
       units: {

@@ -21,6 +21,7 @@ import { resolveContext, buildContextQuery} from '@/lib/teacher-context';
 import { prisma } from '@/lib/db';
 import { isDemoMode } from '@/lib/teacher-auth';
 import StudentActions from './StudentActions';
+import EnrollmentPanel from './EnrollmentPanel';
 
 // ---------- Types ----------
 
@@ -432,6 +433,21 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
         {/* ===== RIGHT COLUMN ===== */}
         <div>
+          {/* ===== COURSES ENROLLED IN ===== */}
+          <div className={styles.dashCard} style={{ marginBottom: 24 }}>
+            <h3 className={styles.cardTitle}>📚 Courses Currently Enrolled In</h3>
+            <p style={{ fontSize: '0.82rem', color: 'var(--hp-text3)', marginBottom: 12, marginTop: -4 }}>
+              Check or uncheck to instantly change this student&apos;s course access. Changes take effect immediately.
+            </p>
+            {id.startsWith('demo-') ? (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyDesc}>Enrollment management is not available in demo mode.</div>
+              </div>
+            ) : (
+              <EnrollmentPanel studentId={id} studentName={student.name} />
+            )}
+          </div>
+
           {/* Intervention Context */}
           {interventionReasons.length > 0 && (
             <div className={styles.dashCard} style={{ marginBottom: 24, borderLeft: '4px solid #dc2626' }}>

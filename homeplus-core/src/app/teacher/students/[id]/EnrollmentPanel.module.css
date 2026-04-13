@@ -1,0 +1,167 @@
+/* ── Enrollment Panel Styles ─────────────────────────────────────────────── */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Current enrollment chips */
+.currentSummary {
+  min-height: 32px;
+}
+
+.noEnrollments {
+  font-size: 0.84rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Error banner */
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.84rem;
+}
+
+/* Grade group header */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.gradeGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gradeGroupLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #94a3b8;
+  padding: 2px 0 4px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 2px;
+}
+
+/* Subject row */
+.subjectRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background 0.12s, border-color 0.12s;
+  font-size: 0.9rem;
+  color: #334155;
+  user-select: none;
+}
+
+.subjectRow:hover {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.subjectChecked {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+.subjectChecked:hover {
+  background: #ede9fe;
+}
+
+.subjectSaving {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.checkbox {
+  width: 17px;
+  height: 17px;
+  accent-color: #6366f1;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.subjectIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.subjectName {
+  flex: 1;
+  font-weight: 500;
+}
+
+.enrolledTick {
+  font-size: 0.8rem;
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.savingSpinner {
+  font-size: 0.8rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Show all grades button */
+.showAllBtn {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  color: #6366f1;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.12s;
+  text-align: center;
+  width: 100%;
+}
+
+.showAllBtn:hover {
+  background: #f5f3ff;
+}
+
+/* Loading */
+.loading {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  padding: 12px 0;
+}
