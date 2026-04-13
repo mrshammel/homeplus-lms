@@ -1076,3 +1076,96 @@ function getDemoClassMastery(students: StudentWithPacing[]): ClassMasteryOvervie
     skillBreakdown: demoSkills,
   };
 }
+
+// ============================================================================
+// Onboarding Review Dashboard
+// ============================================================================
+
+export interface OnboardingStudentRow {
+  studentId: string;
+  studentName: string;
+  studentAvatar: string | null;
+  preferredName: string | null;       // parsed from About Me section
+  onboardingStatus: string;           // NOT_STARTED | IN_PROGRESS | COMPLETED
+  completedAt: Date | null;
+  noteId: string | null;              // TeacherNote ID for the baseline note
+  noteContent: string | null;         // raw note text
+  noteReviewed: boolean;              // true once teacher marks it reviewed
+  gradeLevel: number | null;
+}
+
+/**
+ * Get all students assigned to this teacher with their onboarding status
+ * and baseline note content, sorted by: unreviewed-completed first, then in-progress, then not-started.
+ */
+export async function getOnboardingReviews(teacherId: string): Promise<OnboardingStudentRow[]> {
+  try {
+    // Fetch students + their onboarding-tagged notes in one query
+    const students = await prisma.user.findMany({
+      where: {
+        assignedTeacherId: teacherId,
+        role: 'STUDENT',
+      },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        gradeLevel: true,
+        onboardingStatus: true,
+        enrolledAt: true,
+        notes: {
+          where: {
+            teacherId,
+            tag: { contains: 'Onboarding' },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+          select: { id: true, content: true, createdAt: true, reviewed: true },
+        },
+      },
+      orderBy: { name: 'asc' },
+    });
+
+    const rows: OnboardingStudentRow[] = students.map((s: any) => {
+      const note = s.notes?.[0] ?? null;
+
+      // Parse preferred name from note content (line: "Preferred name: ...")
+      let preferredName: string | null = null;
+      if (note?.content) {
+        const match = note.content.match(/Preferred name:\s*(.+)/i);
+        if (match && match[1] && match[1].trim() !== '(not set)') {
+          preferredName = match[1].trim();
+        }
+      }
+
+      return {
+        studentId: s.id,
+        studentName: s.name,
+        studentAvatar: s.avatar,
+        preferredName,
+        onboardingStatus: s.onboardingStatus ?? 'NOT_STARTED',
+        completedAt: note?.createdAt ?? null,
+        noteId: note?.id ?? null,
+        noteContent: note?.content ?? null,
+        noteReviewed: note?.reviewed ?? false,
+        gradeLevel: s.gradeLevel,
+      };
+    });
+
+    // Sort: unreviewed completed → reviewed completed → in-progress → not started
+    return rows.sort((a, b) => {
+      const priority = (r: OnboardingStudentRow) => {
+        if (r.onboardingStatus === 'COMPLETED' && !r.noteReviewed) return 0;
+        if (r.onboardingStatus === 'COMPLETED' &&  r.noteReviewed) return 1;
+        if (r.onboardingStatus === 'IN_PROGRESS') return 2;
+        return 3;
+      };
+      return priority(a) - priority(b) || a.studentName.localeCompare(b.studentName);
+    });
+
+  } catch (err) {
+    console.error('[teacher-data] getOnboardingReviews failed:', err);
+    return [];
+  }
+}
+

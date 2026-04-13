@@ -1,0 +1,210 @@
+/* ── Onboarding Review Dashboard Styles ─────────────────────────────────── */
+
+/* Info banner */
+.infoBanner {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 0.88rem;
+  color: #1e40af;
+  line-height: 1.55;
+}
+
+.infoBannerIcon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.infoBanner strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.92rem;
+}
+
+.infoBanner p {
+  margin: 0;
+  color: #1e3a8a;
+}
+
+/* Student card grid */
+.studentGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Individual student card */
+.studentCard {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease;
+}
+
+.studentCard:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+.studentCardPending {
+  border-color: #fcd34d;
+  box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.15);
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.cardAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardHeaderInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cardMeta {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.cardHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.statusBadge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* Mark Reviewed button */
+.markReviewedBtn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.markReviewedBtn:hover:not(:disabled) {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.markReviewedBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reviewedChip {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #047857;
+  background: #d1fae5;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* Baseline sections */
+.sections {
+  padding: 0 22px 20px;
+}
+
+.section {
+  margin-top: 18px;
+}
+
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6366f1;
+  border-left: 3px solid #6366f1;
+  padding-left: 8px;
+  margin-bottom: 8px;
+}
+
+.sectionText {
+  font-family: inherit;
+  font-size: 0.86rem;
+  color: #334155;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0;
+}
+
+/* Nudge states */
+.inProgressNote {
+  margin: 12px 22px 18px;
+  font-size: 0.85rem;
+  color: #1d4ed8;
+  background: #dbeafe;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.notStartedNote {
+  margin: 12px 22px 18px;
+  font-size: 0.85rem;
+  color: #475569;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .cardHeader {
+    flex-wrap: wrap;
+  }
+  .cardHeaderRight {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
