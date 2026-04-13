@@ -1,225 +1,637 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+// ============================================
+// Onboarding Hub — Home Plus LMS
+// ============================================
+// Hub model: student sees 4 section cards.
+// They can complete each section in any order.
+// When all 4 are marked done, the "Enter Platform" button unlocks.
+// Sections:
+//   1. About Me      — nickname, interests, fun facts
+//   2. Math Check    — Gr 5 & 6 diagnostic (Alberta outcomes)
+//   3. ELA           — writing sample + conventions + story elements
+//   4. Reading       — passage comprehension check
+//
+// All responses autosave to /api/onboarding/progress.
+// Completion writes a teacher-facing baseline note.
+
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import DrawingCanvas from '@/components/lesson/DrawingCanvas';
-import { ConstructedResponseBlock } from '@/components/lesson/LessonBlockRenderer';
 import styles from './onboarding.module.css';
 
-interface Props {
-  initialStep: number;
+// ─── Types ─────────────────────────────────────────────────────────────────
+
+type SectionId = 'about' | 'math' | 'ela' | 'reading';
+
+interface SectionState {
+  done: boolean;
+  data: Record<string, string>;
 }
 
-// Temporary hardcoded math diagnostic questions (could pull from DB later)
+// ─── Alberta Gr 5/6 Math Diagnostic ────────────────────────────────────────
+// Aligned to Alberta Program of Studies for Grades 5–6
+
 const MATH_QUESTIONS = [
-  { id: 'q1', text: '7 × 8 = ?', options: ['54', '56', '62', '48'] },
-  { id: 'q2', text: '3/4 + 1/4 = ?', options: ['2/8', '4/8', '1', '1/2'] },
-  { id: 'q3', text: 'If x + 5 = 12, what is x?', options: ['5', '6', '7', '8'] },
+  // Grade 5 — Number
+  {
+    id: 'm1', grade: 5, strand: 'Number',
+    text: 'What is 3/4 + 1/4?',
+    options: ['4/8', '1', '2/4', '4/4'],
+    correct: '1',
+  },
+  {
+    id: 'm2', grade: 5, strand: 'Number',
+    text: 'What is 48 ÷ 6?',
+    options: ['6', '7', '8', '9'],
+    correct: '8',
+  },
+  {
+    id: 'm3', grade: 5, strand: 'Patterns & Relations',
+    text: 'In the pattern 2, 5, 8, 11, … what comes next?',
+    options: ['12', '13', '14', '15'],
+    correct: '14',
+  },
+  {
+    id: 'm4', grade: 6, strand: 'Number',
+    text: 'What is 25% of 80?',
+    options: ['10', '15', '20', '25'],
+    correct: '20',
+  },
+  {
+    id: 'm5', grade: 6, strand: 'Number',
+    text: 'Which fraction is equivalent to 0.5?',
+    options: ['1/4', '1/3', '1/2', '2/3'],
+    correct: '1/2',
+  },
+  {
+    id: 'm6', grade: 6, strand: 'Measurement',
+    text: 'A rectangle is 8 cm long and 5 cm wide. What is its area?',
+    options: ['13 cm²', '26 cm²', '40 cm²', '45 cm²'],
+    correct: '40 cm²',
+  },
+  {
+    id: 'm7', grade: 6, strand: 'Patterns & Relations',
+    text: 'If n = 4, what is the value of 3n + 2?',
+    options: ['9', '12', '14', '18'],
+    correct: '14',
+  },
+  {
+    id: 'm8', grade: 6, strand: 'Statistics & Probability',
+    text: 'A bag has 3 red and 7 blue marbles. What is the probability of picking red?',
+    options: ['3/7', '3/10', '7/10', '1/3'],
+    correct: '3/10',
+  },
 ];
 
-export default function OnboardingWizard({ initialStep }: Props) {
-  // Enforce 1-based steps so it aligns with DB nicely
-  const [step, setStep] = useState(Math.max(1, initialStep));
-  const [saving, setSaving] = useState(false);
+// ─── Reading Passage ────────────────────────────────────────────────────────
+
+const READING_PASSAGE = `The Arctic fox is one of nature's most remarkable survivors. Its thick, white winter coat acts as camouflage in the snow and provides insulation against temperatures as cold as –50°C. In summer, the coat changes to brown or grey, blending in with the tundra. Arctic foxes are omnivores — they eat small animals like lemmings and voles, berries, insects, and even scraps left by polar bears.
+
+Unlike many animals, Arctic foxes do not hibernate. They remain active all winter, sometimes travelling hundreds of kilometres across sea ice in search of food. Their small, rounded ears reduce heat loss, and their heavily furred paws act like snowshoes.
+
+Despite surviving the harshest conditions on Earth, Arctic foxes face new challenges. Climate change is warming the Arctic faster than almost anywhere else on the planet. As temperatures rise, the red fox — a larger, more aggressive relative — is moving north into the Arctic fox's habitat. The two species compete for the same food, and the red fox usually wins.`;
+
+const READING_QUESTIONS = [
+  {
+    id: 'r1',
+    text: 'What is the MAIN idea of this passage?',
+    options: [
+      'Arctic foxes have white fur in winter.',
+      'The Arctic fox is a skilled survivor facing new threats.',
+      'Red foxes are more aggressive than Arctic foxes.',
+      'Climate change only affects animals in cold places.',
+    ],
+    correct: 'The Arctic fox is a skilled survivor facing new threats.',
+  },
+  {
+    id: 'r2',
+    text: 'According to the passage, why does the Arctic fox\'s coat change colour in summer?',
+    options: [
+      'To stay warm during cold nights.',
+      'To blend in with the tundra environment.',
+      'To attract a mate.',
+      'To scare away predators.',
+    ],
+    correct: 'To blend in with the tundra environment.',
+  },
+  {
+    id: 'r3',
+    text: 'What does the word "omnivore" mean based on how it is used in the passage?',
+    options: [
+      'An animal that only eats plants.',
+      'An animal that only eats other animals.',
+      'An animal that eats both plants and animals.',
+      'An animal that does not eat during winter.',
+    ],
+    correct: 'An animal that eats both plants and animals.',
+  },
+  {
+    id: 'r4',
+    text: 'According to the passage, which of these is a NEW challenge for Arctic foxes?',
+    options: [
+      'Surviving temperatures of –50°C.',
+      'Finding enough food in winter.',
+      'Competition from red foxes moving north.',
+      'Travelling across sea ice.',
+    ],
+    correct: 'Competition from red foxes moving north.',
+  },
+];
+
+// ─── About Me Questions ─────────────────────────────────────────────────────
+
+const ABOUT_QUESTIONS = [
+  { id: 'nickname', label: 'What do you like to be called?', placeholder: 'e.g. Liv, Matt, Ava', type: 'text' },
+  { id: 'favourite_activity', label: 'What is your favourite activity or hobby outside of school?', placeholder: 'e.g. soccer, drawing, gaming, riding horses', type: 'text' },
+  { id: 'favourite_subject', label: 'What subject do you like most?', type: 'choice', options: ['Math', 'Science', 'English', 'Social Studies', 'PE / Sports', 'Art', 'I\'m not sure yet'] },
+  { id: 'learning_goal', label: 'What is ONE thing you hope to get better at this year?', placeholder: 'Write anything — big or small!', type: 'text' },
+  { id: 'fun_fact', label: 'Share one fun fact about yourself.', placeholder: 'e.g. I have three cats, I like to bake, I can juggle', type: 'text' },
+];
+
+// ─── Sub-component: Section Card (hub view) ─────────────────────────────────
+
+function SectionCard({
+  icon, title, desc, done, locked, onClick,
+}: {
+  icon: string; title: string; desc: string;
+  done: boolean; locked: boolean; onClick: () => void;
+}) {
+  return (
+    <button
+      className={`${styles.sectionCard} ${done ? styles.sectionCardDone : ''} ${locked ? styles.sectionCardLocked : ''}`}
+      onClick={locked ? undefined : onClick}
+      disabled={locked}
+      aria-label={`${title} — ${done ? 'Completed' : 'Start'}`}
+    >
+      <div className={styles.sectionCardIcon}>{icon}</div>
+      <div className={styles.sectionCardBody}>
+        <div className={styles.sectionCardTitle}>{title}</div>
+        <div className={styles.sectionCardDesc}>{desc}</div>
+      </div>
+      <div className={styles.sectionCardStatus}>
+        {done ? <span className={styles.doneChip}>✓ Done</span> : <span className={styles.startChip}>{locked ? '🔒' : 'Start →'}</span>}
+      </div>
+    </button>
+  );
+}
+
+// ─── Sub-component: Section Shell (back + content) ──────────────────────────
+
+function SectionShell({ title, icon, progress, total, onBack, children }: {
+  title: string; icon: string; progress: number; total: number;
+  onBack: () => void; children: React.ReactNode;
+}) {
+  return (
+    <div className={styles.sectionShell}>
+      <div className={styles.sectionShellHeader}>
+        <button className={styles.backBtn} onClick={onBack}>← Back</button>
+        <div className={styles.sectionShellTitle}><span>{icon}</span> {title}</div>
+        <div className={styles.sectionShellProgress}>{progress}/{total} done</div>
+      </div>
+      <div className={styles.sectionProgressBar}>
+        <div className={styles.sectionProgressFill} style={{ width: `${total > 0 ? (progress / total) * 100 : 0}%` }} />
+      </div>
+      <div className={styles.sectionContent}>{children}</div>
+    </div>
+  );
+}
+
+// ─── Main Component ─────────────────────────────────────────────────────────
+
+export default function OnboardingHub() {
   const router = useRouter();
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
+  const [sections, setSections] = useState<Record<SectionId, SectionState>>({
+    about:   { done: false, data: {} },
+    math:    { done: false, data: {} },
+    ela:     { done: false, data: {} },
+    reading: { done: false, data: {} },
+  });
+  const [finishing, setFinishing] = useState(false);
 
-  // Math step state
-  const [mathAnswers, setMathAnswers] = useState<Record<string, string>>({});
-  
-  // Writing step state
-  const [writingDone, setWritingDone] = useState(false);
-  const [writingResponse, setWritingResponse] = useState('');
+  const allDone = Object.values(sections).every(s => s.done);
 
-  const saveProgress = async (newStep: number, complete: boolean = false) => {
-    setSaving(true);
+  // ─ Autosave helper ─
+  const saveSection = useCallback(async (id: SectionId, data: Record<string, string>, done: boolean) => {
+    setSections(prev => ({
+      ...prev,
+      [id]: { done, data },
+    }));
     try {
       await fetch('/api/onboarding/progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          step: newStep,
-          status: complete ? 'COMPLETED' : 'IN_PROGRESS',
-          mathData: complete ? mathAnswers : undefined,
-          writingData: complete ? writingResponse : undefined,
+          step: Object.values({ about: 1, math: 2, ela: 3, reading: 4 })[['about','math','ela','reading'].indexOf(id)],
+          status: 'IN_PROGRESS',
+          sectionId: id,
+          sectionData: data,
+          sectionDone: done,
         }),
       });
-      // Force NextAuth session refresh by pinging the server layout or router
-      if (complete) router.refresh();
-    } catch (err) {
-      console.error('Failed to save progress', err);
-    } finally {
-      setSaving(false);
+    } catch { /* non-blocking */ }
+  }, []);
+
+  // ─ Finish all sections ─
+  const handleFinish = async () => {
+    setFinishing(true);
+    try {
+      await fetch('/api/onboarding/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          step: 4,
+          status: 'COMPLETED',
+          allSections: sections,
+        }),
+      });
+      // Hard navigate so session re-checks from scratch on the dashboard
+      window.location.href = '/student';
+    } catch {
+      setFinishing(false);
     }
   };
 
-  const handleNext = () => {
-    const nextStep = step + 1;
-    if (nextStep > 4) {
-      finishOnboarding();
-    } else {
-      setStep(nextStep);
-      saveProgress(nextStep);
-    }
-  };
+  // ─── Hub View ───────────────────────────────────────────────────────────
+  if (!activeSection) {
+    const doneSections = Object.values(sections).filter(s => s.done).length;
+    return (
+      <div className={styles.hubContainer}>
+        <div className={styles.hubCard}>
+          <div className={styles.hubIntro}>
+            <div className={styles.hubWelcome}>Welcome to Home Plus! 🎉</div>
+            <h1 className={styles.hubTitle}>Let&apos;s get you set up</h1>
+            <p className={styles.hubSubtitle}>
+              Complete all four sections below so your teacher can get to know you and where you&apos;re starting from.
+              You can do them in any order and come back to this page anytime.
+            </p>
+            <div className={styles.hubOverallProgress}>
+              <div className={styles.hubOverallBar}>
+                <div className={styles.hubOverallFill} style={{ width: `${(doneSections / 4) * 100}%` }} />
+              </div>
+              <span className={styles.hubOverallText}>{doneSections} of 4 sections complete</span>
+            </div>
+          </div>
 
-  const finishOnboarding = async () => {
-    await saveProgress(4, true);
-    // Move to dashboard
-    router.replace('/student/dashboard');
-  };
+          <div className={styles.sectionGrid}>
+            <SectionCard
+              icon="😊" title="About Me" done={sections.about.done} locked={false}
+              desc="Tell us your nickname and a few things you love."
+              onClick={() => setActiveSection('about')}
+            />
+            <SectionCard
+              icon="🔢" title="Math Check" done={sections.math.done} locked={false}
+              desc="Quick questions from Grade 5 & 6 Alberta math."
+              onClick={() => setActiveSection('math')}
+            />
+            <SectionCard
+              icon="✏️" title="ELA Baseline" done={sections.ela.done} locked={false}
+              desc="Writing sample, story elements, and conventions."
+              onClick={() => setActiveSection('ela')}
+            />
+            <SectionCard
+              icon="📖" title="Reading Check" done={sections.reading.done} locked={false}
+              desc="Read a short passage and answer comprehension questions."
+              onClick={() => setActiveSection('reading')}
+            />
+          </div>
 
-  const mathComplete = Object.keys(mathAnswers).length === MATH_QUESTIONS.length;
+          {allDone ? (
+            <div className={styles.finishArea}>
+              <p className={styles.finishNote}>✅ All sections complete — you&apos;re ready to go!</p>
+              <button
+                className={styles.btnFinish}
+                onClick={handleFinish}
+                disabled={finishing}
+              >
+                {finishing ? 'Setting up your account…' : 'Enter Home Plus →'}
+              </button>
+            </div>
+          ) : (
+            <p className={styles.notDoneYet}>
+              Complete all 4 sections above to unlock your courses.
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── About Me Section ────────────────────────────────────────────────────
+  if (activeSection === 'about') {
+    return (
+      <AboutSection
+        initial={sections.about.data}
+        onComplete={(data) => {
+          saveSection('about', data, true);
+          setActiveSection(null);
+        }}
+        onBack={() => setActiveSection(null)}
+      />
+    );
+  }
+
+  // ─── Math Section ────────────────────────────────────────────────────────
+  if (activeSection === 'math') {
+    return (
+      <MathSection
+        initial={sections.math.data}
+        onComplete={(data) => {
+          saveSection('math', data, true);
+          setActiveSection(null);
+        }}
+        onBack={() => setActiveSection(null)}
+      />
+    );
+  }
+
+  // ─── ELA Section ─────────────────────────────────────────────────────────
+  if (activeSection === 'ela') {
+    return (
+      <ELASection
+        initial={sections.ela.data}
+        onComplete={(data) => {
+          saveSection('ela', data, true);
+          setActiveSection(null);
+        }}
+        onBack={() => setActiveSection(null)}
+      />
+    );
+  }
+
+  // ─── Reading Section ─────────────────────────────────────────────────────
+  if (activeSection === 'reading') {
+    return (
+      <ReadingSection
+        initial={sections.reading.data}
+        onComplete={(data) => {
+          saveSection('reading', data, true);
+          setActiveSection(null);
+        }}
+        onBack={() => setActiveSection(null)}
+      />
+    );
+  }
+
+  return null;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION: About Me
+// ════════════════════════════════════════════════════════════════════════════
+
+function AboutSection({ initial, onComplete, onBack }: {
+  initial: Record<string, string>;
+  onComplete: (data: Record<string, string>) => void;
+  onBack: () => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, string>>(initial);
+
+  const answered = ABOUT_QUESTIONS.filter(q => (answers[q.id] || '').trim().length > 0).length;
+  const allAnswered = answered === ABOUT_QUESTIONS.length;
+
+  const set = (id: string, val: string) => setAnswers(prev => ({ ...prev, [id]: val }));
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wizardCard}>
-        
-        {/* Progress Dots */}
-        <div className={styles.stepIndicator}>
-          {[1, 2, 3, 4].map((s) => (
-            <div 
-              key={s} 
-              className={`${styles.stepDot} ${s === step ? styles.stepDotActive : ''} ${s < step ? styles.stepDotCompleted : ''}`} 
-            />
-          ))}
-        </div>
-
-        {/* STEP 1: Welcome */}
-        {step === 1 && (
-          <div className={styles.contentArea}>
-            <div className={styles.header}>
-              <h1>Welcome to Home Plus! 🚀</h1>
-              <p>Before you dive into your courses, let's show you around.</p>
-            </div>
-            
-            <div className={styles.aiExplainer}>
-              <h2>🤖 Meet Mrs. Hammel (Your AI Assistant)</h2>
-              <p>
-                In Home Plus, you will be getting instant feedback on your answers from our AI, "Mrs. Hammel". 
-              </p>
-              <br/>
-              <p>
-                <strong>How it works:</strong> Mrs. Hammel grades you based on how well you answer the <i>actual question</i>. She cares about your ideas, not just your spelling! If you try to copy-paste the question back or type random gibberish, she will know, and she will ask you to try again. 
-              </p>
-              <br/>
-              <p>
-                <i>Note: Your real teachers always review your work too!</i>
-              </p>
-            </div>
-            
-            <div className={styles.footer}>
-              <button disabled={saving} className={styles.btnNext} onClick={handleNext}>
-                {saving ? 'Saving...' : 'Got it! Next ➔'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* STEP 2: Canvas */}
-        {step === 2 && (
-          <div className={styles.contentArea}>
-            <div className={styles.header}>
-              <h1>Interactive Tools</h1>
-              <p>Draw a smiley face to practice using the canvas tool! 🎨</p>
-            </div>
-            
-            {/* The canvas has a lot of internal state. For onboarding, we just let them play. */}
-            <div style={{ border: '2px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden', height: 400 }}>
-              <DrawingCanvas 
-                content={{ tools: {} } as any}
-                lessonId="onboarding"
-                blockId="canvas-sandbox"
-                onAnswer={() => {}} 
+    <SectionShell title="About Me" icon="😊" progress={answered} total={ABOUT_QUESTIONS.length} onBack={onBack}>
+      <div className={styles.questionList}>
+        {ABOUT_QUESTIONS.map((q, i) => (
+          <div key={q.id} className={styles.questionBlock}>
+            <label className={styles.questionLabel}>
+              <span className={styles.questionNum}>{i + 1}</span>
+              {q.label}
+            </label>
+            {q.type === 'text' ? (
+              <input
+                className={styles.textInput}
+                value={answers[q.id] || ''}
+                onChange={e => set(q.id, e.target.value)}
+                placeholder={q.placeholder}
               />
-            </div>
-            
-            <div className={styles.footer}>
-              <button disabled={saving} className={styles.btnNext} onClick={handleNext}>
-                {saving ? 'Saving...' : 'Looks good! Next ➔'}
-              </button>
-            </div>
+            ) : (
+              <div className={styles.choiceGrid}>
+                {q.options!.map(opt => (
+                  <button
+                    key={opt}
+                    className={`${styles.choiceBtn} ${answers[q.id] === opt ? styles.choiceBtnSelected : ''}`}
+                    onClick={() => set(q.id, opt)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        ))}
+      </div>
+      <div className={styles.sectionFooter}>
+        <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
+        <button
+          className={styles.btnPrimary}
+          disabled={!allAnswered}
+          onClick={() => onComplete(answers)}
+        >
+          Save & Return →
+        </button>
+      </div>
+    </SectionShell>
+  );
+}
 
-        {/* STEP 3: Math */}
-        {step === 3 && (
-          <div className={styles.contentArea}>
-            <div className={styles.header}>
-              <h1>Math Quick Check</h1>
-              <p>Let's find out what you remember from last year!</p>
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION: Math Check
+// ════════════════════════════════════════════════════════════════════════════
+
+function MathSection({ initial, onComplete, onBack }: {
+  initial: Record<string, string>;
+  onComplete: (data: Record<string, string>) => void;
+  onBack: () => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, string>>(initial);
+  const answered = Object.keys(answers).filter(k => answers[k]).length;
+  const allAnswered = answered === MATH_QUESTIONS.length;
+
+  return (
+    <SectionShell title="Math Check" icon="🔢" progress={answered} total={MATH_QUESTIONS.length} onBack={onBack}>
+      <p className={styles.sectionIntro}>
+        These questions come from Grade 5 and 6 Alberta math. There are no trick questions — just do your best!
+        Your teacher reviews these results, not a computer grade.
+      </p>
+      <div className={styles.questionList}>
+        {MATH_QUESTIONS.map((q, i) => (
+          <div key={q.id} className={styles.questionBlock}>
+            <div className={styles.questionMeta}>
+              <span className={styles.questionNum}>{i + 1}</span>
+              <span className={styles.strandBadge}>Gr {q.grade} • {q.strand}</span>
             </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-              {MATH_QUESTIONS.map((q) => (
-                <div key={q.id}>
-                  <p style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '10px' }}>{q.text}</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                    {q.options.map(opt => (
-                      <div 
-                        key={opt}
-                        className={`${styles.diagnosticOption} ${mathAnswers[q.id] === opt ? styles.diagnosticOptionSelected : ''}`}
-                        onClick={() => setMathAnswers({...mathAnswers, [q.id]: opt})}
-                      >
-                        <div style={{
-                          width: '20px', height: '20px', borderRadius: '50%', 
-                          border: `2px solid ${mathAnswers[q.id] === opt ? '#2563eb' : '#94a3b8'}`,
-                          background: mathAnswers[q.id] === opt ? '#2563eb' : 'transparent',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center'
-                        }}>
-                          {mathAnswers[q.id] === opt && <div style={{width: 8, height: 8, background: '#fff', borderRadius: '50%'}} />}
-                        </div>
-                        {opt}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            <div className={styles.questionLabel}>{q.text}</div>
+            <div className={styles.mcGrid}>
+              {q.options.map(opt => (
+                <button
+                  key={opt}
+                  className={`${styles.mcBtn} ${answers[q.id] === opt ? styles.mcBtnSelected : ''}`}
+                  onClick={() => setAnswers(prev => ({ ...prev, [q.id]: opt }))}
+                >
+                  {opt}
+                </button>
               ))}
             </div>
-
-            <div className={styles.footer}>
-              <button disabled={!mathComplete || saving} className={styles.btnNext} onClick={handleNext}>
-                {saving ? 'Saving...' : 'Next ➔'}
-              </button>
-            </div>
           </div>
-        )}
-
-        {/* STEP 4: Writing Baseline */}
-        {step === 4 && (
-          <div className={styles.contentArea}>
-            <div className={styles.header}>
-              <h1>Writing Baseline</h1>
-              <p>Write a short paragraph introducing yourself and telling us one thing you hope to learn this year.</p>
-              <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '10px' }}>
-                💡 <strong>Hint:</strong> A paragraph is usually about 5 sentences long.
-              </p>
-            </div>
-            
-            <ConstructedResponseBlock 
-              content={{
-                prompt: 'Introduce yourself and share one goal for this year.',
-                minLength: 40,
-                minExpectedWords: 40,
-                teacherReviewRequired: true,
-              }}
-              onAnswer={(ans) => {
-                setWritingResponse(ans);
-                setWritingDone(true);
-              }}
-              // Pass standard parameters for the AI grader
-              subjectMode="GENERAL"
-              gradeLevel={7}
-            />
-
-            <div className={styles.footer}>
-              <button disabled={!writingDone || saving} className={styles.btnNext} onClick={handleNext}>
-                {saving ? 'Saving...' : 'Finish Onboarding ➔'}
-              </button>
-            </div>
-          </div>
-        )}
-
+        ))}
       </div>
-    </div>
+      <div className={styles.sectionFooter}>
+        <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
+        <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
+          Save & Return →
+        </button>
+      </div>
+    </SectionShell>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION: ELA Baseline
+// ════════════════════════════════════════════════════════════════════════════
+
+const ELA_STEPS = [
+  {
+    id: 'writing_sample',
+    title: 'Writing Sample',
+    instruction: 'Write a paragraph about a time you felt proud of something you did. Try to include a beginning, middle, and end.',
+    hint: 'Aim for at least 5 sentences. Don\'t worry about being perfect — just write!',
+    type: 'textarea',
+    minWords: 40,
+  },
+  {
+    id: 'story_elements',
+    title: 'Story Elements',
+    instruction: 'Think of a book, movie, or story you know. In 2–3 sentences, identify the PROTAGONIST (main character) and the CONFLICT (main problem) in that story.',
+    hint: 'Example: "In Charlotte\'s Web, the protagonist is Wilbur the pig. The conflict is that Wilbur is going to be sold and killed, and Charlotte tries to save him."',
+    type: 'textarea',
+    minWords: 15,
+  },
+  {
+    id: 'conventions',
+    title: 'Language Conventions',
+    instruction: 'Rewrite this sentence correctly, fixing any spelling, capitalization, or punctuation errors:\n\n"their going to the store on saterday but they dont have alot of mony"',
+    hint: 'Look for spelling mistakes, missing apostrophes, and capitalization.',
+    type: 'textarea',
+    minWords: 8,
+  },
+];
+
+function ELASection({ initial, onComplete, onBack }: {
+  initial: Record<string, string>;
+  onComplete: (data: Record<string, string>) => void;
+  onBack: () => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, string>>(initial);
+  const answered = ELA_STEPS.filter(s => (answers[s.id] || '').trim().split(/\s+/).filter(Boolean).length >= s.minWords).length;
+  const allAnswered = answered === ELA_STEPS.length;
+
+  return (
+    <SectionShell title="ELA Baseline" icon="✏️" progress={answered} total={ELA_STEPS.length} onBack={onBack}>
+      <p className={styles.sectionIntro}>
+        Three short writing tasks. Your teacher will review these — no AI grading here. Just write in your own words!
+      </p>
+      <div className={styles.questionList}>
+        {ELA_STEPS.map((step, i) => {
+          const wordCount = (answers[step.id] || '').trim().split(/\s+/).filter(Boolean).length;
+          const met = wordCount >= step.minWords;
+          return (
+            <div key={step.id} className={styles.questionBlock}>
+              <div className={styles.questionMeta}>
+                <span className={styles.questionNum}>{i + 1}</span>
+                <span className={styles.strandBadge}>{step.title}</span>
+              </div>
+              <div className={styles.questionLabel} style={{ whiteSpace: 'pre-line' }}>{step.instruction}</div>
+              <p className={styles.questionHint}>💡 {step.hint}</p>
+              <textarea
+                className={styles.textArea}
+                value={answers[step.id] || ''}
+                onChange={e => setAnswers(prev => ({ ...prev, [step.id]: e.target.value }))}
+                placeholder="Write your response here..."
+                rows={5}
+              />
+              <div className={styles.wordCount} style={{ color: met ? '#059669' : '#94a3b8' }}>
+                {wordCount} words {!met && `— aim for ${step.minWords}+ words`}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className={styles.sectionFooter}>
+        <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
+        <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
+          Save & Return →
+        </button>
+      </div>
+    </SectionShell>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION: Reading Check
+// ════════════════════════════════════════════════════════════════════════════
+
+function ReadingSection({ initial, onComplete, onBack }: {
+  initial: Record<string, string>;
+  onComplete: (data: Record<string, string>) => void;
+  onBack: () => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, string>>(initial);
+  const [showPassage, setShowPassage] = useState(true);
+  const answered = READING_QUESTIONS.filter(q => answers[q.id]).length;
+  const allAnswered = answered === READING_QUESTIONS.length;
+
+  return (
+    <SectionShell title="Reading Check" icon="📖" progress={answered} total={READING_QUESTIONS.length} onBack={onBack}>
+      <p className={styles.sectionIntro}>
+        Read the passage below, then answer the questions. You can hide/show the passage while you answer.
+      </p>
+
+      <div className={styles.passageCard}>
+        <div className={styles.passageHeader}>
+          <strong>The Arctic Fox</strong>
+          <button className={styles.togglePassage} onClick={() => setShowPassage(p => !p)}>
+            {showPassage ? 'Hide passage ▲' : 'Show passage ▼'}
+          </button>
+        </div>
+        {showPassage && (
+          <div className={styles.passageText}>{READING_PASSAGE}</div>
+        )}
+      </div>
+
+      <div className={styles.questionList}>
+        {READING_QUESTIONS.map((q, i) => (
+          <div key={q.id} className={styles.questionBlock}>
+            <div className={styles.questionMeta}>
+              <span className={styles.questionNum}>{i + 1}</span>
+              <span className={styles.strandBadge}>Comprehension</span>
+            </div>
+            <div className={styles.questionLabel}>{q.text}</div>
+            <div className={styles.mcGrid} style={{ gridTemplateColumns: '1fr' }}>
+              {q.options.map(opt => (
+                <button
+                  key={opt}
+                  className={`${styles.mcBtn} ${answers[q.id] === opt ? styles.mcBtnSelected : ''}`}
+                  onClick={() => setAnswers(prev => ({ ...prev, [q.id]: opt }))}
+                  style={{ textAlign: 'left', justifyContent: 'flex-start' }}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.sectionFooter}>
+        <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
+        <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
+          Save & Return →
+        </button>
+      </div>
+    </SectionShell>
   );
 }
