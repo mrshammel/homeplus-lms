@@ -246,7 +246,7 @@ export default function OnboardingHub() {
         }),
       });
       // Hard navigate so session re-checks from scratch on the dashboard
-      window.location.href = '/student';
+      window.location.href = '/student/dashboard';
     } catch {
       setFinishing(false);
     }
