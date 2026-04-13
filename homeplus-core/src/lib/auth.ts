@@ -84,13 +84,15 @@ export const authOptions: NextAuthOptions = {
       if (user?.email) {
         try {
           const dbUser = await prisma.user.findUnique({
-            where: { email: user.email },
-            select: { id: true, role: true, gradeLevel: true },
+             where: { email: user.email },
+             select: { id: true, role: true, gradeLevel: true, onboardingStatus: true, onboardingStep: true },
           });
           if (dbUser) {
             token.id = dbUser.id;
             token.role = dbUser.role;
             token.gradeLevel = dbUser.gradeLevel;
+            token.onboardingStatus = dbUser.onboardingStatus;
+            token.onboardingStep = dbUser.onboardingStep;
           } else {
             // User not in DB yet (signIn may have failed to create) — default to STUDENT
             token.role = 'STUDENT';
@@ -111,6 +113,8 @@ export const authOptions: NextAuthOptions = {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;
         (session.user as any).gradeLevel = token.gradeLevel;
+        (session.user as any).onboardingStatus = token.onboardingStatus;
+        (session.user as any).onboardingStep = token.onboardingStep;
       }
       return session;
     },

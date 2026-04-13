@@ -689,7 +689,7 @@ interface AIFeedback {
   relevanceScore?: number;
 }
 
-function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId, subjectMode, gradeLevel }: {
+export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, blockId, subjectMode, gradeLevel }: {
   content: ConstructedResponseBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
@@ -702,6 +702,7 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<AIFeedback | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isPasted, setIsPasted] = useState(false);
 
   const minLen = content.minLength || 20;
   const isLongEnough = text.trim().split(/\s+/).filter(Boolean).length >= Math.max(Math.floor(minLen * 0.15), 3);
@@ -731,6 +732,7 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
           teacherReviewRequired: content.teacherReviewRequired,
           subjectMode: subjectMode || 'GENERAL',
           gradeLevel: gradeLevel || 6,
+          isPasted: isPasted,
         }),
       });
 
@@ -774,6 +776,7 @@ function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId, block
         className={styles.textArea}
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onPaste={() => setIsPasted(true)}
         disabled={readOnly || submitted}
         placeholder="Write your response..."
         style={{

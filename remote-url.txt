@@ -1,0 +1,2 @@
+origin	https://github.com/mrshammel/homeplus-lms.git (fetch)
+origin	https://github.com/mrshammel/homeplus-lms.git (push)

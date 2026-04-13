@@ -36,6 +36,7 @@ interface FeedbackRequest {
   teacherReviewRequired?: boolean;
   subjectMode?: SubjectMode;
   gradeLevel?: number;
+  isPasted?: boolean;
 }
 
 interface FeedbackResponse {
@@ -59,6 +60,7 @@ async function getGeminiFeedback(
   gradeLevel: number,
   rubricType: RubricTaskType,
   teacherReviewRequired: boolean,
+  isPasted?: boolean,
   minExpectedWords?: number,
 ): Promise<FeedbackResponse> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -70,6 +72,7 @@ async function getGeminiFeedback(
     rubricType,
     rubricHint,
     teacherReviewRequired,
+    isPasted,
   });
 
   const userPrompt = `PROMPT THE STUDENT WAS ASKED:\n${prompt}\n\n${minExpectedWords ? `EXPECTED MINIMUM RESPONSE LENGTH: approximately ${minExpectedWords} words for this prompt.\n\n` : ''}STUDENT'S RESPONSE:\n${studentResponse}`;
@@ -157,6 +160,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     teacherReviewRequired,
     subjectMode,
     gradeLevel,
+    isPasted,
   } = body;
 
   if (!studentResponse?.trim()) {
@@ -179,6 +183,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
         grade,
         rubricType,
         !!teacherReviewRequired,
+        isPasted,
         minExpectedWords,
       );
     } else {

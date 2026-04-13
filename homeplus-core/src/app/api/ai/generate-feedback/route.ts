@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
       gradeLevel,
       maxScore: submission.maxScore || undefined,
       submissionType: submission.submissionType,
+      isPasted: submission.isPasted,
       rubric,
     });
 

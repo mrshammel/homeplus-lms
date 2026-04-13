@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import styles from './student.module.css';
 
@@ -21,8 +21,22 @@ const NAV_ITEMS = [
 // ---------- Layout Component ----------
 export default function StudentLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+
+  // Redirect to onboarding if not completed
+  if (status === 'authenticated' && session?.user) {
+    const user = session.user as any;
+    const isOnboardingPage = pathname.startsWith('/student/onboarding');
+    
+    // Explicitly check for 'COMPLETED' (in case it evaluates to undefined or NOT_STARTED)
+    if (user.onboardingStatus !== 'COMPLETED' && !isOnboardingPage && pathname !== '/student/onboarding/complete') {
+      router.push('/student/onboarding');
+    }
+  }
+
+  const isOnboarding = pathname.startsWith('/student/onboarding');
 
   const userName = session?.user?.name || 'Student';
   const today = new Date().toLocaleDateString('en-CA', {
@@ -47,8 +61,9 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar */}
-      <nav className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
+      {/* Sidebar - Hide entirely if currently onboarding */}
+      {!isOnboarding && (
+        <nav className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <Image
             src="/images/hpln-logo.png"
@@ -92,9 +107,10 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
           </button>
         </div>
       </nav>
+      )}
 
       {/* Main content */}
-      <main className={styles.mainContent}>
+      <main className={`${styles.mainContent} ${isOnboarding ? styles.mainContentOnboarding : ''}`} style={isOnboarding ? { marginLeft: 0 } : {}}>
         <div className={styles.topbar}>
           <div className={styles.topbarLeft}>
             <button

@@ -16,6 +16,7 @@ export interface AiFeedbackResult {
   nextSteps: string;
   provisionalScore: number | null;
   performanceLevel: 'EMERGING' | 'APPROACHING' | 'MEETING' | 'EXCEEDING';
+  relevanceState: 'ON_TOPIC' | 'OFF_TOPIC' | 'GIBBERISH' | 'COPIED_PROMPT';
   modelVersion: string;
 }
 
@@ -26,6 +27,7 @@ export interface AiFeedbackInput {
   gradeLevel: number;
   maxScore?: number;
   submissionType: string;
+  isPasted?: boolean;
   rubric?: { criterion: string; maxPoints: number }[];
 }
 
@@ -61,30 +63,67 @@ function buildSystemPrompt(input: AiFeedbackInput): string {
     rubricSection = `\n\nRubric criteria for this assignment:\n${input.rubric.map((r) => `- ${r.criterion} (up to ${r.maxPoints} points)`).join('\n')}`;
   }
 
+  // Submission-specific rubric logic
+  let typeSpecificInstructions = '';
+  switch (input.submissionType) {
+    case 'SHORT_ANSWER':
+      typeSpecificInstructions = '- Focus on directness, accuracy, and providing a single piece of evidence. Highly tolerant of spelling errors as long as the core concept is understood.';
+      break;
+    case 'PARAGRAPH_RESPONSE':
+      typeSpecificInstructions = '- Focus on having a clear topic sentence, supporting details, and basic paragraph cohesion.';
+      break;
+    case 'ESSAY':
+      typeSpecificInstructions = '- Focus on thesis clarity, structured arguments, transitions between paragraphs, and formal evidence.';
+      break;
+    case 'REFLECTION':
+      typeSpecificInstructions = '- Focus strictly on metacognition, self-awareness, and personal connection to the material. Do NOT penalize strictly for spelling or formal sentence structure. Authentic effort is the goal here.';
+      break;
+    default:
+      typeSpecificInstructions = '- Focus on completeness, clarity, organization, and evidence.';
+  }
+
   let scoreInstruction = '';
   if (input.maxScore) {
     scoreInstruction = `\nAlso provide a provisional numeric score out of ${input.maxScore}. This is an estimate — the teacher will assign the final score.`;
   }
 
-  return `You are a supportive, encouraging writing feedback assistant for ${gradeDesc} in an Alberta, Canada school. Your role is to provide formative feedback that helps the student grow as a writer.
+  const antiCheatWarning = input.isPasted 
+    ? `\nCRITICAL FRAUD ALERT: The UI detected that the student copy-pasted this response instead of typing it. Unless the prompt explicitly asked them to copy something, you must flag this as COPIED_PROMPT.` 
+    : ``;
+
+  return `You are "Mrs. Hammel", a supportive, warm, and highly encouraging writing feedback assistant for ${gradeDesc} in an Alberta, Canada school. Your role is to provide formative feedback that helps the student grow.
 
 Assignment: "${input.activityTitle}"
 Submission type: ${input.submissionType}
-${input.activityPrompt ? `Prompt: "${input.activityPrompt}"` : ''}${rubricSection}
+${input.activityPrompt ? `Prompt: "${input.activityPrompt}"` : ''}${rubricSection}${antiCheatWarning}
 
-Instructions:
-- Evaluate the student's written response for: completeness, clarity, organization, evidence/details, and alignment to the prompt.
-- Write feedback that is supportive, age-appropriate for Grade ${input.gradeLevel}, specific, and constructive.
-- Never be harsh, punitive, or robotic.
-- Use simple, clear language appropriate for the student's grade level.
-- Be honest but kind — acknowledge effort and progress.${scoreInstruction}
+--- GRADING CONSTRAINTS (RELEVANCE GATE) ---
+Before providing feedback, evaluate the submission relevance. You must categorize it as one of:
+- ON_TOPIC: Valid attempt to answer the prompt.
+- OFF_TOPIC: A coherent response, but answers the wrong question entirely.
+- GIBBERISH: Random characters, "idk", keyboard smashes, or nonsense.
+- COPIED_PROMPT: The student pasted the prompt back or copy-pasted text from an external source (as flagged above).
+
+If it is OFF_TOPIC, GIBBERISH, or COPIED_PROMPT:
+- Score it a 0 (if scoring is requested).
+- Performance level must be EMERGING.
+- Overall feedback should politely point out why it wasn't accepted.
+- Skip strengths and next steps (leave empty).
+
+--- FEEDBACK TONE (MRS. HAMMEL PERSONA) ---
+${typeSpecificInstructions}
+- Be specific: Do NOT give generic praise like "Good job organizing your thoughts". Instead, prove you read it: "I liked how you organized your thoughts about the water cycle."
+- Quote or reference a small specific piece of the student's text.
+- Be honest but kind — acknowledge effort. Never be harsh, punitive, or robotic.
+- Speak directly to the student in a conversational, teacher-like tone ("You've got a great start here...").${scoreInstruction}
 
 Respond ONLY with valid JSON in this exact format (no markdown, no code blocks):
 {
+  "relevanceState": "ON_TOPIC | OFF_TOPIC | GIBBERISH | COPIED_PROMPT",
   "overallFeedback": "2-3 sentence overall summary of the submission quality",
-  "strengths": "2-3 specific things the student did well, as a short paragraph",
-  "areasForImprovement": "2-3 specific areas where the student could improve, as a short paragraph",
-  "nextSteps": "1-2 concrete, actionable revision suggestions the student could try next",
+  "strengths": "2-3 specific things the student did well (empty if off-topic)",
+  "areasForImprovement": "2-3 specific areas to improve, tying directly back to the prompt (empty if off-topic)",
+  "nextSteps": "1-2 concrete, actionable revision suggestions (empty if off-topic)",
   "performanceLevel": "one of: EMERGING, APPROACHING, MEETING, EXCEEDING"${input.maxScore ? `,\n  "provisionalScore": <number from 0 to ${input.maxScore}>` : ''}
 }`;
 }
@@ -104,7 +143,7 @@ export async function generateWritingFeedback(
     throw new Error('GOOGLE_GEMINI_API_KEY not configured');
   }
 
-  if (!input.writtenResponse || input.writtenResponse.trim().length < 10) {
+  if (!input.writtenResponse || input.writtenResponse.trim().length < 2) {
     throw new Error('Written response too short for meaningful feedback');
   }
 
@@ -141,19 +180,28 @@ export async function generateWritingFeedback(
     }
   }
 
+  // Handle relevance states
+  const validRelevance = ['ON_TOPIC', 'OFF_TOPIC', 'GIBBERISH', 'COPIED_PROMPT'];
+  let relevance = String(parsed.relevanceState || 'ON_TOPIC').toUpperCase();
+  if (!validRelevance.includes(relevance)) relevance = 'ON_TOPIC';
+
   // Validate and normalize the performance level
   const validLevels = ['EMERGING', 'APPROACHING', 'MEETING', 'EXCEEDING'];
   let level = String(parsed.performanceLevel || 'APPROACHING').toUpperCase();
   if (!validLevels.includes(level)) level = 'APPROACHING';
 
-  // Normalize provisional score
-  let provisionalScore: number | null = null;
-  if (input.maxScore && parsed.provisionalScore !== undefined) {
-    provisionalScore = Math.min(
-      Math.max(0, Number(parsed.provisionalScore)),
-      input.maxScore
-    );
-    provisionalScore = Math.round(provisionalScore * 2) / 2; // Round to nearest 0.5
+  // Enforce Relevance Gate constraints post-generation for safety
+  let finalProvisionalScore: number | null = null;
+  
+  if (relevance !== 'ON_TOPIC') {
+    level = 'EMERGING';
+    if (input.maxScore !== undefined) {
+      finalProvisionalScore = 0;
+    }
+  } else if (input.maxScore && parsed.provisionalScore !== undefined) {
+    let rawScore = Number(parsed.provisionalScore);
+    rawScore = Math.min(Math.max(0, rawScore), input.maxScore);
+    finalProvisionalScore = Math.round(rawScore * 2) / 2; // Round to nearest 0.5
   }
 
   return {
@@ -161,8 +209,9 @@ export async function generateWritingFeedback(
     strengths: String(parsed.strengths || ''),
     areasForImprovement: String(parsed.areasForImprovement || ''),
     nextSteps: String(parsed.nextSteps || ''),
-    provisionalScore,
+    provisionalScore: finalProvisionalScore,
     performanceLevel: level as AiFeedbackResult['performanceLevel'],
+    relevanceState: relevance as AiFeedbackResult['relevanceState'],
     modelVersion: MODEL_NAME,
   };
 }

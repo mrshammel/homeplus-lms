@@ -51,10 +51,10 @@ export default async function CourseDetailPage({ params }: Props) {
       };
     }
   } else {
-    // Demo mastery data
-    if (courseId === 'sci-7') courseMastery = { masteredSkills: 4, developingSkills: 2, reviewDue: 1, needsSupport: 0, totalSkills: 7 };
-    else if (courseId === 'math-7') courseMastery = { masteredSkills: 5, developingSkills: 1, reviewDue: 0, needsSupport: 0, totalSkills: 6 };
-    else if (courseId === 'ela-7') courseMastery = { masteredSkills: 2, developingSkills: 2, reviewDue: 0, needsSupport: 1, totalSkills: 5 };
+    // Demo mastery data — IDs must match actual subject IDs in seed.ts
+    if (courseId === 'g7-science') courseMastery = { masteredSkills: 4, developingSkills: 2, reviewDue: 1, needsSupport: 0, totalSkills: 7 };
+    else if (courseId === 'g7-math') courseMastery = { masteredSkills: 5, developingSkills: 1, reviewDue: 0, needsSupport: 0, totalSkills: 6 };
+    else if (courseId === 'g6-ela') courseMastery = { masteredSkills: 2, developingSkills: 2, reviewDue: 0, needsSupport: 1, totalSkills: 5 };
   }
 
   return (

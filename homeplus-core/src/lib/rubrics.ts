@@ -449,8 +449,9 @@ export function buildAIPrompt(opts: {
   rubricType: RubricTaskType;
   rubricHint: string;
   teacherReviewRequired: boolean;
+  isPasted?: boolean;
 }): string {
-  const { subject, gradeLevel, rubricType, rubricHint, teacherReviewRequired } = opts;
+  const { subject, gradeLevel, rubricType, rubricHint, teacherReviewRequired, isPasted } = opts;
   const template = getRubricTemplate(rubricType);
   const cal = getSubjectCalibration(subject);
   const tone = getGradeTone(gradeLevel);
@@ -472,6 +473,7 @@ Before scoring, determine if the student's response ADDRESSES THE PROMPT.
 - If the response copies the prompt back without adding original thought, score 5-15.
 - A well-written response about the WRONG TOPIC scores 5-15, not 40+.
 - Only score above 15 if the response genuinely attempts to answer what was asked.
+${isPasted ? '\nFRAUD ALERT: The system detected the student copy-pasted their response instead of typing it. Unless the prompt explicitly asked them to copy text, YOU MUST ASSUME IT IS PLAGIARIZED, SCORE IT 0-5, and politely ask them to type their answer in their own words.\n' : ''}
 
 FEEDBACK PHILOSOPHY:
 - Be encouraging and specific — what they did well FIRST

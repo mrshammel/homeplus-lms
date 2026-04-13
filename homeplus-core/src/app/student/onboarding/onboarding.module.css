@@ -1,0 +1,136 @@
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: var(--font-family);
+}
+
+.wizardCard {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow-hover);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stepIndicator {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.stepDot {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.stepDotActive {
+  background: var(--accent-blue);
+}
+
+.stepDotCompleted {
+  background: #10b981;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.contentArea {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aiExplainer {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.aiExplainer h2 {
+  font-size: 1.2rem;
+  color: #334155;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiExplainer p {
+  color: #475569;
+  line-height: 1.6;
+}
+
+.footer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.btnNext {
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-left: auto;
+}
+
+.btnNext:hover {
+  opacity: 0.9;
+}
+
+.btnNext:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.diagnosticOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+}
+
+.diagnosticOption:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.diagnosticOptionSelected {
+  border-color: var(--accent-blue);
+  background: #eff6ff;
+  font-weight: 600;
+}

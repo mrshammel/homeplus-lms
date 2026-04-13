@@ -10,6 +10,7 @@
     "lint": "eslint",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed:science": "npx tsx prisma/run-science-seeds.ts",
     "db:studio": "npx prisma studio",
     "db:push": "npx prisma db push"
   },
