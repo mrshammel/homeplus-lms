@@ -19,8 +19,8 @@ export default function HomePage() {
 
   // Personalized hero copy for signed-in users
   const heroGreeting = isTeacher
-    ? "Welcome back — review progress and activity"
-    : "Welcome back — continue your learning";
+    ? "Welcome back â review progress and activity"
+    : "Welcome back â continue your learning";
 
   return (
     <div className={styles.page}>
@@ -49,7 +49,7 @@ export default function HomePage() {
             {!isLoading && isSignedIn ? (
               <>
                 <a href="/dashboard" className={styles.navSignIn}>
-                  Go to Dashboard →
+                  Go to Dashboard â
                 </a>
                 {userImage ? (
                   <button
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className={styles.mobileNav}>
             <a href="#about" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>About</a>
             <a href="#how-it-works" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>How It Works</a>
-            <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.mobileNavLink} target="_blank" rel="noopener noreferrer" onClick={() => setMobileNavOpen(false)}>Register ↗</a>
+            <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.mobileNavLink} target="_blank" rel="noopener noreferrer" onClick={() => setMobileNavOpen(false)}>Register â</a>
             <div className={styles.mobileNavDivider} />
 
             {/* Mobile auth-aware CTAs */}
@@ -121,7 +121,7 @@ export default function HomePage() {
                   href="/dashboard"
                   className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
                 >
-                  📊 Go to Dashboard
+                  ð Go to Dashboard
                 </a>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
@@ -136,13 +136,13 @@ export default function HomePage() {
                   onClick={() => { signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
                   className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
                 >
-                  🎒 Student Sign In
+                  ð Student Sign In
                 </button>
                 <button
                   onClick={() => { signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
                   className={`${styles.ctaBtn} ${styles.ctaTeacher} ${styles.mobileNavBtn}`}
                 >
-                  👩‍🏫 Teacher Sign In
+                  ð©âð« Teacher Sign In
                 </button>
               </>
             )}
@@ -175,7 +175,7 @@ export default function HomePage() {
           {/* Full-width content below */}
           <div className={styles.heroContent}>
             <div className={`${styles.heroBadge} animate-in delay-1`}>
-              Alberta Curriculum · Grades 1–9
+              Alberta Curriculum Â· Grades 1â9
             </div>
 
             {/* Auth-aware hero heading */}
@@ -188,7 +188,7 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className={`${styles.heroDesc} animate-in delay-2`}>
-                  Pick up where you left off — your learning journey continues
+                  Pick up where you left off â your learning journey continues
                   with clear direction and teacher support.
                 </p>
                 <div className={`${styles.heroCta} animate-in delay-2`}>
@@ -196,7 +196,7 @@ export default function HomePage() {
                     href="/dashboard"
                     className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                   >
-                    📊 Go to Dashboard
+                    ð Go to Dashboard
                   </a>
                 </div>
               </>
@@ -211,7 +211,7 @@ export default function HomePage() {
                 <p className={`${styles.heroDesc} animate-in delay-2`}>
                   Home Plus is a flexible, asynchronous learning program that
                   supports students in building strong academic skills through
-                  guided independent learning at home — offering families greater
+                  guided independent learning at home â offering families greater
                   choice with clear direction and teacher support.
                 </p>
                 <div className={`${styles.heroCta} animate-in delay-2`}>
@@ -219,13 +219,13 @@ export default function HomePage() {
                     onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
                     className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                   >
-                    🎒 Student Sign In
+                    ð Student Sign In
                   </button>
                   <button
                     onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
                     className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
                   >
-                    👩‍🏫 Teacher Sign In
+                    ð©âð« Teacher Sign In
                   </button>
                 </div>
               </>
@@ -240,23 +240,23 @@ export default function HomePage() {
           <div className={styles.sectionLabel}>Our Approach</div>
           <h2 className={styles.sectionTitle}>How Home Plus Works</h2>
           <p className={styles.sectionSubtitle}>
-            A structured, supportive approach to learning at home — designed
+            A structured, supportive approach to learning at home â designed
             for real families and real students.
           </p>
 
           <div className={styles.featureGrid}>
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}>📚</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}>ð</div>
               <h3 className={styles.featureTitle}>Flexible Learning</h3>
               <p className={styles.featureDesc}>
                 Students learn at their own pace with structured lessons they
-                can access anytime, anywhere — designed for home learning that
+                can access anytime, anywhere â designed for home learning that
                 fits family schedules.
               </p>
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}>🧭</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}>ð§­</div>
               <h3 className={styles.featureTitle}>Clear Direction</h3>
               <p className={styles.featureDesc}>
                 Every lesson has defined learning targets, step-by-step
@@ -266,16 +266,16 @@ export default function HomePage() {
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconTeal}`}>👩‍🏫</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconTeal}`}>ð©âð«</div>
               <h3 className={styles.featureTitle}>Teacher Support</h3>
               <p className={styles.featureDesc}>
                 Teachers monitor progress, provide feedback, and offer
-                intervention when needed — students are never learning alone.
+                intervention when needed â students are never learning alone.
               </p>
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconAmber}`}>⭐</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconAmber}`}>â­</div>
               <h3 className={styles.featureTitle}>Quality Curriculum</h3>
               <p className={styles.featureDesc}>
                 Aligned to the Alberta curriculum with engaging activities,
@@ -292,13 +292,13 @@ export default function HomePage() {
           <div className={styles.sectionLabel}>Who It&apos;s For</div>
           <h2 className={styles.sectionTitle}>Built for Everyone</h2>
           <p className={styles.sectionSubtitle}>
-            Whether you&apos;re a student, teacher, or family — Home Plus is
+            Whether you&apos;re a student, teacher, or family â Home Plus is
             designed with you in mind.
           </p>
 
           <div className={styles.audienceGrid}>
             <div className={`${styles.audienceCard} ${styles.studentCard}`}>
-              <div className={styles.audienceIcon}>🎒</div>
+              <div className={styles.audienceIcon}>ð</div>
               <h3 className={styles.audienceTitle}>For Students</h3>
               <p className={styles.audienceDesc}>
                 Learn at your own speed with engaging lessons, interactive
@@ -313,11 +313,11 @@ export default function HomePage() {
             </div>
 
             <div className={`${styles.audienceCard} ${styles.teacherCard}`}>
-              <div className={styles.audienceIcon}>👩‍🏫</div>
+              <div className={styles.audienceIcon}>ð©âð«</div>
               <h3 className={styles.audienceTitle}>For Teachers</h3>
               <p className={styles.audienceDesc}>
                 Monitor student progress in real time, access grade reports,
-                and identify students who need support — all from one dashboard.
+                and identify students who need support â all from one dashboard.
               </p>
               <ul className={styles.audienceList}>
                 <li>Real-time student progress dashboard</li>
@@ -327,7 +327,7 @@ export default function HomePage() {
             </div>
 
             <div className={`${styles.audienceCard} ${styles.familyCard}`}>
-              <div className={styles.audienceIcon}>🏠</div>
+              <div className={styles.audienceIcon}>ð </div>
               <h3 className={styles.audienceTitle}>For Families</h3>
               <p className={styles.audienceDesc}>
                 Home Plus gives families the flexibility to support their
@@ -361,14 +361,14 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              📋 Register with PRPS
+              ð Register with PRPS
             </a>
             {isSignedIn ? (
               <a
                 href="/dashboard"
                 className={`${styles.ctaBtn} ${styles.ctaStudent}`}
               >
-                📊 Go to Dashboard
+                ð Go to Dashboard
               </a>
             ) : (
               <>
@@ -376,13 +376,13 @@ export default function HomePage() {
                   onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
                   className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                 >
-                  🎒 Student Sign In
+                  ð Student Sign In
                 </button>
                 <button
                   onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
                   className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
                 >
-                  👩‍🏫 Teacher Sign In
+                  ð©âð« Teacher Sign In
                 </button>
               </>
             )}
@@ -407,10 +407,10 @@ export default function HomePage() {
               <div className={styles.contactName}>Jenn LaDouceur</div>
               <div className={styles.contactDetails}>
                 <a href="tel:403-526-3186" className={styles.contactLink}>
-                  📞 403-526-3186
+                  ð 403-526-3186
                 </a>
                 <a href="mailto:jennladouceur@prrd8.ca" className={styles.contactLink}>
-                  ✉️ jennladouceur@prrd8.ca
+                  âï¸ jennladouceur@prrd8.ca
                 </a>
               </div>
             </div>
@@ -460,7 +460,7 @@ export default function HomePage() {
           </div>
 
           <div className={styles.footerBottom}>
-            <p>© {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.</p>
+            <p>Â© {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.</p>
           </div>
         </div>
       </footer>
