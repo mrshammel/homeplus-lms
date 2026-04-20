@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import styles from "./page.module.css";
+import { BarChart2, BookOpen, Compass, Users, Star, GraduationCap, Home, ClipboardList, Phone, Mail, User } from "lucide-react";
 
 export default function HomePage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -121,7 +122,7 @@ export default function HomePage() {
                   href="/dashboard"
                   className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
                 >
-                  Chart: Go to Dashboard
+                  <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
                 </a>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
@@ -136,13 +137,13 @@ export default function HomePage() {
                   onClick={() => { signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
                   className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
                 >
-                  Student: Student Sign In
+                  <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
                 </button>
                 <button
                   onClick={() => { signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
                   className={`${styles.ctaBtn} ${styles.ctaTeacher} ${styles.mobileNavBtn}`}
                 >
-                  Teacher: Teacher Sign In
+                  <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
                 </button>
               </>
             )}
@@ -196,7 +197,7 @@ export default function HomePage() {
                     href="/dashboard"
                     className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                   >
-                    Chart: Go to Dashboard
+                    <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
                   </a>
                 </div>
               </>
@@ -219,13 +220,13 @@ export default function HomePage() {
                     onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
                     className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                   >
-                    Student: Student Sign In
+                    <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
                   </button>
                   <button
                     onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
                     className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
                   >
-                    Teacher: Teacher Sign In
+                    <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
                   </button>
                 </div>
               </>
@@ -246,7 +247,7 @@ export default function HomePage() {
 
           <div className={styles.featureGrid}>
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}>Books:</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}><BookOpen size={32} /></div>
               <h3 className={styles.featureTitle}>Flexible Learning</h3>
               <p className={styles.featureDesc}>
                 Students learn at their own pace with structured lessons they
@@ -256,7 +257,7 @@ export default function HomePage() {
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}>Guide:</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}><Compass size={32} /></div>
               <h3 className={styles.featureTitle}>Clear Direction</h3>
               <p className={styles.featureDesc}>
                 Every lesson has defined learning targets, step-by-step
@@ -266,7 +267,7 @@ export default function HomePage() {
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconTeal}`}>Teacher:</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconTeal}`}><Users size={32} /></div>
               <h3 className={styles.featureTitle}>Teacher Support</h3>
               <p className={styles.featureDesc}>
                 Teachers monitor progress, provide feedback, and offer
@@ -275,7 +276,7 @@ export default function HomePage() {
             </div>
 
             <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconAmber}`}>Tip:</div>
+              <div className={`${styles.featureIcon} ${styles.featureIconAmber}`}><Star size={32} /></div>
               <h3 className={styles.featureTitle}>Quality Curriculum</h3>
               <p className={styles.featureDesc}>
                 Aligned to the Alberta curriculum with engaging activities,
@@ -298,7 +299,7 @@ export default function HomePage() {
 
           <div className={styles.audienceGrid}>
             <div className={`${styles.audienceCard} ${styles.studentCard}`}>
-              <div className={styles.audienceIcon}>Student:</div>
+              <div className={styles.audienceIcon}><GraduationCap size={32} /></div>
               <h3 className={styles.audienceTitle}>For Students</h3>
               <p className={styles.audienceDesc}>
                 Learn at your own speed with engaging lessons, interactive
@@ -313,7 +314,7 @@ export default function HomePage() {
             </div>
 
             <div className={`${styles.audienceCard} ${styles.teacherCard}`}>
-              <div className={styles.audienceIcon}>Teacher:</div>
+              <div className={styles.audienceIcon}><Users size={32} /></div>
               <h3 className={styles.audienceTitle}>For Teachers</h3>
               <p className={styles.audienceDesc}>
                 Monitor student progress in real time, access grade reports,
@@ -327,7 +328,7 @@ export default function HomePage() {
             </div>
 
             <div className={`${styles.audienceCard} ${styles.familyCard}`}>
-              <div className={styles.audienceIcon}>Home:</div>
+              <div className={styles.audienceIcon}><Home size={32} /></div>
               <h3 className={styles.audienceTitle}>For Families</h3>
               <p className={styles.audienceDesc}>
                 Home Plus gives families the flexibility to support their
@@ -361,14 +362,14 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Form: Register with PRPS
+              <ClipboardList size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Register with PRPS
             </a>
             {isSignedIn ? (
               <a
                 href="/dashboard"
                 className={`${styles.ctaBtn} ${styles.ctaStudent}`}
               >
-                Chart: Go to Dashboard
+                <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
               </a>
             ) : (
               <>
@@ -376,13 +377,13 @@ export default function HomePage() {
                   onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
                   className={`${styles.ctaBtn} ${styles.ctaStudent}`}
                 >
-                  Student: Student Sign In
+                  <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
                 </button>
                 <button
                   onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
                   className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
                 >
-                  Teacher: Teacher Sign In
+                  <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
                 </button>
               </>
             )}
@@ -407,10 +408,10 @@ export default function HomePage() {
               <div className={styles.contactName}>Jenn LaDouceur</div>
               <div className={styles.contactDetails}>
                 <a href="tel:403-526-3186" className={styles.contactLink}>
-                  Tel: 403-526-3186
+                  <Phone size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> 403-526-3186
                 </a>
                 <a href="mailto:jennladouceur@prrd8.ca" className={styles.contactLink}>
-                  Email: jennladouceur@prrd8.ca
+                  <Mail size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> jennladouceur@prrd8.ca
                 </a>
               </div>
             </div>
