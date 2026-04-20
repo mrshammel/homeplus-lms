@@ -38,10 +38,10 @@ interface ReviewActionsProps {
 
 const MASTERY_LEVELS = [
   { value: 'NOT_YET_ASSESSED', label: 'Not Yet Assessed', icon: '⬜' },
-  { value: 'EMERGING', label: 'Emerging', icon: '🔴' },
-  { value: 'APPROACHING', label: 'Approaching', icon: '🟡' },
-  { value: 'MEETING', label: 'Meeting', icon: '🟢' },
-  { value: 'EXCEEDING', label: 'Exceeding', icon: '🔵' },
+  { value: 'EMERGING', label: 'Emerging', icon: '' },
+  { value: 'APPROACHING', label: 'Approaching', icon: '' },
+  { value: 'MEETING', label: 'Meeting', icon: '' },
+  { value: 'EXCEEDING', label: 'Exceeding', icon: '' },
 ];
 
 const NOTE_TAGS = [
@@ -188,7 +188,7 @@ export default function ReviewActions({
     <>
       {/* ===== FEEDBACK SECTION ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 16 }}>
-        <h3 className={styles.cardTitle}>💬 Teacher Feedback</h3>
+        <h3 className={styles.cardTitle}> Teacher Feedback</h3>
 
         {/* Use AI as starting point button */}
         {aiStatus === 'COMPLETE' && aiFeedback && !feedback.trim() && (
@@ -197,7 +197,7 @@ export default function ReviewActions({
             style={{ marginBottom: 10, fontSize: '0.82rem', padding: '6px 12px', background: '#ede9fe', color: '#6d28d9' }}
             onClick={() => setFeedback(aiFeedback)}
           >
-            🤖 Use AI feedback as starting point
+             Use AI feedback as starting point
           </button>
         )}
 
@@ -219,7 +219,7 @@ export default function ReviewActions({
               <input
                 type="number"
                 className={styles.scoreInput}
-                placeholder="—"
+                placeholder="-"
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
                 min={0}
@@ -235,7 +235,7 @@ export default function ReviewActions({
       {/* ===== MASTERY ASSESSMENT ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 16 }}>
         <h3 className={styles.cardTitle}>
-          🎯 Mastery Assessment
+           Mastery Assessment
           {!showMastery && (
             <button
               className={styles.smallBtn}
@@ -261,7 +261,7 @@ export default function ReviewActions({
                     onChange={(e) => updateMastery(i, 'outcomeId', e.target.value)}
                   >
                     {available.map((o) => (
-                      <option key={o.id} value={o.id}>{o.code} — {o.description.slice(0, 60)}</option>
+                      <option key={o.id} value={o.id}>{o.code} - {o.description.slice(0, 60)}</option>
                     ))}
                   </select>
                   <select
@@ -324,7 +324,7 @@ export default function ReviewActions({
       {/* ===== ADD NOTE ===== */}
       <div className={styles.dashCard} style={{ marginTop: 16 }}>
         <h3 className={styles.cardTitle}>
-          📋 Add Note
+          Form: Add Note
           {!showNote && (
             <button
               className={styles.smallBtn}

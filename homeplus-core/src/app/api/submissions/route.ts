@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({ submissionId: submission.id }),
       }).catch((err) => {
         console.error('[Submissions] AI trigger failed:', err);
-        // Non-blocking — the status will stay PENDING and eventually be
+        // Non-blocking - the status will stay PENDING and eventually be
         // marked FAILED by a future check or manual re-trigger.
       });
     }

@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Context — Home Plus LMS
+// Teacher Context - Home Plus LMS
 // ============================================
 // Grade + Subject context for the teacher dashboard.
 // All teacher views use this context to scope data queries.
@@ -40,7 +40,7 @@ export const ALL_GRADES = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 /** Core subject names */
 export const CORE_SUBJECTS = ['ELA', 'Math', 'Science', 'Social Studies'] as const;
 
-/** Subject name → URL slug mapping */
+/** Subject name -> URL slug mapping */
 const SUBJECT_SLUGS: Record<string, string> = {
   'ELA': 'ela',
   'Math': 'math',
@@ -48,7 +48,7 @@ const SUBJECT_SLUGS: Record<string, string> = {
   'Social Studies': 'social-studies',
 };
 
-/** URL slug → Subject name mapping */
+/** URL slug -> Subject name mapping */
 const SLUG_TO_SUBJECT: Record<string, string> = {
   'ela': 'ELA',
   'math': 'Math',
@@ -70,51 +70,74 @@ const DEFAULT_CONTEXT: GradeSubjectContext = {
   subjectId: 'demo-science-7',
   subjectName: 'Science',
   subjectSlug: 'science',
-  subjectIcon: '🔬',
+  subjectIcon: '',
 };
 
 // ---------- Fetch Available Contexts ----------
 
-/**
- * Get grade-subject contexts assigned to a specific teacher.
- * In production: queries teacher assignment → subjects.
- * In demo mode: returns Grade 7 Science.
- */
 export async function getAvailableContexts(teacherId: string): Promise<AvailableContext[]> {
   if (isDemoMode()) {
     return [
-      { grade: 7, subjectId: 'demo-science-7', subjectName: 'Science', subjectSlug: 'science', subjectIcon: '🔬' },
+      { grade: 7, subjectId: 'demo-science-7', subjectName: 'Science', subjectSlug: 'science', subjectIcon: '' },
     ];
   }
 
   try {
-    // Get students assigned to this teacher, derive their grade-subject contexts
-    const students = await prisma.user.findMany({
+    // First, try to get subjects from the explicit SubjectEnrollment records
+    const enrollments = await prisma.subjectEnrollment.findMany({
       where: {
-        role: 'STUDENT',
-        assignedTeacherId: teacherId,
+        student: {
+          role: 'STUDENT',
+          assignedTeacherId: teacherId,
+        }
       },
-      select: { gradeLevel: true },
+      select: {
+        subject: {
+          select: {
+            id: true,
+            gradeLevel: true,
+            name: true,
+            icon: true,
+            active: true
+          }
+        }
+      },
+      distinct: ['subjectId']
     });
 
-    if (students.length === 0) return [DEFAULT_CONTEXT];
+    let activeSubjects = enrollments
+      .map(e => e.subject)
+      .filter(s => s.active);
 
-    // Get unique grade levels from the teacher's assigned students
-    const grades = [...new Set(students.map((s: { gradeLevel: number | null }) => s.gradeLevel).filter(Boolean))] as number[];
+    // Fallback to legacy grade-based logic if no explicit enrollments exist
+    if (activeSubjects.length === 0) {
+      const students = await prisma.user.findMany({
+        where: {
+          role: 'STUDENT',
+          assignedTeacherId: teacherId,
+        },
+        select: { gradeLevel: true },
+      });
 
-    if (grades.length === 0) return [DEFAULT_CONTEXT];
+      if (students.length > 0) {
+        const grades = [...new Set(students.map((s: { gradeLevel: number | null }) => s.gradeLevel).filter(Boolean))] as number[];
+        
+        if (grades.length > 0) {
+            activeSubjects = await prisma.subject.findMany({
+              where: {
+                active: true,
+                gradeLevel: { in: grades },
+              }
+            });
+        }
+      }
+    }
 
-    // Find active subjects for those grades
-    const subjects = await prisma.subject.findMany({
-      where: {
-        active: true,
-        gradeLevel: { in: grades },
-      },
-      orderBy: [{ gradeLevel: 'asc' }, { order: 'asc' }],
-    });
-
-    if (subjects.length > 0) {
-      return subjects.map((s) => ({
+    if (activeSubjects.length > 0) {
+      // Sort first by grade, then by name
+      activeSubjects.sort((a, b) => a.gradeLevel !== b.gradeLevel ? a.gradeLevel - b.gradeLevel : a.name.localeCompare(b.name));
+      
+      return activeSubjects.map((s) => ({
         grade: s.gradeLevel,
         subjectId: s.id,
         subjectName: s.name,
@@ -175,9 +198,9 @@ export function buildContextHref(basePath: string, ctx: GradeSubjectContext): st
 
 // ---------- Display ----------
 
-/** Display label for the context, e.g. "Grade 7 · Science" */
+/** Display label for the context, e.g. "Grade 7 - Science" */
 export function formatContextLabel(ctx: GradeSubjectContext): string {
-  return `Grade ${ctx.grade} · ${ctx.subjectName}`;
+  return `Grade ${ctx.grade} - ${ctx.subjectName}`;
 }
 
 /** Short label, e.g. "Gr. 7 Science" */

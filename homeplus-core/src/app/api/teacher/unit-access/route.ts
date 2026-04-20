@@ -1,9 +1,9 @@
 // ============================================
-// Teacher Unit Access Override API — Home Plus LMS
+// Teacher Unit Access Override API - Home Plus LMS
 // ============================================
-// POST   — create/update per-student unit override
-// DELETE — clear override and restore default progression
-// GET    — fetch overrides for a student
+// POST   - create/update per-student unit override
+// DELETE - clear override and restore default progression
+// GET    - fetch overrides for a student
 //
 // All endpoints require teacher auth + student ownership.
 
@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
         where: { studentId_unitId: { studentId, unitId } },
       });
     } catch {
-      // Record may not exist — that's fine
+      // Record may not exist - that's fine
     }
     return NextResponse.json({ success: true, action: 'cleared' });
   }
@@ -156,7 +156,7 @@ export async function DELETE(req: NextRequest) {
       where: { studentId_unitId: { studentId, unitId } },
     });
   } catch {
-    // Record may not exist — that's fine
+    // Record may not exist - that's fine
   }
 
   return NextResponse.json({ success: true, action: 'cleared' });

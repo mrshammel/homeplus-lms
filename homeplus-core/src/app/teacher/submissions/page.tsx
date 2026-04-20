@@ -23,7 +23,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
       {/* Pending Reviews */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
         <h3 className={styles.cardTitle}>
-          📋 Pending Review — {ctx.subjectName}
+          Form: Pending Review - {ctx.subjectName}
           {pending.length > 0 && (
             <span className={styles.navBadge} style={{ marginLeft: 8 }}>{pending.length}</span>
           )}
@@ -49,7 +49,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
                 <div className={styles.submissionInfo}>
                   <div className={styles.submissionStudent}>{sub.studentName}</div>
                   <div className={styles.submissionActivity}>
-                    {sub.activityTitle} · {sub.activityType.charAt(0) + sub.activityType.slice(1).toLowerCase()}
+                    {sub.activityTitle} - {sub.activityType.charAt(0) + sub.activityType.slice(1).toLowerCase()}
                   </div>
                 </div>
                 <span className={`${styles.reviewBadge} ${styles.reviewPending}`}>
@@ -63,7 +63,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
                     minute: '2-digit',
                   })}
                 </div>
-                <span className={styles.smallBtn}>Review →</span>
+                <span className={styles.smallBtn}>Review -></span>
               </div>
             </Link>
           ))
@@ -72,11 +72,11 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
 
       {/* Recently Reviewed */}
       <div className={styles.dashCard}>
-        <h3 className={styles.cardTitle}>📝 Recent {ctx.subjectName} Submissions</h3>
+        <h3 className={styles.cardTitle}> Recent {ctx.subjectName} Submissions</h3>
 
         {reviewed.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📝</div>
+            <div className={styles.emptyIcon}></div>
             <div className={styles.emptyTitle}>No submissions yet</div>
             <div className={styles.emptyDesc}>Student {ctx.subjectName} submissions will appear here as they complete activities.</div>
           </div>
@@ -94,7 +94,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
                 <div className={styles.submissionInfo}>
                   <div className={styles.submissionStudent}>{sub.studentName}</div>
                   <div className={styles.submissionActivity}>
-                    {sub.activityTitle} · {sub.activityType.charAt(0) + sub.activityType.slice(1).toLowerCase()}
+                    {sub.activityTitle} - {sub.activityType.charAt(0) + sub.activityType.slice(1).toLowerCase()}
                   </div>
                 </div>
                 {sub.score !== null && sub.maxScore !== null && (

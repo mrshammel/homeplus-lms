@@ -1,9 +1,9 @@
 // ============================================
-// Dashboard Redirect — Home Plus LMS
+// Dashboard Redirect - Home Plus LMS
 // ============================================
 // Central role-based routing hub.
 // All "Go to Dashboard" buttons point here.
-// This is the SINGLE SOURCE OF TRUTH for role → dashboard mapping.
+// This is the SINGLE SOURCE OF TRUTH for role -> dashboard mapping.
 
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
-    // Not authenticated → back to homepage
+    // Not authenticated -> back to homepage
     redirect('/');
   }
 
@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       redirect('/teacher');
 
     default:
-      // Unknown role → safe fallback to homepage
+      // Unknown role -> safe fallback to homepage
       redirect('/');
   }
 }

@@ -1,5 +1,5 @@
 // ============================================
-// Reflection API — Home Plus LMS (Phase 2 Retrofit)
+// Reflection API - Home Plus LMS (Phase 2 Retrofit)
 // ============================================
 // POST: saves structured reflection with confidence rating,
 //       help request, and metacognition data to ReflectionEntry.
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   const body = await req.json();
   const {
     reflectionText,
-    confidenceRating, // 1-5 scale → maps to confidenceAfter
+    confidenceRating, // 1-5 scale -> maps to confidenceAfter
     helpRequested,    // boolean
   } = body;
 

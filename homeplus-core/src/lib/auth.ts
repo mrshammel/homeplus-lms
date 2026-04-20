@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
 
-    // Demo sign-in — allows teacher/student access without Google OAuth
+    // Demo sign-in - allows teacher/student access without Google OAuth
     CredentialsProvider({
       id: 'demo',
       name: 'Demo',
@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
         });
       }
 
-      // Always allow Google sign-in — DB issues shouldn't lock users out
+      // Always allow Google sign-in - DB issues shouldn't lock users out
       return true;
     },
 
@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
             token.id = dbUser.id;
             token.role = dbUser.role;
             token.gradeLevel = dbUser.gradeLevel;
-            // Always overwrite — this is the key fix for the stale-session bug
+            // Always overwrite - this is the key fix for the stale-session bug
             token.onboardingStatus = dbUser.onboardingStatus;
             token.onboardingStep = dbUser.onboardingStep;
           } else if (user?.email) {

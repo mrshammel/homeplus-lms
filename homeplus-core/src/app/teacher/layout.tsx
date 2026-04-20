@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Context Provider — Home Plus LMS
+// Teacher Context Provider - Home Plus LMS
 // ============================================
 // Server component that fetches teacher-assigned contexts
 // and passes them to the client layout component.

@@ -33,10 +33,10 @@ export default async function PacingPage({ searchParams }: PageProps) {
       <div className={styles.pacingSummary}>
         <PacingStat icon="✅" label="On Pace" value={counts.onPace} color="#059669" />
         <PacingStat icon="⚠️" label="Behind" value={counts.behind} color="#d97706" />
-        <PacingStat icon="🚀" label="Ahead" value={counts.ahead} color="#2563eb" />
+        <PacingStat icon="" label="Ahead" value={counts.ahead} color="#2563eb" />
         <PacingStat icon="⏸️" label="Stalled" value={counts.stalled} color="#6b7280" />
-        <PacingStat icon="🆕" label="Onboarding" value={counts.onboarding} color="#7c3aed" />
-        <PacingStat icon="🎉" label="Complete" value={counts.complete} color="#059669" />
+        <PacingStat icon="" label="Onboarding" value={counts.onboarding} color="#7c3aed" />
+        <PacingStat icon="" label="Complete" value={counts.complete} color="#059669" />
       </div>
 
       {/* Pacing Table */}
@@ -54,7 +54,7 @@ export default async function PacingPage({ searchParams }: PageProps) {
 
         {students.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📊</div>
+            <div className={styles.emptyIcon}>Chart:</div>
             <div className={styles.emptyTitle}>No pacing data yet</div>
             <div className={styles.emptyDesc}>Pacing data will appear once students are enrolled and begin working.</div>
           </div>
@@ -138,13 +138,13 @@ export default async function PacingPage({ searchParams }: PageProps) {
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
                           <span style={{ fontSize: '0.82rem', color: s.pacing.engagementStatus === 'STALLED' ? '#dc2626' : '#64748b' }}>
-                            {s.pacing.daysSinceActive !== null ? `${s.pacing.daysSinceActive}d` : '—'}
+                            {s.pacing.daysSinceActive !== null ? `${s.pacing.daysSinceActive}d` : '-'}
                           </span>
                         </Link>
                       </td>
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
-                          <span style={{ fontSize: '0.82rem' }}>{s.currentUnit || '—'}</span>
+                          <span style={{ fontSize: '0.82rem' }}>{s.currentUnit || '-'}</span>
                         </Link>
                       </td>
                     </tr>

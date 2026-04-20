@@ -1,10 +1,10 @@
 'use client';
 
 // ============================================
-// Universal Lesson Frame — Home Plus LMS
+// Universal Lesson Frame - Home Plus LMS
 // ============================================
 // Renders the 6-section lesson structure:
-//   Launch → Warm-Up → Learn → Practice → Check → Reflect
+//   Launch -> Warm-Up -> Learn -> Practice -> Check -> Reflect
 // Applies subject-specific mastery via engine props.
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
@@ -322,7 +322,7 @@ export default function LessonFrame({
     }
   };
 
-  // Determine if student can continue — reflection is always required
+  // Determine if student can continue - reflection is always required
   const canContinue =
     reflectionSaved && (
       overallStatus === 'MASTERED' ||
@@ -356,19 +356,19 @@ export default function LessonFrame({
       <div className={styles.launchCard}>
         <div className={styles.launchMeta}>
           <span className={styles.launchBadge}>{courseIcon} {courseName}</span>
-          <span className={styles.launchBadge}>📖 {unitTitle}</span>
-          <span className={styles.launchBadge}>📍 {lessonPosition}</span>
+          <span className={styles.launchBadge}> {unitTitle}</span>
+          <span className={styles.launchBadge}> {lessonPosition}</span>
           {estimatedMinutes != null && estimatedMinutes > 0 && (
             <span className={styles.launchBadge}>⏱️ ~{estimatedMinutes} min</span>
           )}
           {materials && (
-            <span className={styles.launchBadge}>📦 {materials}</span>
+            <span className={styles.launchBadge}> {materials}</span>
           )}
         </div>
         <h1 className={styles.launchTitle}>{lessonTitle}</h1>
         {learningGoal && (
           <p className={styles.launchGoal}>
-            <strong>🎯 Learning Goal:</strong> {learningGoal}
+            <strong> Learning Goal:</strong> {learningGoal}
           </p>
         )}
         {successCriteria && (
@@ -576,7 +576,7 @@ export default function LessonFrame({
 
             <div className={styles.reflectionCard}>
               <p className={styles.reflectionPrompt}>
-                {reflectionPrompt || '💭 What is one important thing you learned today?'}
+                {reflectionPrompt || ' What is one important thing you learned today?'}
               </p>
               <textarea
                 className={styles.textArea}
@@ -594,11 +594,11 @@ export default function LessonFrame({
                 </p>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   {[
-                    { value: 1, emoji: '😟', label: 'Lost' },
-                    { value: 2, emoji: '😕', label: 'Unsure' },
-                    { value: 3, emoji: '🤔', label: 'Getting there' },
-                    { value: 4, emoji: '😊', label: 'Confident' },
-                    { value: 5, emoji: '🤩', label: 'Mastered it!' },
+                    { value: 1, emoji: '', label: 'Lost' },
+                    { value: 2, emoji: '', label: 'Unsure' },
+                    { value: 3, emoji: '', label: 'Getting there' },
+                    { value: 4, emoji: '', label: 'Confident' },
+                    { value: 5, emoji: '', label: 'Mastered it!' },
                   ].map((level) => (
                     <button
                       key={level.value}
@@ -634,7 +634,7 @@ export default function LessonFrame({
                   style={{ width: 16, height: 16, accentColor: '#7c3aed' }}
                 />
                 <span style={{ fontSize: '0.84rem', color: '#475569' }}>
-                  🙋 I need extra help with this topic
+                   I need extra help with this topic
                 </span>
               </label>
 
@@ -645,7 +645,7 @@ export default function LessonFrame({
                   onClick={handleReflectionSubmit}
                   disabled={!reflectionText.trim() || reflectionSaved}
                 >
-                  {reflectionSaved ? '✓ Saved' : '💭 Save Reflection'}
+                  {reflectionSaved ? '✓ Saved' : ' Save Reflection'}
                 </button>
                 {reflectionSaved && (
                   <span style={{ fontSize: '0.82rem', color: '#059669', fontWeight: 600 }}>
@@ -674,7 +674,7 @@ export default function LessonFrame({
             className={styles.btnPrimary}
             style={{ textDecoration: 'none', background: '#059669' }}
           >
-            Continue →
+            Continue ->
           </Link>
         )}
       </div>

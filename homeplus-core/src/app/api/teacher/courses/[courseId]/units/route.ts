@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Unit CRUD — API Routes
+// Teacher Unit CRUD - API Routes
 // ============================================
 // GET:  List units for a course
 // POST: Create a new unit

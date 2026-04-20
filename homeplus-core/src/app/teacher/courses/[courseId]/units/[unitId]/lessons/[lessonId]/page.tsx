@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// Teacher Lesson Editor — Home Plus LMS
+// Teacher Lesson Editor - Home Plus LMS
 // ============================================
 // Structured block-based lesson authoring.
 // Teachers can configure all 6 sections of the universal lesson frame.
@@ -222,7 +222,7 @@ export default function TeacherLessonEditorPage() {
       {/* ===== Lesson Metadata ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e293b', margin: '0 0 14px' }}>
-          📝 Lesson Settings
+           Lesson Settings
         </h3>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 10 }}>
           <div style={{ flex: '1 1 250px' }}>
@@ -264,7 +264,7 @@ export default function TeacherLessonEditorPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button onClick={handleSaveMeta} disabled={saving} style={{ ...btnPrimary, opacity: saving ? 0.6 : 1 }}>
-            {saving ? 'Saving...' : '💾 Save Settings'}
+            {saving ? 'Saving...' : ' Save Settings'}
           </button>
           {saveMsg && <span style={{ fontSize: '0.82rem', color: saveMsg.includes('✓') ? '#059669' : '#dc2626', fontWeight: 600 }}>{saveMsg}</span>}
         </div>
@@ -353,7 +353,7 @@ export default function TeacherLessonEditorPage() {
                         onClick={() => handleDeleteBlock(block.id)}
                         style={{ padding: '4px 10px', fontSize: '0.75rem', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer' }}
                       >
-                        🗑️
+                        ️
                       </button>
                     </div>
                   </div>
@@ -368,7 +368,7 @@ export default function TeacherLessonEditorPage() {
                       />
                       <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 12, borderTop: '1px solid #e2e8f0' }}>
                         <button onClick={() => handleSaveBlock(block.id)} style={{ ...btnPrimary, fontSize: '0.82rem', padding: '8px 18px', background: '#059669' }}>
-                          💾 Save Block
+                           Save Block
                         </button>
                         <button onClick={() => { setEditingBlock(null); setEditBlockContent(null); }} style={{ padding: '8px 18px', fontSize: '0.82rem', fontWeight: 600, color: '#64748b', background: '#f1f5f9', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
                           Cancel

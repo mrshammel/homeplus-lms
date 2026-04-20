@@ -1,5 +1,5 @@
 // ============================================
-// Shared Rubric & Feedback Framework — Home Plus LMS
+// Shared Rubric & Feedback Framework - Home Plus LMS
 // ============================================
 // Provides reusable rubric templates, subject calibration,
 // feedback philosophy, and AI prompt builders for consistent
@@ -467,7 +467,7 @@ export function buildAIPrompt(opts: {
 
   return `You are a supportive Grade ${gradeLevel} ${subjectName} teacher providing formative feedback.
 
-CRITICAL — RELEVANCE GATE (evaluate FIRST):
+CRITICAL - RELEVANCE GATE (evaluate FIRST):
 Before scoring, determine if the student's response ADDRESSES THE PROMPT.
 - If the response is off-topic, nonsensical, random characters, or does not attempt to answer the question asked, the score MUST be 0-10 regardless of length, vocabulary, or writing quality.
 - If the response copies the prompt back without adding original thought, score 5-15.
@@ -476,20 +476,20 @@ Before scoring, determine if the student's response ADDRESSES THE PROMPT.
 ${isPasted ? '\nFRAUD ALERT: The system detected the student copy-pasted their response instead of typing it. Unless the prompt explicitly asked them to copy text, YOU MUST ASSUME IT IS PLAGIARIZED, SCORE IT 0-5, and politely ask them to type their answer in their own words.\n' : ''}
 
 FEEDBACK PHILOSOPHY:
-- Be encouraging and specific — what they did well FIRST
-- Be concise — ${tone.maxFeedbackSentences} sentences max for the summary
+- Be encouraging and specific - what they did well FIRST
+- Be concise - ${tone.maxFeedbackSentences} sentences max for the summary
 - Give 1-2 specific strengths (reference their actual words)
 - Give 1-2 actionable improvements (not vague)
 - Give exactly 1 clear next step the student can act on
 - ${tone.style}
 
-ANTI-PATTERNS — do NOT do these:
+ANTI-PATTERNS - do NOT do these:
 - Do NOT give 40+ to a response that does not address the prompt
-- Do NOT list "You attempted the response" as a strength — that is not a strength
+- Do NOT list "You attempted the response" as a strength - that is not a strength
 - Do NOT inflate scores because the student wrote many words
 - Do NOT deflate scores for short responses IF they are accurate, specific, and complete
-- Do NOT give vague feedback like "good job" — reference specific words the student used
-- Do NOT be overly generous — a mediocre response should score 45-60, not 70+
+- Do NOT give vague feedback like "good job" - reference specific words the student used
+- Do NOT be overly generous - a mediocre response should score 45-60, not 70+
 
 SUBJECT PRIORITIES FOR ${subjectName.toUpperCase()}:
 ${cal.priorities.map((p) => `- ${p}`).join('\n')}
@@ -580,7 +580,7 @@ export function getSubjectVocab(subject: SubjectMode): string[] {
 
 // ============ RELEVANCE GATE ============
 
-/** Result of the relevance check — determines whether scoring should proceed normally. */
+/** Result of the relevance check - determines whether scoring should proceed normally. */
 export interface RelevanceResult {
   relevant: boolean;
   relevanceScore: number; // 0-100
@@ -591,7 +591,7 @@ export interface RelevanceResult {
 
 /**
  * Check if a student response is relevant to the prompt.
- * This is the single most important quality gate — it catches:
+ * This is the single most important quality gate - it catches:
  * - Off-topic responses
  * - Gibberish / random characters
  * - Copy-pasted prompts
@@ -700,11 +700,11 @@ export function checkRelevance(
   const responseContentWords = extractContentWords(response);
 
   if (promptContentWords.length === 0) {
-    // Can't assess relevance without prompt content — give benefit of the doubt
+    // Can't assess relevance without prompt content - give benefit of the doubt
     return {
       relevant: true,
       relevanceScore: 50,
-      reason: 'Unable to assess relevance — prompt has no distinctive content words.',
+      reason: 'Unable to assess relevance - prompt has no distinctive content words.',
       isGibberish: false,
       isCopiedPrompt: false,
     };
@@ -756,7 +756,7 @@ export function checkRelevance(
  * Calibrated fallback scoring using rubric criteria weights.
  * Used when no Gemini API key is available.
  *
- * v2 — Overhauled with:
+ * v2 - Overhauled with:
  * - Relevance gate (catches off-topic / gibberish)
  * - Reduced baselines (20, not 50)
  * - Prompt-aware content matching
@@ -785,7 +785,7 @@ export function scoreFallback(opts: {
   const sentenceCount = response.split(/[.!?]+/).filter(Boolean).length;
   const responseLower = response.toLowerCase();
 
-  // ── RELEVANCE GATE — must pass before real scoring ──
+  // ── RELEVANCE GATE - must pass before real scoring ──
   const relevance = checkRelevance(response, prompt, rubricHint);
 
   // If response is gibberish, return immediately with score 0
@@ -853,7 +853,7 @@ export function scoreFallback(opts: {
   const criteriaScores: Record<string, number> = {};
 
   for (const c of template.criteria) {
-    let cScore = 20; // baseline — was 50, now 20 ("you showed up")
+    let cScore = 20; // baseline - was 50, now 20 ("you showed up")
     const cName = c.name.toLowerCase();
 
     if (cName.includes('accuracy') || cName.includes('correctness') || cName.includes('concept')) {
@@ -886,7 +886,7 @@ export function scoreFallback(opts: {
         (wordCount >= 10 ? 10 : 0),
       );
     } else if (cName.includes('language') || cName.includes('convention')) {
-      // Language/conventions — can only really assess length and structure without AI
+      // Language/conventions - can only really assess length and structure without AI
       cScore = Math.round(
         30 +
         (sentenceCount >= 2 ? 25 : 0) +
@@ -953,7 +953,7 @@ export function scoreFallback(opts: {
     improvements.push('Explain your thinking using words like "because", "for example", or "this means".');
   }
   if (lengthRatio < 0.6 && relevance.relevant) {
-    improvements.push(`Expand your answer — aim for at least ${targetWords} words (you wrote ${wordCount}).`);
+    improvements.push(`Expand your answer - aim for at least ${targetWords} words (you wrote ${wordCount}).`);
   }
 
   // Ensure at least one item in each list, but never fake praise
@@ -961,7 +961,7 @@ export function scoreFallback(opts: {
     if (wordCount >= 5 && relevance.relevant) {
       strengths.push('You made an effort to answer the question.');
     }
-    // No strengths for irrelevant/gibberish responses — that's intentional
+    // No strengths for irrelevant/gibberish responses - that's intentional
   }
   if (improvements.length === 0) {
     improvements.push('Add one more specific detail or example from the lesson to strengthen your answer.');
@@ -972,7 +972,7 @@ export function scoreFallback(opts: {
   if (!relevance.relevant) {
     feedback = `This response doesn't seem to address the question. ${improvements[0]}`;
   } else if (totalScore >= 80) {
-    feedback = `Strong response — you showed clear understanding and used specific details.`;
+    feedback = `Strong response - you showed clear understanding and used specific details.`;
   } else if (totalScore >= 60) {
     feedback = `Good effort! You addressed the topic. ${improvements[0] || 'Adding more specific details from the lesson would strengthen it.'}`;
   } else if (totalScore >= 40) {

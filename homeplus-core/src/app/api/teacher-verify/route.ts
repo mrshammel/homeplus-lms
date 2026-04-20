@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Access Code Verification — API Route
+// Teacher Access Code Verification - API Route
 // ============================================
 // POST: Verify access code and elevate user to TEACHER role.
 

@@ -1,5 +1,5 @@
 // ============================================
-// Student Unit Detail — Data Helper
+// Student Unit Detail - Data Helper
 // ============================================
 // Fetches a single unit with lessons, activities, and progress
 // for the /student/courses/[courseId]/units/[unitId] page.
@@ -235,7 +235,7 @@ interface UnitFraming {
 
 function getUnitFraming(courseId: string, unitId: string): UnitFraming {
   const framingMap: Record<string, UnitFraming> = {
-    // Grade 7 Science — Unit A: Interactions & Ecosystems
+    // Grade 7 Science - Unit A: Interactions & Ecosystems
     'g7-sci-unit-a': {
       learningTargets: [
         'I can explain how living things interact within ecosystems',
@@ -266,7 +266,7 @@ function getUnitFraming(courseId: string, unitId: string): UnitFraming {
         { term: 'Decomposer', definition: 'An organism that breaks down dead matter and recycles nutrients' },
       ],
     },
-    // Grade 7 Science — Unit B: Plants for Food & Fibre
+    // Grade 7 Science - Unit B: Plants for Food & Fibre
     'g7-sci-unit-b': {
       learningTargets: [
         'I can explain the structures and functions of flowering plants',
@@ -305,9 +305,9 @@ function getDemoUnitDetail(courseId: string, unitId: string): UnitPageData | nul
     framing: UnitFraming;
   }> = {
     'g7-sci-unit-a': {
-      courseName: 'Science', courseIcon: '🔬', gradeLevel: 7,
+      courseName: 'Science', courseIcon: '', gradeLevel: 7,
       unitTitle: 'Interactions & Ecosystems', unitDesc: 'Explore how living things interact within ecosystems, how energy flows through food chains and webs, and how human activity impacts the natural world.',
-      unitIcon: '🌿', unitOrder: 0,
+      unitIcon: '', unitOrder: 0,
       lessons: [
         { title: 'Introduction to Ecosystems', subtitle: 'Biotic & abiotic factors, ecosystem interactions, and how ecosystems meet the needs of life', activities: [
           { type: 'ACTIVITY', title: 'Biotic vs Abiotic Sorter', points: 0 },
@@ -343,7 +343,7 @@ function getDemoUnitDetail(courseId: string, unitId: string): UnitPageData | nul
           { type: 'ACTIVITY', title: 'Stewardship Action Sorter', points: 0 },
           { type: 'QUIZ', title: 'Check Your Understanding', points: 10 },
         ]},
-        { title: 'Performance Task: Ecosystem Conservation Plan', subtitle: 'Design a conservation plan for an Alberta ecosystem — demonstrate everything you\'ve learned', activities: [
+        { title: 'Performance Task: Ecosystem Conservation Plan', subtitle: 'Design a conservation plan for an Alberta ecosystem - demonstrate everything you\'ve learned', activities: [
           { type: 'ASSIGNMENT', title: 'Conservation Plan Submission', points: 30 },
         ]},
       ],

@@ -1,5 +1,5 @@
 // ============================================
-// Route Protection Middleware — Home Plus LMS
+// Route Protection Middleware - Home Plus LMS
 // ============================================
 // Protects /dashboard, /student/*, /teacher/* routes.
 // Enforces authentication and role-based access.
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
   if (!token) {
-    // Unauthenticated → redirect to homepage
+    // Unauthenticated -> redirect to homepage
     const signInUrl = new URL('/', request.url);
     return NextResponse.redirect(signInUrl);
   }
@@ -46,7 +46,7 @@ export async function middleware(request: NextRequest) {
   // /student/* routes: only STUDENT role
   if (pathname.startsWith('/student')) {
     if (role !== 'STUDENT') {
-      // Wrong role → send to /dashboard for proper routing
+      // Wrong role -> send to /dashboard for proper routing
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }

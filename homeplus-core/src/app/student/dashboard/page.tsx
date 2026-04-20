@@ -1,5 +1,5 @@
 // ============================================
-// Student Dashboard — Home Plus LMS
+// Student Dashboard - Home Plus LMS
 // ============================================
 // Server component: hero continue-learning,
 // mastery widgets, softer stats, polished course cards.
@@ -33,9 +33,9 @@ export default async function StudentDashboard() {
             )}
           </div>
           <div>
-            <h2 className={styles.welcomeTitle}>Welcome back, {firstName} 👋</h2>
+            <h2 className={styles.welcomeTitle}>Welcome back, {firstName} </h2>
             <p className={styles.welcomeSubtext}>
-              {profile.gradeLevel ? `Grade ${profile.gradeLevel}` : 'Student'} · {stats.activeCourses} course{stats.activeCourses !== 1 ? 's' : ''}
+              {profile.gradeLevel ? `Grade ${profile.gradeLevel}` : 'Student'} - {stats.activeCourses} course{stats.activeCourses !== 1 ? 's' : ''}
             </p>
           </div>
         </div>
@@ -54,7 +54,7 @@ export default async function StudentDashboard() {
             <div className={styles.heroLabel}>▶ Continue Learning</div>
             <div className={styles.heroTitle}>{enrollments[0].subjectName}</div>
             <div className={styles.heroSubtitle}>
-              {enrollments[0].currentUnit} · {enrollments[0].currentLesson}
+              {enrollments[0].currentUnit} - {enrollments[0].currentLesson}
             </div>
             <div className={styles.heroProgress}>
               <div className={styles.heroProgressBar}>
@@ -63,19 +63,19 @@ export default async function StudentDashboard() {
               <span className={styles.heroProgressText}>{enrollments[0].progressPercent}%</span>
             </div>
           </div>
-          <span className={styles.heroBtn}>Continue →</span>
+          <span className={styles.heroBtn}>Continue -></span>
         </a>
       )}
 
       {/* ===== NEW: TODAY'S REVIEW CARD ===== */}
       {(masterySummary.reviewDueCount > 0 || masterySummary.reviewCompletedToday > 0) && (
         <Link href="/student/review" className={styles.reviewCard} id="todays-review-card">
-          <div className={styles.reviewCardIcon}>🔄</div>
+          <div className={styles.reviewCardIcon}></div>
           <div className={styles.reviewCardInfo}>
             <div className={styles.reviewCardTitle}>Today&apos;s Review</div>
             <div className={styles.reviewCardMeta}>
               <span className={styles.reviewCardMetaItem}>
-                📋 {masterySummary.reviewDueCount} skill{masterySummary.reviewDueCount !== 1 ? 's' : ''} to review
+                Form: {masterySummary.reviewDueCount} skill{masterySummary.reviewDueCount !== 1 ? 's' : ''} to review
               </span>
               {masterySummary.needsSupportCount > 0 && (
                 <span className={styles.reviewCardMetaItem}>
@@ -89,14 +89,14 @@ export default async function StudentDashboard() {
               )}
             </div>
           </div>
-          <span className={styles.reviewCardBtn}>Start Review →</span>
+          <span className={styles.reviewCardBtn}>Start Review -></span>
         </Link>
       )}
 
       {/* ===== NEW: MY MASTERY WIDGET ===== */}
       {totalMastery > 0 && (
         <section className={styles.masteryWidget} aria-label="My mastery" id="my-mastery-widget">
-          <h3 className={styles.masteryWidgetTitle}>🧠 My Mastery</h3>
+          <h3 className={styles.masteryWidgetTitle}> My Mastery</h3>
           <div className={styles.masteryStateGrid}>
             <div className={styles.masteryStateItem} style={{ background: '#f0fdf4' }}>
               <div className={styles.masteryStateCount} style={{ color: '#059669' }}>{masterySummary.masteredCount}</div>
@@ -141,7 +141,7 @@ export default async function StudentDashboard() {
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: stats.averageGrade != null && stats.averageGrade >= 75 ? '#059669' : '#d97706' }}>
-            {stats.averageGrade != null ? `${stats.averageGrade}%` : '—'}
+            {stats.averageGrade != null ? `${stats.averageGrade}%` : '-'}
           </div>
           <div className={styles.statLabel}>My Grade</div>
         </div>
@@ -155,7 +155,7 @@ export default async function StudentDashboard() {
 
       {/* ===== D. MY COURSES ===== */}
       <section aria-label="Enrolled courses" style={{ marginBottom: 28 }}>
-        <h3 className={styles.sectionHeading}>📚 My Courses</h3>
+        <h3 className={styles.sectionHeading}>Books: My Courses</h3>
         <div className={styles.courseGrid}>
           {enrollments.map((course) => (
             <a
@@ -190,9 +190,9 @@ export default async function StudentDashboard() {
                   {course.progressPercent === 100 ? (
                     <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
                   ) : course.progressPercent > 0 ? (
-                    <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+                    <span className={`${styles.statusChip} ${styles.statusInProgress}`}> In Progress</span>
                   ) : (
-                    <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start →</span>
+                    <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start -></span>
                   )}
                 </div>
 
@@ -230,12 +230,12 @@ export default async function StudentDashboard() {
 
                 {course.mastery.reviewDue > 0 && (
                   <div className={styles.reviewDueBadge}>
-                    🔄 {course.mastery.reviewDue} review due
+                     {course.mastery.reviewDue} review due
                   </div>
                 )}
 
                 <div className={styles.courseCardCta}>
-                  {course.progressPercent > 0 ? 'Continue →' : 'Start Course →'}
+                  {course.progressPercent > 0 ? 'Continue ->' : 'Start Course ->'}
                 </div>
               </div>
             </a>
@@ -245,7 +245,7 @@ export default async function StudentDashboard() {
 
       {/* ===== E. MY GRADES & PROGRESS ===== */}
       <section aria-label="Grades and progress" style={{ marginBottom: 28 }}>
-        <h3 className={styles.sectionHeading}>📊 My Grades & Progress</h3>
+        <h3 className={styles.sectionHeading}>Chart: My Grades & Progress</h3>
         <div className={styles.dashCard}>
           {enrollments.map((course, i) => (
             <div key={course.subjectId} className={styles.courseDetailRow} style={{ ...subjectColorVars(course.subjectName), ...(i > 0 ? { borderTop: '1px solid #f0f2f5', paddingTop: 16, marginTop: 16 } : {}) }}>
@@ -255,7 +255,7 @@ export default async function StudentDashboard() {
                 {course.progressPercent === 100 ? (
                   <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
                 ) : course.progressPercent > 0 ? (
-                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}> In Progress</span>
                 ) : (
                   <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Not Started</span>
                 )}
@@ -264,7 +264,7 @@ export default async function StudentDashboard() {
                 <div className={styles.courseDetailStat}>
                   <div className={styles.courseDetailStatLabel}>My Grade</div>
                   <div className={styles.courseDetailStatValue}>
-                    {course.averageScore != null ? `${course.averageScore}%` : '—'}
+                    {course.averageScore != null ? `${course.averageScore}%` : '-'}
                   </div>
                   <div className={styles.courseDetailStatNote}>{course.gradeLabel}</div>
                 </div>
@@ -285,7 +285,7 @@ export default async function StudentDashboard() {
                   <div className={styles.courseDetailStatValue} style={{ color: '#059669' }}>
                     {course.mastery.totalSkills > 0
                       ? `${Math.round((course.mastery.masteredSkills / course.mastery.totalSkills) * 100)}%`
-                      : '—'}
+                      : '-'}
                   </div>
                   <div className={styles.courseDetailStatNote}>
                     {course.mastery.totalSkills > 0
@@ -314,13 +314,13 @@ export default async function StudentDashboard() {
         {/* Upcoming */}
         {upcoming.length > 0 && (
           <section className={styles.dashCard} aria-label="Upcoming work">
-            <h3 className={styles.cardTitle}>📝 Upcoming</h3>
+            <h3 className={styles.cardTitle}> Upcoming</h3>
             {upcoming.map((item) => (
               <div key={item.id} className={styles.upcomingItem}>
                 <span className={styles.upcomingIcon}>{item.courseIcon}</span>
                 <div className={styles.upcomingInfo}>
                   <div className={styles.upcomingTitle}>{item.title}</div>
-                  <div className={styles.upcomingMeta}>{item.courseName} · {item.dueLabel}</div>
+                  <div className={styles.upcomingMeta}>{item.courseName} - {item.dueLabel}</div>
                 </div>
                 <span
                   className={styles.upcomingStatus}
@@ -338,28 +338,28 @@ export default async function StudentDashboard() {
 
         {/* Recent Activity */}
         <section className={styles.dashCard} aria-label="Recent activity">
-          <h3 className={styles.cardTitle}>🕐 Recent Activity</h3>
+          <h3 className={styles.cardTitle}> Recent Activity</h3>
           {recentActivity.length > 0 ? (
             recentActivity.map((item) => (
               <div key={item.id} className={styles.activityItem}>
                 <div className={styles.activityDot} style={{ background: item.dotColor }} />
                 <div>
                   <div className={styles.activityText}>{item.description}</div>
-                  <div className={styles.activityTime}>{item.detail} · {item.timeAgo}</div>
+                  <div className={styles.activityTime}>{item.detail} - {item.timeAgo}</div>
                 </div>
               </div>
             ))
           ) : (
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>📭</div>
-              <div className={styles.emptyText}>No activity yet — start a lesson!</div>
+              <div className={styles.emptyIcon}></div>
+              <div className={styles.emptyText}>No activity yet - start a lesson!</div>
             </div>
           )}
         </section>
 
         {/* Feedback */}
         <section className={styles.dashCard} aria-label="Feedback">
-          <h3 className={styles.cardTitle}>💬 Feedback</h3>
+          <h3 className={styles.cardTitle}> Feedback</h3>
           {feedback.length > 0 ? (
             feedback.map((item) => (
               <div key={item.id} className={styles.feedbackItem}>
@@ -369,7 +369,7 @@ export default async function StudentDashboard() {
                     <span className={styles.feedbackBadge} style={{ background: '#d1fae5', color: '#059669' }}>✅ Reviewed</span>
                   )}
                   {item.aiFeedback && !item.finalizedByTeacher && (
-                    <span className={styles.feedbackBadge} style={{ background: '#dbeafe', color: '#2563eb' }}>🤖 AI Feedback</span>
+                    <span className={styles.feedbackBadge} style={{ background: '#dbeafe', color: '#2563eb' }}> AI Feedback</span>
                   )}
                   {!item.reviewed && !item.aiFeedback && (
                     <span className={styles.feedbackBadge} style={{ background: '#f3f4f6', color: '#6b7280' }}>⏳ Pending</span>
@@ -377,7 +377,7 @@ export default async function StudentDashboard() {
                 </div>
                 <div className={styles.feedbackMeta}>
                   {item.courseName}
-                  {item.score != null && item.maxScore != null && <> · {item.score}/{item.maxScore}</>}
+                  {item.score != null && item.maxScore != null && <> - {item.score}/{item.maxScore}</>}
                 </div>
                 {(item.teacherFeedback || item.aiFeedback) && (
                   <div className={styles.feedbackPreview}>
@@ -388,8 +388,8 @@ export default async function StudentDashboard() {
             ))
           ) : (
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>📬</div>
-              <div className={styles.emptyText}>No feedback yet — submit some work!</div>
+              <div className={styles.emptyIcon}></div>
+              <div className={styles.emptyText}>No feedback yet - submit some work!</div>
             </div>
           )}
         </section>

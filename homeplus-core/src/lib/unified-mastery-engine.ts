@@ -1,5 +1,5 @@
 // ============================================
-// Unified Mastery Engine — Home Plus LMS
+// Unified Mastery Engine - Home Plus LMS
 // ============================================
 // Consolidated mastery engine replacing the 4 subject-specific engines.
 // Subject behavior is driven by config, not separate engine classes.

@@ -8,7 +8,7 @@ export default async function ProgressPage() {
   return (
     <>
       <section className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>📊 Progress</h2>
+        <h2 className={styles.welcomeTitle}>Chart: Progress</h2>
         <p className={styles.welcomeSubtext}>Track your learning progress across all courses</p>
       </section>
 
@@ -28,7 +28,7 @@ export default async function ProgressPage() {
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: stats.averageGrade != null && stats.averageGrade >= 75 ? '#059669' : '#d97706' }}>
-            {stats.averageGrade != null ? `${stats.averageGrade}%` : '—'}
+            {stats.averageGrade != null ? `${stats.averageGrade}%` : '-'}
           </div>
           <div className={styles.statLabel}>Average Grade</div>
         </div>
@@ -37,7 +37,7 @@ export default async function ProgressPage() {
       {/* Overall Mastery Health */}
       {masterySummary.totalSkills > 0 && (
         <section className={styles.masteryWidget} aria-label="Mastery overview" style={{ marginBottom: 24 }}>
-          <h3 className={styles.masteryWidgetTitle}>🧠 Mastery Overview</h3>
+          <h3 className={styles.masteryWidgetTitle}> Mastery Overview</h3>
           <div className={styles.masteryStateGrid}>
             <div className={styles.masteryStateItem} style={{ background: '#f0fdf4' }}>
               <div className={styles.masteryStateCount} style={{ color: '#059669' }}>{masterySummary.masteredCount}</div>
@@ -107,7 +107,7 @@ export default async function ProgressPage() {
               <div className={styles.courseDetailStat}>
                 <div className={styles.courseDetailStatLabel}>Grade</div>
                 <div className={styles.courseDetailStatValue}>
-                  {course.averageScore != null ? `${course.averageScore}%` : '—'}
+                  {course.averageScore != null ? `${course.averageScore}%` : '-'}
                 </div>
                 <div className={styles.courseDetailStatNote}>{course.gradeLabel}</div>
               </div>
@@ -116,7 +116,7 @@ export default async function ProgressPage() {
                 <div className={styles.courseDetailStatValue} style={{ color: '#059669' }}>
                   {course.mastery.totalSkills > 0
                     ? `${Math.round((course.mastery.masteredSkills / course.mastery.totalSkills) * 100)}%`
-                    : '—'}
+                    : '-'}
                 </div>
                 <div className={styles.courseDetailStatNote}>
                   {course.mastery.totalSkills > 0

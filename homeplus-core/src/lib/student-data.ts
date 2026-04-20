@@ -1,5 +1,5 @@
 // ============================================
-// Student Data Layer — Home Plus LMS
+// Student Data Layer - Home Plus LMS
 // ============================================
 // Server-side data fetching for the student dashboard.
 // Queries real DB data when available, provides structured
@@ -194,7 +194,7 @@ export async function getStudentDashboardData(): Promise<StudentDashboardData> {
   const hasExplicitEnrollments = enrollmentRecords.length > 0;
   const enrolledSubjectIds = enrollmentRecords.map((e: { subjectId: string }) => e.subjectId);
 
-  // Fetch enrolled subjects only — or fall back to all active at grade level
+  // Fetch enrolled subjects only - or fall back to all active at grade level
   const subjects = await prisma.subject.findMany({
     where: hasExplicitEnrollments
       ? { id: { in: enrolledSubjectIds }, active: true }
@@ -534,7 +534,7 @@ function buildRecentActivity(submissions: any[], progressRecords: any[]): Activi
       items.push({
         id: `review-${sub.id}`,
         description: `Teacher reviewed "${sub.activity.title}"`,
-        detail: `${courseName} — ${sub.activity.lesson.unit.title}`,
+        detail: `${courseName} - ${sub.activity.lesson.unit.title}`,
         timestamp: sub.submittedAt,
         timeAgo: timeAgo(sub.submittedAt),
         type: 'reviewed',
@@ -545,7 +545,7 @@ function buildRecentActivity(submissions: any[], progressRecords: any[]): Activi
       id: `sub-${sub.id}`,
       description: `Submitted "${sub.activity.title}"`,
       detail: sub.score != null && sub.maxScore != null
-        ? `${courseName} — Score: ${sub.score}/${sub.maxScore}`
+        ? `${courseName} - Score: ${sub.score}/${sub.maxScore}`
         : courseName,
       timestamp: sub.submittedAt,
       timeAgo: timeAgo(sub.submittedAt),
@@ -621,19 +621,19 @@ function getDemoDashboardData(): StudentDashboardData {
       {
         subjectId: 'sci-7',
         subjectName: 'Science',
-        subjectIcon: '🔬',
+        subjectIcon: '',
         gradeLevel: 7,
         units: [
-          { id: 'u1', title: 'Unit A — Ecosystems', icon: '🌿', order: 0, lessonCount: 6 },
-          { id: 'u2', title: 'Unit B — Plants for Food', icon: '🌱', order: 1, lessonCount: 6 },
-          { id: 'u3', title: 'Unit C — Heat', icon: '🌡️', order: 2, lessonCount: 6 },
-          { id: 'u4', title: 'Unit D — Structures', icon: '🏗️', order: 3, lessonCount: 6 },
+          { id: 'u1', title: 'Unit A - Ecosystems', icon: '', order: 0, lessonCount: 6 },
+          { id: 'u2', title: 'Unit B - Plants for Food', icon: '', order: 1, lessonCount: 6 },
+          { id: 'u3', title: 'Unit C - Heat', icon: '️', order: 2, lessonCount: 6 },
+          { id: 'u4', title: 'Unit D - Structures', icon: '️', order: 3, lessonCount: 6 },
         ],
         totalLessons: 24,
         completedLessons: 14,
         progressPercent: 58,
-        currentUnit: 'Unit C — Heat',
-        currentLesson: 'Lesson 3 — Heat Transfer Methods',
+        currentUnit: 'Unit C - Heat',
+        currentLesson: 'Lesson 3 - Heat Transfer Methods',
         averageScore: 82,
         gradeLabel: 'Meeting',
         pacing: sciencePacing,
@@ -645,19 +645,19 @@ function getDemoDashboardData(): StudentDashboardData {
       {
         subjectId: 'ela-7',
         subjectName: 'English Language Arts',
-        subjectIcon: '📖',
+        subjectIcon: '',
         gradeLevel: 7,
         units: [
-          { id: 'e1', title: 'Unit 1 — Identity & Voice', icon: '🗣️', order: 0, lessonCount: 5 },
-          { id: 'e2', title: 'Unit 2 — Research & Inquiry', icon: '🔍', order: 1, lessonCount: 5 },
-          { id: 'e3', title: 'Unit 3 — Persuasion', icon: '✍️', order: 2, lessonCount: 5 },
-          { id: 'e4', title: 'Unit 4 — Literature Circles', icon: '📚', order: 3, lessonCount: 5 },
+          { id: 'e1', title: 'Unit 1 - Identity & Voice', icon: '️', order: 0, lessonCount: 5 },
+          { id: 'e2', title: 'Unit 2 - Research & Inquiry', icon: '', order: 1, lessonCount: 5 },
+          { id: 'e3', title: 'Unit 3 - Persuasion', icon: '✍️', order: 2, lessonCount: 5 },
+          { id: 'e4', title: 'Unit 4 - Literature Circles', icon: 'Books:', order: 3, lessonCount: 5 },
         ],
         totalLessons: 20,
         completedLessons: 8,
         progressPercent: 40,
-        currentUnit: 'Unit 2 — Research & Inquiry',
-        currentLesson: 'Lesson 4 — Source Evaluation',
+        currentUnit: 'Unit 2 - Research & Inquiry',
+        currentLesson: 'Lesson 4 - Source Evaluation',
         averageScore: 76,
         gradeLabel: 'Meeting',
         pacing: elaPacing,
@@ -669,19 +669,19 @@ function getDemoDashboardData(): StudentDashboardData {
       {
         subjectId: 'math-7',
         subjectName: 'Mathematics',
-        subjectIcon: '🔢',
+        subjectIcon: '',
         gradeLevel: 7,
         units: [
-          { id: 'm1', title: 'Unit 1 — Number Sense', icon: '🔢', order: 0, lessonCount: 5 },
-          { id: 'm2', title: 'Unit 2 — Fractions & Decimals', icon: '📐', order: 1, lessonCount: 6 },
-          { id: 'm3', title: 'Unit 3 — Patterns & Algebra', icon: '📊', order: 2, lessonCount: 5 },
-          { id: 'm4', title: 'Unit 4 — Geometry', icon: '📏', order: 3, lessonCount: 6 },
+          { id: 'm1', title: 'Unit 1 - Number Sense', icon: '', order: 0, lessonCount: 5 },
+          { id: 'm2', title: 'Unit 2 - Fractions & Decimals', icon: '', order: 1, lessonCount: 6 },
+          { id: 'm3', title: 'Unit 3 - Patterns & Algebra', icon: 'Chart:', order: 2, lessonCount: 5 },
+          { id: 'm4', title: 'Unit 4 - Geometry', icon: '', order: 3, lessonCount: 6 },
         ],
         totalLessons: 22,
         completedLessons: 18,
         progressPercent: 82,
-        currentUnit: 'Unit 4 — Geometry',
-        currentLesson: 'Lesson 3 — Area and Perimeter',
+        currentUnit: 'Unit 4 - Geometry',
+        currentLesson: 'Lesson 3 - Area and Perimeter',
         averageScore: 91,
         gradeLabel: 'Exceeding',
         pacing: mathPacing,
@@ -693,16 +693,16 @@ function getDemoDashboardData(): StudentDashboardData {
       {
         subjectId: 'g6-ela',
         subjectName: 'English Language Arts',
-        subjectIcon: '📖',
+        subjectIcon: '',
         gradeLevel: 6,
         units: [
-          { id: 'g6-ela-u1', title: 'Unit 1 — Identity, Belonging, and Voice', icon: '🪞', order: 0, lessonCount: 7 },
+          { id: 'g6-ela-u1', title: 'Unit 1 - Identity, Belonging, and Voice', icon: '', order: 0, lessonCount: 7 },
         ],
         totalLessons: 7,
         completedLessons: 0,
         progressPercent: 0,
-        currentUnit: 'Unit 1 — Identity, Belonging, and Voice',
-        currentLesson: 'Lesson 1 — Who Am I?',
+        currentUnit: 'Unit 1 - Identity, Belonging, and Voice',
+        currentLesson: 'Lesson 1 - Who Am I?',
         averageScore: null,
         gradeLabel: 'No grades yet',
         pacing: calculatePacing({ enrolledAt: daysAgo(120), completedLessons: 0, totalLessons: 7, lastAcademicActivityAt: null }),
@@ -713,18 +713,18 @@ function getDemoDashboardData(): StudentDashboardData {
       },
     ],
     upcoming: [
-      { id: 'u1', title: '2 missing assignments', courseName: 'English Language Arts', courseIcon: '📖', type: 'assignment', status: 'overdue', statusLabel: 'Missing', dueLabel: 'Submit when ready' },
-      { id: 'u2', title: '1 missing assignment', courseName: 'Science', courseIcon: '🔬', type: 'assignment', status: 'overdue', statusLabel: 'Missing', dueLabel: 'Submit when ready' },
-      { id: 'u3', title: 'Lesson 3 — Heat Transfer Methods', courseName: 'Science', courseIcon: '🔬', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit C — Heat' },
-      { id: 'u4', title: 'Lesson 4 — Source Evaluation', courseName: 'English Language Arts', courseIcon: '📖', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit 2 — Research & Inquiry' },
-      { id: 'u5', title: 'Lesson 3 — Area and Perimeter', courseName: 'Mathematics', courseIcon: '🔢', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit 4 — Geometry' },
+      { id: 'u1', title: '2 missing assignments', courseName: 'English Language Arts', courseIcon: '', type: 'assignment', status: 'overdue', statusLabel: 'Missing', dueLabel: 'Submit when ready' },
+      { id: 'u2', title: '1 missing assignment', courseName: 'Science', courseIcon: '', type: 'assignment', status: 'overdue', statusLabel: 'Missing', dueLabel: 'Submit when ready' },
+      { id: 'u3', title: 'Lesson 3 - Heat Transfer Methods', courseName: 'Science', courseIcon: '', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit C - Heat' },
+      { id: 'u4', title: 'Lesson 4 - Source Evaluation', courseName: 'English Language Arts', courseIcon: '', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit 2 - Research & Inquiry' },
+      { id: 'u5', title: 'Lesson 3 - Area and Perimeter', courseName: 'Mathematics', courseIcon: '', type: 'lesson', status: 'upcoming', statusLabel: 'Next Lesson', dueLabel: 'Unit 4 - Geometry' },
     ],
     recentActivity: [
-      { id: 'a1', description: 'Completed "Lesson 2 — Conduction vs Convection"', detail: 'Science — Unit C Heat', timestamp: hoursAgo(6), timeAgo: '6h ago', type: 'completed', dotColor: '#22c55e' },
-      { id: 'a2', description: 'Submitted "Fraction Operations Quiz"', detail: 'Mathematics — Score: 9/10', timestamp: daysAgo(1), timeAgo: 'Yesterday', type: 'submitted', dotColor: '#3b82f6' },
-      { id: 'a3', description: 'Teacher reviewed "Ecosystem Food Web Drawing"', detail: 'Science — Feedback available', timestamp: daysAgo(2), timeAgo: '2 days ago', type: 'reviewed', dotColor: '#f59e0b' },
+      { id: 'a1', description: 'Completed "Lesson 2 - Conduction vs Convection"', detail: 'Science - Unit C Heat', timestamp: hoursAgo(6), timeAgo: '6h ago', type: 'completed', dotColor: '#22c55e' },
+      { id: 'a2', description: 'Submitted "Fraction Operations Quiz"', detail: 'Mathematics - Score: 9/10', timestamp: daysAgo(1), timeAgo: 'Yesterday', type: 'submitted', dotColor: '#3b82f6' },
+      { id: 'a3', description: 'Teacher reviewed "Ecosystem Food Web Drawing"', detail: 'Science - Feedback available', timestamp: daysAgo(2), timeAgo: '2 days ago', type: 'reviewed', dotColor: '#f59e0b' },
       { id: 'a4', description: 'Submitted "Personal Narrative Draft"', detail: 'English Language Arts', timestamp: daysAgo(3), timeAgo: '3 days ago', type: 'submitted', dotColor: '#3b82f6' },
-      { id: 'a5', description: 'Completed "Lesson 5 — Equivalent Fractions"', detail: 'Mathematics — Unit 2', timestamp: daysAgo(4), timeAgo: '4 days ago', type: 'completed', dotColor: '#22c55e' },
+      { id: 'a5', description: 'Completed "Lesson 5 - Equivalent Fractions"', detail: 'Mathematics - Unit 2', timestamp: daysAgo(4), timeAgo: '4 days ago', type: 'completed', dotColor: '#22c55e' },
     ],
     feedback: [
       { id: 'f1', activityTitle: 'Ecosystem Food Web Drawing', courseName: 'Science', score: 8, maxScore: 10, teacherFeedback: 'Great detail on the food web connections. Add one more decomposer example for full marks.', aiFeedback: null, aiPerformanceLevel: null, reviewed: true, finalizedByTeacher: true, submittedAt: daysAgo(5), reviewedAt: daysAgo(2) },

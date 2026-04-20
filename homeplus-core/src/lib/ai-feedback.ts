@@ -1,9 +1,9 @@
 // ============================================
-// AI Writing Feedback Service — Home Plus LMS
+// AI Writing Feedback Service - Home Plus LMS
 // ============================================
 // Generates formative AI feedback on student written work.
 // Uses Google Gemini for structured writing analysis.
-// AI feedback is PROVISIONAL — teacher review is FINAL.
+// AI feedback is PROVISIONAL - teacher review is FINAL.
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -84,7 +84,7 @@ function buildSystemPrompt(input: AiFeedbackInput): string {
 
   let scoreInstruction = '';
   if (input.maxScore) {
-    scoreInstruction = `\nAlso provide a provisional numeric score out of ${input.maxScore}. This is an estimate — the teacher will assign the final score.`;
+    scoreInstruction = `\nAlso provide a provisional numeric score out of ${input.maxScore}. This is an estimate - the teacher will assign the final score.`;
   }
 
   const antiCheatWarning = input.isPasted 
@@ -114,7 +114,7 @@ If it is OFF_TOPIC, GIBBERISH, or COPIED_PROMPT:
 ${typeSpecificInstructions}
 - Be specific: Do NOT give generic praise like "Good job organizing your thoughts". Instead, prove you read it: "I liked how you organized your thoughts about the water cycle."
 - Quote or reference a small specific piece of the student's text.
-- Be honest but kind — acknowledge effort. Never be harsh, punitive, or robotic.
+- Be honest but kind - acknowledge effort. Never be harsh, punitive, or robotic.
 - Speak directly to the student in a conversational, teacher-like tone ("You've got a great start here...").${scoreInstruction}
 
 Respond ONLY with valid JSON in this exact format (no markdown, no code blocks):

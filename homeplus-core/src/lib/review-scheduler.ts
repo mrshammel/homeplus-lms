@@ -1,5 +1,5 @@
 // ============================================
-// Review Scheduler — Home Plus LMS
+// Review Scheduler - Home Plus LMS
 // ============================================
 // Spaced review queue generation and management.
 // Runs as cron-callable service or on-demand.

@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Lesson CRUD — API Routes
+// Teacher Lesson CRUD - API Routes
 // ============================================
 // GET:  List lessons for a unit
 // POST: Create a new lesson

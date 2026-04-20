@@ -11,7 +11,7 @@ import { generateWritingFeedback, isEligibleForAiFeedback } from '@/lib/ai-feedb
  */
 export async function POST(req: NextRequest) {
   try {
-    // Validate the internal call (basic security — could add a secret header later)
+    // Validate the internal call (basic security - could add a secret header later)
     const body = await req.json();
     const { submissionId } = body;
 

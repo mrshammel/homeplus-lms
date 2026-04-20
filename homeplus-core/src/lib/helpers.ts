@@ -1,12 +1,12 @@
 // ============================================
-// Shared Presentation Helpers — Home Plus LMS
+// Shared Presentation Helpers - Home Plus LMS
 // ============================================
 // Centralized helpers for common UI presentation logic.
 // Keep page components dumb; put all formatting here.
 
 import type { EngagementStatus } from '@/lib/pacing';
 
-/** Extract initials from a full name (e.g. "Ava Chen" → "AC") */
+/** Extract initials from a full name (e.g. "Ava Chen" -> "AC") */
 export function getInitials(name: string): string {
   return name
     .split(' ')
@@ -16,7 +16,7 @@ export function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-/** Teacher-friendly engagement label — matches pacing engine wording */
+/** Teacher-friendly engagement label - matches pacing engine wording */
 export function getEngagementLabel(status: EngagementStatus, daysSinceActive: number | null): string {
   if (daysSinceActive === null) return 'No academic activity yet';
   if (daysSinceActive === 0) return 'Active today';
@@ -34,7 +34,7 @@ export function formatDate(date: Date | null | undefined): string {
 
 /** Format a short date (e.g. "Mar 10") */
 export function formatShortDate(date: Date | null | undefined): string {
-  if (!date) return '—';
+  if (!date) return '-';
   return new Date(date).toLocaleDateString('en-CA', {
     month: 'short', day: 'numeric',
   });

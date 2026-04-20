@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Data Layer — Home Plus LMS
+// Teacher Data Layer - Home Plus LMS
 // ============================================
 // Server-side data fetching with dual-status pacing model.
 // All teacher-facing functions are scoped by:
@@ -281,7 +281,7 @@ export async function getStudentsWithPacing(teacherId: string, ctx: GradeSubject
 }
 
 /**
- * Get a single student by ID — direct scoped query.
+ * Get a single student by ID - direct scoped query.
  * Verifies the student belongs to the teacher's scope.
  */
 export async function getStudentById(
@@ -327,7 +327,7 @@ export async function getStudentById(
 }
 
 /**
- * Overview metrics — computed from the teacher's already-fetched students.
+ * Overview metrics - computed from the teacher's already-fetched students.
  * Pending reviews scoped to teacher's students + subject context.
  */
 export async function getOverviewMetrics(
@@ -382,7 +382,7 @@ export function getStudentsByPriority(students: StudentWithPacing[]): StudentWit
 }
 
 /**
- * Recent submissions — scoped to teacher's students + subject context.
+ * Recent submissions - scoped to teacher's students + subject context.
  */
 export async function getRecentSubmissions(teacherId: string, ctx: GradeSubjectContext): Promise<RecentSubmission[]> {
   if (isDemoMode() && ctx.subjectId.startsWith('demo-')) return getDemoSubmissions();
@@ -469,7 +469,7 @@ export async function getStudentSubmissions(
 }
 
 /**
- * Teacher notes — scoped to this teacher's authored notes.
+ * Teacher notes - scoped to this teacher's authored notes.
  */
 export async function getTeacherNotes(teacherId: string): Promise<TeacherNoteData[]> {
   try {
@@ -495,7 +495,7 @@ export async function getTeacherNotes(teacherId: string): Promise<TeacherNoteDat
 }
 
 /**
- * Get notes for a specific student — scoped to this teacher.
+ * Get notes for a specific student - scoped to this teacher.
  */
 export async function getStudentNotes(studentId: string, teacherId: string): Promise<TeacherNoteData[]> {
   try {
@@ -520,7 +520,7 @@ export async function getStudentNotes(studentId: string, teacherId: string): Pro
 }
 
 /**
- * Unit progress for the teacher's class — scoped to subject context.
+ * Unit progress for the teacher's class - scoped to subject context.
  * Shows real per-unit completion when data is available.
  */
 export async function getUnitProgress(
@@ -528,7 +528,7 @@ export async function getUnitProgress(
   teacherId: string,
   ctx: GradeSubjectContext,
 ): Promise<UnitProgress[]> {
-  // Try real unit data first — scoped to selected subject
+  // Try real unit data first - scoped to selected subject
   if (!ctx.subjectId.startsWith('demo-')) {
     try {
       const units = await prisma.unit.findMany({
@@ -596,13 +596,13 @@ export async function getUnitProgress(
     }
   }
 
-  // Scaffolded unit data — Grade 7 Science (demo only)
+  // Scaffolded unit data - Grade 7 Science (demo only)
   const scaffoldedUnits = [
-    { id: 'a', title: 'Unit A — Ecosystems', icon: '🌿' },
-    { id: 'b', title: 'Unit B — Plants', icon: '🌱' },
-    { id: 'c', title: 'Unit C — Heat', icon: '🔥' },
-    { id: 'd', title: 'Unit D — Structures', icon: '🏗️' },
-    { id: 'e', title: 'Unit E — Earth', icon: '🌍' },
+    { id: 'a', title: 'Unit A - Ecosystems', icon: '' },
+    { id: 'b', title: 'Unit B - Plants', icon: '' },
+    { id: 'c', title: 'Unit C - Heat', icon: '' },
+    { id: 'd', title: 'Unit D - Structures', icon: '️' },
+    { id: 'e', title: 'Unit E - Earth', icon: '' },
   ];
   return scaffoldedUnits.map((u) => {
     const avgCompletion = students.length > 0
@@ -838,7 +838,7 @@ function getDemoSubmissionDetail(id: string): SubmissionDetail | null {
     d1: {
       id: 'd1', studentId: 'demo-0', studentName: 'Ava Chen', studentAvatar: null, studentGradeLevel: 7,
       activityTitle: 'Ecosystem Basics Quiz', activityType: 'QUIZ', submissionType: 'QUIZ_RESPONSE',
-      unitTitle: 'Unit A — Ecosystems', lessonTitle: 'Lesson 1 — Food Webs',
+      unitTitle: 'Unit A - Ecosystems', lessonTitle: 'Lesson 1 - Food Webs',
       writtenResponse: null, fileUrl: null, fileName: null,
       score: 9, maxScore: 10, reviewed: true, reviewedAt: new Date('2026-03-14T14:00:00'), reviewedBy: 'demo-teacher',
       teacherFeedback: 'Excellent understanding of ecosystem relationships. One point missed on decomposer classification.',
@@ -848,7 +848,7 @@ function getDemoSubmissionDetail(id: string): SubmissionDetail | null {
     d2: {
       id: 'd2', studentId: 'demo-4', studentName: 'Sophia Kim', studentAvatar: null, studentGradeLevel: 7,
       activityTitle: 'Heat Transfer Lab', activityType: 'ASSIGNMENT', submissionType: 'PARAGRAPH_RESPONSE',
-      unitTitle: 'Unit C — Heat', lessonTitle: 'Lesson 2 — Conductors and Insulators',
+      unitTitle: 'Unit C - Heat', lessonTitle: 'Lesson 2 - Conductors and Insulators',
       writtenResponse: `In our experiment, we tested five materials to see which ones conducted heat the fastest. We placed each material on a hot plate set to 60°C and measured the temperature at the opposite end every 30 seconds for 5 minutes.\n\nResults:\n- Aluminum: reached 52°C fastest (by 2 minutes)\n- Steel: reached 48°C by 3 minutes\n- Glass: reached 38°C by 5 minutes\n- Wood: only reached 28°C\n- Styrofoam: stayed at 22°C\n\nThis shows that metals are good conductors because the particles are close together and transfer kinetic energy quickly through collisions. Non-metals like wood and styrofoam are insulators because their particles are more spread out and don't transfer energy as efficiently.\n\nOne thing I found interesting is that aluminum conducted heat faster than steel, even though they are both metals. I think this is because aluminum has lower density and its electrons move more freely.`,
       fileUrl: null, fileName: null,
       score: null, maxScore: 20, reviewed: false, reviewedAt: null, reviewedBy: null,
@@ -865,16 +865,16 @@ function getDemoSubmissionDetail(id: string): SubmissionDetail | null {
     d3: {
       id: 'd3', studentId: 'demo-5', studentName: 'Jackson Lee', studentAvatar: null, studentGradeLevel: 7,
       activityTitle: 'Plant Growth Reflection', activityType: 'REFLECTION', submissionType: 'REFLECTION',
-      unitTitle: 'Unit B — Plants', lessonTitle: 'Lesson 3 — Factors Affecting Growth',
-      writtenResponse: `Before this unit, I thought plants only needed water and sunlight to grow. Now I understand that they also need carbon dioxide, minerals from the soil, and the right temperature.\n\nThe experiment we did where we grew plants in different light conditions was really cool. The plant in complete darkness turned yellow and grew really tall and thin (etiolated), while the one in full light was shorter but had much greener and thicker leaves. This taught me that light doesn't just give energy — it actually changes how the plant develops.\n\nI want to learn more about how plants in the arctic survive with so little light for part of the year.`,
+      unitTitle: 'Unit B - Plants', lessonTitle: 'Lesson 3 - Factors Affecting Growth',
+      writtenResponse: `Before this unit, I thought plants only needed water and sunlight to grow. Now I understand that they also need carbon dioxide, minerals from the soil, and the right temperature.\n\nThe experiment we did where we grew plants in different light conditions was really cool. The plant in complete darkness turned yellow and grew really tall and thin (etiolated), while the one in full light was shorter but had much greener and thicker leaves. This taught me that light doesn't just give energy - it actually changes how the plant develops.\n\nI want to learn more about how plants in the arctic survive with so little light for part of the year.`,
       fileUrl: null, fileName: null,
       score: null, maxScore: 10, reviewed: false, reviewedAt: null, reviewedBy: null,
       teacherFeedback: null,
       submittedAt: new Date('2026-03-13T14:00:00'),
       aiStatus: 'COMPLETE',
       aiFeedback: 'A thoughtful reflection that shows genuine learning. You clearly describe how your understanding changed and connect your observations from the experiment to broader plant biology concepts.',
-      aiStrengths: 'Honest reflection about how your thinking changed — this shows real learning. Great use of the scientific term "etiolated". Your curiosity about arctic plants shows you are thinking beyond the lesson.',
-      aiAreasForImprovement: 'Consider explaining WHY the plant in darkness grew tall and thin — what was it reaching for? Also, try connecting the role of minerals and CO₂ to specific plant processes like photosynthesis.',
+      aiStrengths: 'Honest reflection about how your thinking changed - this shows real learning. Great use of the scientific term "etiolated". Your curiosity about arctic plants shows you are thinking beyond the lesson.',
+      aiAreasForImprovement: 'Consider explaining WHY the plant in darkness grew tall and thin - what was it reaching for? Also, try connecting the role of minerals and CO₂ to specific plant processes like photosynthesis.',
       aiNextSteps: 'Research one arctic plant adaptation and write a paragraph comparing it to the plants you grew in class.',
       aiProvisionalScore: 8, aiPerformanceLevel: 'MEETING',
       aiGeneratedAt: new Date('2026-03-13T14:01:00'), finalizedByTeacher: false,
@@ -882,7 +882,7 @@ function getDemoSubmissionDetail(id: string): SubmissionDetail | null {
     d4: {
       id: 'd4', studentId: 'demo-1', studentName: 'Liam Patel', studentAvatar: null, studentGradeLevel: 7,
       activityTitle: 'Food Web Drawing', activityType: 'ASSIGNMENT', submissionType: 'IMAGE_ARTIFACT',
-      unitTitle: 'Unit A — Ecosystems', lessonTitle: 'Lesson 1 — Food Webs',
+      unitTitle: 'Unit A - Ecosystems', lessonTitle: 'Lesson 1 - Food Webs',
       writtenResponse: null, fileUrl: '#', fileName: 'food_web_diagram.png',
       score: 17, maxScore: 20, reviewed: true, reviewedAt: new Date('2026-03-12T15:00:00'), reviewedBy: 'demo-teacher',
       teacherFeedback: 'Great diagram showing multiple interconnected chains. Consider adding decomposers to complete the cycle.',
@@ -892,10 +892,10 @@ function getDemoSubmissionDetail(id: string): SubmissionDetail | null {
     d5: {
       id: 'd5', studentId: 'demo-2', studentName: 'Emma Rodriguez', studentAvatar: null, studentGradeLevel: 7,
       activityTitle: 'Producers & Consumers Quiz', activityType: 'QUIZ', submissionType: 'QUIZ_RESPONSE',
-      unitTitle: 'Unit A — Ecosystems', lessonTitle: 'Lesson 2 — Energy Flow',
+      unitTitle: 'Unit A - Ecosystems', lessonTitle: 'Lesson 2 - Energy Flow',
       writtenResponse: null, fileUrl: null, fileName: null,
       score: 8, maxScore: 10, reviewed: true, reviewedAt: new Date('2026-03-11T16:00:00'), reviewedBy: 'demo-teacher',
-      teacherFeedback: 'Solid understanding. Missed the tertiary consumer question — review the food chain levels.',
+      teacherFeedback: 'Solid understanding. Missed the tertiary consumer question - review the food chain levels.',
       submittedAt: new Date('2026-03-11T13:20:00'),
       ...aiNone, finalizedByTeacher: true,
     },
@@ -939,7 +939,7 @@ export interface ClassMasteryOverview {
 }
 
 /**
- * Get class-wide mastery overview — aggregated from StudentDashboardSummary + StudentSkillMastery.
+ * Get class-wide mastery overview - aggregated from StudentDashboardSummary + StudentSkillMastery.
  */
 export async function getClassMasteryOverview(
   students: StudentWithPacing[],
@@ -1152,7 +1152,7 @@ export async function getOnboardingReviews(teacherId: string): Promise<Onboardin
       };
     });
 
-    // Sort: unreviewed completed → reviewed completed → in-progress → not started
+    // Sort: unreviewed completed -> reviewed completed -> in-progress -> not started
     return rows.sort((a, b) => {
       const priority = (r: OnboardingStudentRow) => {
         if (r.onboardingStatus === 'COMPLETED' && !r.noteReviewed) return 0;

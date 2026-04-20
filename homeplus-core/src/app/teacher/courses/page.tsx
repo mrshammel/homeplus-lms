@@ -21,7 +21,7 @@ export default function TeacherCoursesPage() {
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newGrade, setNewGrade] = useState(7);
-  const [newIcon, setNewIcon] = useState('📚');
+  const [newIcon, setNewIcon] = useState('Books:');
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
 
@@ -59,7 +59,7 @@ export default function TeacherCoursesPage() {
       if (res.ok) {
         setNewName('');
         setNewGrade(7);
-        setNewIcon('📚');
+        setNewIcon('Books:');
         setShowForm(false);
         fetchCourses();
       } else {
@@ -95,7 +95,7 @@ export default function TeacherCoursesPage() {
     return acc;
   }, {});
 
-  const ICONS = ['📚', '🔬', '📖', '🔢', '🌍', '🎨', '🎵', '🏃', '💻', '📐', '🧪', '🗺️', '✍️', '📊'];
+  const ICONS = ['Books:', '', '', '', '', '', '', '', '', '', '', '️', '✍️', 'Chart:'];
 
   return (
     <>
@@ -103,7 +103,7 @@ export default function TeacherCoursesPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', margin: '0 0 4px' }}>
-            📚 Course Builder
+            Books: Course Builder
           </h2>
           <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
             Create and manage courses, units, and lessons
@@ -198,7 +198,7 @@ export default function TeacherCoursesPage() {
         </div>
       ) : courses.length === 0 ? (
         <div className={styles.dashCard} style={{ textAlign: 'center', padding: 40 }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>📭</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: 12 }}></div>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e293b', marginBottom: 6 }}>
             No courses yet
           </h3>
@@ -230,7 +230,7 @@ export default function TeacherCoursesPage() {
                           {course.name}
                         </h4>
                         <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: 0 }}>
-                          {course.unitCount} unit{course.unitCount !== 1 ? 's' : ''} · {course.lessonCount} lesson{course.lessonCount !== 1 ? 's' : ''}
+                          {course.unitCount} unit{course.unitCount !== 1 ? 's' : ''} - {course.lessonCount} lesson{course.lessonCount !== 1 ? 's' : ''}
                         </p>
                         {!course.active && (
                           <span style={{
@@ -265,7 +265,7 @@ export default function TeacherCoursesPage() {
                           cursor: 'pointer', transition: 'background 0.15s',
                         }}
                       >
-                        🗑️
+                        ️
                       </button>
                     </div>
                   </div>

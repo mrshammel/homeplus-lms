@@ -9,13 +9,13 @@ import styles from './student.module.css';
 
 // ---------- Nav Items ----------
 const NAV_ITEMS = [
-  { href: '/student/dashboard', icon: '🏠', label: 'Dashboard' },
-  { href: '/student/courses', icon: '📚', label: 'My Courses' },
-  { href: '/student/review', icon: '🔄', label: 'Review' },
-  { href: '/student/reading-tutor', icon: '🎧', label: 'Reading Tutor' },
-  { href: '/student/progress', icon: '📊', label: 'Progress' },
-  { href: '/student/assignments', icon: '📝', label: 'Assignments' },
-  { href: '/student/grades', icon: '🎯', label: 'Grades' },
+  { href: '/student/dashboard', icon: 'Home:', label: 'Dashboard' },
+  { href: '/student/courses', icon: 'Books:', label: 'My Courses' },
+  { href: '/student/review', icon: '', label: 'Review' },
+  { href: '/student/reading-tutor', icon: '', label: 'Reading Tutor' },
+  { href: '/student/progress', icon: 'Chart:', label: 'Progress' },
+  { href: '/student/assignments', icon: '', label: 'Assignments' },
+  { href: '/student/grades', icon: '', label: 'Grades' },
 ];
 
 // ---------- Layout Component ----------
@@ -26,7 +26,7 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   // Redirect to onboarding if not yet completed.
-  // Only act once session is confirmed — never redirect while loading.
+  // Only act once session is confirmed - never redirect while loading.
   if (status === 'authenticated' && session?.user) {
     const user = session.user as any;
     const isOnboardingPage = pathname.startsWith('/student/onboarding');

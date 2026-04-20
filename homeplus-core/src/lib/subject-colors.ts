@@ -1,5 +1,5 @@
 // ============================================
-// Subject Color System — Home Plus LMS
+// Subject Color System - Home Plus LMS
 // ============================================
 // Consistent color palette for subject areas.
 // Used across all student-facing pages.
@@ -17,7 +17,7 @@ export interface SubjectColors {
   gradient: string;
 }
 
-/** Central color map — keyed by lowercase subject name */
+/** Central color map - keyed by lowercase subject name */
 const SUBJECT_COLOR_MAP: Record<string, SubjectColors> = {
   science: {
     primary: '#059669',

@@ -1,5 +1,5 @@
 // ============================================
-// AI Feedback API — Home Plus LMS
+// AI Feedback API - Home Plus LMS
 // ============================================
 // POST: Grade a constructed response using Gemini API (or calibrated
 // rubric fallback). Uses shared rubric framework for consistent,

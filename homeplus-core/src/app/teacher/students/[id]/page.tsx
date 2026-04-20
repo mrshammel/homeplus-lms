@@ -150,12 +150,12 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
     o.masteryLevel === 'EMERGING' || o.masteryLevel === 'NOT_YET_ASSESSED'
   );
 
-  // Intervention reasons — natural teacher-friendly language
+  // Intervention reasons - natural teacher-friendly language
   const interventionReasons: string[] = [];
   if (student.pacing.academicStatus === 'SIGNIFICANTLY_BEHIND') {
     interventionReasons.push(`Currently ${Math.abs(student.pacing.daysBehindOrAhead)} days behind expected pace`);
   } else if (student.pacing.academicStatus === 'SLIGHTLY_BEHIND') {
-    interventionReasons.push(`Slightly behind — ${Math.abs(student.pacing.daysBehindOrAhead)} days behind expected pace`);
+    interventionReasons.push(`Slightly behind - ${Math.abs(student.pacing.daysBehindOrAhead)} days behind expected pace`);
   }
   if (student.pacing.engagementStatus === 'STALLED') {
     interventionReasons.push(`No academic activity in ${student.pacing.daysSinceActive} days`);
@@ -179,7 +179,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
         <div className={styles.studentHeaderInfo}>
           <h2 className={styles.studentHeaderName}>{student.name}</h2>
           <div className={styles.studentHeaderMeta}>
-            Grade {student.gradeLevel || '—'} · Enrolled {enrolledFormatted} · {student.currentUnit || 'No unit'} · {student.currentLesson || 'No lesson'}
+            Grade {student.gradeLevel || '-'} - Enrolled {enrolledFormatted} - {student.currentUnit || 'No unit'} - {student.currentLesson || 'No lesson'}
           </div>
           <div className={styles.badgeStack} style={{ marginTop: 8 }}>
             <span className={styles.pacingBadge} style={{ background: aStyle.bg, color: aStyle.color }}>
@@ -190,7 +190,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
             </span>
             {pendingReview > 0 && (
               <span className={styles.pacingBadge} style={{ background: '#fef3c7', color: '#d97706' }}>
-                📝 {pendingReview} pending review
+                 {pendingReview} pending review
               </span>
             )}
           </div>
@@ -204,7 +204,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
       {/* ===== 2. PACING & ENGAGEMENT SUMMARY ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-        <h3 className={styles.cardTitle}>📐 Pacing & Engagement</h3>
+        <h3 className={styles.cardTitle}> Pacing & Engagement</h3>
         <div className={styles.pacingDetailGrid}>
           <div className={styles.pacingDetailItem}>
             <div className={styles.pacingDetailLabel}>Actual Progress</div>
@@ -230,7 +230,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
           <div className={styles.pacingDetailItem}>
             <div className={styles.pacingDetailLabel}>Days Since Active</div>
             <div className={styles.pacingDetailValue} style={{ fontSize: '1rem' }}>
-              {student.pacing.daysSinceActive !== null ? `${student.pacing.daysSinceActive}d` : '—'}
+              {student.pacing.daysSinceActive !== null ? `${student.pacing.daysSinceActive}d` : '-'}
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--hp-text3)', marginTop: 4 }}>
               {getEngagementLabel(student.pacing.engagementStatus, student.pacing.daysSinceActive)}
@@ -242,12 +242,12 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
             <div className={styles.pacingDetailLabel}>Status</div>
             <div style={{ fontSize: '0.92rem', color: 'var(--hp-text2)', lineHeight: 1.6 }}>
               {student.pacing.pacingSummary}
-              {student.pacing.isGracePeriod && ' — Pacing alerts are paused during the onboarding period.'}
-              {student.pacing.engagementStatus === 'STALLED' && ` · ${student.pacing.engagementLabel}`}
+              {student.pacing.isGracePeriod && ' - Pacing alerts are paused during the onboarding period.'}
+              {student.pacing.engagementStatus === 'STALLED' && ` - ${student.pacing.engagementLabel}`}
             </div>
           </div>
 
-          {/* Last Academic Event — exact details */}
+          {/* Last Academic Event - exact details */}
           {lastEvent && (
             <div className={styles.pacingDetailItem} style={{ gridColumn: '1 / -1' }}>
               <div className={styles.pacingDetailLabel}>Last Academic Activity</div>
@@ -255,7 +255,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
                 {lastEvent.title}
               </div>
               <div style={{ fontSize: '0.82rem', color: 'var(--hp-text3)' }}>
-                {lastEvent.type} — {formatShortDate(lastEvent.date)}
+                {lastEvent.type} - {formatShortDate(lastEvent.date)}
               </div>
             </div>
           )}
@@ -273,7 +273,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
       {/* ===== SKILL MASTERY STATE GRID ===== */}
       {skillMastery.totalSkills > 0 && (
         <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-          <h3 className={styles.cardTitle}>🧠 Skill Mastery</h3>
+          <h3 className={styles.cardTitle}> Skill Mastery</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
             <div style={{ background: '#f0fdf4', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}>
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#059669' }}>{skillMastery.masteredCount}</div>
@@ -318,9 +318,9 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
         <div>
           {/* ===== 5. WRITTEN RESPONSES ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>📝 Written Responses</h3>
+            <h3 className={styles.cardTitle}> Written Responses</h3>
             {writtenResponses.length === 0 ? (
-              <EmptySection icon="📝" text="No written responses recorded yet." />
+              <EmptySection icon="" text="No written responses recorded yet." />
             ) : (
               writtenResponses.map((r) => (
                 <Link
@@ -334,7 +334,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
                         <div className={styles.evidenceTitle}>{r.title}</div>
                         <div className={styles.evidenceMeta}>
                           <span className={styles.evidenceTypeBadge}>{getSubmissionTypeLabel(r.submissionType)}</span>
-                          {r.unitLesson} · {formatShortDate(r.submittedAt)}
+                          {r.unitLesson} - {formatShortDate(r.submittedAt)}
                         </div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -358,9 +358,9 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
           {/* ===== SUBMITTED ARTIFACTS ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>📎 Submitted Artifacts</h3>
+            <h3 className={styles.cardTitle}> Submitted Artifacts</h3>
             {artifacts.length === 0 ? (
-              <EmptySection icon="📎" text="No artifacts uploaded yet." />
+              <EmptySection icon="" text="No artifacts uploaded yet." />
             ) : (
               artifacts.map((a) => (
                 <Link
@@ -370,13 +370,13 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
                 >
                   <div className={styles.artifactItem}>
                     <div className={styles.artifactIcon}>
-                      {a.submissionType === 'IMAGE_ARTIFACT' ? '🖼️'
-                        : a.submissionType === 'UPLOADED_WORKSHEET' ? '📄' : '📁'}
+                      {a.submissionType === 'IMAGE_ARTIFACT' ? '️'
+                        : a.submissionType === 'UPLOADED_WORKSHEET' ? '' : ''}
                     </div>
                     <div className={styles.artifactInfo}>
                       <div className={styles.artifactName}>{a.title}</div>
                       <div className={styles.artifactMeta}>
-                        {getSubmissionTypeLabel(a.submissionType)} · {a.fileName} · {a.unitLesson} · {formatShortDate(a.submittedAt)}
+                        {getSubmissionTypeLabel(a.submissionType)} - {a.fileName} - {a.unitLesson} - {formatShortDate(a.submittedAt)}
                       </div>
                     </div>
                     <ReviewBadge reviewed={a.reviewed} />
@@ -388,7 +388,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
           {/* ===== 3. PROGRESS BY UNIT ===== */}
           <div className={styles.dashCard}>
-            <h3 className={styles.cardTitle}>📚 Progress by Unit</h3>
+            <h3 className={styles.cardTitle}>Books: Progress by Unit</h3>
             {unitProgress.map((u) => {
               const color = u.completionPct >= 70 ? '#059669' : u.completionPct >= 40 ? '#d97706' : '#dc2626';
               const ov = overrideMap.get(u.unitId);
@@ -408,12 +408,12 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
                             color: ov.state === 'COMPLETED' || ov.state === 'EXEMPT' ? '#059669' : '#2563eb',
                           }}
                         >
-                          {ov.state === 'UNLOCKED' ? '🔓 Unlocked' : ov.state === 'COMPLETED' ? '✅ Completed (override)' : ov.state === 'EXEMPT' ? '⏭️ Exempt' : ov.state}
+                          {ov.state === 'UNLOCKED' ? ' Unlocked' : ov.state === 'COMPLETED' ? '✅ Completed (override)' : ov.state === 'EXEMPT' ? '⏭️ Exempt' : ov.state}
                         </span>
                       )}
                     </span>
                     <span className={styles.unitProgressPct}>
-                      {u.completedLessons}/{u.totalLessons} lessons · {u.completionPct}%
+                      {u.completedLessons}/{u.totalLessons} lessons - {u.completionPct}%
                       {u.avgScore !== null && <span style={{ color: '#64748b', marginLeft: 8 }}>({u.avgScore}% avg)</span>}
                     </span>
                   </div>
@@ -435,7 +435,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
         <div>
           {/* ===== COURSES ENROLLED IN ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>📚 Courses Currently Enrolled In</h3>
+            <h3 className={styles.cardTitle}>Books: Courses Currently Enrolled In</h3>
             <p style={{ fontSize: '0.82rem', color: 'var(--hp-text3)', marginBottom: 12, marginTop: -4 }}>
               Check or uncheck to instantly change this student&apos;s course access. Changes take effect immediately.
             </p>
@@ -451,7 +451,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
           {/* Intervention Context */}
           {interventionReasons.length > 0 && (
             <div className={styles.dashCard} style={{ marginBottom: 24, borderLeft: '4px solid #dc2626' }}>
-              <h3 className={styles.cardTitle}>🚨 Why This Student Needs Attention</h3>
+              <h3 className={styles.cardTitle}> Why This Student Needs Attention</h3>
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {interventionReasons.map((reason, i) => (
                   <li key={i} style={{ fontSize: '0.9rem', color: 'var(--hp-text2)', lineHeight: 2 }}>{reason}</li>
@@ -462,7 +462,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
           {/* ===== 6. OUTCOMES MASTERY ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }} id="outcomes-mastery">
-            <h3 className={styles.cardTitle}>🎯 Outcomes Mastery</h3>
+            <h3 className={styles.cardTitle}> Outcomes Mastery</h3>
             <div style={{ overflowX: 'auto' }}>
               <table className={styles.dataTable}>
                 <thead>
@@ -513,9 +513,9 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
           {/* ===== 4. RECENT SUBMISSIONS ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>📋 Recent Submissions</h3>
+            <h3 className={styles.cardTitle}>Form: Recent Submissions</h3>
             {submissions.length === 0 ? (
-              <EmptySection icon="📋" text="No submissions recorded yet." />
+              <EmptySection icon="Form:" text="No submissions recorded yet." />
             ) : (
               submissions.map((sub) => {
                 const typeLabel = sub.activityType.charAt(0) + sub.activityType.slice(1).toLowerCase();
@@ -529,7 +529,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
                       <div className={styles.submissionInfo}>
                         <div className={styles.submissionStudent}>{sub.activityTitle}</div>
                         <div className={styles.submissionActivity}>
-                          {typeLabel} · {formatShortDate(sub.submittedAt)}
+                          {typeLabel} - {formatShortDate(sub.submittedAt)}
                         </div>
                       </div>
                       {sub.score !== null && sub.maxScore !== null && (
@@ -545,9 +545,9 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
 
           {/* ===== 7. TEACHER NOTES ===== */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>📋 Teacher Notes</h3>
+            <h3 className={styles.cardTitle}>Form: Teacher Notes</h3>
             {notes.length === 0 ? (
-              <EmptySection icon="📋" text="No notes for this student yet." />
+              <EmptySection icon="Form:" text="No notes for this student yet." />
             ) : (
               notes.map((note) => (
                 <div key={note.id} className={styles.submissionItem}>
@@ -562,7 +562,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
             )}
           </div>
 
-          {/* Quick Actions — Real workflows */}
+          {/* Quick Actions - Real workflows */}
           <div className={styles.dashCard}>
             <h3 className={styles.cardTitle}>⚡ Quick Actions</h3>
             <StudentActions

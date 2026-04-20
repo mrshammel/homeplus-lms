@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Mastery Board — Home Plus LMS (Phase 5)
+// Teacher Mastery Board - Home Plus LMS (Phase 5)
 // ============================================
 // Class mastery overview with skill breakdown grid
 // and per-student mastery summaries.
@@ -27,18 +27,18 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
     <>
       {/* Mastery Metrics */}
       <div className={styles.metricsGrid}>
-        <MetricCard icon="🧠" label="Avg Mastery" value={`${mastery.avgMasteryPercent}%`} bg="#d1fae5" />
-        <MetricCard icon="⭐" label="Fully Mastered" value={mastery.studentsFullyMastered} bg="#fef3c7" />
-        <MetricCard icon="🚨" label="Need Support" value={mastery.studentsWithSupport} bg="#fee2e2" />
-        <MetricCard icon="🔄" label="Review Due" value={mastery.studentsWithReviewDue} bg="#fef3c7" />
+        <MetricCard icon="" label="Avg Mastery" value={`${mastery.avgMasteryPercent}%`} bg="#d1fae5" />
+        <MetricCard icon="Tip:" label="Fully Mastered" value={mastery.studentsFullyMastered} bg="#fef3c7" />
+        <MetricCard icon="" label="Need Support" value={mastery.studentsWithSupport} bg="#fee2e2" />
+        <MetricCard icon="" label="Review Due" value={mastery.studentsWithReviewDue} bg="#fef3c7" />
       </div>
 
       {/* Skill Breakdown Grid */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-        <h3 className={styles.cardTitle}>📊 Skill Mastery — {ctx.subjectName}</h3>
+        <h3 className={styles.cardTitle}>Chart: Skill Mastery - {ctx.subjectName}</h3>
         {mastery.skillBreakdown.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📚</div>
+            <div className={styles.emptyIcon}>Books:</div>
             <div className={styles.emptyTitle}>No skills mapped yet</div>
             <div className={styles.emptyDesc}>Skills will appear here as students complete lessons.</div>
           </div>
@@ -50,10 +50,10 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
                   <th>Skill</th>
                   <th style={{ textAlign: 'center' }}>Mastery Distribution</th>
                   <th style={{ textAlign: 'center', color: '#059669' }}>✅ Mastered</th>
-                  <th style={{ textAlign: 'center', color: '#2563eb' }}>📈 Developing</th>
-                  <th style={{ textAlign: 'center', color: '#d97706' }}>🔄 Review</th>
-                  <th style={{ textAlign: 'center', color: '#dc2626' }}>🚨 Support</th>
-                  <th style={{ textAlign: 'center', color: '#94a3b8' }}>— Not Started</th>
+                  <th style={{ textAlign: 'center', color: '#2563eb' }}> Developing</th>
+                  <th style={{ textAlign: 'center', color: '#d97706' }}> Review</th>
+                  <th style={{ textAlign: 'center', color: '#dc2626' }}> Support</th>
+                  <th style={{ textAlign: 'center', color: '#94a3b8' }}>- Not Started</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,10 +92,10 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
 
       {/* Per-Student Mastery */}
       <div className={styles.dashCard}>
-        <h3 className={styles.cardTitle}>👥 Student Mastery</h3>
+        <h3 className={styles.cardTitle}> Student Mastery</h3>
         {mastery.studentSummaries.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>👥</div>
+            <div className={styles.emptyIcon}></div>
             <div className={styles.emptyTitle}>No students enrolled</div>
           </div>
         ) : (
@@ -152,12 +152,12 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
                           <div style={{ display: 'flex', gap: 4 }}>
                             {s.needsSupportCount > 0 && (
                               <span className={styles.pacingBadge} style={{ background: '#fee2e2', color: '#dc2626' }}>
-                                🚨 {s.needsSupportCount}
+                                 {s.needsSupportCount}
                               </span>
                             )}
                             {s.reviewDueCount > 0 && (
                               <span className={styles.pacingBadge} style={{ background: '#fef3c7', color: '#d97706' }}>
-                                🔄 {s.reviewDueCount}
+                                 {s.reviewDueCount}
                               </span>
                             )}
                           </div>

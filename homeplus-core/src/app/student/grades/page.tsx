@@ -28,7 +28,7 @@ export default async function GradesPage() {
   return (
     <>
       <section className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>🎯 Grades</h2>
+        <h2 className={styles.welcomeTitle}> Grades</h2>
         <p className={styles.welcomeSubtext}>Your grades and performance across all courses</p>
       </section>
 
@@ -36,7 +36,7 @@ export default async function GradesPage() {
       <section className={styles.statRow} style={{ marginBottom: 24 }}>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: stats.averageGrade != null && stats.averageGrade >= 75 ? '#059669' : '#d97706' }}>
-            {stats.averageGrade != null ? `${stats.averageGrade}%` : '—'}
+            {stats.averageGrade != null ? `${stats.averageGrade}%` : '-'}
           </div>
           <div className={styles.statLabel}>Overall Average</div>
         </div>
@@ -48,7 +48,7 @@ export default async function GradesPage() {
           <div className={styles.statValue} style={{ color: '#059669' }}>
             {masterySummary.totalSkills > 0
               ? `${Math.round((masterySummary.masteredCount / masterySummary.totalSkills) * 100)}%`
-              : '—'}
+              : '-'}
           </div>
           <div className={styles.statLabel}>Mastery</div>
         </div>
@@ -81,7 +81,7 @@ export default async function GradesPage() {
               <div className={styles.courseDetailStat}>
                 <div className={styles.courseDetailStatLabel}>Grade</div>
                 <div className={styles.courseDetailStatValue} style={{ color: course.averageScore != null && course.averageScore >= 75 ? '#059669' : '#d97706' }}>
-                  {course.averageScore != null ? `${course.averageScore}%` : '—'}
+                  {course.averageScore != null ? `${course.averageScore}%` : '-'}
                 </div>
                 <div className={styles.courseDetailStatNote}>{course.gradeLabel}</div>
               </div>
@@ -95,7 +95,7 @@ export default async function GradesPage() {
                 <div className={styles.courseDetailStatValue} style={{ color: '#059669' }}>
                   {course.mastery.totalSkills > 0
                     ? `${course.mastery.masteredSkills}/${course.mastery.totalSkills}`
-                    : '—'}
+                    : '-'}
                 </div>
                 <div className={styles.courseDetailStatNote}>
                   {course.mastery.totalSkills > 0 ? 'skills mastered' : 'No skills'}
@@ -104,7 +104,7 @@ export default async function GradesPage() {
               <div className={styles.courseDetailStat}>
                 <div className={styles.courseDetailStatLabel}>Latest Review</div>
                 <div className={styles.courseDetailStatValue} style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                  {course.latestReviewedItem ? '✅' : '—'}
+                  {course.latestReviewedItem ? '✅' : '-'}
                 </div>
                 <div className={styles.courseDetailStatNote} style={{ fontSize: '0.68rem' }}>
                   {course.latestReviewedItem || 'None yet'}
@@ -118,12 +118,12 @@ export default async function GradesPage() {
       {/* Mastery Context section */}
       {(masterySummary.strongestSkills.length > 0 || masterySummary.weakestSkills.length > 0 || masterySummary.reviewDueSkills.length > 0) && (
         <section className={styles.masteryContext} id="mastery-context">
-          <h3 className={styles.masteryContextTitle}>🧠 Mastery Context</h3>
+          <h3 className={styles.masteryContextTitle}> Mastery Context</h3>
           <div className={styles.masteryContextGrid}>
             {/* Strongest Skills */}
             <div className={styles.masteryContextColumn}>
               <div className={styles.masteryContextColumnTitle} style={{ color: '#059669', borderColor: '#059669' }}>
-                💪 Strongest Skills
+                 Strongest Skills
               </div>
               {masterySummary.strongestSkills.length > 0 ? (
                 masterySummary.strongestSkills.map((skill) => (
@@ -137,7 +137,7 @@ export default async function GradesPage() {
                 ))
               ) : (
                 <div style={{ fontSize: '0.82rem', color: '#94a3b8', padding: '8px 10px' }}>
-                  Keep working — your strengths will show!
+                  Keep working - your strengths will show!
                 </div>
               )}
             </div>
@@ -145,7 +145,7 @@ export default async function GradesPage() {
             {/* Weakest Skills */}
             <div className={styles.masteryContextColumn}>
               <div className={styles.masteryContextColumnTitle} style={{ color: '#dc2626', borderColor: '#ef4444' }}>
-                📌 Needs Work
+                 Needs Work
               </div>
               {masterySummary.weakestSkills.length > 0 ? (
                 masterySummary.weakestSkills.map((skill) => (
@@ -159,7 +159,7 @@ export default async function GradesPage() {
                 ))
               ) : (
                 <div style={{ fontSize: '0.82rem', color: '#94a3b8', padding: '8px 10px' }}>
-                  No weak skills — great job! 🎉
+                  No weak skills - great job! 
                 </div>
               )}
             </div>
@@ -167,7 +167,7 @@ export default async function GradesPage() {
             {/* Review Due */}
             <div className={styles.masteryContextColumn}>
               <div className={styles.masteryContextColumnTitle} style={{ color: '#d97706', borderColor: '#f59e0b' }}>
-                🔄 Needs Review
+                 Needs Review
               </div>
               {masterySummary.reviewDueSkills.length > 0 ? (
                 masterySummary.reviewDueSkills.map((skill) => (

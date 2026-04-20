@@ -1,5 +1,5 @@
 // ============================================
-// Mastery Engines — Home Plus LMS
+// Mastery Engines - Home Plus LMS
 // ============================================
 // Subject-specific mastery evaluation logic.
 // Each engine determines how a student's quiz answers
@@ -54,7 +54,7 @@ function scoreAnswers(
 }
 
 // ============ SCIENCE MASTERY ENGINE ============
-// Strict 80% gate, outcome-tagged reteach, 2-miss-same-outcome → reteach
+// Strict 80% gate, outcome-tagged reteach, 2-miss-same-outcome -> reteach
 
 export const ScienceMasteryEngine: MasteryEngine = {
   subjectMode: 'SCIENCE',
@@ -106,11 +106,11 @@ export const ScienceMasteryEngine: MasteryEngine = {
 
     let feedback: string;
     if (passed) {
-      feedback = `🎉 Mastered! You scored ${score}%. Great work!`;
+      feedback = ` Mastered! You scored ${score}%. Great work!`;
     } else if (needsReteach) {
       feedback = `You need more practice on a specific concept. Let's review it together.`;
     } else if (canRetry) {
-      feedback = `You scored ${score}%. You need ${config.passPercent}% to pass. Try again — the questions will focus on what you missed.`;
+      feedback = `You scored ${score}%. You need ${config.passPercent}% to pass. Try again - the questions will focus on what you missed.`;
     } else {
       feedback = `You scored ${score}%. Speak with your teacher for next steps.`;
     }
@@ -141,7 +141,7 @@ export const ELAMasteryEngine: MasteryEngine = {
 
     // ELA uses completion-based progression
     // Auto-scoreable items (vocab, comprehension MC) contribute to score
-    // Constructed responses are tracked as "submitted" — teacher reviews later
+    // Constructed responses are tracked as "submitted" - teacher reviews later
     const hasResponses = answers.length > 0;
     const passed = hasResponses && (total === 0 || score >= 60);
 
@@ -182,7 +182,7 @@ export const MathMasteryEngine: MasteryEngine = {
 
     let feedback: string;
     if (passed) {
-      feedback = `🎯 Great job! You scored ${score}%. Mastery achieved!`;
+      feedback = ` Great job! You scored ${score}%. Mastery achieved!`;
     } else if (canRetry) {
       // Math gives targeted feedback
       const skillsToReview = missedOutcomes.length > 0

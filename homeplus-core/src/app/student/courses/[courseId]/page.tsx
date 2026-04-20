@@ -1,5 +1,5 @@
 // ============================================
-// Course Detail Page — Home Plus LMS
+// Course Detail Page - Home Plus LMS
 // ============================================
 // Redesigned with large visual unit cards,
 // subject-colored header, and hero continue card.
@@ -51,7 +51,7 @@ export default async function CourseDetailPage({ params }: Props) {
       };
     }
   } else {
-    // Demo mastery data — IDs must match actual subject IDs in seed.ts
+    // Demo mastery data - IDs must match actual subject IDs in seed.ts
     if (courseId === 'g7-science') courseMastery = { masteredSkills: 4, developingSkills: 2, reviewDue: 1, needsSupport: 0, totalSkills: 7 };
     else if (courseId === 'g7-math') courseMastery = { masteredSkills: 5, developingSkills: 1, reviewDue: 0, needsSupport: 0, totalSkills: 6 };
     else if (courseId === 'g6-ela') courseMastery = { masteredSkills: 2, developingSkills: 2, reviewDue: 0, needsSupport: 1, totalSkills: 5 };
@@ -87,7 +87,7 @@ export default async function CourseDetailPage({ params }: Props) {
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: averageScore != null && averageScore >= 75 ? '#059669' : '#d97706' }}>
-            {averageScore != null ? `${averageScore}%` : '—'}
+            {averageScore != null ? `${averageScore}%` : '-'}
           </div>
           <div className={styles.statLabel}>My Grade</div>
         </div>
@@ -95,7 +95,7 @@ export default async function CourseDetailPage({ params }: Props) {
           <div className={styles.statValue} style={{ color: '#059669' }}>
             {courseMastery.totalSkills > 0
               ? `${Math.round((courseMastery.masteredSkills / courseMastery.totalSkills) * 100)}%`
-              : '—'}
+              : '-'}
           </div>
           <div className={styles.statLabel}>Mastery</div>
         </div>
@@ -109,10 +109,10 @@ export default async function CourseDetailPage({ params }: Props) {
       {courseMastery.totalSkills > 0 && (
         <section className={styles.masteryWidget} aria-label="Course mastery" style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-            <h3 className={styles.masteryWidgetTitle} style={{ margin: 0 }}>🧠 Skill Mastery</h3>
+            <h3 className={styles.masteryWidgetTitle} style={{ margin: 0 }}> Skill Mastery</h3>
             {courseMastery.reviewDue > 0 && (
               <Link href="/student/review" className={styles.reviewDueBadge} style={{ textDecoration: 'none' }}>
-                🔄 {courseMastery.reviewDue} review due
+                 {courseMastery.reviewDue} review due
               </Link>
             )}
           </div>
@@ -160,13 +160,13 @@ export default async function CourseDetailPage({ params }: Props) {
               <span className={styles.heroProgressText}>{progressPercent}%</span>
             </div>
           </div>
-          <span className={styles.heroBtn}>Continue →</span>
+          <span className={styles.heroBtn}>Continue -></span>
         </Link>
       )}
 
       {/* ===== UNIT CARDS ===== */}
       <section aria-label="Course units">
-        <h3 className={styles.sectionHeading}>📚 Units</h3>
+        <h3 className={styles.sectionHeading}>Books: Units</h3>
         <div className={styles.unitCardGrid}>
           {units.map((unit) => {
             const ui = getUnitStateUI(unit.unitDisplayState);
@@ -178,10 +178,10 @@ export default async function CourseDetailPage({ params }: Props) {
               : isLocked ? styles.statusLocked
               : styles.statusAvailable;
 
-            const ctaLabel = isLocked ? '🔒 Locked'
-              : isComplete ? 'Review →'
-              : unit.unitDisplayState === 'IN_PROGRESS' ? 'Continue →'
-              : 'Start Unit →';
+            const ctaLabel = isLocked ? ' Locked'
+              : isComplete ? 'Review ->'
+              : unit.unitDisplayState === 'IN_PROGRESS' ? 'Continue ->'
+              : 'Start Unit ->';
 
             const CardInner = (
               <div className={`${styles.unitCard} ${isLocked ? styles.unitCardLocked : ''}`}>
@@ -192,7 +192,7 @@ export default async function CourseDetailPage({ params }: Props) {
                 <div className={styles.unitCardBody}>
                   <div className={styles.unitCardHeader}>
                     <div className={styles.unitCardIconWrap}>
-                      {isLocked ? '🔒' : isComplete ? '✅' : (unit.icon || '📖')}
+                      {isLocked ? '' : isComplete ? '✅' : (unit.icon || '')}
                     </div>
                     <div className={styles.unitCardTitleGroup}>
                       <div className={styles.unitCardLabel}>
@@ -210,7 +210,7 @@ export default async function CourseDetailPage({ params }: Props) {
                   )}
 
                   <div className={styles.unitCardMeta}>
-                    <span className={styles.unitCardMetaItem}>📖 {unit.totalLessons} lessons</span>
+                    <span className={styles.unitCardMetaItem}> {unit.totalLessons} lessons</span>
                   </div>
 
                   {!isLocked && (
@@ -230,7 +230,7 @@ export default async function CourseDetailPage({ params }: Props) {
 
                   {isLocked ? (
                     <div className={styles.unitCardCta} style={{ opacity: 0.6, cursor: 'not-allowed' }}>
-                      🔒 Locked
+                       Locked
                     </div>
                   ) : (
                     <div className={styles.unitCardCta}>

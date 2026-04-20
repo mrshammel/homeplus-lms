@@ -1,13 +1,13 @@
 // ============================================
-// Unit Progress Helpers — Home Plus LMS
+// Unit Progress Helpers - Home Plus LMS
 // ============================================
 // Centralised unit-level gating logic consumed by:
 //   - course-detail-data  (student course page)
 //   - student-data        (dashboard rollups)
 //
 // Two layers of truth:
-//   LAYER 1 — Default sequential gating from lesson progress
-//   LAYER 2 — Teacher override (UNLOCKED / COMPLETED / EXEMPT)
+//   LAYER 1 - Default sequential gating from lesson progress
+//   LAYER 2 - Teacher override (UNLOCKED / COMPLETED / EXEMPT)
 
 import type { SubjectMode } from './lesson-types';
 
@@ -30,7 +30,7 @@ export type UnitDisplayState =
  *   - OR override is COMPLETED
  *   - OR override is EXEMPT
  *
- * UNLOCKED alone does NOT mean satisfied — it just means the student
+ * UNLOCKED alone does NOT mean satisfied - it just means the student
  * can enter, not that they've finished.
  */
 export function isUnitSatisfied(
@@ -86,7 +86,7 @@ export function getUnitDisplayState(
   if (overrideState === 'COMPLETED') return 'COMPLETED';
   if (overrideState === 'EXEMPT') return 'EXEMPT';
 
-  // Not unlocked → locked
+  // Not unlocked -> locked
   if (!isUnlocked) return 'LOCKED';
 
   // Normal progress states
@@ -133,15 +133,15 @@ export interface UnitStateUI {
 export function getUnitStateUI(state: UnitDisplayState): UnitStateUI {
   switch (state) {
     case 'LOCKED':
-      return { badge: '🔒 Locked', color: '#94a3b8', bg: '#f8fafc', cta: '', clickable: false };
+      return { badge: ' Locked', color: '#94a3b8', bg: '#f8fafc', cta: '', clickable: false };
     case 'AVAILABLE':
-      return { badge: '▶️ Ready', color: '#2563eb', bg: '#eff6ff', cta: 'Start Unit →', clickable: true };
+      return { badge: '▶️ Ready', color: '#2563eb', bg: '#eff6ff', cta: 'Start Unit ->', clickable: true };
     case 'IN_PROGRESS':
-      return { badge: '📝 In Progress', color: '#2563eb', bg: '#eff6ff', cta: 'Continue Unit →', clickable: true };
+      return { badge: ' In Progress', color: '#2563eb', bg: '#eff6ff', cta: 'Continue Unit ->', clickable: true };
     case 'COMPLETED':
-      return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review Unit →', clickable: true };
+      return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review Unit ->', clickable: true };
     case 'EXEMPT':
-      return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review Unit →', clickable: true };
+      return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review Unit ->', clickable: true };
     default:
       return { badge: '⬜ Not Started', color: '#94a3b8', bg: '#ffffff', cta: '', clickable: false };
   }

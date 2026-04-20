@@ -1,5 +1,5 @@
 // ============================================
-// Data Cache — Home Plus LMS (Phase 6)
+// Data Cache - Home Plus LMS (Phase 6)
 // ============================================
 // In-memory request-scoped cache for hot data paths.
 // Prevents duplicate DB queries within a single request.
@@ -11,7 +11,7 @@
 //   - Simple Map with TTL expiration for short-lived caching
 //   - All writes invalidate affected keys
 
-const CACHE_TTL_MS = 30_000; // 30 seconds — enough for a single page render
+const CACHE_TTL_MS = 30_000; // 30 seconds - enough for a single page render
 
 interface CacheEntry<T> {
   value: T;

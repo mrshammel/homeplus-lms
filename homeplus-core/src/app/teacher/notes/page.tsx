@@ -43,7 +43,7 @@ export default async function NotesPage({ searchParams }: PageProps) {
       <div className={styles.dashCard}>
         {notes.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📋</div>
+            <div className={styles.emptyIcon}>Form:</div>
             <div className={styles.emptyTitle}>No notes yet</div>
             <div className={styles.emptyDesc}>
               Add notes about students to track check-ins, parent contacts, and observations. Notes help you keep a running record of important student interactions.

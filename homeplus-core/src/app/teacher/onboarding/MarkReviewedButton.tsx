@@ -13,7 +13,7 @@ export default function MarkReviewedButton({ noteId, initialReviewed }: Props) {
   const [isPending, startTransition] = useTransition();
 
   async function handleClick() {
-    if (reviewed) return; // already done — no un-review
+    if (reviewed) return; // already done - no un-review
     startTransition(async () => {
       try {
         const res = await fetch('/api/teacher/onboarding-review', {
@@ -23,7 +23,7 @@ export default function MarkReviewedButton({ noteId, initialReviewed }: Props) {
         });
         if (res.ok) setReviewed(true);
       } catch {
-        // silently fail — teacher can retry
+        // silently fail - teacher can retry
       }
     });
   }

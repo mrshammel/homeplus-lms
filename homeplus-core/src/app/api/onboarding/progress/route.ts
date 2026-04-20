@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       select: { assignedTeacherId: true, name: true },
     });
 
-    // On COMPLETED — write a comprehensive baseline note for the teacher
+    // On COMPLETED - write a comprehensive baseline note for the teacher
     if (status === 'COMPLETED' && allSections && currentUser?.assignedTeacherId) {
       const about   = allSections.about?.data   || {};
       const math    = allSections.math?.data    || {};
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       const reading = allSections.reading?.data || {};
 
       const note = [
-        `STUDENT ONBOARDING COMPLETE — ${currentUser.name}`,
+        `STUDENT ONBOARDING COMPLETE - ${currentUser.name}`,
         `Date: ${new Date().toLocaleDateString('en-CA')}`,
         '',
         '━━━ ABOUT ME ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         `Learning goal:      ${about.learning_goal || '(not set)'}`,
         `Fun fact:           ${about.fun_fact || '(not set)'}`,
         '',
-        '━━━ MATH DIAGNOSTIC (Grade 5–6 Alberta) ━━━━━',
+        '━━━ MATH DIAGNOSTIC (Grade 5-6 Alberta) ━━━━━',
         ...Object.entries(math).map(([qId, ans]) => `  ${qId}: ${ans}`),
         '',
         '━━━ ELA BASELINE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
@@ -60,14 +60,14 @@ export async function POST(req: NextRequest) {
         '━━━ READING COMPREHENSION ━━━━━━━━━━━━━━━━━━━',
         ...Object.entries(reading).map(([qId, ans]) => `  ${qId}: ${ans}`),
         '',
-        '— Review this data to set initial mastery baselines for this student. —',
+        '- Review this data to set initial mastery baselines for this student. -',
       ].join('\n');
 
       await prisma.teacherNote.create({
         data: {
           studentId: userId,
           teacherId: currentUser.assignedTeacherId,
-          tag: 'Needs Review — Onboarding Baseline',
+          tag: 'Needs Review - Onboarding Baseline',
           content: note,
         },
       });

@@ -6,7 +6,7 @@ const MODEL_NAME = 'gemini-2.0-flash';
 
 /**
  * POST /api/reading-tutor/comprehension
- * Handles comprehension chat — generates questions and evaluates answers.
+ * Handles comprehension chat - generates questions and evaluates answers.
  * action: 'start' | 'evaluate'
  */
 export async function POST(req: NextRequest) {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const greeting = String(parsed.greeting || "Nice reading! Let's talk about what you just read. 😊");
+      const greeting = String(parsed.greeting || "Nice reading! Let's talk about what you just read. ");
       const questions = Array.isArray(parsed.questions) ? parsed.questions : [];
 
       return NextResponse.json({ greeting, questions });
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
           generationConfig: {
             temperature: 0.4,
             maxOutputTokens: 512,
-            // NOT using responseMimeType: 'application/json' — it causes
+            // NOT using responseMimeType: 'application/json' - it causes
             // failures with long prompts on Gemini Flash
           },
         });
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        // Gemini responded but no JSON — use raw text if it looks like feedback
+        // Gemini responded but no JSON - use raw text if it looks like feedback
         const cleanedText = responseText
           .replace(/```[\s\S]*?```/g, '')
           .replace(/\{[\s\S]*?\}/g, '')
@@ -149,7 +149,7 @@ ${expectedAnswer ? `\nA correct answer would mention: "${expectedAnswer}"` : ''}
 
 Is the student's answer correct? Respond as JSON: {"feedback":"your 1-2 sentence response","isCorrect":true or false,"score":0 to 100}
 
-Be honest — if wrong, kindly say so. If correct but brief, ask for more detail.`;
+Be honest - if wrong, kindly say so. If correct but brief, ask for more detail.`;
 
         const result = await model.generateContent(simplePrompt);
         const text = result.response.text();
@@ -173,7 +173,7 @@ Be honest — if wrong, kindly say so. If correct but brief, ask for more detail
 
       // --- Attempt 3: Absolute server fallback (no AI) ---
       return NextResponse.json({
-        feedback: "Hmm, let me think about that one! Let's try the next question. 😊",
+        feedback: "Hmm, let me think about that one! Let's try the next question. ",
         isCorrect: false,
         score: 40,
         source: 'server-fallback',
@@ -185,7 +185,7 @@ Be honest — if wrong, kindly say so. If correct but brief, ask for more detail
     console.error('[API /reading-tutor/comprehension] Outer error:', error);
     return NextResponse.json({
       error: 'Comprehension failed',
-      feedback: "Oops, I had a little hiccup! Let's keep going. 😊",
+      feedback: "Oops, I had a little hiccup! Let's keep going. ",
       score: 40,
       source: 'error-fallback',
     }, { status: 200 }); // Return 200 so client uses the feedback instead of its own fallback

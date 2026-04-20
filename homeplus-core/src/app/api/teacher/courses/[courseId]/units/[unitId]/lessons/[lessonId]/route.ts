@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Lesson Detail — API Routes
+// Teacher Lesson Detail - API Routes
 // ============================================
 // PUT:    Update lesson metadata
 // DELETE: Delete lesson

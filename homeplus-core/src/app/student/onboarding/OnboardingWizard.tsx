@@ -1,16 +1,16 @@
 'use client';
 
 // ============================================
-// Onboarding Hub — Home Plus LMS
+// Onboarding Hub - Home Plus LMS
 // ============================================
 // Hub model: student sees 4 section cards.
 // They can complete each section in any order.
 // When all 4 are marked done, the "Enter Platform" button unlocks.
 // Sections:
-//   1. About Me      — nickname, interests, fun facts
-//   2. Math Check    — Gr 5 & 6 diagnostic (Alberta outcomes)
-//   3. ELA           — writing sample + conventions + story elements
-//   4. Reading       — passage comprehension check
+//   1. About Me      - nickname, interests, fun facts
+//   2. Math Check    - Gr 5 & 6 diagnostic (Alberta outcomes)
+//   3. ELA           - writing sample + conventions + story elements
+//   4. Reading       - passage comprehension check
 //
 // All responses autosave to /api/onboarding/progress.
 // Completion writes a teacher-facing baseline note.
@@ -29,10 +29,10 @@ interface SectionState {
 }
 
 // ─── Alberta Gr 5/6 Math Diagnostic ────────────────────────────────────────
-// Aligned to Alberta Program of Studies for Grades 5–6
+// Aligned to Alberta Program of Studies for Grades 5-6
 
 const MATH_QUESTIONS = [
-  // Grade 5 — Number
+  // Grade 5 - Number
   {
     id: 'm1', grade: 5, strand: 'Number',
     text: 'What is 3/4 + 1/4?',
@@ -85,11 +85,11 @@ const MATH_QUESTIONS = [
 
 // ─── Reading Passage ────────────────────────────────────────────────────────
 
-const READING_PASSAGE = `The Arctic fox is one of nature's most remarkable survivors. Its thick, white winter coat acts as camouflage in the snow and provides insulation against temperatures as cold as –50°C. In summer, the coat changes to brown or grey, blending in with the tundra. Arctic foxes are omnivores — they eat small animals like lemmings and voles, berries, insects, and even scraps left by polar bears.
+const READING_PASSAGE = `The Arctic fox is one of nature's most remarkable survivors. Its thick, white winter coat acts as camouflage in the snow and provides insulation against temperatures as cold as -50°C. In summer, the coat changes to brown or grey, blending in with the tundra. Arctic foxes are omnivores - they eat small animals like lemmings and voles, berries, insects, and even scraps left by polar bears.
 
 Unlike many animals, Arctic foxes do not hibernate. They remain active all winter, sometimes travelling hundreds of kilometres across sea ice in search of food. Their small, rounded ears reduce heat loss, and their heavily furred paws act like snowshoes.
 
-Despite surviving the harshest conditions on Earth, Arctic foxes face new challenges. Climate change is warming the Arctic faster than almost anywhere else on the planet. As temperatures rise, the red fox — a larger, more aggressive relative — is moving north into the Arctic fox's habitat. The two species compete for the same food, and the red fox usually wins.`;
+Despite surviving the harshest conditions on Earth, Arctic foxes face new challenges. Climate change is warming the Arctic faster than almost anywhere else on the planet. As temperatures rise, the red fox - a larger, more aggressive relative - is moving north into the Arctic fox's habitat. The two species compete for the same food, and the red fox usually wins.`;
 
 const READING_QUESTIONS = [
   {
@@ -129,7 +129,7 @@ const READING_QUESTIONS = [
     id: 'r4',
     text: 'According to the passage, which of these is a NEW challenge for Arctic foxes?',
     options: [
-      'Surviving temperatures of –50°C.',
+      'Surviving temperatures of -50°C.',
       'Finding enough food in winter.',
       'Competition from red foxes moving north.',
       'Travelling across sea ice.',
@@ -144,7 +144,7 @@ const ABOUT_QUESTIONS = [
   { id: 'nickname', label: 'What do you like to be called?', placeholder: 'e.g. Liv, Matt, Ava', type: 'text' },
   { id: 'favourite_activity', label: 'What is your favourite activity or hobby outside of school?', placeholder: 'e.g. soccer, drawing, gaming, riding horses', type: 'text' },
   { id: 'favourite_subject', label: 'What subject do you like most?', type: 'choice', options: ['Math', 'Science', 'English', 'Social Studies', 'PE / Sports', 'Art', 'I\'m not sure yet'] },
-  { id: 'learning_goal', label: 'What is ONE thing you hope to get better at this year?', placeholder: 'Write anything — big or small!', type: 'text' },
+  { id: 'learning_goal', label: 'What is ONE thing you hope to get better at this year?', placeholder: 'Write anything - big or small!', type: 'text' },
   { id: 'fun_fact', label: 'Share one fun fact about yourself.', placeholder: 'e.g. I have three cats, I like to bake, I can juggle', type: 'text' },
 ];
 
@@ -161,7 +161,7 @@ function SectionCard({
       className={`${styles.sectionCard} ${done ? styles.sectionCardDone : ''} ${locked ? styles.sectionCardLocked : ''}`}
       onClick={locked ? undefined : onClick}
       disabled={locked}
-      aria-label={`${title} — ${done ? 'Completed' : 'Start'}`}
+      aria-label={`${title} - ${done ? 'Completed' : 'Start'}`}
     >
       <div className={styles.sectionCardIcon}>{icon}</div>
       <div className={styles.sectionCardBody}>
@@ -169,7 +169,7 @@ function SectionCard({
         <div className={styles.sectionCardDesc}>{desc}</div>
       </div>
       <div className={styles.sectionCardStatus}>
-        {done ? <span className={styles.doneChip}>✓ Done</span> : <span className={styles.startChip}>{locked ? '🔒' : 'Start →'}</span>}
+        {done ? <span className={styles.doneChip}>✓ Done</span> : <span className={styles.startChip}>{locked ? '' : 'Start ->'}</span>}
       </div>
     </button>
   );
@@ -259,7 +259,7 @@ export default function OnboardingHub() {
       <div className={styles.hubContainer}>
         <div className={styles.hubCard}>
           <div className={styles.hubIntro}>
-            <div className={styles.hubWelcome}>Welcome to Home Plus! 🎉</div>
+            <div className={styles.hubWelcome}>Welcome to Home Plus! </div>
             <h1 className={styles.hubTitle}>Let&apos;s get you set up</h1>
             <p className={styles.hubSubtitle}>
               Complete all four sections below so your teacher can get to know you and where you&apos;re starting from.
@@ -275,12 +275,12 @@ export default function OnboardingHub() {
 
           <div className={styles.sectionGrid}>
             <SectionCard
-              icon="😊" title="About Me" done={sections.about.done} locked={false}
+              icon="" title="About Me" done={sections.about.done} locked={false}
               desc="Tell us your nickname and a few things you love."
               onClick={() => setActiveSection('about')}
             />
             <SectionCard
-              icon="🔢" title="Math Check" done={sections.math.done} locked={false}
+              icon="" title="Math Check" done={sections.math.done} locked={false}
               desc="Quick questions from Grade 5 & 6 Alberta math."
               onClick={() => setActiveSection('math')}
             />
@@ -290,7 +290,7 @@ export default function OnboardingHub() {
               onClick={() => setActiveSection('ela')}
             />
             <SectionCard
-              icon="📖" title="Reading Check" done={sections.reading.done} locked={false}
+              icon="" title="Reading Check" done={sections.reading.done} locked={false}
               desc="Read a short passage and answer comprehension questions."
               onClick={() => setActiveSection('reading')}
             />
@@ -298,13 +298,13 @@ export default function OnboardingHub() {
 
           {allDone ? (
             <div className={styles.finishArea}>
-              <p className={styles.finishNote}>✅ All sections complete — you&apos;re ready to go!</p>
+              <p className={styles.finishNote}>✅ All sections complete - you&apos;re ready to go!</p>
               <button
                 className={styles.btnFinish}
                 onClick={handleFinish}
                 disabled={finishing}
               >
-                {finishing ? 'Setting up your account…' : 'Enter Home Plus →'}
+                {finishing ? 'Setting up your account…' : 'Enter Home Plus ->'}
               </button>
             </div>
           ) : (
@@ -393,7 +393,7 @@ function AboutSection({ initial, onComplete, onBack }: {
   const set = (id: string, val: string) => setAnswers(prev => ({ ...prev, [id]: val }));
 
   return (
-    <SectionShell title="About Me" icon="😊" progress={answered} total={ABOUT_QUESTIONS.length} onBack={onBack}>
+    <SectionShell title="About Me" icon="" progress={answered} total={ABOUT_QUESTIONS.length} onBack={onBack}>
       <div className={styles.questionList}>
         {ABOUT_QUESTIONS.map((q, i) => (
           <div key={q.id} className={styles.questionBlock}>
@@ -431,7 +431,7 @@ function AboutSection({ initial, onComplete, onBack }: {
           disabled={!allAnswered}
           onClick={() => onComplete(answers)}
         >
-          Save & Return →
+          Save & Return ->
         </button>
       </div>
     </SectionShell>
@@ -452,9 +452,9 @@ function MathSection({ initial, onComplete, onBack }: {
   const allAnswered = answered === MATH_QUESTIONS.length;
 
   return (
-    <SectionShell title="Math Check" icon="🔢" progress={answered} total={MATH_QUESTIONS.length} onBack={onBack}>
+    <SectionShell title="Math Check" icon="" progress={answered} total={MATH_QUESTIONS.length} onBack={onBack}>
       <p className={styles.sectionIntro}>
-        These questions come from Grade 5 and 6 Alberta math. There are no trick questions — just do your best!
+        These questions come from Grade 5 and 6 Alberta math. There are no trick questions - just do your best!
         Your teacher reviews these results, not a computer grade.
       </p>
       <div className={styles.questionList}>
@@ -482,7 +482,7 @@ function MathSection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save & Return →
+          Save & Return ->
         </button>
       </div>
     </SectionShell>
@@ -500,7 +500,7 @@ const ELA_WRITING_TASKS = [
     id: 'writing_sample',
     title: 'Writing Sample',
     instruction: 'Write a paragraph about a time you felt proud of something you did. Try to include a beginning, middle, and end.',
-    hint: "Aim for at least 5 sentences. Don't worry about being perfect — just write!",
+    hint: "Aim for at least 5 sentences. Don't worry about being perfect - just write!",
     minWords: 40,
   },
   {
@@ -554,7 +554,7 @@ const FIGURATIVE_LANGUAGE_QUESTIONS = [
   },
 ];
 
-// ── Prefix & Suffix (MC — choose the correct meaning) ───────────────────────
+// ── Prefix & Suffix (MC - choose the correct meaning) ───────────────────────
 
 const PREFIX_SUFFIX_QUESTIONS = [
   {
@@ -624,11 +624,11 @@ function ELASection({ initial, onComplete, onBack }: {
     <SectionShell title="ELA Baseline" icon="✏️" progress={answered} total={TOTAL_ELA_ITEMS} onBack={onBack}>
       <p className={styles.sectionIntro}>
         Three parts: writing tasks, figurative language, and word parts (prefixes &amp; suffixes).
-        Your teacher reviews the writing — just do your best on everything!
+        Your teacher reviews the writing - just do your best on everything!
       </p>
 
       {/* ── Part 1: Writing Tasks ── */}
-      <div className={styles.partHeading}>Part 1 — Writing Tasks</div>
+      <div className={styles.partHeading}>Part 1 - Writing Tasks</div>
       <div className={styles.questionList}>
         {ELA_WRITING_TASKS.map((step) => {
           itemIdx++;
@@ -641,7 +641,7 @@ function ELASection({ initial, onComplete, onBack }: {
                 <span className={styles.strandBadge}>{step.title}</span>
               </div>
               <div className={styles.questionLabel} style={{ whiteSpace: 'pre-line' }}>{step.instruction}</div>
-              <p className={styles.questionHint}>💡 {step.hint}</p>
+              <p className={styles.questionHint}> {step.hint}</p>
               <textarea
                 className={styles.textArea}
                 value={answers[step.id] || ''}
@@ -651,7 +651,7 @@ function ELASection({ initial, onComplete, onBack }: {
                 spellCheck={false}
               />
               <div className={styles.wordCount} style={{ color: met ? '#059669' : '#94a3b8' }}>
-                {wordCount} words{!met && ` — aim for ${step.minWords}+ words`}
+                {wordCount} words{!met && ` - aim for ${step.minWords}+ words`}
               </div>
             </div>
           );
@@ -659,7 +659,7 @@ function ELASection({ initial, onComplete, onBack }: {
       </div>
 
       {/* ── Part 2: Figurative Language ── */}
-      <div className={styles.partHeading}>Part 2 — Figurative Language</div>
+      <div className={styles.partHeading}>Part 2 - Figurative Language</div>
       <div className={styles.questionList}>
         {FIGURATIVE_LANGUAGE_QUESTIONS.map((q) => {
           itemIdx++;
@@ -687,7 +687,7 @@ function ELASection({ initial, onComplete, onBack }: {
       </div>
 
       {/* ── Part 3: Prefix / Suffix ── */}
-      <div className={styles.partHeading}>Part 3 — Word Parts: Prefixes &amp; Suffixes</div>
+      <div className={styles.partHeading}>Part 3 - Word Parts: Prefixes &amp; Suffixes</div>
       <div className={styles.questionList}>
         {PREFIX_SUFFIX_QUESTIONS.map((q) => {
           itemIdx++;
@@ -718,7 +718,7 @@ function ELASection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save &amp; Return →
+          Save &amp; Return ->
         </button>
       </div>
     </SectionShell>
@@ -742,7 +742,7 @@ function ReadingSection({ initial, onComplete, onBack }: {
   const allAnswered = answered === READING_QUESTIONS.length;
 
   return (
-    <SectionShell title="Reading Check" icon="📖" progress={answered} total={READING_QUESTIONS.length} onBack={onBack}>
+    <SectionShell title="Reading Check" icon="" progress={answered} total={READING_QUESTIONS.length} onBack={onBack}>
       <p className={styles.sectionIntro}>
         Read the passage below, then answer the questions. You can hide/show the passage while you answer.
       </p>
@@ -786,7 +786,7 @@ function ReadingSection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save & Return →
+          Save & Return ->
         </button>
       </div>
     </SectionShell>

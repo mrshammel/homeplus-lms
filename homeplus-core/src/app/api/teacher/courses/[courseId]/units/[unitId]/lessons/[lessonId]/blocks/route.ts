@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Lesson Block CRUD API — Home Plus LMS
+// Teacher Lesson Block CRUD API - Home Plus LMS
 // ============================================
 // GET: list blocks for a lesson
 // POST: create a new block
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   return NextResponse.json(block);
 }
 
-// PUT — update a block (via body.blockId)
+// PUT - update a block (via body.blockId)
 export async function PUT(req: NextRequest) {
   const teacherId = await getTeacherIdOrNull();
   if (!teacherId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest) {
   return NextResponse.json(updated);
 }
 
-// DELETE — delete a block (via query param)
+// DELETE - delete a block (via query param)
 export async function DELETE(req: NextRequest) {
   const teacherId = await getTeacherIdOrNull();
   if (!teacherId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

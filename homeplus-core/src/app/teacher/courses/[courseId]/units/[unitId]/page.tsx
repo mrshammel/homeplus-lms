@@ -52,8 +52,8 @@ export default function UnitEditorPage() {
   const [editLessonTitle, setEditLessonTitle] = useState('');
   const [editLessonSubtitle, setEditLessonSubtitle] = useState('');
 
-  const ICONS = ['🌿', '🌱', '🌡️', '🏗️', '📖', '🔬', '🔢', '🌍', '🎨', '🎵', '💻', '📐', '🧪', '🗺️',
-    '✍️', '📊', '🔗', '🧬', '⚡', '🎯', '🗣️', '🔍', '✏️', '📏'];
+  const ICONS = ['', '', '️', '️', '', '', '', '', '', '', '', '', '', '️',
+    '✍️', 'Chart:', '', '', '⚡', '', '️', '', '✏️', ''];
 
   const fetchCourse = useCallback(async () => {
     try {
@@ -202,7 +202,7 @@ export default function UnitEditorPage() {
       {/* ===== Unit Settings ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e293b', margin: '0 0 14px' }}>
-          📝 Unit Settings
+           Unit Settings
         </h3>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
           <div style={{ flex: '1 1 200px' }}>
@@ -212,7 +212,7 @@ export default function UnitEditorPage() {
           <div style={{ flex: '0 0 80px' }}>
             <label style={labelStyle}>Icon</label>
             <select value={editIcon} onChange={(e) => setEditIcon(e.target.value)} style={inputStyle}>
-              <option value="">—</option>
+              <option value="">-</option>
               {ICONS.map((i) => (<option key={i} value={i}>{i}</option>))}
             </select>
           </div>
@@ -223,7 +223,7 @@ export default function UnitEditorPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button onClick={handleSaveUnit} disabled={saving} style={{ ...btnPrimary, opacity: saving ? 0.6 : 1 }}>
-            {saving ? 'Saving...' : '💾 Save Changes'}
+            {saving ? 'Saving...' : ' Save Changes'}
           </button>
           {saveMsg && <span style={{ fontSize: '0.82rem', color: saveMsg.includes('✓') ? '#059669' : '#dc2626', fontWeight: 600 }}>{saveMsg}</span>}
         </div>
@@ -232,7 +232,7 @@ export default function UnitEditorPage() {
       {/* ===== Lessons Section ===== */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>
-          📄 Lessons ({lessons.length})
+           Lessons ({lessons.length})
         </h3>
         <button
           onClick={() => setShowAddLesson(!showAddLesson)}
@@ -320,7 +320,7 @@ export default function UnitEditorPage() {
                       <p style={{ fontSize: '0.76rem', color: '#64748b', margin: '2px 0 0' }}>{lesson.subtitle}</p>
                     )}
                     <p style={{ fontSize: '0.72rem', color: '#94a3b8', margin: '3px 0 0' }}>
-                      {lesson.activityCount} activit{lesson.activityCount !== 1 ? 'ies' : 'y'} · Order: {lesson.order}
+                      {lesson.activityCount} activit{lesson.activityCount !== 1 ? 'ies' : 'y'} - Order: {lesson.order}
                     </p>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -333,7 +333,7 @@ export default function UnitEditorPage() {
                         textDecoration: 'none',
                       }}
                     >
-                      📝 Content
+                       Content
                     </Link>
                     <button
                       onClick={() => startEditLesson(lesson)}
@@ -355,7 +355,7 @@ export default function UnitEditorPage() {
                         cursor: 'pointer',
                       }}
                     >
-                      🗑️
+                      ️
                     </button>
                   </div>
                 </div>

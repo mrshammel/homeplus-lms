@@ -11,14 +11,14 @@ import type { AvailableContext } from '@/lib/teacher-context';
 // ---------- Constants ----------
 
 const NAV_ITEMS = [
-  { href: '/teacher', icon: '📊', label: 'Overview' },
-  { href: '/teacher/students', icon: '👥', label: 'Students' },
+  { href: '/teacher', icon: 'Chart:', label: 'Overview' },
+  { href: '/teacher/students', icon: '', label: 'Students' },
   { href: '/teacher/pacing', icon: '⏱️', label: 'Pacing' },
-  { href: '/teacher/mastery', icon: '🧠', label: 'Mastery' },
-  { href: '/teacher/submissions', icon: '📝', label: 'Submissions' },
-  { href: '/teacher/onboarding', icon: '🎒', label: 'Onboarding' },
-  { href: '/teacher/notes', icon: '📋', label: 'Notes' },
-  { href: '/teacher/courses', icon: '📚', label: 'Course Builder' },
+  { href: '/teacher/mastery', icon: '', label: 'Mastery' },
+  { href: '/teacher/submissions', icon: '', label: 'Submissions' },
+  { href: '/teacher/onboarding', icon: 'Student:', label: 'Onboarding' },
+  { href: '/teacher/notes', icon: 'Form:', label: 'Notes' },
+  { href: '/teacher/courses', icon: 'Books:', label: 'Course Builder' },
 ];
 
 // ---------- Props ----------
@@ -42,7 +42,7 @@ export default function TeacherLayoutClient({ children, assignedContexts, pendin
   const currentGrade = searchParams.get('grade') || '';
   const currentSubject = searchParams.get('subject') || '';
 
-  // Find the active context — validated against assigned contexts
+  // Find the active context - validated against assigned contexts
   const activeContext = useMemo(() => {
     if (assignedContexts.length === 0) return null;
 
@@ -66,7 +66,7 @@ export default function TeacherLayoutClient({ children, assignedContexts, pendin
     : '';
 
   const contextLabel = activeContext
-    ? `Grade ${activeContext.grade} · ${activeContext.subjectName}`
+    ? `Grade ${activeContext.grade} - ${activeContext.subjectName}`
     : 'No cohort assigned';
 
   const today = new Date().toLocaleDateString('en-CA', {
@@ -176,7 +176,7 @@ export default function TeacherLayoutClient({ children, assignedContexts, pendin
         {/* Context Selector Bar */}
         <div className={styles.contextBar}>
           <div className={styles.contextLeft}>
-            <span className={styles.contextIcon}>{activeContext?.subjectIcon || '📚'}</span>
+            <span className={styles.contextIcon}>{activeContext?.subjectIcon || 'Books:'}</span>
             <span className={styles.contextLabel}>{contextLabel}</span>
           </div>
           <div className={styles.contextSelectors}>
@@ -190,14 +190,14 @@ export default function TeacherLayoutClient({ children, assignedContexts, pendin
                   const key = `${ctx.grade}-${ctx.subjectSlug}`;
                   return (
                     <option key={key} value={key}>
-                      {ctx.subjectIcon} Grade {ctx.grade} · {ctx.subjectName}
+                      {ctx.subjectIcon} Grade {ctx.grade} - {ctx.subjectName}
                     </option>
                   );
                 })}
               </select>
             ) : (
               <span style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                {activeContext?.subjectIcon} Grade {activeContext?.grade} · {activeContext?.subjectName}
+                {activeContext?.subjectIcon} Grade {activeContext?.grade} - {activeContext?.subjectName}
               </span>
             )}
           </div>

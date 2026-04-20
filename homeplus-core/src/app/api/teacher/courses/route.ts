@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Course CRUD — API Routes
+// Teacher Course CRUD - API Routes
 // ============================================
 // GET:  List all courses (for authenticated teacher)
 // POST: Create a new course
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     data: {
       name: name.trim(),
       gradeLevel,
-      icon: icon || '📚',
+      icon: icon || 'Books:',
       order: (maxOrder._max.order ?? -1) + 1,
       active: true,
     },

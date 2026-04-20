@@ -1,5 +1,5 @@
 // ============================================
-// Student Course Detail — Data Helper
+// Student Course Detail - Data Helper
 // ============================================
 // Fetches a single course with unit-level progress
 // for the /student/courses/[courseId] page.
@@ -307,32 +307,32 @@ function getDemoCourseDetail(courseId: string): CourseDetail | null {
   const demoCourses: Record<string, { name: string; icon: string; units: { title: string; icon: string; desc: string; lessonCount: number; completed: number }[] }> = {
     'sci-7': {
       name: 'Science',
-      icon: '🔬',
+      icon: '',
       units: [
-        { title: 'Unit A — Interactions & Ecosystems', icon: '🌿', desc: 'Explore how living things interact within ecosystems', lessonCount: 6, completed: 6 },
-        { title: 'Unit B — Plants for Food & Fibre', icon: '🌱', desc: 'How plants are grown and used to meet human needs', lessonCount: 6, completed: 6 },
-        { title: 'Unit C — Heat & Temperature', icon: '🌡️', desc: 'Understanding heat transfer and thermal energy', lessonCount: 6, completed: 2 },
-        { title: 'Unit D — Structures & Forces', icon: '🏗️', desc: 'Building structures that withstand forces', lessonCount: 6, completed: 0 },
+        { title: 'Unit A - Interactions & Ecosystems', icon: '', desc: 'Explore how living things interact within ecosystems', lessonCount: 6, completed: 6 },
+        { title: 'Unit B - Plants for Food & Fibre', icon: '', desc: 'How plants are grown and used to meet human needs', lessonCount: 6, completed: 6 },
+        { title: 'Unit C - Heat & Temperature', icon: '️', desc: 'Understanding heat transfer and thermal energy', lessonCount: 6, completed: 2 },
+        { title: 'Unit D - Structures & Forces', icon: '️', desc: 'Building structures that withstand forces', lessonCount: 6, completed: 0 },
       ],
     },
     'ela-7': {
       name: 'English Language Arts',
-      icon: '📖',
+      icon: '',
       units: [
-        { title: 'Unit 1 — Identity & Voice', icon: '🗣️', desc: 'Finding and expressing your personal voice', lessonCount: 5, completed: 5 },
-        { title: 'Unit 2 — Research & Inquiry', icon: '🔍', desc: 'Learning to research and evaluate sources', lessonCount: 5, completed: 3 },
-        { title: 'Unit 3 — Persuasion', icon: '✍️', desc: 'Crafting persuasive arguments and essays', lessonCount: 5, completed: 0 },
-        { title: 'Unit 4 — Literature Circles', icon: '📚', desc: 'Collaborative reading and discussion', lessonCount: 5, completed: 0 },
+        { title: 'Unit 1 - Identity & Voice', icon: '️', desc: 'Finding and expressing your personal voice', lessonCount: 5, completed: 5 },
+        { title: 'Unit 2 - Research & Inquiry', icon: '', desc: 'Learning to research and evaluate sources', lessonCount: 5, completed: 3 },
+        { title: 'Unit 3 - Persuasion', icon: '✍️', desc: 'Crafting persuasive arguments and essays', lessonCount: 5, completed: 0 },
+        { title: 'Unit 4 - Literature Circles', icon: 'Books:', desc: 'Collaborative reading and discussion', lessonCount: 5, completed: 0 },
       ],
     },
     'math-7': {
       name: 'Mathematics',
-      icon: '🔢',
+      icon: '',
       units: [
-        { title: 'Unit 1 — Number Sense', icon: '🔢', desc: 'Building strong number sense foundations', lessonCount: 5, completed: 5 },
-        { title: 'Unit 2 — Fractions & Decimals', icon: '📐', desc: 'Operations with fractions and decimals', lessonCount: 6, completed: 6 },
-        { title: 'Unit 3 — Patterns & Algebra', icon: '📊', desc: 'Recognizing patterns and algebraic thinking', lessonCount: 5, completed: 5 },
-        { title: 'Unit 4 — Geometry', icon: '📏', desc: 'Shapes, area, perimeter, and spatial reasoning', lessonCount: 6, completed: 2 },
+        { title: 'Unit 1 - Number Sense', icon: '', desc: 'Building strong number sense foundations', lessonCount: 5, completed: 5 },
+        { title: 'Unit 2 - Fractions & Decimals', icon: '', desc: 'Operations with fractions and decimals', lessonCount: 6, completed: 6 },
+        { title: 'Unit 3 - Patterns & Algebra', icon: 'Chart:', desc: 'Recognizing patterns and algebraic thinking', lessonCount: 5, completed: 5 },
+        { title: 'Unit 4 - Geometry', icon: '', desc: 'Shapes, area, perimeter, and spatial reasoning', lessonCount: 6, completed: 2 },
       ],
     },
   };
@@ -357,7 +357,7 @@ function getDemoCourseDetail(courseId: string): CourseDetail | null {
     });
 
     const unitStatus = (u.completed === u.lessonCount ? 'completed' : u.completed > 0 ? 'in-progress' : 'not-started') as UnitDetail['unitStatus'];
-    // Demo: sequential gating — unit unlocked if previous is completed
+    // Demo: sequential gating - unit unlocked if previous is completed
     const prevCompleted = i === 0 || demoData.units[i - 1].completed === demoData.units[i - 1].lessonCount;
     const demoUnlocked = i === 0 || prevCompleted;
     const demoDisplay: UnitDisplayState = !demoUnlocked ? 'LOCKED'

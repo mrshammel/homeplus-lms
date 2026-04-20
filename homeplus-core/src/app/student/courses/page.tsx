@@ -10,7 +10,7 @@ export default async function CoursesPage() {
   return (
     <>
       <section className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>📚 My Courses</h2>
+        <h2 className={styles.welcomeTitle}>Books: My Courses</h2>
         <p className={styles.welcomeSubtext}>{enrollments.length} course{enrollments.length !== 1 ? 's' : ''} enrolled</p>
       </section>
 
@@ -49,14 +49,14 @@ export default async function CoursesPage() {
                 {course.progressPercent === 100 ? (
                   <span className={`${styles.statusChip} ${styles.statusComplete}`}>✅ Complete</span>
                 ) : course.progressPercent > 0 ? (
-                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}>📝 In Progress</span>
+                  <span className={`${styles.statusChip} ${styles.statusInProgress}`}> In Progress</span>
                 ) : (
-                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start →</span>
+                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start -></span>
                 )}
               </div>
 
               <div className={styles.courseCardCta}>
-                {course.progressPercent > 0 ? 'Continue →' : 'Start Course →'}
+                {course.progressPercent > 0 ? 'Continue ->' : 'Start Course ->'}
               </div>
             </div>
           </Link>

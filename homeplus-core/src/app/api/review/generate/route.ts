@@ -1,11 +1,11 @@
 // ============================================
-// Review Generate API — Home Plus LMS (Phase 4)
+// Review Generate API - Home Plus LMS (Phase 4)
 // ============================================
 // POST: Generates review queue items for students.
 // Can be called via cron or on-demand.
 //
 // Body:
-//   { studentId?: string } — if omitted, generates for ALL students
+//   { studentId?: string } - if omitted, generates for ALL students
 //
 // Response:
 //   { studentsProcessed: number, itemsCreated: number }

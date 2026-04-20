@@ -1,5 +1,5 @@
 // ============================================
-// Retrieval Engine — Home Plus LMS
+// Retrieval Engine - Home Plus LMS
 // ============================================
 // Generates warm-up retrieval question sets for lessons.
 // Sources questions from the QuizQuestion bank, linked to skills

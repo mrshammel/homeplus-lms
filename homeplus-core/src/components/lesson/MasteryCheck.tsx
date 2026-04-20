@@ -1,12 +1,12 @@
 'use client';
 
 // ============================================
-// Mastery Check — Home Plus LMS
+// Mastery Check - Home Plus LMS
 // ============================================
 // One-at-a-time mastery quiz with:
 // - Random question selection from an outcome-tagged bank
 // - Per-question immediate grading + feedback
-// - Two-strike reteach: 2 wrong on same outcome → mini-lesson
+// - Two-strike reteach: 2 wrong on same outcome -> mini-lesson
 // - Fresh questions on retry (re-randomized from bank)
 // - Locked until lesson is complete (controlled by parent)
 
@@ -167,7 +167,7 @@ export default function MasteryCheck({
 
     const nextIndex = currentIndex + 1;
     if (nextIndex >= quizQuestions.length) {
-      // Quiz complete — calculate final result
+      // Quiz complete - calculate final result
       const total = quizQuestions.length;
       const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
       const passed = score >= config.passPercent;
@@ -181,8 +181,8 @@ export default function MasteryCheck({
         missedOutcomes,
         needsReteach: false,
         feedback: passed
-          ? `🎉 Mastered! You scored ${score}%. Great work!`
-          : `You scored ${score}%. You need ${config.passPercent}% to pass. Try again — you'll get different questions.`,
+          ? ` Mastered! You scored ${score}%. Great work!`
+          : `You scored ${score}%. You need ${config.passPercent}% to pass. Try again - you'll get different questions.`,
         canRetry: !passed,
       };
       setFinalResult(result);
@@ -210,7 +210,7 @@ export default function MasteryCheck({
     return (
       <div className={styles.blockCard} style={{ textAlign: 'center', padding: 24 }}>
         <p style={{ fontSize: '0.88rem', color: '#94a3b8' }}>
-          📝 Mastery check questions coming soon.
+           Mastery check questions coming soon.
         </p>
       </div>
     );
@@ -220,7 +220,7 @@ export default function MasteryCheck({
   if (locked) {
     return (
       <div className={styles.blockCard} style={{ textAlign: 'center', padding: 32 }}>
-        <p style={{ fontSize: '1.5rem', margin: '0 0 12px' }}>🔒</p>
+        <p style={{ fontSize: '1.5rem', margin: '0 0 12px' }}></p>
         <p style={{ fontSize: '0.92rem', fontWeight: 700, color: '#475569', margin: '0 0 6px' }}>
           Mastery Check Locked
         </p>
@@ -236,7 +236,7 @@ export default function MasteryCheck({
     return (
       <div className={styles.blockCard} style={{ textAlign: 'center', padding: 32 }}>
         <p style={{ fontSize: '1.3rem', margin: '0 0 12px' }}>
-          {subjectMode === 'SCIENCE' ? '🔬' : subjectMode === 'MATH' ? '🔢' : '📝'}
+          {subjectMode === 'SCIENCE' ? '' : subjectMode === 'MATH' ? '' : ''}
         </p>
         <p style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1e293b', margin: '0 0 8px' }}>
           {subjectMode === 'SCIENCE'
@@ -249,7 +249,7 @@ export default function MasteryCheck({
           You&apos;ll answer {Math.min(QUESTIONS_PER_ATTEMPT, questions.length)} questions one at a time.
           <br />Score {config.passPercent}% or higher to continue.
           <br />
-          <span style={{ fontSize: '0.8rem' }}>Questions are randomly selected — each attempt is different.</span>
+          <span style={{ fontSize: '0.8rem' }}>Questions are randomly selected - each attempt is different.</span>
         </p>
         <button
           className={styles.btnPrimary}
@@ -287,7 +287,7 @@ export default function MasteryCheck({
             style={{ background: '#d97706' }}
             onClick={startQuiz}
           >
-            🔄 Try Again (New Questions)
+             Try Again (New Questions)
           </button>
         )}
       </div>
@@ -411,7 +411,7 @@ export default function MasteryCheck({
             </p>
             {lastFeedback.explanation && (
               <p style={{ fontSize: '0.84rem', color: '#475569', margin: 0, lineHeight: 1.5 }}>
-                💡 {lastFeedback.explanation}
+                 {lastFeedback.explanation}
               </p>
             )}
           </div>
@@ -421,10 +421,10 @@ export default function MasteryCheck({
             onClick={handleNext}
           >
             {reteachTriggered
-              ? '🔄 Go to Targeted Review'
+              ? ' Go to Targeted Review'
               : currentIndex + 1 >= quizQuestions.length
-              ? '📊 See Results'
-              : 'Next Question →'}
+              ? 'Chart: See Results'
+              : 'Next Question ->'}
           </button>
         </div>
       )}

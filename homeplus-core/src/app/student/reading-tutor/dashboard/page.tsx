@@ -49,7 +49,7 @@ export default function ReadingDashboard() {
       <div className={styles.tutorRoot}>
         <div className={styles.card}>
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📊</div>
+            <div className={styles.emptyIcon}>Chart:</div>
             <h3>Loading your dashboard...</h3>
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function ReadingDashboard() {
       <div className={styles.tutorRoot}>
         <div className={styles.card}>
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📊</div>
+            <div className={styles.emptyIcon}>Chart:</div>
             <h3>Your Reading Dashboard</h3>
             <p>
               Complete your first reading session and your progress will show up here!
@@ -81,22 +81,22 @@ export default function ReadingDashboard() {
     <div className={styles.tutorRoot}>
       {/* Header */}
       <div className={styles.heroCard}>
-        <div className={styles.heroAvatar}>📊</div>
+        <div className={styles.heroAvatar}>Chart:</div>
         <div className={styles.heroContent}>
           <h2>My Reading Dashboard</h2>
-          <p>Here&apos;s how you&apos;re doing — every session counts! Remember, mistakes just mean your brain is growing. 🧠</p>
+          <p>Here&apos;s how you&apos;re doing - every session counts! Remember, mistakes just mean your brain is growing. </p>
         </div>
       </div>
 
       {/* Quick Stats */}
       <div className={styles.statsRow}>
         <div className={styles.statCard}>
-          <div className={styles.statIcon}>🔥</div>
+          <div className={styles.statIcon}></div>
           <div className={styles.statValue}>{data.streak}</div>
           <div className={styles.statLabel}>Day Streak</div>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statIcon}>🎯</div>
+          <div className={styles.statIcon}></div>
           <div className={styles.statValue}>{Math.round(data.avgAccuracy)}%</div>
           <div className={styles.statLabel}>Avg Accuracy</div>
         </div>
@@ -106,18 +106,18 @@ export default function ReadingDashboard() {
           <div className={styles.statLabel}>Avg WPM</div>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statIcon}>📚</div>
+          <div className={styles.statIcon}>Books:</div>
           <div className={styles.statValue}>{data.currentLexile}L</div>
           <div className={styles.statLabel}>Reading Level</div>
         </div>
       </div>
 
       <div className={styles.dashGrid}>
-        {/* Left Column — Progress */}
+        {/* Left Column - Progress */}
         <div>
           {/* Accuracy Trend */}
           <div className={styles.card}>
-            <h3>📈 My Accuracy Over Time</h3>
+            <h3> My Accuracy Over Time</h3>
             {data.accuracyTrend.length > 1 ? (
               <div style={{ display: 'flex', alignItems: 'end', height: '120px', gap: '4px', padding: '8px 0' }}>
                 {data.accuracyTrend.map((val, i) => (
@@ -137,14 +137,14 @@ export default function ReadingDashboard() {
               </div>
             ) : (
               <div className={styles.chartPlaceholder}>
-                Keep reading to see your progress chart grow! 📊
+                Keep reading to see your progress chart grow! Chart:
               </div>
             )}
           </div>
 
           {/* Session History */}
           <div className={styles.card}>
-            <h3>📅 Session History</h3>
+            <h3> Session History</h3>
             <div className={styles.sessionList}>
               {data.sessions.map((s) => (
                 <div key={s.id} className={styles.sessionItem}>
@@ -164,11 +164,11 @@ export default function ReadingDashboard() {
           </div>
         </div>
 
-        {/* Right Column — Words & Focus */}
+        {/* Right Column - Words & Focus */}
         <div>
           {/* Words I'm Working On */}
           <div className={styles.card}>
-            <h3>📝 Words I&apos;m Working On</h3>
+            <h3> Words I&apos;m Working On</h3>
             {data.recentWords.length > 0 ? (
               <div className={styles.wordList}>
                 {data.recentWords.map((w, i) => (
@@ -189,14 +189,14 @@ export default function ReadingDashboard() {
               </div>
             ) : (
               <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
-                No tricky words yet — you&apos;re doing great! 🌟
+                No tricky words yet - you&apos;re doing great! 
               </p>
             )}
           </div>
 
           {/* Total Sessions */}
           <div className={styles.card}>
-            <h3>🏆 Reading Journey</h3>
+            <h3> Reading Journey</h3>
             <div style={{ textAlign: 'center', padding: '16px' }}>
               <div style={{ fontSize: '3rem', fontWeight: 800, color: '#7c5ce0' }}>
                 {data.totalSessions}
@@ -206,12 +206,12 @@ export default function ReadingDashboard() {
               </div>
               <div style={{ marginTop: '12px', fontSize: '0.9rem', color: '#475569' }}>
                 {data.totalSessions < 5
-                  ? '🌱 Just getting started — keep going!'
+                  ? ' Just getting started - keep going!'
                   : data.totalSessions < 15
-                    ? '🌿 You\'re building a great habit!'
+                    ? ' You\'re building a great habit!'
                     : data.totalSessions < 30
-                      ? '🌳 Look at you grow! Mrs. Hammel is proud!'
-                      : '🏆 Reading champion! You are amazing!'}
+                      ? ' Look at you grow! Mrs. Hammel is proud!'
+                      : ' Reading champion! You are amazing!'}
               </div>
             </div>
           </div>

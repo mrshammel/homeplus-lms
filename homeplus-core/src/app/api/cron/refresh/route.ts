@@ -1,5 +1,5 @@
 // ============================================
-// Background Cron API — Home Plus LMS (Phase 6)
+// Background Cron API - Home Plus LMS (Phase 6)
 // ============================================
 // POST: Runs all background maintenance tasks:
 //   1. Refresh all student summaries

@@ -115,7 +115,7 @@ export default function EnrollmentPanel({ studentId, studentName }: Props) {
     return <div className={styles.loading}>Loading enrollment data…</div>;
   }
 
-  // Grades with enrolled subjects — for the current-courses summary
+  // Grades with enrolled subjects - for the current-courses summary
   const sortedEnrolled = [...enrolled].sort(
     (a, b) => a.gradeLevel - b.gradeLevel || a.name.localeCompare(b.name)
   );
@@ -134,7 +134,7 @@ export default function EnrollmentPanel({ studentId, studentName }: Props) {
       {/* Current enrollments summary */}
       <div className={styles.currentSummary}>
         {sortedEnrolled.length === 0 ? (
-          <span className={styles.noEnrollments}>No courses assigned yet — check boxes below to enroll.</span>
+          <span className={styles.noEnrollments}>No courses assigned yet - check boxes below to enroll.</span>
         ) : (
           <div className={styles.chips}>
             {sortedEnrolled.map((e) => (
@@ -165,7 +165,7 @@ export default function EnrollmentPanel({ studentId, studentName }: Props) {
                 <label
                   key={subject.id}
                   className={`${styles.subjectRow} ${checked ? styles.subjectChecked : ''} ${isSaving ? styles.subjectSaving : ''}`}
-                  title={isLast ? 'Cannot remove — student must have at least one course' : ''}
+                  title={isLast ? 'Cannot remove - student must have at least one course' : ''}
                 >
                   <input
                     type="checkbox"

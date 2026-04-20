@@ -1,12 +1,12 @@
 // ============================================
-// Review Submit API — Home Plus LMS (Phase 4)
+// Review Submit API - Home Plus LMS (Phase 4)
 // ============================================
 // POST: Processes a student's review answer(s).
 // Records evidence, updates mastery, refreshes summaries.
 //
 // Body:
 //   {
-//     itemId: string,          — ReviewQueueItem ID
+//     itemId: string,          - ReviewQueueItem ID
 //     answers: { questionId: string, response: string }[]
 //   }
 //
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
         if (isCorrect) correct++;
       }
     } else {
-      // No answers — treat as skipped (0/1)
+      // No answers - treat as skipped (0/1)
       total = 1;
       correct = 0;
     }
@@ -119,9 +119,9 @@ export async function POST(req: NextRequest) {
     let feedback: string;
     if (passed) {
       if (correct === total) {
-        feedback = `Perfect! You got all ${total} question${total !== 1 ? 's' : ''} right. 🎉`;
+        feedback = `Perfect! You got all ${total} question${total !== 1 ? 's' : ''} right. `;
       } else {
-        feedback = `Nice work! You got ${correct}/${total} correct. Keep it up! 💪`;
+        feedback = `Nice work! You got ${correct}/${total} correct. Keep it up! `;
       }
     } else {
       feedback = `You got ${correct}/${total} correct. This skill needs more practice. Review the lesson content and try again later.`;

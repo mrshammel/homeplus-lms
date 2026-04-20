@@ -16,7 +16,7 @@ function parseNoteSection(content: string, heading: string): string | null {
 // ── Status badge styles ──────────────────────────────────────────────────────
 function statusMeta(status: string, reviewed: boolean) {
   if (status === 'COMPLETED' && !reviewed)
-    return { label: 'Needs Review', bg: '#fef3c7', color: '#b45309', icon: '📋' };
+    return { label: 'Needs Review', bg: '#fef3c7', color: '#b45309', icon: 'Form:' };
   if (status === 'COMPLETED' && reviewed)
     return { label: 'Reviewed', bg: '#d1fae5', color: '#047857', icon: '✅' };
   if (status === 'IN_PROGRESS')
@@ -37,11 +37,11 @@ export default async function OnboardingReviewPage() {
     <>
       {/* ── Summary Metric Cards ── */}
       <div className={teacherStyles.metricsGrid}>
-        <MetricCard icon="📋" label="Needs Review" value={pending} bg="#fef3c7" />
+        <MetricCard icon="Form:" label="Needs Review" value={pending} bg="#fef3c7" />
         <MetricCard icon="✅" label="Reviewed"     value={completed - pending} bg="#d1fae5" />
         <MetricCard icon="⏳" label="In Progress"  value={inProgress} bg="#dbeafe" />
         <MetricCard icon="•"  label="Not Started"  value={notStarted} bg="#f1f5f9" />
-        <MetricCard icon="👥" label="Total Students" value={rows.length} bg="#ede9fe" />
+        <MetricCard icon="" label="Total Students" value={rows.length} bg="#ede9fe" />
       </div>
 
       {/* ── Explanation banner ── */}
@@ -52,7 +52,7 @@ export default async function OnboardingReviewPage() {
           <p>
             Each student completes a 4-part onboarding when they first sign in (About Me, Math Check, ELA Baseline, Reading Check).
             Their responses are collected here for your review. Mark each student as reviewed once you have read their baseline data.
-            Writing samples in ELA are human-reviewed — no AI grading is applied.
+            Writing samples in ELA are human-reviewed - no AI grading is applied.
           </p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default async function OnboardingReviewPage() {
       {rows.length === 0 ? (
         <div className={teacherStyles.dashCard}>
           <div className={teacherStyles.emptyState}>
-            <div className={teacherStyles.emptyIcon}>👦👧</div>
+            <div className={teacherStyles.emptyIcon}></div>
             <div className={teacherStyles.emptyTitle}>No students assigned yet</div>
             <div className={teacherStyles.emptyDesc}>
               Students will appear here once they are assigned to you and begin onboarding.
@@ -97,7 +97,7 @@ export default async function OnboardingReviewPage() {
                     <div className={styles.cardMeta}>
                       {row.gradeLevel ? `Grade ${row.gradeLevel}` : 'Student'}
                       {row.completedAt && (
-                        <> · Submitted {new Date(row.completedAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}</>
+                        <> - Submitted {new Date(row.completedAt).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}</>
                       )}
                     </div>
                   </div>
@@ -117,14 +117,14 @@ export default async function OnboardingReviewPage() {
                   </div>
                 </div>
 
-                {/* Baseline Content — only when completed */}
+                {/* Baseline Content - only when completed */}
                 {row.onboardingStatus === 'COMPLETED' && row.noteContent && (
                   <div className={styles.sections}>
 
                     {/* About Me */}
                     {aboutSection && (
                       <div className={styles.section}>
-                        <div className={styles.sectionLabel}>😊 About Me</div>
+                        <div className={styles.sectionLabel}> About Me</div>
                         <pre className={styles.sectionText}>{aboutSection}</pre>
                       </div>
                     )}
@@ -132,7 +132,7 @@ export default async function OnboardingReviewPage() {
                     {/* Math */}
                     {mathSection && (
                       <div className={styles.section}>
-                        <div className={styles.sectionLabel}>🔢 Math Diagnostic (Gr 5–6)</div>
+                        <div className={styles.sectionLabel}> Math Diagnostic (Gr 5-6)</div>
                         <pre className={styles.sectionText}>{mathSection}</pre>
                       </div>
                     )}
@@ -148,7 +148,7 @@ export default async function OnboardingReviewPage() {
                     {/* Reading */}
                     {readingSection && (
                       <div className={styles.section}>
-                        <div className={styles.sectionLabel}>📖 Reading Check</div>
+                        <div className={styles.sectionLabel}> Reading Check</div>
                         <pre className={styles.sectionText}>{readingSection}</pre>
                       </div>
                     )}
@@ -156,7 +156,7 @@ export default async function OnboardingReviewPage() {
                     {/* Raw fallback if section parsing finds nothing */}
                     {!aboutSection && !mathSection && !elaSection && !readingSection && (
                       <div className={styles.section}>
-                        <div className={styles.sectionLabel}>📝 Baseline Note</div>
+                        <div className={styles.sectionLabel}> Baseline Note</div>
                         <pre className={styles.sectionText}>{row.noteContent}</pre>
                       </div>
                     )}

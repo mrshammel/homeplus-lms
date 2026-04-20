@@ -58,7 +58,7 @@ export default function TeacherVerifyPage() {
     <div style={containerStyle}>
       <div style={cardStyle}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: 8 }}>👩‍🏫</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: 8 }}>Teacher:</div>
           <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#1e293b', margin: '0 0 6px' }}>
             Teacher Verification
           </h1>
@@ -129,7 +129,7 @@ export default function TeacherVerifyPage() {
               transition: 'background 0.2s',
             }}
           >
-            {loading ? 'Verifying...' : '🔐 Verify & Access Teacher Dashboard'}
+            {loading ? 'Verifying...' : ' Verify & Access Teacher Dashboard'}
           </button>
         </form>
 

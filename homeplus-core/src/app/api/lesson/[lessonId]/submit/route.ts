@@ -1,5 +1,5 @@
 // ============================================
-// Lesson Submit API — Home Plus LMS
+// Lesson Submit API - Home Plus LMS
 // ============================================
 // POST: submit mastery check answers, score them,
 //       record attempts, handle reteach triggers.

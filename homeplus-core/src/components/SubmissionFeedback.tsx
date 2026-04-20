@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // ============================================
-// SubmissionFeedback — Student-Facing Component
+// SubmissionFeedback - Student-Facing Component
 // ============================================
 // Shows AI initial feedback + teacher review status
 // after a student submits written work.
@@ -35,10 +35,10 @@ interface SubmissionFeedbackProps {
 // ---------- Performance Level Badge ----------
 
 const LEVEL_CONFIG: Record<string, { label: string; emoji: string; color: string; bg: string }> = {
-  EMERGING:    { label: 'Emerging',    emoji: '🌱', color: '#b45309', bg: '#fef3c7' },
-  APPROACHING: { label: 'Approaching', emoji: '📈', color: '#0369a1', bg: '#e0f2fe' },
+  EMERGING:    { label: 'Emerging',    emoji: '', color: '#b45309', bg: '#fef3c7' },
+  APPROACHING: { label: 'Approaching', emoji: '', color: '#0369a1', bg: '#e0f2fe' },
   MEETING:     { label: 'Meeting',     emoji: '✅', color: '#15803d', bg: '#dcfce7' },
-  EXCEEDING:   { label: 'Exceeding',   emoji: '🌟', color: '#7c3aed', bg: '#ede9fe' },
+  EXCEEDING:   { label: 'Exceeding',   emoji: '', color: '#7c3aed', bg: '#ede9fe' },
 };
 
 function PerformanceBadge({ level }: { level: string }) {
@@ -130,7 +130,7 @@ export default function SubmissionFeedback({
             borderRadius: '50%', animation: 'spin 1s linear infinite',
           }} />
           <h3 style={{ margin: 0, fontSize: '1rem', color: '#6d28d9' }}>
-            🤖 Generating Initial Feedback...
+             Generating Initial Feedback...
           </h3>
           <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: '#7c3aed' }}>
             Our AI is reviewing your writing. This usually takes a few seconds.
@@ -147,7 +147,7 @@ export default function SubmissionFeedback({
             padding: '20px 24px', marginBottom: 16, textAlign: 'center',
           }}>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#7c3aed', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 8 }}>
-              🤖 AI Initial Assessment
+               AI Initial Assessment
             </div>
             <PerformanceBadge level={feedback.aiPerformanceLevel} />
             {feedback.aiProvisionalScore !== null && feedback.maxScore && (
@@ -163,7 +163,7 @@ export default function SubmissionFeedback({
             padding: '20px 24px', marginBottom: 16,
           }}>
             <h3 style={{ margin: '0 0 16px', fontSize: '1rem', color: '#1e293b' }}>
-              🤖 AI Initial Feedback
+               AI Initial Feedback
             </h3>
 
             {/* Overall */}
@@ -190,7 +190,7 @@ export default function SubmissionFeedback({
               borderLeft: '3px solid #f59e0b',
             }}>
               <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#b45309', marginBottom: 6 }}>
-                📝 What to improve next
+                 What to improve next
               </div>
               <div style={{ fontSize: '0.88rem', color: '#92400e', lineHeight: 1.6 }}>
                 {feedback.aiAreasForImprovement}
@@ -203,7 +203,7 @@ export default function SubmissionFeedback({
               borderLeft: '3px solid #3b82f6',
             }}>
               <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#1d4ed8', marginBottom: 6 }}>
-                🎯 Suggested next step
+                 Suggested next step
               </div>
               <div style={{ fontSize: '0.88rem', color: '#1e40af', lineHeight: 1.6 }}>
                 {feedback.aiNextSteps}
@@ -220,7 +220,7 @@ export default function SubmissionFeedback({
           padding: '16px 20px', marginBottom: 16,
         }}>
           <p style={{ margin: 0, fontSize: '0.88rem', color: '#991b1b' }}>
-            AI feedback could not be generated right now. Don&apos;t worry — your teacher will still review your work and provide feedback.
+            AI feedback could not be generated right now. Don&apos;t worry - your teacher will still review your work and provide feedback.
           </p>
         </div>
       )}
@@ -232,7 +232,7 @@ export default function SubmissionFeedback({
           padding: '20px 24px', marginBottom: 16,
         }}>
           <h3 style={{ margin: '0 0 12px', fontSize: '1rem', color: '#15803d' }}>
-            👩‍🏫 Teacher Feedback
+            Teacher: Teacher Feedback
           </h3>
           {feedback.teacherScore !== null && feedback.maxScore && (
             <div style={{
@@ -253,7 +253,7 @@ export default function SubmissionFeedback({
           padding: '16px 20px', marginBottom: 16, textAlign: 'center',
         }}>
           <span style={{ fontSize: '0.88rem', color: '#64748b' }}>
-            ⏳ <strong>Teacher Review Pending</strong> — Your teacher will review your work and assign the final grade.
+            ⏳ <strong>Teacher Review Pending</strong> - Your teacher will review your work and assign the final grade.
           </span>
         </div>
       )}
@@ -265,7 +265,7 @@ export default function SubmissionFeedback({
           fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5,
           borderLeft: '3px solid #94a3b8',
         }}>
-          📌 This is an AI-generated initial review to help guide your revision and reflection.
+           This is an AI-generated initial review to help guide your revision and reflection.
           Your teacher will review your submission and assign the final grade.
         </div>
       )}

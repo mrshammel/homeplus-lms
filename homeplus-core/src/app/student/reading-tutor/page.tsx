@@ -49,7 +49,7 @@ export default function ReadingTutorHome() {
     return (
       <div className={styles.tutorRoot}>
         <div className={styles.heroCard}>
-          <div className={styles.heroAvatar}>🎧</div>
+          <div className={styles.heroAvatar}></div>
           <div className={styles.heroContent}>
             <h2>Loading your Reading Tutor...</h2>
             <p>Getting things ready for you!</p>
@@ -63,12 +63,12 @@ export default function ReadingTutorHome() {
     <div className={styles.tutorRoot}>
       {/* Hero Card */}
       <div className={styles.heroCard}>
-        <div className={styles.heroAvatar}>📖</div>
+        <div className={styles.heroAvatar}></div>
         <div className={styles.heroContent}>
-          <h2>Hi there! I&apos;m Mrs. Hammel&apos;s Reading Buddy 🎧</h2>
+          <h2>Hi there! I&apos;m Mrs. Hammel&apos;s Reading Buddy </h2>
           <p>
             {isCalibrated
-              ? "Ready for today's reading session? You got this! 💪"
+              ? "Ready for today's reading session? You got this! "
               : "Before we start reading together, let's help me learn your voice. It only takes a couple of minutes!"}
           </p>
           {isCalibrated ? (
@@ -77,7 +77,7 @@ export default function ReadingTutorHome() {
             </Link>
           ) : (
             <Link href="/student/reading-tutor/calibrate" className={styles.heroBtn}>
-              🎤 Set Up My Voice
+               Set Up My Voice
             </Link>
           )}
         </div>
@@ -87,22 +87,22 @@ export default function ReadingTutorHome() {
       {stats.sessionsCount > 0 && (
         <div className={styles.statsRow}>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>🔥</div>
+            <div className={styles.statIcon}></div>
             <div className={styles.statValue}>{stats.streak}</div>
             <div className={styles.statLabel}>Day Streak</div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>🎯</div>
+            <div className={styles.statIcon}></div>
             <div className={styles.statValue}>{Math.round(stats.avgAccuracy)}%</div>
             <div className={styles.statLabel}>Avg Accuracy</div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>📚</div>
+            <div className={styles.statIcon}>Books:</div>
             <div className={styles.statValue}>{stats.sessionsCount}</div>
             <div className={styles.statLabel}>Sessions</div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>📊</div>
+            <div className={styles.statIcon}>Chart:</div>
             <div className={styles.statValue}>{stats.lexileLevel}L</div>
             <div className={styles.statLabel}>Reading Level</div>
           </div>
@@ -111,10 +111,10 @@ export default function ReadingTutorHome() {
 
       {/* Recent Sessions */}
       <div className={styles.card}>
-        <h3>📅 Recent Sessions</h3>
+        <h3> Recent Sessions</h3>
         {sessions.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>🌟</div>
+            <div className={styles.emptyIcon}></div>
             <h3>No sessions yet!</h3>
             <p>
               {isCalibrated
@@ -123,11 +123,11 @@ export default function ReadingTutorHome() {
             </p>
             {isCalibrated ? (
               <Link href="/student/reading-tutor/session" className={styles.btnPrimary}>
-                Start Reading →
+                Start Reading ->
               </Link>
             ) : (
               <Link href="/student/reading-tutor/calibrate" className={styles.btnPrimary}>
-                Set Up My Voice →
+                Set Up My Voice ->
               </Link>
             )}
           </div>
@@ -156,10 +156,10 @@ export default function ReadingTutorHome() {
         {isCalibrated && (
           <>
             <Link href="/student/reading-tutor/dashboard" className={styles.btnSecondary}>
-              📊 My Reading Dashboard
+              Chart: My Reading Dashboard
             </Link>
             <Link href="/student/reading-tutor/calibrate" className={styles.btnSecondary}>
-              🎤 Redo Voice Setup
+               Redo Voice Setup
             </Link>
           </>
         )}

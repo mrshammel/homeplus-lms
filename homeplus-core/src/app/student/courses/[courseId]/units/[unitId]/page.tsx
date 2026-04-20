@@ -1,5 +1,5 @@
 // ============================================
-// Student Unit Detail Page — Home Plus LMS
+// Student Unit Detail Page - Home Plus LMS
 // ============================================
 // Two-column layout: left sidebar lesson nav + main content.
 // Shows unit overview, learning framing, and lesson cards
@@ -34,7 +34,7 @@ export default async function UnitDetailPage({ params }: Props) {
 
   const statusColor = unitStatus === 'completed' ? '#059669' : unitStatus === 'in-progress' ? 'var(--subject-primary)' : '#94a3b8';
   const statusClass = unitStatus === 'completed' ? styles.statusComplete : unitStatus === 'in-progress' ? styles.statusInProgress : styles.statusLocked;
-  const statusLabel = unitStatus === 'completed' ? '✅ Complete' : unitStatus === 'in-progress' ? '📝 In Progress' : '⬜ Not Started';
+  const statusLabel = unitStatus === 'completed' ? '✅ Complete' : unitStatus === 'in-progress' ? ' In Progress' : '⬜ Not Started';
 
   const unlockHint =
     subjectMode === 'SCIENCE' ? 'Mastery (80%+) required to unlock the next lesson.'
@@ -58,11 +58,11 @@ export default async function UnitDetailPage({ params }: Props) {
       <section className={styles.welcomeSection} aria-label="Unit header">
         <div className={styles.welcomeRow}>
           <div className={styles.continueIcon} style={{ fontSize: '1.5rem' }}>
-            <span>{unitIcon || '📖'}</span>
+            <span>{unitIcon || ''}</span>
           </div>
           <div style={{ flex: 1 }}>
             <h2 className={styles.welcomeTitle}>{unitTitle}</h2>
-            <p className={styles.welcomeSubtext}>Grade {gradeLevel} · {courseName}</p>
+            <p className={styles.welcomeSubtext}>Grade {gradeLevel} - {courseName}</p>
           </div>
           <span className={`${styles.statusChip} ${statusClass}`} style={{ alignSelf: 'flex-start' }}>
             {statusLabel}
@@ -86,7 +86,7 @@ export default async function UnitDetailPage({ params }: Props) {
             aria-label="Continue to next lesson"
             {...(nextLesson?.externalUrl ? { target: '_blank' } : {})}
           >
-            <div className={styles.heroIcon}>{unitIcon || '📖'}</div>
+            <div className={styles.heroIcon}>{unitIcon || ''}</div>
             <div className={styles.heroInfo}>
               <div className={styles.heroLabel}>▶ {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}</div>
               <div className={styles.heroTitle}>{nextLessonTitle}</div>
@@ -98,7 +98,7 @@ export default async function UnitDetailPage({ params }: Props) {
               </div>
             </div>
             <span className={styles.heroBtn}>
-              {completedLessons === 0 ? 'Start →' : 'Continue →'}
+              {completedLessons === 0 ? 'Start ->' : 'Continue ->'}
             </span>
           </Link>
         );
@@ -147,10 +147,10 @@ export default async function UnitDetailPage({ params }: Props) {
               }`;
 
               // Number circle content
-              const numContent = isMastered ? '⭐'
+              const numContent = isMastered ? 'Tip:'
                 : isComplete ? '✓'
                 : isReteach ? '⚠'
-                : isLocked ? '🔒'
+                : isLocked ? ''
                 : i + 1;
 
               const inner = (
@@ -166,7 +166,7 @@ export default async function UnitDetailPage({ params }: Props) {
                   )}
                   {isMastered && (
                     <span className={`${styles.lessonSidebarStatus} ${styles.lessonSidebarStatusMastered}`}>
-                      ⭐
+                      Tip:
                     </span>
                   )}
                 </>
@@ -214,7 +214,7 @@ export default async function UnitDetailPage({ params }: Props) {
             </div>
             <div className={styles.statCard}>
               <div className={styles.statValue} style={{ color: statusColor }}>
-                {unitStatus === 'completed' ? '✅' : unitStatus === 'in-progress' ? '📝' : '⬜'}
+                {unitStatus === 'completed' ? '✅' : unitStatus === 'in-progress' ? '' : '⬜'}
               </div>
               <div className={styles.statLabel}>
                 {unitStatus === 'completed' ? 'Complete!' : unitStatus === 'in-progress' ? 'In Progress' : 'Not Started'}
@@ -225,7 +225,7 @@ export default async function UnitDetailPage({ params }: Props) {
           {/* Learning targets */}
           {learningTargets.length > 0 && (
             <section className={styles.dashCard} style={{ marginBottom: 20 }} aria-label="Learning targets">
-              <h3 className={styles.cardTitle}>🎯 Learning Targets</h3>
+              <h3 className={styles.cardTitle}> Learning Targets</h3>
               <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: 10 }}>
                 By the end of this unit, you should be able to say:
               </p>
@@ -252,7 +252,7 @@ export default async function UnitDetailPage({ params }: Props) {
           {/* Key vocabulary */}
           {keyVocabulary.length > 0 && (
             <section className={styles.dashCard} style={{ marginBottom: 20 }} aria-label="Key vocabulary">
-              <h3 className={styles.cardTitle}>📖 Key Vocabulary</h3>
+              <h3 className={styles.cardTitle}> Key Vocabulary</h3>
               <div className={styles.vocabGrid}>
                 {keyVocabulary.map((v, i) => (
                   <div key={i} className={styles.vocabCard}>
@@ -266,7 +266,7 @@ export default async function UnitDetailPage({ params }: Props) {
 
           {/* ===== LESSON CARDS ===== */}
           <section aria-label="Unit lessons">
-            <h3 className={styles.sectionHeading}>📚 Lessons</h3>
+            <h3 className={styles.sectionHeading}>Books: Lessons</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {lessons.map((lesson, i) => {
                 const ui = getLessonStateUI(lesson.displayState);
@@ -292,9 +292,9 @@ export default async function UnitDetailPage({ params }: Props) {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontWeight: 700, fontSize: '0.9rem', flexShrink: 0,
                       }}>
-                        {lesson.displayState === 'MASTERED' ? '⭐'
+                        {lesson.displayState === 'MASTERED' ? 'Tip:'
                           : isComplete ? '✓'
-                          : isLocked ? '🔒'
+                          : isLocked ? ''
                           : i + 1}
                       </div>
 
@@ -321,7 +321,7 @@ export default async function UnitDetailPage({ params }: Props) {
                         {/* Mastery score */}
                         {lesson.masteryScore != null && isComplete && (
                           <p style={{ fontSize: '0.78rem', color: '#059669', fontWeight: 600, margin: '4px 0 0' }}>
-                            ⭐ Score: {Math.round(lesson.masteryScore)}%
+                            Tip: Score: {Math.round(lesson.masteryScore)}%
                           </p>
                         )}
 
@@ -335,7 +335,7 @@ export default async function UnitDetailPage({ params }: Props) {
                         {!isLocked && lesson.activities.length > 0 && (
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
                             {lesson.activities.map((act) => {
-                              const typeIcon = act.type === 'QUIZ' ? '📝' : act.type === 'ASSIGNMENT' ? '📄' : act.type === 'REFLECTION' ? '🪞' : '🔬';
+                              const typeIcon = act.type === 'QUIZ' ? '' : act.type === 'ASSIGNMENT' ? '' : act.type === 'REFLECTION' ? '' : '';
                               return (
                                 <span
                                   key={act.id}
@@ -349,7 +349,7 @@ export default async function UnitDetailPage({ params }: Props) {
                                   }}
                                 >
                                   {typeIcon} {act.title}
-                                  {act.submitted && act.score != null && ` · ${act.score}/${act.maxScore}`}
+                                  {act.submitted && act.score != null && ` - ${act.score}/${act.maxScore}`}
                                 </span>
                               );
                             })}
@@ -399,9 +399,9 @@ export default async function UnitDetailPage({ params }: Props) {
               style={{ marginTop: 24, background: '#f0fdf4', borderLeft: '5px solid #059669', textAlign: 'center', padding: '28px 24px' }}
               aria-label="Unit complete"
             >
-              <div style={{ fontSize: '2.4rem', marginBottom: 8 }}>🎉</div>
+              <div style={{ fontSize: '2.4rem', marginBottom: 8 }}></div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#059669', margin: '0 0 6px' }}>
-                Unit Complete! 🌟
+                Unit Complete! 
               </h3>
               <p style={{ fontSize: '0.9rem', color: '#475569' }}>
                 You&apos;ve finished all lessons in {unitTitle}. Great work!

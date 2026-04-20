@@ -1,5 +1,5 @@
 /* ===================================
-   Teacher Dashboard — CSS Module
+   Teacher Dashboard - CSS Module
    ===================================
    Sidebar + content layout, mobile-first
 */
@@ -1005,7 +1005,7 @@
   display: block;
 }
 
-/* ===== RESPONSIVE — Tablet ===== */
+/* ===== RESPONSIVE - Tablet ===== */
 @media (max-width: 1024px) {
   .metricsGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -1028,7 +1028,7 @@
   }
 }
 
-/* ===== RESPONSIVE — Mobile ===== */
+/* ===== RESPONSIVE - Mobile ===== */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
@@ -1512,7 +1512,7 @@
   to { opacity: 1; }
 }
 
-/* ===== RESPONSIVE — Tablet (review page) ===== */
+/* ===== RESPONSIVE - Tablet (review page) ===== */
 @media (max-width: 1024px) {
   .reviewLayout {
     grid-template-columns: 1fr;
@@ -1541,7 +1541,7 @@
   }
 }
 
-/* ===== RESPONSIVE — Mobile (review page) ===== */
+/* ===== RESPONSIVE - Mobile (review page) ===== */
 @media (max-width: 768px) {
   .reviewHeader {
     flex-direction: column;

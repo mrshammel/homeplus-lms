@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// ReviewClient — Interactive Review Component
+// ReviewClient - Interactive Review Component
 // ============================================
 // Client component that handles the review quiz flow:
 // 1. Loads review queue items with questions from API
@@ -176,14 +176,14 @@ export default function ReviewClient({
   if (phase === 'loading') {
     return (
       <div className={styles.dashCard} style={{ textAlign: 'center', padding: '40px 24px' }}>
-        <div style={{ fontSize: '2rem', marginBottom: 12, animation: 'spin 1s linear infinite' }}>🔄</div>
+        <div style={{ fontSize: '2rem', marginBottom: 12, animation: 'spin 1s linear infinite' }}></div>
         <div style={{ fontSize: '0.92rem', fontWeight: 600, color: '#475569' }}>Loading review items...</div>
         <style>{`@keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
       </div>
     );
   }
 
-  // Empty state — no items to review
+  // Empty state - no items to review
   if (phase === 'empty') {
     return (
       <div className={styles.dashGrid}>
@@ -205,14 +205,14 @@ export default function ReviewClient({
               border: 'none', cursor: 'pointer',
             }}
           >
-            🔄 Check Again
+             Check Again
           </button>
         </div>
 
         {/* Skill summary cards */}
         {initialWeakest.length > 0 && (
           <div className={styles.dashCard}>
-            <h3 className={styles.cardTitle}>📌 Focus Areas</h3>
+            <h3 className={styles.cardTitle}> Focus Areas</h3>
             {initialWeakest.map((skill) => (
               <div key={skill.id} className={styles.skillItem}>
                 <span className={styles.skillItemDot} style={{ background: getMasteryColor(skill.masteryState) }} />
@@ -227,7 +227,7 @@ export default function ReviewClient({
 
         {initialStrongest.length > 0 && (
           <div className={styles.dashCard}>
-            <h3 className={styles.cardTitle}>💪 Strongest Skills</h3>
+            <h3 className={styles.cardTitle}> Strongest Skills</h3>
             {initialStrongest.map((skill) => (
               <div key={skill.id} className={styles.skillItem}>
                 <span className={styles.skillItemDot} style={{ background: getMasteryColor(skill.masteryState) }} />
@@ -243,11 +243,11 @@ export default function ReviewClient({
     );
   }
 
-  // Ready state — overview before starting
+  // Ready state - overview before starting
   if (phase === 'ready') {
     return (
       <div className={styles.dashCard} style={{ textAlign: 'center', padding: '40px 24px' }}>
-        <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>🧠</div>
+        <div style={{ fontSize: '2.5rem', marginBottom: 12 }}></div>
         <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1a2137', marginBottom: 8 }}>
           Review Session Ready
         </div>
@@ -267,7 +267,7 @@ export default function ReviewClient({
               </span>
               <span className={styles.skillItemName}>{item.skillTitle}</span>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, padding: '2px 8px', borderRadius: 8, background: item.isOverdue ? '#fef3c7' : '#f1f5f9', color: item.isOverdue ? '#d97706' : '#64748b' }}>
-                {item.questions.length}Q{item.isOverdue ? ' · Overdue' : ''}
+                {item.questions.length}Q{item.isOverdue ? ' - Overdue' : ''}
               </span>
             </div>
           ))}
@@ -282,13 +282,13 @@ export default function ReviewClient({
             transition: 'all 0.18s',
           }}
         >
-          Start Review →
+          Start Review ->
         </button>
       </div>
     );
   }
 
-  // Reviewing state — quiz questions
+  // Reviewing state - quiz questions
   if (phase === 'reviewing' && currentItem) {
     const allAnswered = currentItem.questions.every((q) => answers[q.id]);
 
@@ -313,7 +313,7 @@ export default function ReviewClient({
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '0.94rem', fontWeight: 700, color: '#1a2137' }}>{currentItem.skillTitle}</div>
               <div style={{ fontSize: '0.76rem', color: '#94a3b8', marginTop: 2 }}>
-                {currentItem.skillCode} · {currentItem.questions.length} question{currentItem.questions.length !== 1 ? 's' : ''}
+                {currentItem.skillCode} - {currentItem.questions.length} question{currentItem.questions.length !== 1 ? 's' : ''}
                 {currentItem.isOverdue && <span style={{ color: '#d97706', marginLeft: 8 }}>⏰ Overdue</span>}
               </div>
             </div>
@@ -402,7 +402,7 @@ export default function ReviewClient({
                 transition: 'all 0.18s',
               }}
             >
-              {submitting ? '⏳ Checking...' : 'Submit Answers →'}
+              {submitting ? '⏳ Checking...' : 'Submit Answers ->'}
             </button>
           </div>
         </div>
@@ -410,7 +410,7 @@ export default function ReviewClient({
     );
   }
 
-  // Result state — show feedback
+  // Result state - show feedback
   if (phase === 'result' && lastResult) {
     const { correct, total, passed, feedback, masteryUpdate } = lastResult;
     const scorePercent = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -430,7 +430,7 @@ export default function ReviewClient({
         </div>
 
         <div style={{ fontSize: '1.1rem', fontWeight: 700, color: passed ? '#059669' : '#d97706', marginBottom: 8 }}>
-          {passed ? '🎉 Great job!' : '📚 Keep practicing!'}
+          {passed ? ' Great job!' : 'Books: Keep practicing!'}
         </div>
 
         <div style={{ fontSize: '0.88rem', color: '#475569', marginBottom: 20, lineHeight: 1.5 }}>
@@ -463,18 +463,18 @@ export default function ReviewClient({
               border: 'none', cursor: 'pointer', transition: 'all 0.18s',
             }}
           >
-            {currentIndex + 1 < reviewItems.length ? 'Next Skill →' : '✅ Finish Review'}
+            {currentIndex + 1 < reviewItems.length ? 'Next Skill ->' : '✅ Finish Review'}
           </button>
         </div>
       </div>
     );
   }
 
-  // Complete state — all done!
+  // Complete state - all done!
   if (phase === 'complete') {
     return (
       <div className={styles.dashCard} style={{ textAlign: 'center', padding: '48px 24px' }}>
-        <div style={{ fontSize: '3rem', marginBottom: 16 }}>🏆</div>
+        <div style={{ fontSize: '3rem', marginBottom: 16 }}></div>
         <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#1a2137', marginBottom: 8 }}>
           Review Session Complete!
         </div>
@@ -491,7 +491,7 @@ export default function ReviewClient({
               border: 'none', cursor: 'pointer',
             }}
           >
-            🔄 Review More
+             Review More
           </button>
           <a
             href="/student/dashboard"

@@ -1,5 +1,5 @@
 // ============================================
-// AI Reading Tutor — Core Analysis Engine
+// AI Reading Tutor - Core Analysis Engine
 // ============================================
 // Handles transcript analysis, accuracy scoring, miscue detection,
 // voice profile filtering, and Lexile estimation.
@@ -131,7 +131,7 @@ export function analyzeTranscript(
         isFiltered: false,
       });
     } else if (type === 'INSERTION') {
-      // Student said extra words — note but don't penalize heavily
+      // Student said extra words - note but don't penalize heavily
       miscues.push({
         position: i,
         expected: '',
@@ -169,7 +169,7 @@ export function analyzeTranscript(
 
 /**
  * Check if a substitution matches a known speech pattern.
- * e.g., student always says "fink" for "think" → /θ/ → /f/ pattern
+ * e.g., student always says "fink" for "think" -> /θ/ -> /f/ pattern
  */
 function isVoiceProfileMatch(
   expected: string,
@@ -183,14 +183,14 @@ function isVoiceProfileMatch(
     // word contains the substitution sound, matching the known pattern.
     // Simple heuristic: check if the calibration words show the same mapping.
     for (const example of pattern.examples) {
-      const [exWord, acWord] = example.split('→').map((s) => s.trim().toLowerCase());
+      const [exWord, acWord] = example.split('->').map((s) => s.trim().toLowerCase());
       if (expected === exWord && actual === acWord) {
         return true;
       }
     }
 
     // Also check if the substitution follows the same character pattern
-    // e.g., "th" → "f" in any word
+    // e.g., "th" -> "f" in any word
     if (
       pattern.target.length <= 3 &&
       expected.includes(pattern.target) &&
@@ -240,7 +240,7 @@ export function estimateLexile(
  * Uses Science of Reading instructional level thresholds:
  * - Independent level: 95%+ accuracy (student can read alone)
  * - Instructional level: 90-94% accuracy (sweet spot for learning)
- * - Frustration level: below 90% accuracy (too hard — step down)
+ * - Frustration level: below 90% accuracy (too hard - step down)
  *
  * UFLI principle: always keep students in the instructional zone.
  * If they're in frustration, step DOWN significantly to rebuild confidence.
@@ -263,25 +263,25 @@ export function selectNextPassageLevel(
 
   let targetLexile = last.passageLexile;
 
-  // ——— SoR-aligned leveling decisions ———
+  // --- SoR-aligned leveling decisions ---
 
   if (avgAccuracy >= 97 && avgComprehension >= 80 && recentSessions.length >= 2) {
-    // Well above independent level — move up confidently
+    // Well above independent level - move up confidently
     targetLexile = last.passageLexile + 75;
   } else if (avgAccuracy >= 95 && avgComprehension >= 70) {
-    // At independent level — nudge up slightly
+    // At independent level - nudge up slightly
     targetLexile = last.passageLexile + 40;
   } else if (avgAccuracy >= 90 && avgComprehension >= 60) {
-    // Instructional level — this is the sweet spot, stay or move up slightly
+    // Instructional level - this is the sweet spot, stay or move up slightly
     targetLexile = last.passageLexile + 15;
   } else if (avgAccuracy >= 85) {
-    // Approaching frustration — step back to rebuild
+    // Approaching frustration - step back to rebuild
     targetLexile = last.passageLexile - 50;
   } else if (avgAccuracy >= 70) {
-    // Frustration level — significant step down needed
+    // Frustration level - significant step down needed
     targetLexile = last.passageLexile - 100;
   } else {
-    // Deep frustration (below 70%) — major step down, this passage was way too hard
+    // Deep frustration (below 70%) - major step down, this passage was way too hard
     targetLexile = last.passageLexile - 150;
   }
 
@@ -426,7 +426,7 @@ function wordsMatch(expected: string, actual: string): boolean {
     if (diff <= 2) return true; // covers -s, -es, -ed, -ly (short suffix)
   }
 
-  // Edit distance tolerance — allows for speech recognition mishearings
+  // Edit distance tolerance - allows for speech recognition mishearings
   const maxLen = Math.max(expected.length, actual.length);
   const dist = editDistance(expected, actual);
 

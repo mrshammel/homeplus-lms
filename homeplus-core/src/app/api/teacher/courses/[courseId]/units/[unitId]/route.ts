@@ -1,5 +1,5 @@
 // ============================================
-// Teacher Unit Detail — API Routes
+// Teacher Unit Detail - API Routes
 // ============================================
 // PUT:    Update unit metadata
 // DELETE: Delete unit (cascades to lessons)

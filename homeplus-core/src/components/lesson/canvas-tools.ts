@@ -1,5 +1,5 @@
 // ============================================
-// Canvas Tools — Home Plus Drawing Canvas
+// Canvas Tools - Home Plus Drawing Canvas
 // ============================================
 // Each tool implements the CanvasTool interface.
 // Adding a new tool (Tier 2/3) = implementing this interface.
@@ -138,7 +138,7 @@ export function renderStroke(ctx: CanvasRenderingContext2D, stroke: StrokeObject
     case 'stamp':
       renderStampStroke(ctx, stroke, dpr);
       break;
-    // eraser strokes are not rendered — they remove other strokes
+    // eraser strokes are not rendered - they remove other strokes
   }
 }
 
@@ -461,14 +461,14 @@ export function snapToAngle(start: Point, end: Point, shiftHeld: boolean): Point
 
 export const TOOL_DEFS: Record<ToolType, CanvasTool> = {
   pen: { name: 'pen', icon: '✏️', label: 'Pen', cursor: 'crosshair' },
-  eraser: { name: 'eraser', icon: '🧹', label: 'Eraser', cursor: 'cell' },
-  highlighter: { name: 'highlighter', icon: '🖍️', label: 'Highlighter', cursor: 'crosshair' },
+  eraser: { name: 'eraser', icon: '', label: 'Eraser', cursor: 'cell' },
+  highlighter: { name: 'highlighter', icon: '️', label: 'Highlighter', cursor: 'crosshair' },
   arrow: { name: 'arrow', icon: '➡️', label: 'Arrow', cursor: 'crosshair' },
-  text: { name: 'text', icon: '🔤', label: 'Text', cursor: 'text' },
-  ruler: { name: 'ruler', icon: '📏', label: 'Line', cursor: 'crosshair' },
+  text: { name: 'text', icon: '', label: 'Text', cursor: 'text' },
+  ruler: { name: 'ruler', icon: '', label: 'Line', cursor: 'crosshair' },
   circle: { name: 'circle', icon: '⭕', label: 'Circle', cursor: 'crosshair' },
   shape: { name: 'shape', icon: '⬡', label: 'Shapes', cursor: 'crosshair' },
-  stamp: { name: 'stamp', icon: '😀', label: 'Stamp', cursor: 'pointer' },
+  stamp: { name: 'stamp', icon: '', label: 'Stamp', cursor: 'pointer' },
 };
 
 // ─── Shape palette for the shapes sub-menu ───
@@ -486,19 +486,19 @@ export const SHAPE_OPTIONS: { type: ShapeType; icon: string; label: string }[] =
 export const STAMP_CATEGORIES: { label: string; stamps: string[] }[] = [
   {
     label: 'Science',
-    stamps: ['🌱', '🌿', '🌲', '🌻', '🍄', '🦠', '🧬', '🔬', '🧪', '⚗️', '🌡️', '💧'],
+    stamps: ['', '', '', '', '', '', '', '', '', '⚗️', '️', ''],
   },
   {
     label: 'Animals',
-    stamps: ['🐛', '🦋', '🐝', '🐞', '🐸', '🐟', '🦅', '🐺', '🦌', '🐇', '🐻', '🦎'],
+    stamps: ['', '', '', '', '', '', '', '', '', '', '', ''],
   },
   {
     label: 'Nature',
-    stamps: ['☀️', '🌧️', '❄️', '🌊', '🏔️', '🌋', '🪨', '🔥', '💨', '⚡', '🌈', '🌍'],
+    stamps: ['☀️', '️', '❄️', '', '️', '', '', '', '', '⚡', '', ''],
   },
   {
     label: 'Labels',
-    stamps: ['⬆️', '⬇️', '⬅️', '➡️', '⭐', '❌', '✅', '❓', '❗', '🔴', '🟢', '🔵'],
+    stamps: ['⬆️', '⬇️', '⬅️', '➡️', 'Tip:', '❌', '✅', '❓', '❗', '', '', ''],
   },
 ];
 

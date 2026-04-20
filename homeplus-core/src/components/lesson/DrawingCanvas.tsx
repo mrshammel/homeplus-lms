@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// DrawingCanvas — Home Plus Drawing Canvas
+// DrawingCanvas - Home Plus Drawing Canvas
 // ============================================
 // Full HTML5 Canvas drawing tool with:
 //  - Freehand pen (Catmull-Rom smoothing)
@@ -77,7 +77,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
   const [shapeFilled, setShapeFilled] = useState(false);
 
   // Stamp tool state
-  const [activeStamp, setActiveStamp] = useState<string>('🌱');
+  const [activeStamp, setActiveStamp] = useState<string>('');
   const [showStampMenu, setShowStampMenu] = useState(false);
   const [stampSize, setStampSize] = useState(32);
   const shiftHeldRef = useRef(false);
@@ -244,7 +244,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
 
     const pos = getPointerPos(e);
 
-    // Text label tool — place input
+    // Text label tool - place input
     if (activeTool === 'text') {
       setTextInputPos(pos);
       setTextInputValue('');
@@ -252,7 +252,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
       return;
     }
 
-    // Stamp tool — place emoji
+    // Stamp tool - place emoji
     if (activeTool === 'stamp') {
       const stampStroke: StrokeObject = {
         id: nextStrokeId(),
@@ -528,7 +528,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
     <div className={styles.canvasContainer} ref={containerRef}>
       {/* Prompt */}
       {promptText && (
-        <div className={styles.prompt}>🎨 {promptText}</div>
+        <div className={styles.prompt}> {promptText}</div>
       )}
 
       {/* Toolbar */}
@@ -745,7 +745,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
               aria-label="Clear canvas"
               style={{ opacity: strokes.length === 0 ? 0.4 : 1 }}
             >
-              🗑️
+              ️
             </button>
           </div>
         </div>
@@ -799,13 +799,13 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
             onClick={handleSubmit}
             disabled={!canSubmit}
           >
-            {submitting ? '⏳ Submitting...' : '📤 Submit Drawing'}
+            {submitting ? '⏳ Submitting...' : ' Submit Drawing'}
           </button>
           <button
             className={styles.photoLink}
             onClick={() => photoInputRef.current?.click()}
           >
-            📷 Prefer to work on paper? Take a photo instead.
+             Prefer to work on paper? Take a photo instead.
           </button>
           <input
             ref={photoInputRef}
@@ -818,7 +818,7 @@ export default function DrawingCanvas({ content, lessonId, blockId, onAnswer, re
         </div>
       ) : (
         <div className={styles.submittedBanner}>
-          ✅ Drawing submitted — your teacher will review it.
+          ✅ Drawing submitted - your teacher will review it.
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 // ============================================
-// Student Review Page — Home Plus LMS (Phase 4)
+// Student Review Page - Home Plus LMS (Phase 4)
 // ============================================
 // Interactive review page with quiz-like flow.
 // Server component fetches mastery summary,
@@ -18,7 +18,7 @@ export default async function ReviewPage() {
   return (
     <>
       <section className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>🔄 Review</h2>
+        <h2 className={styles.welcomeTitle}> Review</h2>
         <p className={styles.welcomeSubtext}>Strengthen your skills with spaced review practice</p>
       </section>
 
@@ -38,7 +38,7 @@ export default async function ReviewPage() {
         </div>
         <div className={styles.statCard}>
           <div className={styles.statValue} style={{ color: '#059669' }}>
-            {totalTracked > 0 ? `${Math.round((masterySummary.masteredCount / totalTracked) * 100)}%` : '—'}
+            {totalTracked > 0 ? `${Math.round((masterySummary.masteredCount / totalTracked) * 100)}%` : '-'}
           </div>
           <div className={styles.statLabel}>Mastery Rate</div>
         </div>
@@ -47,7 +47,7 @@ export default async function ReviewPage() {
       {/* Mastery Overview */}
       {totalTracked > 0 && (
         <section className={styles.masteryWidget} aria-label="Mastery overview" style={{ marginBottom: 24 }}>
-          <h3 className={styles.masteryWidgetTitle}>🧠 Mastery Overview</h3>
+          <h3 className={styles.masteryWidgetTitle}> Mastery Overview</h3>
           <div className={styles.masteryStateGrid}>
             <div className={styles.masteryStateItem} style={{ background: '#f0fdf4' }}>
               <div className={styles.masteryStateCount} style={{ color: '#059669' }}>{masterySummary.masteredCount}</div>

@@ -1,5 +1,5 @@
 // ============================================
-// Lesson Progress Helpers — Home Plus LMS
+// Lesson Progress Helpers - Home Plus LMS
 // ============================================
 // Centralised progression logic consumed by:
 //   - unit-detail-data  (lesson gating + unit rollup)
@@ -7,11 +7,11 @@
 //   - student-data  (dashboard rollup)
 //
 // Subject-aware unlock rules:
-//   SCIENCE  — previous must be MASTERED
-//   MATH     — previous must be COMPLETE or MASTERED
-//   ELA      — previous must be COMPLETE or MASTERED
-//   SOCIAL   — previous must be COMPLETE or MASTERED
-//   GENERAL  — previous must be COMPLETE or MASTERED
+//   SCIENCE  - previous must be MASTERED
+//   MATH     - previous must be COMPLETE or MASTERED
+//   ELA      - previous must be COMPLETE or MASTERED
+//   SOCIAL   - previous must be COMPLETE or MASTERED
+//   GENERAL  - previous must be COMPLETE or MASTERED
 
 import type { SubjectMode } from './lesson-types';
 
@@ -53,12 +53,12 @@ export function isLessonUnlocked(
   prevStatus: string | null | undefined,
   subjectMode: SubjectMode,
 ): boolean {
-  // First lesson (no predecessor) → always unlocked
+  // First lesson (no predecessor) -> always unlocked
   if (prevStatus === null || prevStatus === undefined) return true;
 
   switch (subjectMode) {
     case 'SCIENCE':
-      // Science requires strict mastery — COMPLETE alone is insufficient
+      // Science requires strict mastery - COMPLETE alone is insufficient
       return prevStatus === 'MASTERED';
 
     case 'MATH':
@@ -83,7 +83,7 @@ export function getLessonDisplayState(
   // If not unlocked and has no meaningful status, it's locked
   if (!isUnlocked) {
     // Edge case: lesson could have IN_PROGRESS or NEEDS_RETEACH status
-    // from a previous attempt — still show real status so students can
+    // from a previous attempt - still show real status so students can
     // return to it.
     if (status === 'IN_PROGRESS') return 'IN_PROGRESS';
     if (status === 'NEEDS_RETEACH') return 'NEEDS_RETEACH';
@@ -158,17 +158,17 @@ export interface LessonStateUI {
 export function getLessonStateUI(state: LessonDisplayState): LessonStateUI {
   switch (state) {
     case 'LOCKED':
-      return { badge: '🔒 Locked', color: '#94a3b8', bg: '#f8fafc', cta: '', clickable: false };
+      return { badge: ' Locked', color: '#94a3b8', bg: '#f8fafc', cta: '', clickable: false };
     case 'AVAILABLE':
-      return { badge: '▶️ Ready', color: '#2563eb', bg: '#eff6ff', cta: 'Start Lesson →', clickable: true };
+      return { badge: '▶️ Ready', color: '#2563eb', bg: '#eff6ff', cta: 'Start Lesson ->', clickable: true };
     case 'IN_PROGRESS':
-      return { badge: '📝 In Progress', color: '#2563eb', bg: '#eff6ff', cta: 'Continue →', clickable: true };
+      return { badge: ' In Progress', color: '#2563eb', bg: '#eff6ff', cta: 'Continue ->', clickable: true };
     case 'NEEDS_RETEACH':
-      return { badge: '🔄 Review Needed', color: '#d97706', bg: '#fffbeb', cta: 'Complete Review →', clickable: true };
+      return { badge: ' Review Needed', color: '#d97706', bg: '#fffbeb', cta: 'Complete Review ->', clickable: true };
     case 'COMPLETED':
       return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review', clickable: true };
     case 'MASTERED':
-      return { badge: '⭐ Mastered', color: '#059669', bg: '#f0fdf4', cta: 'Review', clickable: true };
+      return { badge: 'Tip: Mastered', color: '#059669', bg: '#f0fdf4', cta: 'Review', clickable: true };
     default:
       return { badge: '⬜ Not Started', color: '#94a3b8', bg: '#ffffff', cta: 'Start Lesson', clickable: true };
   }

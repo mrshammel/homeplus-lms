@@ -29,15 +29,15 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_ICONS: Record<string, string> = {
-  QUIZ_RESPONSE: '📝',
+  QUIZ_RESPONSE: '',
   SHORT_ANSWER: '✏️',
-  PARAGRAPH_RESPONSE: '📄',
-  ESSAY: '📖',
-  REFLECTION: '💭',
-  UPLOADED_WORKSHEET: '📋',
-  IMAGE_ARTIFACT: '🖼️',
-  PROJECT_FILE: '📁',
-  PORTFOLIO_EVIDENCE: '🗂️',
+  PARAGRAPH_RESPONSE: '',
+  ESSAY: '',
+  REFLECTION: '',
+  UPLOADED_WORKSHEET: 'Form:',
+  IMAGE_ARTIFACT: '️',
+  PROJECT_FILE: '',
+  PORTFOLIO_EVIDENCE: '️',
 };
 
 // ---------- Page Component ----------
@@ -68,17 +68,17 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
 
   const initials = getInitials(submission.studentName);
   const typeLabel = TYPE_LABELS[submission.submissionType] || 'Submission';
-  const typeIcon = TYPE_ICONS[submission.submissionType] || '📝';
+  const typeIcon = TYPE_ICONS[submission.submissionType] || '';
   const isWritten = !!submission.writtenResponse;
   const isArtifact = !!submission.fileUrl;
   const hasAiFeedback = submission.aiStatus === 'COMPLETE';
 
   // Performance level config for badges
   const LEVEL_CONFIG: Record<string, { label: string; emoji: string; color: string; bg: string }> = {
-    EMERGING:    { label: 'Emerging',    emoji: '🌱', color: '#b45309', bg: '#fef3c7' },
-    APPROACHING: { label: 'Approaching', emoji: '📈', color: '#0369a1', bg: '#e0f2fe' },
+    EMERGING:    { label: 'Emerging',    emoji: '', color: '#b45309', bg: '#fef3c7' },
+    APPROACHING: { label: 'Approaching', emoji: '', color: '#0369a1', bg: '#e0f2fe' },
     MEETING:     { label: 'Meeting',     emoji: '✅', color: '#15803d', bg: '#dcfce7' },
-    EXCEEDING:   { label: 'Exceeding',   emoji: '🌟', color: '#7c3aed', bg: '#ede9fe' },
+    EXCEEDING:   { label: 'Exceeding',   emoji: '', color: '#7c3aed', bg: '#ede9fe' },
   };
   const aiLevel = submission.aiPerformanceLevel ? LEVEL_CONFIG[submission.aiPerformanceLevel] || LEVEL_CONFIG.APPROACHING : null;
 
@@ -100,12 +100,12 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
               <Link href={`/teacher/students/${submission.studentId}${q}`} style={{ color: 'var(--hp-primary)', textDecoration: 'none', fontWeight: 600 }}>
                 {submission.studentName}
               </Link>
-              <span>·</span>
-              <span>Grade {submission.studentGradeLevel || '—'} · {ctx.subjectName}</span>
+              <span>-</span>
+              <span>Grade {submission.studentGradeLevel || '-'} - {ctx.subjectName}</span>
             </div>
             <div className={styles.reviewMeta} style={{ marginTop: 4 }}>
               <span>{submission.unitTitle}</span>
-              <span>·</span>
+              <span>-</span>
               <span>{submission.lessonTitle}</span>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
           {/* Written Response */}
           {isWritten && (
             <div className={styles.dashCard}>
-              <h3 className={styles.cardTitle}>📝 Student Response</h3>
+              <h3 className={styles.cardTitle}> Student Response</h3>
               <div className={styles.responseDisplay}>
                 {submission.writtenResponse!.split('\n').map((paragraph, i) => (
                   <p key={i} className={styles.responseParagraph}>
@@ -138,11 +138,11 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
             </div>
           )}
 
-          {/* Artifact Display — Drawing submissions show inline as images */}
+          {/* Artifact Display - Drawing submissions show inline as images */}
           {isArtifact && (
             <div className={styles.dashCard}>
               <h3 className={styles.cardTitle}>
-                {submission.submissionType === 'IMAGE_ARTIFACT' ? '🎨 Student Drawing' : '📎 Submitted Artifact'}
+                {submission.submissionType === 'IMAGE_ARTIFACT' ? ' Student Drawing' : ' Submitted Artifact'}
               </h3>
               {/* Inline image preview for drawings and image artifacts */}
               {(submission.submissionType === 'IMAGE_ARTIFACT' && submission.fileUrl) ? (
@@ -173,7 +173,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
               ) : (
                 <div className={styles.artifactPreview}>
                   <div className={styles.artifactPreviewIcon}>
-                    {submission.submissionType === 'UPLOADED_WORKSHEET' ? '📄' : '📁'}
+                    {submission.submissionType === 'UPLOADED_WORKSHEET' ? '' : ''}
                   </div>
                   <div className={styles.artifactPreviewInfo}>
                     <div className={styles.artifactPreviewName}>{submission.fileName || 'Uploaded file'}</div>
@@ -187,7 +187,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
                       className={styles.smallBtn}
                       style={{ padding: '8px 16px', fontSize: '0.85rem', textDecoration: 'none' }}
                     >
-                      📥 Download
+                       Download
                     </a>
                   )}
                 </div>
@@ -195,10 +195,10 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
             </div>
           )}
 
-          {/* No Written / No Artifact — Quiz or auto-scored */}
+          {/* No Written / No Artifact - Quiz or auto-scored */}
           {!isWritten && !isArtifact && (
             <div className={styles.dashCard}>
-              <h3 className={styles.cardTitle}>📊 Submission Details</h3>
+              <h3 className={styles.cardTitle}>Chart: Submission Details</h3>
               <div className={styles.emptyState} style={{ padding: '32px 20px' }}>
                 <div className={styles.emptyIcon}>{typeIcon}</div>
                 <div className={styles.emptyTitle}>{typeLabel}</div>
@@ -209,11 +209,11 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
             </div>
           )}
 
-          {/* AI Initial Review — only show if COMPLETE */}
+          {/* AI Initial Review - only show if COMPLETE */}
           {hasAiFeedback && (
             <div className={styles.dashCard} style={{ marginTop: 20, borderLeft: '3px solid #8b5cf6' }}>
               <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                🤖 AI Initial Review
+                 AI Initial Review
                 {aiLevel && (
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', gap: 4,
@@ -243,7 +243,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
               {/* AI Areas for Improvement */}
               {submission.aiAreasForImprovement && (
                 <div style={{ background: '#fffbeb', borderRadius: 8, padding: '12px 14px', marginBottom: 10, borderLeft: '3px solid #f59e0b' }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.8rem', color: '#b45309', marginBottom: 4 }}>📝 Areas for Improvement</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.8rem', color: '#b45309', marginBottom: 4 }}> Areas for Improvement</div>
                   <div style={{ fontSize: '0.85rem', color: '#92400e', lineHeight: 1.5 }}>{submission.aiAreasForImprovement}</div>
                 </div>
               )}
@@ -251,7 +251,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
               {/* AI Next Steps */}
               {submission.aiNextSteps && (
                 <div style={{ background: '#eff6ff', borderRadius: 8, padding: '12px 14px', marginBottom: 10, borderLeft: '3px solid #3b82f6' }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.8rem', color: '#1d4ed8', marginBottom: 4 }}>🎯 Next Steps</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.8rem', color: '#1d4ed8', marginBottom: 4 }}> Next Steps</div>
                   <div style={{ fontSize: '0.85rem', color: '#1e40af', lineHeight: 1.5 }}>{submission.aiNextSteps}</div>
                 </div>
               )}
@@ -275,7 +275,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
           {/* Score Display */}
           {submission.score !== null && submission.maxScore !== null && (
             <div className={styles.dashCard} style={{ marginTop: 20 }}>
-              <h3 className={styles.cardTitle}>🏆 Score</h3>
+              <h3 className={styles.cardTitle}> Score</h3>
               <div className={styles.scoreDisplay}>
                 <span className={styles.scoreValue}>{submission.score}</span>
                 <span className={styles.scoreDivider}>/</span>
@@ -289,7 +289,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
 
           {/* Submission Info */}
           <div className={styles.dashCard} style={{ marginTop: 20 }}>
-            <h3 className={styles.cardTitle}>📅 Submission Info</h3>
+            <h3 className={styles.cardTitle}> Submission Info</h3>
             <div className={styles.reviewInfoGrid}>
               <div className={styles.reviewInfoItem}>
                 <div className={styles.reviewInfoLabel}>Submitted</div>
@@ -311,7 +311,7 @@ export default async function SubmissionReviewPage({ params, searchParams }: Pag
           {/* Existing Feedback Display */}
           {submission.teacherFeedback && (
             <div className={styles.dashCard} style={{ marginTop: 20 }}>
-              <h3 className={styles.cardTitle}>💬 Previous Feedback</h3>
+              <h3 className={styles.cardTitle}> Previous Feedback</h3>
               <div className={styles.teacherFeedback}>
                 {submission.teacherFeedback}
               </div>

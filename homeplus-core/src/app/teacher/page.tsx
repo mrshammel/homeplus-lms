@@ -40,22 +40,22 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
       <div className={styles.metricsGrid}>
         <MetricCard icon="✅" label="On Pace" value={metrics.onPace} bg="#d1fae5" />
         <MetricCard icon="⚠️" label="Behind Pace" value={metrics.behind} bg="#fef3c7" />
-        <MetricCard icon="🚀" label="Ahead" value={metrics.ahead} bg="#dbeafe" />
-        <MetricCard icon="🚨" label="Needs Attention" value={metrics.needsAttention} bg="#fee2e2" />
-        <MetricCard icon="📊" label="Avg Progress" value={`${Math.round(metrics.avgProgress)}%`} bg="#ede9fe" />
-        <MetricCard icon="🧠" label="Avg Mastery" value={`${classMastery.avgMasteryPercent}%`} bg="#d1fae5" />
-        <MetricCard icon="🔄" label="Review Due" value={classMastery.studentsWithReviewDue} bg="#fef3c7" />
-        <MetricCard icon="📝" label="Pending Reviews" value={metrics.pendingReviews} bg="#fce7f3" />
+        <MetricCard icon="" label="Ahead" value={metrics.ahead} bg="#dbeafe" />
+        <MetricCard icon="" label="Needs Attention" value={metrics.needsAttention} bg="#fee2e2" />
+        <MetricCard icon="Chart:" label="Avg Progress" value={`${Math.round(metrics.avgProgress)}%`} bg="#ede9fe" />
+        <MetricCard icon="" label="Avg Mastery" value={`${classMastery.avgMasteryPercent}%`} bg="#d1fae5" />
+        <MetricCard icon="" label="Review Due" value={classMastery.studentsWithReviewDue} bg="#fef3c7" />
+        <MetricCard icon="" label="Pending Reviews" value={metrics.pendingReviews} bg="#fce7f3" />
       </div>
 
       {/* Split: Attention + Celebrate/Unit Progress */}
       <div className={styles.splitLayout}>
         {/* Needs Attention */}
         <div className={styles.dashCard}>
-          <h3 className={styles.cardTitle}>🚨 Needs Attention</h3>
+          <h3 className={styles.cardTitle}> Needs Attention</h3>
           {needsAttention.length === 0 ? (
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>🎉</div>
+              <div className={styles.emptyIcon}></div>
               <div className={styles.emptyTitle}>All students on track!</div>
               <div className={styles.emptyDesc}>No students need immediate attention today.</div>
             </div>
@@ -77,7 +77,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
                   <div className={styles.attentionInfo}>
                     <div className={styles.attentionName}>{s.name}</div>
                     <div className={styles.attentionReason}>
-                      Grade {s.gradeLevel} · {s.currentUnit || '—'} · {reasons.join(' · ')}
+                      Grade {s.gradeLevel} - {s.currentUnit || '-'} - {reasons.join(' - ')}
                     </div>
                   </div>
                   <div className={styles.badgeStack}>
@@ -99,10 +99,10 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
         <div>
           {/* Students to Celebrate */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}>🌟 Students to Celebrate</h3>
+            <h3 className={styles.cardTitle}> Students to Celebrate</h3>
             {celebrate.length === 0 ? (
               <div className={styles.emptyState}>
-                <div className={styles.emptyIcon}>📈</div>
+                <div className={styles.emptyIcon}></div>
                 <div className={styles.emptyDesc}>Celebrations will appear as students progress.</div>
               </div>
             ) : (
@@ -110,11 +110,11 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
                 let reason = '';
                 if (s.pacing.academicStatus === 'COMPLETE') reason = 'Completed all lessons!';
                 else if (s.pacing.academicStatus === 'AHEAD') reason = `${s.pacing.daysBehindOrAhead} days ahead of pace`;
-                else if (s.avgScore && s.avgScore >= 85) reason = `Strong performance — ${Math.round(s.avgScore)}% avg`;
+                else if (s.avgScore && s.avgScore >= 85) reason = `Strong performance - ${Math.round(s.avgScore)}% avg`;
                 return (
                   <Link key={s.id} href={`/teacher/students/${s.id}${q}`} className={styles.celebrateItem} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <span className={styles.celebrateEmoji}>
-                      {s.pacing.academicStatus === 'COMPLETE' ? '🎉' : s.pacing.academicStatus === 'AHEAD' ? '🚀' : '⭐'}
+                      {s.pacing.academicStatus === 'COMPLETE' ? '' : s.pacing.academicStatus === 'AHEAD' ? '' : 'Tip:'}
                     </span>
                     <div className={styles.celebrateInfo}>
                       <div className={styles.celebrateName}>{s.name}</div>
@@ -128,7 +128,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
 
           {/* Unit Progress */}
           <div className={styles.dashCard}>
-            <h3 className={styles.cardTitle}>📊 {ctx.subjectName} Progress by Unit</h3>
+            <h3 className={styles.cardTitle}>Chart: {ctx.subjectName} Progress by Unit</h3>
             {unitProgress.map((u) => (
               <div key={u.unitId} className={styles.unitProgressItem}>
                 <div className={styles.unitProgressHeader}>
@@ -153,7 +153,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
       {/* Mastery Alerts */}
       {classMastery.studentsWithSupport > 0 && (
         <div className={styles.dashCard} style={{ marginTop: 24 }}>
-          <h3 className={styles.cardTitle}>🧠 Mastery Alerts</h3>
+          <h3 className={styles.cardTitle}> Mastery Alerts</h3>
           {classMastery.studentSummaries
             .filter((s) => s.needsSupportCount > 0)
             .sort((a, b) => b.needsSupportCount - a.needsSupportCount)
@@ -166,17 +166,17 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
                   <div className={styles.attentionInfo}>
                     <div className={styles.attentionName}>{s.studentName}</div>
                     <div className={styles.attentionReason}>
-                      {s.needsSupportCount} skill{s.needsSupportCount !== 1 ? 's' : ''} need support ·
+                      {s.needsSupportCount} skill{s.needsSupportCount !== 1 ? 's' : ''} need support -
                       {s.masteryPercent}% mastery
                     </div>
                   </div>
                   <div className={styles.badgeStack}>
                     <span className={styles.pacingBadge} style={{ background: '#fee2e2', color: '#dc2626' }}>
-                      🚨 {s.needsSupportCount} Support
+                       {s.needsSupportCount} Support
                     </span>
                     {s.reviewDueCount > 0 && (
                       <span className={styles.pacingBadge} style={{ background: '#fef3c7', color: '#d97706' }}>
-                        🔄 {s.reviewDueCount} Review
+                         {s.reviewDueCount} Review
                       </span>
                     )}
                   </div>

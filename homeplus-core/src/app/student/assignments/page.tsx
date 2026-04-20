@@ -8,20 +8,20 @@ export default async function AssignmentsPage() {
   return (
     <>
       <section className={styles.welcomeSection}>
-        <h2 className={styles.welcomeTitle}>📝 Assignments</h2>
+        <h2 className={styles.welcomeTitle}> Assignments</h2>
         <p className={styles.welcomeSubtext}>Your upcoming and submitted work</p>
       </section>
 
       {/* Upcoming / Due Work */}
       <section className={styles.dashCard} style={{ marginBottom: 20 }}>
-        <h3 className={styles.cardTitle}>🔔 Upcoming & Missing Work</h3>
+        <h3 className={styles.cardTitle}> Upcoming & Missing Work</h3>
         {upcoming.length > 0 ? (
           upcoming.map((item) => (
             <div key={item.id} className={styles.upcomingItem}>
               <span className={styles.upcomingIcon}>{item.courseIcon}</span>
               <div className={styles.upcomingInfo}>
                 <div className={styles.upcomingTitle}>{item.title}</div>
-                <div className={styles.upcomingMeta}>{item.courseName} · {item.dueLabel}</div>
+                <div className={styles.upcomingMeta}>{item.courseName} - {item.dueLabel}</div>
               </div>
               <span
                 className={styles.upcomingStatus}
@@ -37,14 +37,14 @@ export default async function AssignmentsPage() {
         ) : (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>✅</div>
-            <div className={styles.emptyText}>All caught up — no upcoming assignments!</div>
+            <div className={styles.emptyText}>All caught up - no upcoming assignments!</div>
           </div>
         )}
       </section>
 
       {/* Recent Submissions with Feedback */}
       <section className={styles.dashCard}>
-        <h3 className={styles.cardTitle}>💬 Recent Submissions & Feedback</h3>
+        <h3 className={styles.cardTitle}> Recent Submissions & Feedback</h3>
         {feedback.length > 0 ? (
           feedback.map((item) => (
             <div key={item.id} className={styles.feedbackItem}>
@@ -57,7 +57,7 @@ export default async function AssignmentsPage() {
                 )}
                 {item.aiFeedback && !item.finalizedByTeacher && (
                   <span className={styles.feedbackBadge} style={{ background: '#dbeafe', color: '#2563eb' }}>
-                    🤖 AI Feedback
+                     AI Feedback
                   </span>
                 )}
                 {!item.reviewed && !item.aiFeedback && (
@@ -69,7 +69,7 @@ export default async function AssignmentsPage() {
               <div className={styles.feedbackMeta}>
                 {item.courseName}
                 {item.score != null && item.maxScore != null && (
-                  <> · Score: {item.score}/{item.maxScore}</>
+                  <> - Score: {item.score}/{item.maxScore}</>
                 )}
               </div>
               {(item.teacherFeedback || item.aiFeedback) && (
@@ -81,8 +81,8 @@ export default async function AssignmentsPage() {
           ))
         ) : (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📬</div>
-            <div className={styles.emptyText}>No submissions yet — complete a lesson to get started!</div>
+            <div className={styles.emptyIcon}></div>
+            <div className={styles.emptyText}>No submissions yet - complete a lesson to get started!</div>
           </div>
         )}
       </section>

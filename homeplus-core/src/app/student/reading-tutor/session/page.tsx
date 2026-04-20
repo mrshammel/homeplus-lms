@@ -118,7 +118,7 @@ export default function ReadingSessionPage() {
       return;
     }
     if (advancingSpeechRef.current) {
-      // advanceToNext is handling TTS directly — skip auto-speak
+      // advanceToNext is handling TTS directly - skip auto-speak
       prevMsgCountRef.current = chatMessages.length;
       return;
     }
@@ -227,7 +227,7 @@ export default function ReadingSessionPage() {
       mediaRecorder.start(1000); // Capture in 1-second chunks
       mediaRecorderRef.current = mediaRecorder;
     } catch (err) {
-      // MediaRecorder failed — that's okay, browser speech will still work
+      // MediaRecorder failed - that's okay, browser speech will still work
       console.warn('[Hybrid] Could not start audio recording:', err);
     }
 
@@ -281,7 +281,7 @@ export default function ReadingSessionPage() {
     let finalTranscript = transcript;
 
     if (captureRatio < 0.5 && audioBlob && audioBlob.size > 1000) {
-      // Browser captured less than 50% of expected words — use Gemini fallback
+      // Browser captured less than 50% of expected words - use Gemini fallback
       console.log(`[Hybrid] Browser captured ${browserWordCount}/${expectedWordCount} words (${Math.round(captureRatio * 100)}%). Sending to Gemini...`);
 
       try {
@@ -361,13 +361,13 @@ export default function ReadingSessionPage() {
         question: 'What was your favourite part? Why did you like it?',
         type: 'connection',
         expectedAnswer: 'A personal connection to the text',
-        encouragement: "There's no wrong answer here — just tell me what you thought!",
+        encouragement: "There's no wrong answer here - just tell me what you thought!",
       },
       {
         question: 'Was there anything in the passage that surprised you or that you didn\'t expect?',
         type: 'inference',
         expectedAnswer: 'An observation about something unexpected',
-        encouragement: 'Think about what happened — was anything different from what you guessed?',
+        encouragement: 'Think about what happened - was anything different from what you guessed?',
       },
     ];
   }, [passage]);
@@ -407,31 +407,31 @@ export default function ReadingSessionPage() {
 
       if (res.ok) {
         const data = await res.json();
-        const greeting = data.greeting || "Nice reading! Let's talk about what you just read. 😊";
+        const greeting = data.greeting || "Nice reading! Let's talk about what you just read. ";
         const questions = data.questions?.length > 0 ? data.questions : buildFallbackQuestions();
         loadQuestionsIntoChat(greeting, questions);
       } else {
-        // API returned an error — use fallback questions
+        // API returned an error - use fallback questions
         console.error('[Comprehension] API returned status', res.status);
         const fallback = buildFallbackQuestions();
         loadQuestionsIntoChat(
-          "Great job reading! Let's chat about what you read. 😊",
+          "Great job reading! Let's chat about what you read. ",
           fallback,
         );
       }
     } catch (err) {
       console.error('[Comprehension] Network error:', err);
-      // Network error — still give them fallback questions
+      // Network error - still give them fallback questions
       const fallback = buildFallbackQuestions();
       loadQuestionsIntoChat(
-        "Great job reading! Let's chat about what you read. 😊",
+        "Great job reading! Let's chat about what you read. ",
         fallback,
       );
     }
     setChatLoading(false);
   }, [passage, analysis, buildFallbackQuestions, loadQuestionsIntoChat]);
 
-  // Core answer submission — used by both text and voice modes
+  // Core answer submission - used by both text and voice modes
   const submitAnswer = useCallback(async (answer: string) => {
     if (!answer.trim()) return;
 
@@ -451,38 +451,38 @@ export default function ReadingSessionPage() {
       const isShort = words <= 10;
 
       if (isDontKnow) {
-        const hint = currentQuestion?.encouragement || "Try thinking back to what you read — what do you remember?";
+        const hint = currentQuestion?.encouragement || "Try thinking back to what you read - what do you remember?";
         return { feedback: pick([
-          `That's okay! No pressure. ${hint} 💛`,
-          `No worries at all! Let me help — ${hint} 😊`,
+          `That's okay! No pressure. ${hint} `,
+          `No worries at all! Let me help - ${hint} `,
           `It's totally fine to not remember everything. Here's a little hint: ${hint} ✨`,
         ]), score: 10 };
       }
 
       if (isOneWord) {
         return { score: 40, feedback: pick([
-          "You're on the right track! Can you tell me just a little more about why you think that? 😊",
-          "Okay! I'd love to hear more — can you add a detail or two? I bet you know more than you think! 💪",
-          "Good start! Try telling me a bit more — even one extra sentence would be awesome. 🌟",
-          "Nice! Now stretch that answer — what else do you remember about it? 📖",
+          "You're on the right track! Can you tell me just a little more about why you think that? ",
+          "Okay! I'd love to hear more - can you add a detail or two? I bet you know more than you think! ",
+          "Good start! Try telling me a bit more - even one extra sentence would be awesome. ",
+          "Nice! Now stretch that answer - what else do you remember about it? ",
         ]) };
       }
 
       if (isShort) {
         return { score: 60, feedback: pick([
-          "You're thinking about the right things — nice work! Let's keep going. 👍",
+          "You're thinking about the right things - nice work! Let's keep going. ",
           "I can see you understood part of it! That's a solid answer. Onto the next one! ✨",
-          "Good thinking! You picked up on something important there. 😊",
-          "You're getting the idea — I like how you connected that! Let's try another. 📚",
+          "Good thinking! You picked up on something important there. ",
+          "You're getting the idea - I like how you connected that! Let's try another. Books:",
         ]) };
       }
 
       // Longer, more detailed answer
       return { score: 75, feedback: pick([
-        "Wow, I can tell you were really paying attention! I love all that detail. Great job! 🌟",
-        "What a wonderful answer! You really thought about that carefully. I'm impressed! 🎉",
+        "Wow, I can tell you were really paying attention! I love all that detail. Great job! ",
+        "What a wonderful answer! You really thought about that carefully. I'm impressed! ",
         "You explained that so well! I can tell the story really stuck with you. Awesome work! ✨",
-        "That's exactly the kind of answer I love to see — detailed and thoughtful. You're a star reader! ⭐",
+        "That's exactly the kind of answer I love to see - detailed and thoughtful. You're a star reader! Tip:",
       ]) };
     };
 
@@ -539,7 +539,7 @@ export default function ReadingSessionPage() {
         }),
       });
 
-      // Always try to read the response body — server now returns feedback even on errors
+      // Always try to read the response body - server now returns feedback even on errors
       const data = await res.json().catch(() => null);
 
       if (data?.feedback) {
@@ -673,13 +673,13 @@ export default function ReadingSessionPage() {
 
       if (res.ok) {
         const data = await res.json();
-        setSessionSummary(data.summary || 'Great job today! Keep reading every day — you are getting stronger! 🌟');
+        setSessionSummary(data.summary || 'Great job today! Keep reading every day - you are getting stronger! ');
         setCelebrationLevel(data.celebrationLevel || 'star');
       } else {
-        setSessionSummary('Great job today! You showed up and that takes courage. See you tomorrow! 🌟');
+        setSessionSummary('Great job today! You showed up and that takes courage. See you tomorrow! ');
       }
     } catch {
-      setSessionSummary('Awesome work today! Every time you read, your brain gets stronger. See you tomorrow! 💪');
+      setSessionSummary('Awesome work today! Every time you read, your brain gets stronger. See you tomorrow! ');
     }
   }, [passage, analysis, comprehensionScore, totalQuestions, transcript, timer]);
 
@@ -696,7 +696,7 @@ export default function ReadingSessionPage() {
       <div className={styles.tutorRoot}>
         <div className={styles.card}>
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>😔</div>
+            <div className={styles.emptyIcon}></div>
             <h3>Oops!</h3>
             <p>{error}</p>
             <Link href="/student/reading-tutor" className={styles.btnPrimary}>
@@ -714,7 +714,7 @@ export default function ReadingSessionPage() {
         <div className={styles.sessionLayout}>
           <div className={styles.card}>
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>📖</div>
+              <div className={styles.emptyIcon}></div>
               <h3>Finding you the perfect passage...</h3>
               <p>Mrs. Hammel is picking something just right for you!</p>
             </div>
@@ -725,7 +725,7 @@ export default function ReadingSessionPage() {
   }
 
   if (phase === 'SUMMARY') {
-    const celebEmoji = celebrationLevel === 'confetti' ? '🎉' : celebrationLevel === 'sparkle' ? '✨' : '⭐';
+    const celebEmoji = celebrationLevel === 'confetti' ? '' : celebrationLevel === 'sparkle' ? '✨' : 'Tip:';
 
     return (
       <div className={styles.tutorRoot}>
@@ -744,7 +744,7 @@ export default function ReadingSessionPage() {
               <div className={styles.scoreValue}>
                 {totalQuestions > 0
                   ? Math.round(comprehensionScore / totalQuestions)
-                  : '—'}%
+                  : '-'}%
               </div>
               <div className={styles.scoreLabel}>Comprehension</div>
             </div>
@@ -765,7 +765,7 @@ export default function ReadingSessionPage() {
               ← Back to Reading Tutor
             </Link>
             <Link href="/student/reading-tutor/dashboard" className={styles.btnSecondary}>
-              📊 View Dashboard
+              Chart: View Dashboard
             </Link>
           </div>
         </div>
@@ -780,7 +780,7 @@ export default function ReadingSessionPage() {
         <div className={styles.passageCard}>
           <div className={styles.passageTitle}>{passage?.title}</div>
           <div className={styles.passageLevel}>
-            Grade {passage?.gradeLevel} · {passage?.lexileLevel}L · {passage?.wordCount} words
+            Grade {passage?.gradeLevel} - {passage?.lexileLevel}L - {passage?.wordCount} words
           </div>
 
           <div className={styles.passageText}>
@@ -806,7 +806,7 @@ export default function ReadingSessionPage() {
                         : w.status === 'OMISSION'
                           ? `Skipped "${w.expected}"`
                           : w.status === 'FILTERED'
-                            ? `Speech pattern — not counted as error`
+                            ? `Speech pattern - not counted as error`
                             : ''
                     }
                   >
@@ -829,7 +829,7 @@ export default function ReadingSessionPage() {
               className={`${styles.recordBtn} ${isListening ? styles.recordBtnActive : ''}`}
               onClick={isListening ? stopRecording : startRecording}
             >
-              {isListening ? '⏹' : '🎤'}
+              {isListening ? '⏹' : ''}
             </button>
 
             <div className={styles.recordLabel}>
@@ -840,7 +840,7 @@ export default function ReadingSessionPage() {
 
             {phase === 'RECORDING' && transcript && (
               <div className={styles.card} style={{ width: '100%', marginTop: '8px' }}>
-                <h3>🎧 What I&apos;m hearing:</h3>
+                <h3> What I&apos;m hearing:</h3>
                 <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6 }}>
                   {transcript}
                 </p>
@@ -853,9 +853,9 @@ export default function ReadingSessionPage() {
         {phase === 'ANALYZING' && (
           <div className={styles.card}>
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>🔍</div>
+              <div className={styles.emptyIcon}></div>
               <h3>Checking your reading...</h3>
-              <p>Mrs. Hammel is looking at how you did. Take a breath! 😊</p>
+              <p>Mrs. Hammel is looking at how you did. Take a breath! </p>
             </div>
           </div>
         )}
@@ -890,7 +890,7 @@ export default function ReadingSessionPage() {
 
             <div style={{ textAlign: 'center' }}>
               <button onClick={() => setPhase('CHOOSE_MODE')} className={styles.btnPrimary}>
-                💬 Let&apos;s Talk About What You Read →
+                 Let&apos;s Talk About What You Read ->
               </button>
             </div>
           </>
@@ -900,9 +900,9 @@ export default function ReadingSessionPage() {
         {phase === 'CHOOSE_MODE' && (
           <div className={styles.card}>
             <div style={{ textAlign: 'center', padding: '16px 0' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>💬</div>
+              <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}></div>
               <h3 style={{ color: '#1e293b', marginBottom: '8px' }}>How would you like to chat with Mrs. Hammel?</h3>
-              <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '24px' }}>Pick whichever is more comfortable — you can always switch later!</p>
+              <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '24px' }}>Pick whichever is more comfortable - you can always switch later!</p>
               <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => { setChatMode('voice'); startComprehension(); }}
@@ -915,7 +915,7 @@ export default function ReadingSessionPage() {
                   onMouseOver={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(124,92,224,0.25)'; }}
                   onMouseOut={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ''; (e.currentTarget as HTMLButtonElement).style.boxShadow = ''; }}
                 >
-                  <span style={{ fontSize: '2rem' }}>🎤</span>
+                  <span style={{ fontSize: '2rem' }}></span>
                   Talk to Me
                   <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#94a3b8' }}>I&apos;ll speak and listen</span>
                 </button>
@@ -943,7 +943,7 @@ export default function ReadingSessionPage() {
         {phase === 'COMPREHENSION' && (
           <div className={styles.card}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ margin: 0 }}>💬 Mrs. Hammel&apos;s Questions</h3>
+              <h3 style={{ margin: 0 }}> Mrs. Hammel&apos;s Questions</h3>
               <div style={{ display: 'flex', gap: '4px', background: '#f1f5f9', borderRadius: '10px', padding: '3px' }}>
                 <button
                   onClick={() => setChatMode('text')}
@@ -962,7 +962,7 @@ export default function ReadingSessionPage() {
                     color: chatMode === 'voice' ? '#7c5ce0' : '#94a3b8',
                     boxShadow: chatMode === 'voice' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
                   }}
-                >🎤 Talk</button>
+                > Talk</button>
               </div>
             </div>
             <div className={styles.chatArea} style={{ maxHeight: '400px', overflowY: 'auto' }}>
@@ -980,7 +980,7 @@ export default function ReadingSessionPage() {
 
               {chatLoading && (
                 <div className={`${styles.chatBubble} ${styles.chatTutor}`} style={{ opacity: 0.6 }}>
-                  Mrs. Hammel is thinking... 💭
+                  Mrs. Hammel is thinking... 
                 </div>
               )}
               <div ref={chatEndRef} />
@@ -1005,7 +1005,7 @@ export default function ReadingSessionPage() {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '12px' }}>
                 {isSpeaking && (
                   <div style={{ fontSize: '0.85rem', color: '#7c5ce0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ animation: 'pulse 1.5s ease-in-out infinite', display: 'inline-block' }}>🔊</span>
+                    <span style={{ animation: 'pulse 1.5s ease-in-out infinite', display: 'inline-block' }}></span>
                     Mrs. Hammel is talking...
                   </div>
                 )}
@@ -1027,7 +1027,7 @@ export default function ReadingSessionPage() {
                       opacity: isSpeaking ? 0.5 : 1,
                     }}
                   >
-                    {voiceListening ? '⏹' : '🎤'}
+                    {voiceListening ? '⏹' : ''}
                   </button>
                   <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
                     {isSpeaking ? 'Wait for Mrs. Hammel to finish...' : voiceListening ? 'Listening... tap to send' : 'Tap to answer'}

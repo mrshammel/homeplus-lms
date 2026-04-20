@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// Lesson Block Renderer — Home Plus LMS
+// Lesson Block Renderer - Home Plus LMS
 // ============================================
 // Renders individual lesson blocks by type.
 // Used inside the universal lesson frame.
@@ -25,7 +25,7 @@ import type {
   MicroCheckBlockContent,
 } from '@/lib/lesson-types';
 
-// Lazy-load DrawingCanvas — it's large and only needed for DRAWING blocks
+// Lazy-load DrawingCanvas - it's large and only needed for DRAWING blocks
 const DrawingCanvas = dynamic(() => import('./DrawingCanvas'), { ssr: false });
 
 interface BlockProps {
@@ -189,7 +189,7 @@ function ReadAloudButton({ getText }: { getText: () => string }) {
             transition: 'all 0.15s',
           }}
         >
-          🔊 Read to Me
+           Read to Me
         </button>
       )}
       <button
@@ -275,7 +275,7 @@ function VideoBlock({ content }: { content: VideoBlockContent }) {
   if (!content?.url) {
     return (
       <div className={styles.blockCard}>
-        <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>🎥 Video URL not set yet</p>
+        <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}> Video URL not set yet</p>
       </div>
     );
   }
@@ -305,8 +305,8 @@ function VideoBlock({ content }: { content: VideoBlockContent }) {
             gap: 8,
             userSelect: 'none',
           }}>
-            <span style={{ fontSize: '1.1rem' }}>📝</span>
-            Video Summary — Read Instead of Watch
+            <span style={{ fontSize: '1.1rem' }}></span>
+            Video Summary - Read Instead of Watch
           </summary>
           <div style={{
             padding: '4px 16px 14px',
@@ -328,7 +328,7 @@ function ImageBlock({ content }: { content: ImageBlockContent }) {
   if (!content?.url) {
     return (
       <div className={styles.blockCard}>
-        <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>🖼️ Image URL not set yet</p>
+        <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>️ Image URL not set yet</p>
       </div>
     );
   }
@@ -344,7 +344,7 @@ function ImageBlock({ content }: { content: ImageBlockContent }) {
 function AISummaryBlock({ content }: { content: { summary: string; source?: string } }) {
   return (
     <div className={styles.blockCard} style={{ borderLeft: '4px solid #8b5cf6' }}>
-      <p style={{ fontWeight: 600, color: '#6b21a8', fontSize: '0.82rem', margin: '0 0 6px' }}>🤖 AI Summary</p>
+      <p style={{ fontWeight: 600, color: '#6b21a8', fontSize: '0.82rem', margin: '0 0 6px' }}> AI Summary</p>
       <p style={{ fontSize: '0.88rem', color: '#334155', lineHeight: 1.6, margin: 0 }}>{content.summary}</p>
     </div>
   );
@@ -363,7 +363,7 @@ function VocabularyBlock({ content }: { content: VocabularyBlockContent }) {
   return (
     <div className={styles.blockCard} style={{ position: 'relative' }}>
       <ReadAloudButton getText={getPlainText} />
-      <p style={{ fontWeight: 700, color: '#166534', fontSize: '0.82rem', margin: '0 0 10px' }}>📗 Key Vocabulary</p>
+      <p style={{ fontWeight: 700, color: '#166534', fontSize: '0.82rem', margin: '0 0 10px' }}> Key Vocabulary</p>
       {(content.terms || []).map((t, i) => (
         <div key={i} className={styles.vocabCard}>
           <p className={styles.vocabTerm}>{t.term}</p>
@@ -379,7 +379,7 @@ function VocabularyBlock({ content }: { content: VocabularyBlockContent }) {
 function WorkedExampleBlock({ content }: { content: WorkedExampleBlockContent }) {
   return (
     <div className={`${styles.blockCard} ${styles.workedExample}`}>
-      <p className={styles.workedExampleTitle}>📐 {content.title}</p>
+      <p className={styles.workedExampleTitle}> {content.title}</p>
       {(content.steps || []).map((s, i) => (
         <div key={i} className={styles.workedStep}>
           <strong>Step {i + 1}:</strong> {s.instruction}
@@ -486,8 +486,8 @@ function FillInBlankBlock({ content, onAnswer, readOnly }: {
         }}>
           <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: correctCount === total ? '#059669' : '#92400e' }}>
             {correctCount === total
-              ? '🎉 All correct!'
-              : `${correctCount}/${total} correct — review the answers above.`}
+              ? ' All correct!'
+              : `${correctCount}/${total} correct - review the answers above.`}
           </p>
         </div>
       )}
@@ -538,7 +538,7 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
       {(content.pairs || []).map((p, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
           <span style={{ flex: '1 1 150px', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b' }}>{p.left}</span>
-          <span style={{ color: '#94a3b8' }}>→</span>
+          <span style={{ color: '#94a3b8' }}>-></span>
           <select
             value={matches[p.left] || ''}
             onChange={(e) => handleSelect(p.left, e.target.value)}
@@ -564,7 +564,7 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
             </span>
           )}
           {checked && !results[p.left] && (
-            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>→ {p.right}</span>
+            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>-> {p.right}</span>
           )}
         </div>
       ))}
@@ -594,8 +594,8 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
         }}>
           <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: correctCount === total ? '#059669' : '#92400e' }}>
             {correctCount === total
-              ? '🎉 All correct!'
-              : `${correctCount}/${total} correct — check the answers marked ✗ above.`}
+              ? ' All correct!'
+              : `${correctCount}/${total} correct - check the answers marked ✗ above.`}
           </p>
         </div>
       )}
@@ -667,7 +667,7 @@ function MultipleChoiceBlock({ content, onAnswer, readOnly }: {
           </p>
           {content.explanation && (
             <p style={{ fontSize: '0.82rem', color: '#475569', margin: '6px 0 0', lineHeight: 1.5 }}>
-              💡 {content.explanation}
+               {content.explanation}
             </p>
           )}
         </div>
@@ -769,7 +769,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
       <p className={styles.interactivePrompt}>{content.prompt}</p>
       {content.rubricHint && (
         <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '0 0 8px' }}>
-          📋 <strong>What your response should include:</strong> {content.rubricHint}
+          Form: <strong>What your response should include:</strong> {content.rubricHint}
         </p>
       )}
       <textarea
@@ -789,7 +789,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
       {!submitted && text.trim().length > 0 && (
         <p style={{ fontSize: '0.75rem', color: isLongEnough ? '#059669' : '#94a3b8', margin: '4px 0 0', textAlign: 'right' }}>
           {text.trim().split(/\s+/).filter(Boolean).length} words
-          {!isLongEnough && ` — aim for more detail`}
+          {!isLongEnough && ` - aim for more detail`}
         </p>
       )}
 
@@ -856,7 +856,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
               </span>
               <div>
                 <p style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1e293b', margin: 0 }}>
-                  🤖 AI Feedback
+                   AI Feedback
                 </p>
                 <p style={{ fontSize: '0.82rem', color: '#475569', margin: '2px 0 0' }}>
                   {feedback.feedback}
@@ -869,7 +869,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
           <div style={{ padding: '14px 18px' }}>
             {feedback.strengths.length > 0 && (
               <div style={{ marginBottom: 10 }}>
-                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#059669', margin: '0 0 4px' }}>💪 Strengths:</p>
+                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#059669', margin: '0 0 4px' }}> Strengths:</p>
                 <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: '#334155', lineHeight: 1.6 }}>
                   {feedback.strengths.map((s, i) => <li key={i}>{s}</li>)}
                 </ul>
@@ -877,7 +877,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
             )}
             {feedback.improvements.length > 0 && (
               <div style={{ marginBottom: 10 }}>
-                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#d97706', margin: '0 0 4px' }}>📝 To Improve:</p>
+                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#d97706', margin: '0 0 4px' }}> To Improve:</p>
                 <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: '#334155', lineHeight: 1.6 }}>
                   {feedback.improvements.map((s, i) => <li key={i}>{s}</li>)}
                 </ul>
@@ -893,12 +893,12 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
                 borderRadius: 8,
                 border: '1px solid #bfdbfe',
               }}>
-                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1d4ed8', margin: '0 0 2px' }}>🎯 Next Step:</p>
+                <p style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1d4ed8', margin: '0 0 2px' }}> Next Step:</p>
                 <p style={{ fontSize: '0.82rem', color: '#334155', margin: 0, lineHeight: 1.5 }}>{feedback.nextStep}</p>
               </div>
             )}
 
-            {/* Teacher flag — shown when scorer flags response as borderline */}
+            {/* Teacher flag - shown when scorer flags response as borderline */}
             {feedback.flagForTeacher && (
               <div style={{
                 marginTop: 10,
@@ -910,14 +910,14 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
                 alignItems: 'center',
                 gap: 8,
               }}>
-                <span style={{ fontSize: '1.1rem' }}>📋</span>
+                <span style={{ fontSize: '1.1rem' }}>Form:</span>
                 <p style={{ fontSize: '0.78rem', color: '#92400e', margin: 0, lineHeight: 1.5 }}>
                   <strong>Teacher Review Requested:</strong> Your teacher will look at this response to give you personalized feedback.
                 </p>
               </div>
             )}
 
-            {/* Teacher review disclaimer — always shown */}
+            {/* Teacher review disclaimer - always shown */}
             <div style={{
               marginTop: 10,
               padding: '10px 14px',
@@ -928,7 +928,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
               alignItems: 'center',
               gap: 8,
             }}>
-              <span style={{ fontSize: '1.1rem' }}>👩‍🏫</span>
+              <span style={{ fontSize: '1.1rem' }}>Teacher:</span>
               <p style={{ fontSize: '0.75rem', color: '#64748b', margin: 0, lineHeight: 1.5 }}>
                 <strong>Note:</strong> {feedback.disclaimer || 'This is AI-generated feedback to help you improve. Your final grade will be reviewed and assigned by your teacher.'}
               </p>
@@ -944,7 +944,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
             ✅ Response submitted!
           </p>
           <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '4px 0 0' }}>
-            👩‍🏫 Your final grade will be reviewed and assigned by your teacher.
+            Teacher: Your final grade will be reviewed and assigned by your teacher.
           </p>
         </div>
       )}
@@ -953,7 +953,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
 }
 
 // ---- Drawing Block ----
-// DrawingBlock removed — replaced by DrawingCanvas component (./DrawingCanvas.tsx)
+// DrawingBlock removed - replaced by DrawingCanvas component (./DrawingCanvas.tsx)
 
 // ---- Upload Block (photo/video/file) ----
 function UploadBlock({ content, type, onAnswer }: {
@@ -964,7 +964,7 @@ function UploadBlock({ content, type, onAnswer }: {
   const inputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const icons = { photo: '📷', video: '🎬', file: '📎' };
+  const icons = { photo: '', video: '', file: '' };
   const accept = type === 'photo' ? 'image/*' : type === 'video' ? 'video/*' : (content.acceptedTypes || ['*']).join(',');
   const captureAttr = type === 'photo' || type === 'video' ? 'environment' : undefined;
 
@@ -1050,7 +1050,7 @@ function MicroCheckBlock({ content, onAnswer }: {
       )}
       {checked && content.explanation && (
         <p style={{ fontSize: '0.82rem', color: '#475569', marginTop: 10, padding: '8px 12px', background: '#faf5ff', borderRadius: 8 }}>
-          💡 {content.explanation}
+           {content.explanation}
         </p>
       )}
     </div>

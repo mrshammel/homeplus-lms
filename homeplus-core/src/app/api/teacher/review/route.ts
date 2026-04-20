@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     // ── MasteryEvidence: TEACHER_OBSERVATION ──
     // When a teacher reviews a submission with a score, record mastery evidence
     // for all TARGET skills linked to the lesson. This is critical for drawing
-    // submissions which have no AI scoring path — teacher review IS the evidence.
+    // submissions which have no AI scoring path - teacher review IS the evidence.
     if (score !== undefined && score !== null) {
       const numericScore = parseFloat(score);
       
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
       const targetSkills = submissionWithLesson?.activity?.lesson?.lessonSkills || [];
 
       if (lessonId && targetSkills.length > 0) {
-        // Determine maxScore — default 100 for drawings, use submission maxScore if available
+        // Determine maxScore - default 100 for drawings, use submission maxScore if available
         const maxScoreValue = updated.maxScore ?? 100;
         const normalizedScore = Math.min(1, Math.max(0, numericScore / (maxScoreValue as number)));
 

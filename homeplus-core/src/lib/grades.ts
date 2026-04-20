@@ -6,7 +6,7 @@ import { ActivityType } from '@prisma/client';
  *
  * Calculates weighted average grades from student submissions.
  * Each activity type has a configurable weight.
- * Grades are computed dynamically — never stored as static values.
+ * Grades are computed dynamically - never stored as static values.
  */
 
 // Default category weights (must sum to 1.0)

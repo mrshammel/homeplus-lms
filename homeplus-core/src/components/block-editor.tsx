@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// Block Editor Components — Home Plus LMS
+// Block Editor Components - Home Plus LMS
 // ============================================
 // Visual form editors for each lesson block type.
 // Replaces raw JSON editing in the lesson builder.

@@ -1,8 +1,8 @@
 // ============================================
-// Canvas Overlays — Home Plus Drawing Canvas
+// Canvas Overlays - Home Plus Drawing Canvas
 // ============================================
 // Background overlays render behind student strokes.
-// They are NOT affected by undo/clear — only student marks are.
+// They are NOT affected by undo/clear - only student marks are.
 
 import type { DrawingOverlayType, DrawingOverlayConfig } from '@/lib/lesson-types';
 
@@ -38,7 +38,7 @@ export function renderOverlay(
     case 'fraction-model':
       renderFractionModel(ctx, config, width, height, dpr);
       break;
-    // Tier 3 stubs — implemented when needed
+    // Tier 3 stubs - implemented when needed
     case 'isometric-grid':
     case 'stem-leaf':
     case 'circle-graph':
@@ -563,6 +563,6 @@ function renderPlaceholder(
   ctx.font = `${14 * dpr}px -apple-system, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(`${type} overlay — coming soon`, (width * dpr) / 2, (height * dpr) / 2);
+  ctx.fillText(`${type} overlay - coming soon`, (width * dpr) / 2, (height * dpr) / 2);
   ctx.restore();
 }

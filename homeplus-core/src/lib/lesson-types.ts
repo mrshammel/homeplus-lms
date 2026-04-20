@@ -1,5 +1,5 @@
 // ============================================
-// Lesson Types — Home Plus LMS
+// Lesson Types - Home Plus LMS
 // ============================================
 // Shared TypeScript types for the universal lesson frame,
 // subject-specific mastery engines, and lesson block rendering.
@@ -29,11 +29,11 @@ export const SECTION_LABELS: Record<LessonSectionType, string> = {
 };
 
 export const SECTION_ICONS: Record<LessonSectionType, string> = {
-  WARM_UP: '🔥',
-  LEARN: '📖',
+  WARM_UP: '',
+  LEARN: '',
   PRACTICE: '✏️',
   CHECK: '✅',
-  REFLECT: '💭',
+  REFLECT: '',
 };
 
 // ---------- Block Types ----------
@@ -78,22 +78,22 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
 };
 
 export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
-  TEXT: '📝',
-  VIDEO: '🎥',
-  IMAGE: '🖼️',
-  AI_SUMMARY: '🤖',
-  VOCABULARY: '📗',
-  WORKED_EXAMPLE: '📐',
+  TEXT: '',
+  VIDEO: '',
+  IMAGE: '️',
+  AI_SUMMARY: '',
+  VOCABULARY: '',
+  WORKED_EXAMPLE: '',
   FILL_IN_BLANK: '✍️',
-  MATCHING: '🔗',
-  MULTIPLE_CHOICE: '🔘',
-  CONSTRUCTED_RESPONSE: '📄',
-  DRAWING: '🎨',
-  PHOTO_UPLOAD: '📷',
-  TAKE_PHOTO: '📸',
-  VIDEO_UPLOAD: '🎬',
-  TAKE_VIDEO: '📹',
-  FILE_UPLOAD: '📎',
+  MATCHING: '',
+  MULTIPLE_CHOICE: '',
+  CONSTRUCTED_RESPONSE: '',
+  DRAWING: '',
+  PHOTO_UPLOAD: '',
+  TAKE_PHOTO: '',
+  VIDEO_UPLOAD: '',
+  TAKE_VIDEO: '',
+  FILE_UPLOAD: '',
   MICRO_CHECK: '❓',
 };
 
@@ -162,7 +162,7 @@ export interface MultipleChoiceBlockContent {
 export interface ConstructedResponseBlockContent {
   prompt: string;
   minLength?: number;
-  minExpectedWords?: number; // prompt-aware minimum — set by author (e.g. 10 for "define X", 50 for "explain with evidence")
+  minExpectedWords?: number; // prompt-aware minimum - set by author (e.g. 10 for "define X", 50 for "explain with evidence")
   rubricHint?: string;
   teacherReviewRequired?: boolean;
 }
@@ -175,7 +175,7 @@ export interface DrawingBlockContent {
   overlayConfig?: DrawingOverlayConfig;
   tools?: DrawingToolConfig;
   minExpectedMarks?: number;    // minimum strokes before submit is meaningful, default 3
-  // Legacy field — kept for backward compat
+  // Legacy field - kept for backward compat
   instruction?: string;
   backgroundImage?: string;
 }
@@ -287,7 +287,7 @@ export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
     immediateCorrectiveFeedback: false,
   },
   ELA: {
-    passPercent: 0, // not quiz-gated — uses completion/review
+    passPercent: 0, // not quiz-gated - uses completion/review
     maxRetries: 0,
     reteachEnabled: false,
     immediateCorrectiveFeedback: false,
@@ -299,7 +299,7 @@ export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
     immediateCorrectiveFeedback: true,
   },
   SOCIAL_STUDIES: {
-    passPercent: 0, // not quiz-gated — uses response/reflection
+    passPercent: 0, // not quiz-gated - uses response/reflection
     maxRetries: 0,
     reteachEnabled: false,
     immediateCorrectiveFeedback: false,

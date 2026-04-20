@@ -1,5 +1,5 @@
 /* ===================================
-   Student Dashboard — Home Plus LMS
+   Student Dashboard - Home Plus LMS
    ===================================
    Polished student-facing design system.
    Soft backgrounds, vibrant subject accents,
@@ -1093,7 +1093,7 @@
   z-index: 2;
 }
 
-/* Active number — filled subject color + subtle shadow */
+/* Active number - filled subject color + subtle shadow */
 .lessonSidebarNumActive {
   background: var(--subject-primary, var(--accent-blue));
   border-color: var(--subject-primary, var(--accent-blue));
@@ -1107,28 +1107,28 @@
   50% { box-shadow: 0 0 0 6px var(--subject-bg, rgba(37, 99, 235, 0.08)); }
 }
 
-/* Complete number — green check circle */
+/* Complete number - green check circle */
 .lessonSidebarNumComplete {
   background: #059669;
   border-color: #059669;
   color: #fff;
 }
 
-/* Mastered number — gold star treatment */
+/* Mastered number - gold star treatment */
 .lessonSidebarNumMastered {
   background: linear-gradient(135deg, #059669, #34d399);
   border-color: #059669;
   color: #fff;
 }
 
-/* Reteach number — amber indicator */
+/* Reteach number - amber indicator */
 .lessonSidebarNumReteach {
   background: #fbbf24;
   border-color: #f59e0b;
   color: #92400e;
 }
 
-/* Locked number — muted */
+/* Locked number - muted */
 .lessonSidebarNumLocked {
   background: #f1f5f9;
   border-color: #e2e8f0;
@@ -1797,7 +1797,7 @@
   letter-spacing: 0.04em;
 }
 
-/* Mastery health bar — stacked colored segments */
+/* Mastery health bar - stacked colored segments */
 .masteryHealthBar {
   display: flex;
   height: 10px;

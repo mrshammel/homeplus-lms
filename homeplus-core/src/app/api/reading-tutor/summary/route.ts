@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate AI summary
-    let summary = 'Great job today! You showed up and that takes courage. See you tomorrow! 🌟';
+    let summary = 'Great job today! You showed up and that takes courage. See you tomorrow! ';
     let celebrationLevel: 'star' | 'sparkle' | 'confetti' = 'star';
 
     const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('[API /reading-tutor/summary]', error);
     return NextResponse.json({
-      summary: 'Awesome work today! Every time you read, your brain gets stronger. See you tomorrow! 💪',
+      summary: 'Awesome work today! Every time you read, your brain gets stronger. See you tomorrow! ',
       celebrationLevel: 'star',
     });
   }

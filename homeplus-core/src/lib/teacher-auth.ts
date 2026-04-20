@@ -1,9 +1,9 @@
 // ============================================
-// Teacher Auth Helper — Home Plus LMS
+// Teacher Auth Helper - Home Plus LMS
 // ============================================
 // Server-side helpers for teacher identity.
 // Used by all teacher-facing pages and data layers.
-// Uses real NextAuth sessions — no hardcoded IDs.
+// Uses real NextAuth sessions - no hardcoded IDs.
 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,12 +11,9 @@ import { redirect } from 'next/navigation';
 
 // ---------- Demo Mode ----------
 
-/**
- * Demo mode gate. Controls whether demo data is used.
- * In production, set NEXT_PUBLIC_DEMO_MODE=false or remove it.
- */
 export function isDemoMode(): boolean {
-  return process.env.NEXT_PUBLIC_DEMO_MODE !== 'false';
+  // return process.env.NEXT_PUBLIC_DEMO_MODE !== 'false';
+  return false;
 }
 
 // ---------- Teacher Identity ----------
@@ -30,7 +27,7 @@ export async function getTeacherId(): Promise<string> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
-    // Not authenticated at all — redirect to homepage
+    // Not authenticated at all - redirect to homepage
     redirect('/');
   }
 
@@ -46,7 +43,7 @@ export async function getTeacherId(): Promise<string> {
     return userId;
   }
 
-  // Authenticated but not a teacher — send to verification page
+  // Authenticated but not a teacher - send to verification page
   redirect('/teacher-verify');
 }
 

@@ -1,5 +1,5 @@
 // ============================================
-// Student Lesson Page — Home Plus LMS
+// Student Lesson Page - Home Plus LMS
 // ============================================
 // Route: /student/courses/[courseId]/units/[unitId]/lessons/[lessonId]
 // Server component that loads data and renders the universal LessonFrame.

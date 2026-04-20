@@ -22,7 +22,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
   return (
     <>
       <div className={styles.tableControls}>
-        <input type="text" className={styles.searchInput} placeholder="🔍 Search students..." />
+        <input type="text" className={styles.searchInput} placeholder=" Search students..." />
         <select className={styles.filterSelect}>
           <option value="">All Pacing</option>
           <option value="ON_PACE">On Pace</option>
@@ -42,7 +42,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
       <div className={styles.dashCard}>
         {students.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>👥</div>
+            <div className={styles.emptyIcon}></div>
             <div className={styles.emptyTitle}>No students enrolled yet</div>
             <div className={styles.emptyDesc}>Students will appear here once they sign in and are assigned to your class.</div>
           </div>
@@ -81,12 +81,12 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                       </td>
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
-                          <span style={{ fontSize: '0.85rem' }}>{s.gradeLevel || '—'}</span>
+                          <span style={{ fontSize: '0.85rem' }}>{s.gradeLevel || '-'}</span>
                         </Link>
                       </td>
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
-                          <span style={{ fontSize: '0.85rem' }}>{s.currentUnit || '—'}</span>
+                          <span style={{ fontSize: '0.85rem' }}>{s.currentUnit || '-'}</span>
                         </Link>
                       </td>
                       <td>
@@ -104,7 +104,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
                           <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                            {s.avgScore !== null ? `${Math.round(s.avgScore)}%` : '—'}
+                            {s.avgScore !== null ? `${Math.round(s.avgScore)}%` : '-'}
                           </span>
                         </Link>
                       </td>
@@ -112,7 +112,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
                           {(() => {
                             const m = masteryMap.get(s.id);
-                            if (!m || m.totalSkills === 0) return <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>—</span>;
+                            if (!m || m.totalSkills === 0) return <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>-</span>;
                             return (
                               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: m.masteryPercent >= 70 ? '#059669' : m.masteryPercent >= 40 ? '#d97706' : '#dc2626' }}>
@@ -120,7 +120,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                                 </span>
                                 {m.needsSupportCount > 0 && (
                                   <span style={{ fontSize: '0.68rem', fontWeight: 600, padding: '2px 6px', borderRadius: 6, background: '#fee2e2', color: '#dc2626' }}>
-                                    🚨{m.needsSupportCount}
+                                    {m.needsSupportCount}
                                   </span>
                                 )}
                               </div>
@@ -131,7 +131,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                       <td>
                         <Link href={`/teacher/students/${s.id}${q}`} className={styles.rowLink}>
                           <span style={{ fontSize: '0.82rem', color: s.pacing.engagementStatus === 'STALLED' ? '#dc2626' : '#64748b' }}>
-                            {s.pacing.daysSinceActive !== null ? `${s.pacing.daysSinceActive}d` : '—'}
+                            {s.pacing.daysSinceActive !== null ? `${s.pacing.daysSinceActive}d` : '-'}
                           </span>
                         </Link>
                       </td>

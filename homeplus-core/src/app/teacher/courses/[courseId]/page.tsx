@@ -45,8 +45,8 @@ export default function CourseEditorPage() {
   const [newUnitIcon, setNewUnitIcon] = useState('');
   const [addingUnit, setAddingUnit] = useState(false);
 
-  const ICONS = ['📚', '🔬', '📖', '🔢', '🌍', '🎨', '🎵', '🏃', '💻', '📐', '🧪', '🗺️', '✍️', '📊',
-    '🌿', '🌱', '🌡️', '🏗️', '🔗', '🧬', '⚡', '🎯', '🗣️', '🔍', '✏️', '📏'];
+  const ICONS = ['Books:', '', '', '', '', '', '', '', '', '', '', '️', '✍️', 'Chart:',
+    '', '', '️', '️', '', '', '⚡', '', '️', '', '✏️', ''];
 
   const fetchCourse = useCallback(async () => {
     try {
@@ -179,7 +179,7 @@ export default function CourseEditorPage() {
       {/* ===== Course Meta Editor ===== */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e293b', margin: '0 0 14px' }}>
-          📝 Course Settings
+           Course Settings
         </h3>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
           <div style={{ flex: '1 1 200px' }}>
@@ -212,7 +212,7 @@ export default function CourseEditorPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button onClick={handleSaveCourse} disabled={saving} style={{ ...btnPrimary, opacity: saving ? 0.6 : 1 }}>
-            {saving ? 'Saving...' : '💾 Save Changes'}
+            {saving ? 'Saving...' : ' Save Changes'}
           </button>
           {saveMsg && <span style={{ fontSize: '0.82rem', color: saveMsg.includes('✓') ? '#059669' : '#dc2626', fontWeight: 600 }}>{saveMsg}</span>}
         </div>
@@ -221,7 +221,7 @@ export default function CourseEditorPage() {
       {/* ===== Units Section ===== */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>
-          📋 Units ({units.length})
+          Form: Units ({units.length})
         </h3>
         <button
           onClick={() => setShowAddUnit(!showAddUnit)}
@@ -248,7 +248,7 @@ export default function CourseEditorPage() {
               <div style={{ flex: '0 0 80px' }}>
                 <label style={labelStyle}>Icon</label>
                 <select value={newUnitIcon} onChange={(e) => setNewUnitIcon(e.target.value)} style={inputStyle}>
-                  <option value="">—</option>
+                  <option value="">-</option>
                   {ICONS.map((i) => (<option key={i} value={i}>{i}</option>))}
                 </select>
               </div>
@@ -294,7 +294,7 @@ export default function CourseEditorPage() {
                     <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '2px 0 0' }}>{unit.description}</p>
                   )}
                   <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: '4px 0 0' }}>
-                    {unit.lessonCount} lesson{unit.lessonCount !== 1 ? 's' : ''} · Order: {unit.order}
+                    {unit.lessonCount} lesson{unit.lessonCount !== 1 ? 's' : ''} - Order: {unit.order}
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: 6 }}>
@@ -318,7 +318,7 @@ export default function CourseEditorPage() {
                       cursor: 'pointer',
                     }}
                   >
-                    🗑️
+                    ️
                   </button>
                 </div>
               </div>

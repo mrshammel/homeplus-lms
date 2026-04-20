@@ -1,5 +1,5 @@
 // ============================================
-// Lesson Progress API — Home Plus LMS
+// Lesson Progress API - Home Plus LMS
 // ============================================
 // GET: current progress for lesson
 // POST: update section completion / status

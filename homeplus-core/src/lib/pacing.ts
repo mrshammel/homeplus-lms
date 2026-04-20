@@ -1,8 +1,8 @@
 // ============================================
-// Pacing Engine — Home Plus LMS
+// Pacing Engine - Home Plus LMS
 // ============================================
 // Dual-status model: Academic Pacing + Engagement Status
-// These are INDEPENDENT dimensions — a student can be
+// These are INDEPENDENT dimensions - a student can be
 // "Slightly Behind + Stalled" or "Ahead + Active".
 //
 // Enrollment-aware: effective_start = max(Sept 1, enrollment_date)
@@ -36,8 +36,8 @@ export interface PacingResult {
   pacingSummary: string;          // e.g. "52 days behind expected pace"
 
   // Progress data
-  expectedProgress: number;       // 0–100, clamped
-  actualProgress: number;         // 0–100, clamped
+  expectedProgress: number;       // 0-100, clamped
+  actualProgress: number;         // 0-100, clamped
   completedLessons: number;
   totalLessons: number;
   daysBehindOrAhead: number;      // Negative = behind, positive = ahead
@@ -141,10 +141,10 @@ export function calculatePacing(params: {
   const totalDays = Math.max(1, daysBetween(effectiveStart, schoolYearEnd));
   const elapsedDays = daysBetween(effectiveStart, now);
 
-  // Days since enrollment (for grace period — based on actual enrollment, not elapsed instructional days)
+  // Days since enrollment (for grace period - based on actual enrollment, not elapsed instructional days)
   const daysSinceEnrollment = daysBetween(enrolledAt, now);
 
-  // Actual progress: 0–100, clamped
+  // Actual progress: 0-100, clamped
   const actualProgress = totalLessons > 0
     ? clamp((completedLessons / totalLessons) * 100, 0, 100)
     : 0;
@@ -153,11 +153,11 @@ export function calculatePacing(params: {
   let daysSinceActive: number | null = null;
   if (lastAcademicActivityAt) {
     const raw = daysBetween(lastAcademicActivityAt, now);
-    daysSinceActive = Math.max(0, raw); // Clamp: future dates → 0
+    daysSinceActive = Math.max(0, raw); // Clamp: future dates -> 0
   }
 
-  // Expected progress: 0–100, clamped
-  // Before effective start → 0, after school year end → 100
+  // Expected progress: 0-100, clamped
+  // Before effective start -> 0, after school year end -> 100
   let expectedProgress: number;
   if (elapsedDays <= 0) {
     expectedProgress = 0;
@@ -195,7 +195,7 @@ export function calculatePacing(params: {
   } else if (daysSinceEnrollment <= PACING_CONFIG.gracePeriodDays) {
     academicStatus = 'NEWLY_ENROLLED';
     academicLabel = 'Newly Enrolled';
-    pacingSummary = 'Onboarding — pacing alerts paused';
+    pacingSummary = 'Onboarding - pacing alerts paused';
     isGracePeriod = true;
   } else {
     // Pacing ratio: actual vs expected, as percentage
@@ -248,11 +248,11 @@ export function getAcademicPacingStyle(status: AcademicPacingStatus): {
 } {
   const styles: Record<AcademicPacingStatus, { color: string; bg: string; icon: string }> = {
     ON_PACE:               { color: '#059669', bg: '#d1fae5', icon: '✅' },
-    AHEAD:                 { color: '#2563eb', bg: '#dbeafe', icon: '🚀' },
+    AHEAD:                 { color: '#2563eb', bg: '#dbeafe', icon: '' },
     SLIGHTLY_BEHIND:       { color: '#d97706', bg: '#fef3c7', icon: '⚠️' },
-    SIGNIFICANTLY_BEHIND:  { color: '#dc2626', bg: '#fee2e2', icon: '🔴' },
-    NEWLY_ENROLLED:        { color: '#7c3aed', bg: '#ede9fe', icon: '🆕' },
-    COMPLETE:              { color: '#059669', bg: '#d1fae5', icon: '🎉' },
+    SIGNIFICANTLY_BEHIND:  { color: '#dc2626', bg: '#fee2e2', icon: '' },
+    NEWLY_ENROLLED:        { color: '#7c3aed', bg: '#ede9fe', icon: '' },
+    COMPLETE:              { color: '#059669', bg: '#d1fae5', icon: '' },
   };
   return styles[status];
 }
@@ -261,7 +261,7 @@ export function getEngagementStyle(status: EngagementStatus): {
   color: string; bg: string; icon: string;
 } {
   const styles: Record<EngagementStatus, { color: string; bg: string; icon: string }> = {
-    ACTIVE:  { color: '#059669', bg: '#d1fae5', icon: '🟢' },
+    ACTIVE:  { color: '#059669', bg: '#d1fae5', icon: '' },
     STALLED: { color: '#6b7280', bg: '#f3f4f6', icon: '⏸️' },
   };
   return styles[status];
@@ -269,7 +269,7 @@ export function getEngagementStyle(status: EngagementStatus): {
 
 // ---------- Formatting Helpers ----------
 
-/** Teacher-friendly engagement label. Centralized — all pages use this. */
+/** Teacher-friendly engagement label. Centralized - all pages use this. */
 function formatEngagementLabel(status: EngagementStatus, daysSinceActive: number | null): string {
   if (daysSinceActive === null) return 'No academic activity yet';
   if (daysSinceActive === 0) return 'Active today';

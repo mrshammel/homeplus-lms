@@ -1,5 +1,5 @@
 /* ===================================
-   Home Plus Homepage — Final Polish CSS
+   Home Plus Homepage - Final Polish CSS
    ===================================
    Sticky header, tight hero, premium cards,
    smooth section transitions, mobile nav
@@ -348,7 +348,7 @@
   transform: translateY(-2px);
 }
 
-/* Hero Right — Pillars artwork */
+/* Hero Right - Pillars artwork */
 .heroRight {
   display: flex;
   align-items: center;
@@ -898,7 +898,7 @@
 }
 
 /* ===========================
-   RESPONSIVE — TABLET
+   RESPONSIVE - TABLET
    =========================== */
 @media (max-width: 1024px) {
   .headerNav {
@@ -973,7 +973,7 @@
 }
 
 /* ===========================
-   RESPONSIVE — MOBILE
+   RESPONSIVE - MOBILE
    =========================== */
 @media (max-width: 640px) {
   .headerInner {

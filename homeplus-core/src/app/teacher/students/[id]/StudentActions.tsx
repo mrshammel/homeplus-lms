@@ -28,8 +28,8 @@ const NOTE_TAGS = [
 ];
 
 const OVERRIDE_OPTIONS = [
-  { value: '', label: '— Default Progression —' },
-  { value: 'UNLOCKED', label: '🔓 Unlock (student can enter)' },
+  { value: '', label: '- Default Progression -' },
+  { value: 'UNLOCKED', label: ' Unlock (student can enter)' },
   { value: 'COMPLETED', label: '✅ Mark Complete (counts as satisfied)' },
   { value: 'EXEMPT', label: '⏭️ Exempt (skip, counts as satisfied)' },
 ];
@@ -166,7 +166,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
           onClick={(e) => { if (e.target === e.currentTarget) setShowNote(false); }}
         >
           <div className={styles.modalContent}>
-            <h3 className={styles.cardTitle} style={{ marginBottom: 16 }}>📋 Add Note for {studentName}</h3>
+            <h3 className={styles.cardTitle} style={{ marginBottom: 16 }}>Form: Add Note for {studentName}</h3>
             <select
               className={styles.noteTagSelect}
               value={noteTag}
@@ -214,7 +214,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
           onClick={(e) => { if (e.target === e.currentTarget) setShowOverride(false); }}
         >
           <div className={styles.modalContent} style={{ maxWidth: 640 }}>
-            <h3 className={styles.cardTitle} style={{ marginBottom: 6 }}>📋 Manage Unit Access — {studentName}</h3>
+            <h3 className={styles.cardTitle} style={{ marginBottom: 6 }}>Form: Manage Unit Access - {studentName}</h3>
             <p style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: 16, lineHeight: 1.5 }}>
               Override unit access for this student. Use this for transfer students, intake placement, or acceleration.
               Changes only affect this student.
@@ -242,7 +242,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
                     {/* Unit header */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontSize: '1.1rem' }}>{unit.unitIcon || '📖'}</span>
+                        <span style={{ fontSize: '1.1rem' }}>{unit.unitIcon || ''}</span>
                         <div>
                           <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1e293b' }}>{unit.unitTitle}</div>
                           <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{unit.completionPct}% complete</div>
@@ -337,7 +337,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
           style={{ padding: '10px 16px', fontSize: '0.88rem' }}
           onClick={() => setShowNote(true)}
         >
-          📋 Add Note
+          Form: Add Note
         </button>
         {unitOverrides.length > 0 && (
           <button
@@ -345,7 +345,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
             style={{ padding: '10px 16px', fontSize: '0.88rem' }}
             onClick={() => setShowOverride(true)}
           >
-            🔑 Manage Unit Access
+             Manage Unit Access
           </button>
         )}
         <a
@@ -353,7 +353,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
           className={styles.smallBtn}
           style={{ padding: '10px 16px', fontSize: '0.88rem', textDecoration: 'none', textAlign: 'center' }}
         >
-          📝 Review Pending Work
+           Review Pending Work
         </a>
         <button
           className={styles.smallBtn}
@@ -363,7 +363,7 @@ export default function StudentActions({ studentId, studentName, contextQuery, u
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
         >
-          🎯 Assess Outcomes
+           Assess Outcomes
         </button>
         <a
           href="/teacher/students"

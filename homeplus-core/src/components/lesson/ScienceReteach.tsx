@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// Science Reteach Flow — Home Plus LMS
+// Science Reteach Flow - Home Plus LMS
 // ============================================
 // Mini-reteach experience for science mastery.
 // Shows relevant content segment, summary, and
@@ -98,13 +98,13 @@ export default function ScienceReteach({
     <div style={{ background: '#fff7ed', border: '2px solid #fdba74', borderRadius: 16, padding: 24, marginBottom: 20 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-        <span style={{ fontSize: '1.5rem' }}>🔄</span>
+        <span style={{ fontSize: '1.5rem' }}></span>
         <div>
           <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#92400e', margin: 0 }}>
             Targeted Review
           </h3>
           <p style={{ fontSize: '0.82rem', color: '#b45309', margin: 0 }}>
-            Let&apos;s review this concept together — you&apos;ve got this!
+            Let&apos;s review this concept together - you&apos;ve got this!
           </p>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function ScienceReteach({
       {outcomeDescription && (
         <div style={{ background: '#fef3c7', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
           <p style={{ fontSize: '0.82rem', fontWeight: 600, color: '#92400e', margin: 0 }}>
-            🎯 Focus: {outcomeDescription}
+             Focus: {outcomeDescription}
           </p>
         </div>
       )}
@@ -134,7 +134,7 @@ export default function ScienceReteach({
       </div>
       <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '0 0 16px', textAlign: 'center' }}>
         {streak >= REQUIRED_STREAK
-          ? '🎉 Great job! You mastered this concept!'
+          ? ' Great job! You mastered this concept!'
           : `Get ${REQUIRED_STREAK - streak} more correct in a row`}
       </p>
 
@@ -150,7 +150,7 @@ export default function ScienceReteach({
                   )}
                   {block.blockType === 'VIDEO' && (
                     <div>
-                      <p style={{ fontWeight: 600, marginBottom: 8 }}>🎥 Rewatch this segment:</p>
+                      <p style={{ fontWeight: 600, marginBottom: 8 }}> Rewatch this segment:</p>
                       <div className={styles.videoBlock}>
                         <iframe
                           src={(block.content as any).url}
@@ -162,7 +162,7 @@ export default function ScienceReteach({
                   )}
                   {block.blockType === 'AI_SUMMARY' && (
                     <div>
-                      <p style={{ fontWeight: 600, color: '#6b21a8', fontSize: '0.82rem', marginBottom: 4 }}>🤖 Key Points:</p>
+                      <p style={{ fontWeight: 600, color: '#6b21a8', fontSize: '0.82rem', marginBottom: 4 }}> Key Points:</p>
                       <p style={{ fontSize: '0.85rem', color: '#334155', lineHeight: 1.6 }}>{(block.content as any).summary}</p>
                     </div>
                   )}
@@ -182,7 +182,7 @@ export default function ScienceReteach({
             style={{ background: '#d97706' }}
             onClick={() => setPhase('practice')}
           >
-            I&apos;m ready to try again →
+            I&apos;m ready to try again ->
           </button>
         </div>
       )}
@@ -240,12 +240,12 @@ export default function ScienceReteach({
                   </p>
                   {feedback.explanation && (
                     <p style={{ fontSize: '0.82rem', color: '#475569', margin: '0 0 10px' }}>
-                      💡 {feedback.explanation}
+                       {feedback.explanation}
                     </p>
                   )}
                   {streak < REQUIRED_STREAK && (
                     <button className={styles.btnSecondary} onClick={handleNext}>
-                      Next Question →
+                      Next Question ->
                     </button>
                   )}
                 </div>
@@ -260,7 +260,7 @@ export default function ScienceReteach({
       {/* Completed */}
       {streak >= REQUIRED_STREAK && (
         <div style={{ textAlign: 'center', padding: 20 }}>
-          <p style={{ fontSize: '1.5rem', margin: '0 0 8px' }}>🎉</p>
+          <p style={{ fontSize: '1.5rem', margin: '0 0 8px' }}></p>
           <p style={{ fontSize: '0.92rem', fontWeight: 700, color: '#059669' }}>
             You&apos;ve mastered this concept!
           </p>

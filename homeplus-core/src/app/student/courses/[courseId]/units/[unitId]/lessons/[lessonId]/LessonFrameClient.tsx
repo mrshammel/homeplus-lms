@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// Lesson Frame Client Wrapper — Home Plus LMS
+// Lesson Frame Client Wrapper - Home Plus LMS
 // ============================================
 // Adds subject-colored header chrome around the
 // lesson content. Passes props to LessonFrame.
@@ -84,8 +84,8 @@ export default function LessonFrameClient(props: LessonFrameClientProps) {
           </span>
         </div>
         <div className={styles.lessonHeaderMeta}>
-          {props.courseIcon} {props.courseName} · {props.unitTitle}
-          {props.estimatedMinutes && ` · ~${props.estimatedMinutes} min`}
+          {props.courseIcon} {props.courseName} - {props.unitTitle}
+          {props.estimatedMinutes && ` - ~${props.estimatedMinutes} min`}
         </div>
       </div>
 

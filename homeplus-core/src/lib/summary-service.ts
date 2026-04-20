@@ -1,5 +1,5 @@
 // ============================================
-// Summary Service — Home Plus LMS
+// Summary Service - Home Plus LMS
 // ============================================
 // Refreshes precomputed summary tables for fast UI loading.
 //
