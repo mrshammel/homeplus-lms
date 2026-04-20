@@ -7,15 +7,17 @@ import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import styles from './student.module.css';
 
+import { Home, Library, RefreshCw, BookOpen, BarChart2, CheckSquare, Award } from 'lucide-react';
+
 // ---------- Nav Items ----------
 const NAV_ITEMS = [
-  { href: '/student/dashboard', icon: 'Home:', label: 'Dashboard' },
-  { href: '/student/courses', icon: 'Books:', label: 'My Courses' },
-  { href: '/student/review', icon: '', label: 'Review' },
-  { href: '/student/reading-tutor', icon: '', label: 'Reading Tutor' },
-  { href: '/student/progress', icon: 'Chart:', label: 'Progress' },
-  { href: '/student/assignments', icon: '', label: 'Assignments' },
-  { href: '/student/grades', icon: '', label: 'Grades' },
+  { href: '/student/dashboard', icon: <Home size={18} />, label: 'Dashboard' },
+  { href: '/student/courses', icon: <Library size={18} />, label: 'My Courses' },
+  { href: '/student/review', icon: <RefreshCw size={18} />, label: 'Review' },
+  { href: '/student/reading-tutor', icon: <BookOpen size={18} />, label: 'Reading Tutor' },
+  { href: '/student/progress', icon: <BarChart2 size={18} />, label: 'Progress' },
+  { href: '/student/assignments', icon: <CheckSquare size={18} />, label: 'Assignments' },
+  { href: '/student/grades', icon: <Award size={18} />, label: 'Grades' },
 ];
 
 // ---------- Layout Component ----------
