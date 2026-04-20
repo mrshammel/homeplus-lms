@@ -63,7 +63,7 @@ export default async function SubmissionsPage({ searchParams }: PageProps) {
                     minute: '2-digit',
                   })}
                 </div>
-                <span className={styles.smallBtn}>Review -></span>
+                <span className={styles.smallBtn}>Review &rarr;</span>
               </div>
             </Link>
           ))

@@ -260,7 +260,7 @@ export default function CalibratePage() {
 
             {freeTalkTranscript.split(' ').length > 5 && (
               <button onClick={finishFreeTalk} className={styles.btnPrimary} style={{ marginTop: '12px' }}>
-                Done talking -> Next Step
+                Done talking &rarr; Next Step
               </button>
             )}
           </div>

@@ -538,7 +538,7 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
       {(content.pairs || []).map((p, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
           <span style={{ flex: '1 1 150px', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b' }}>{p.left}</span>
-          <span style={{ color: '#94a3b8' }}>-></span>
+          <span style={{ color: '#94a3b8' }}>&rarr;</span>
           <select
             value={matches[p.left] || ''}
             onChange={(e) => handleSelect(p.left, e.target.value)}
@@ -564,7 +564,7 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
             </span>
           )}
           {checked && !results[p.left] && (
-            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>-> {p.right}</span>
+            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>&rarr; {p.right}</span>
           )}
         </div>
       ))}

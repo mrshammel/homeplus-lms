@@ -282,7 +282,7 @@ export default function ReviewClient({
             transition: 'all 0.18s',
           }}
         >
-          Start Review ->
+          Start Review &rarr;
         </button>
       </div>
     );

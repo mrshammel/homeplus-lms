@@ -63,7 +63,7 @@ export default async function StudentDashboard() {
               <span className={styles.heroProgressText}>{enrollments[0].progressPercent}%</span>
             </div>
           </div>
-          <span className={styles.heroBtn}>Continue -></span>
+          <span className={styles.heroBtn}>Continue &rarr;</span>
         </a>
       )}
 
@@ -89,7 +89,7 @@ export default async function StudentDashboard() {
               )}
             </div>
           </div>
-          <span className={styles.reviewCardBtn}>Start Review -></span>
+          <span className={styles.reviewCardBtn}>Start Review &rarr;</span>
         </Link>
       )}
 
@@ -192,7 +192,7 @@ export default async function StudentDashboard() {
                   ) : course.progressPercent > 0 ? (
                     <span className={`${styles.statusChip} ${styles.statusInProgress}`}> In Progress</span>
                   ) : (
-                    <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start -></span>
+                    <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start &rarr;</span>
                   )}
                 </div>
 

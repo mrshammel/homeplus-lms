@@ -431,7 +431,7 @@ function AboutSection({ initial, onComplete, onBack }: {
           disabled={!allAnswered}
           onClick={() => onComplete(answers)}
         >
-          Save & Return ->
+          Save & Return &rarr;
         </button>
       </div>
     </SectionShell>
@@ -482,7 +482,7 @@ function MathSection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save & Return ->
+          Save & Return &rarr;
         </button>
       </div>
     </SectionShell>
@@ -718,7 +718,7 @@ function ELASection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save &amp; Return ->
+          Save &amp; Return &rarr;
         </button>
       </div>
     </SectionShell>
@@ -786,7 +786,7 @@ function ReadingSection({ initial, onComplete, onBack }: {
       <div className={styles.sectionFooter}>
         <button className={styles.backBtn} onClick={onBack}>← Back to Hub</button>
         <button className={styles.btnPrimary} disabled={!allAnswered} onClick={() => onComplete(answers)}>
-          Save & Return ->
+          Save & Return &rarr;
         </button>
       </div>
     </SectionShell>

@@ -182,7 +182,7 @@ export default function ScienceReteach({
             style={{ background: '#d97706' }}
             onClick={() => setPhase('practice')}
           >
-            I&apos;m ready to try again ->
+            I&apos;m ready to try again &rarr;
           </button>
         </div>
       )}
@@ -245,7 +245,7 @@ export default function ScienceReteach({
                   )}
                   {streak < REQUIRED_STREAK && (
                     <button className={styles.btnSecondary} onClick={handleNext}>
-                      Next Question ->
+                      Next Question &rarr;
                     </button>
                   )}
                 </div>

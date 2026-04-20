@@ -51,7 +51,7 @@ export default async function CoursesPage() {
                 ) : course.progressPercent > 0 ? (
                   <span className={`${styles.statusChip} ${styles.statusInProgress}`}> In Progress</span>
                 ) : (
-                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start -></span>
+                  <span className={`${styles.statusChip} ${styles.statusAvailable}`}>Start &rarr;</span>
                 )}
               </div>
 

@@ -123,11 +123,11 @@ export default function ReadingTutorHome() {
             </p>
             {isCalibrated ? (
               <Link href="/student/reading-tutor/session" className={styles.btnPrimary}>
-                Start Reading ->
+                Start Reading &rarr;
               </Link>
             ) : (
               <Link href="/student/reading-tutor/calibrate" className={styles.btnPrimary}>
-                Set Up My Voice ->
+                Set Up My Voice &rarr;
               </Link>
             )}
           </div>

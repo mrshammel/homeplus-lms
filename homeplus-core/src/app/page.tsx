@@ -49,7 +49,7 @@ export default function HomePage() {
             {!isLoading && isSignedIn ? (
               <>
                 <a href="/dashboard" className={styles.navSignIn}>
-                  Go to Dashboard ->
+                  Go to Dashboard &rarr;
                 </a>
                 {userImage ? (
                   <button
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className={styles.mobileNav}>
             <a href="#about" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>About</a>
             <a href="#how-it-works" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>How It Works</a>
-            <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.mobileNavLink} target="_blank" rel="noopener noreferrer" onClick={() => setMobileNavOpen(false)}>Register -></a>
+            <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.mobileNavLink} target="_blank" rel="noopener noreferrer" onClick={() => setMobileNavOpen(false)}>Register &rarr;</a>
             <div className={styles.mobileNavDivider} />
 
             {/* Mobile auth-aware CTAs */}

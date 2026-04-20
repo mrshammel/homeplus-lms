@@ -674,7 +674,7 @@ export default function LessonFrame({
             className={styles.btnPrimary}
             style={{ textDecoration: 'none', background: '#059669' }}
           >
-            Continue ->
+            Continue &rarr;
           </Link>
         )}
       </div>

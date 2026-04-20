@@ -160,7 +160,7 @@ export default async function CourseDetailPage({ params }: Props) {
               <span className={styles.heroProgressText}>{progressPercent}%</span>
             </div>
           </div>
-          <span className={styles.heroBtn}>Continue -></span>
+          <span className={styles.heroBtn}>Continue &rarr;</span>
         </Link>
       )}
 

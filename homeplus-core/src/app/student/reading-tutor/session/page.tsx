@@ -890,7 +890,7 @@ export default function ReadingSessionPage() {
 
             <div style={{ textAlign: 'center' }}>
               <button onClick={() => setPhase('CHOOSE_MODE')} className={styles.btnPrimary}>
-                 Let&apos;s Talk About What You Read ->
+                 Let&apos;s Talk About What You Read &rarr;
               </button>
             </div>
           </>
