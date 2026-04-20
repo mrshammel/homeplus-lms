@@ -13,6 +13,7 @@ import styles from './lesson.module.css';
 import LessonBlockRenderer from './LessonBlockRenderer';
 import MasteryCheck from './MasteryCheck';
 import ScienceReteach from './ScienceReteach';
+import MultimodalWarmUp from './MultimodalWarmUp';
 import {
   SECTION_ORDER,
   SECTION_LABELS,
@@ -410,22 +411,12 @@ export default function LessonFrame({
                 <LessonBlockRenderer key={b.id} blockType={b.blockType as any} content={b.content} />
               ))}
               {warmUpConfig && !blocksBySection.WARM_UP.length && (
-                <div className={styles.blockCard}>
-                  <p style={{ fontSize: '0.88rem', color: '#334155' }}>
-                    {typeof warmUpConfig === 'object' && warmUpConfig?.prompt
-                      ? warmUpConfig.prompt
-                      : 'Think about what you already know about this topic.'}
-                  </p>
-                  {warmUpConfig?.imageUrl && (
-                    <div style={{ marginTop: 12, borderRadius: 12, overflow: 'hidden' }}>
-                      <img
-                        src={warmUpConfig.imageUrl}
-                        alt="Warm-up visual"
-                        style={{ width: '100%', maxHeight: 340, objectFit: 'cover', borderRadius: 12 }}
-                      />
-                    </div>
-                  )}
-                </div>
+                <MultimodalWarmUp 
+                  content={typeof warmUpConfig === 'object' ? warmUpConfig : { prompt: 'Think about what you already know about this topic.' }} 
+                  lessonId={lessonId} 
+                  subjectMode={subjectMode} 
+                  gradeLevel={gradeLevel} 
+                />
               )}
             </>
           )}
