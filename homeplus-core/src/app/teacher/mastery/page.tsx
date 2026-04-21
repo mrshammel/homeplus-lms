@@ -5,6 +5,7 @@
 // and per-student mastery summaries.
 
 import Link from 'next/link';
+import { Award, CheckCircle, AlertCircle, Clock, BookOpen, BarChart2, GraduationCap } from 'lucide-react';
 import styles from '../teacher.module.css';
 import { getStudentsWithPacing, getClassMasteryOverview } from '@/lib/teacher-data';
 import { getTeacherId } from '@/lib/teacher-auth';
@@ -27,18 +28,18 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
     <>
       {/* Mastery Metrics */}
       <div className={styles.metricsGrid}>
-        <MetricCard icon="" label="Avg Mastery" value={`${mastery.avgMasteryPercent}%`} bg="#d1fae5" />
-        <MetricCard icon="Tip:" label="Fully Mastered" value={mastery.studentsFullyMastered} bg="#fef3c7" />
-        <MetricCard icon="" label="Need Support" value={mastery.studentsWithSupport} bg="#fee2e2" />
-        <MetricCard icon="" label="Review Due" value={mastery.studentsWithReviewDue} bg="#fef3c7" />
+        <MetricCard icon={<Award size={20} color="#059669" />} label="Avg Mastery" value={`${mastery.avgMasteryPercent}%`} bg="#d1fae5" />
+        <MetricCard icon={<CheckCircle size={20} color="#d97706" />} label="Fully Mastered" value={mastery.studentsFullyMastered} bg="#fef3c7" />
+        <MetricCard icon={<AlertCircle size={20} color="#dc2626" />} label="Need Support" value={mastery.studentsWithSupport} bg="#fee2e2" />
+        <MetricCard icon={<Clock size={20} color="#d97706" />} label="Review Due" value={mastery.studentsWithReviewDue} bg="#fef3c7" />
       </div>
 
       {/* Skill Breakdown Grid */}
       <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-        <h3 className={styles.cardTitle}>Chart: Skill Mastery - {ctx.subjectName}</h3>
+        <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><BarChart2 size={20} /> Skill Mastery - {ctx.subjectName}</h3>
         {mastery.skillBreakdown.length === 0 ? (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>Books:</div>
+            <div className={styles.emptyIcon} style={{ background: '#f8fafc' }}><BookOpen size={48} color="#94a3b8" /></div>
             <div className={styles.emptyTitle}>No skills mapped yet</div>
             <div className={styles.emptyDesc}>Skills will appear here as students complete lessons.</div>
           </div>
@@ -92,7 +93,7 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
 
       {/* Per-Student Mastery */}
       <div className={styles.dashCard}>
-        <h3 className={styles.cardTitle}> Student Mastery</h3>
+        <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><GraduationCap size={20} /> Student Mastery</h3>
         {mastery.studentSummaries.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}></div>
@@ -174,7 +175,7 @@ export default async function MasteryBoard({ searchParams }: PageProps) {
   );
 }
 
-function MetricCard({ icon, label, value, bg }: { icon: string; label: string; value: string | number; bg: string }) {
+function MetricCard({ icon, label, value, bg }: { icon: React.ReactNode; label: string; value: string | number; bg: string }) {
   return (
     <div className={styles.metricCard}>
       <div className={styles.metricIcon} style={{ background: bg }}>{icon}</div>

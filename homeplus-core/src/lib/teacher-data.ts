@@ -949,7 +949,7 @@ export async function getClassMasteryOverview(
   const studentIds = students.map((s) => s.id).filter((id) => !id.startsWith('demo-'));
 
   if (studentIds.length === 0 || isDemoMode()) {
-    return getDemoClassMastery(students);
+    return getDemoClassMastery(students, ctx);
   }
 
   try {
@@ -1027,11 +1027,11 @@ export async function getClassMasteryOverview(
     };
   } catch (err) {
     console.error('[teacher-data] getClassMasteryOverview failed:', err);
-    return getDemoClassMastery(students);
+    return getDemoClassMastery(students, ctx);
   }
 }
 
-function getDemoClassMastery(students: StudentWithPacing[]): ClassMasteryOverview {
+function getDemoClassMastery(students: StudentWithPacing[], ctx: GradeSubjectContext): ClassMasteryOverview {
   const names = students.map((s) => s.name);
   const demoSummaries: StudentMasterySummary[] = students.map((s, i) => {
     const profiles = [
@@ -1053,7 +1053,17 @@ function getDemoClassMastery(students: StudentWithPacing[]): ClassMasteryOvervie
     };
   });
 
-  const demoSkills: ClassSkillBreakdown[] = [
+  const demoSkills: ClassSkillBreakdown[] = ctx.subjectSlug === 'ela' ? [
+    { skillId: 'e1', skillCode: 'ELA-6-W-1', skillTitle: 'Write narrative texts using descriptive details', masteredCount: 6, developingCount: 1, reviewDueCount: 0, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'e2', skillCode: 'ELA-6-R-2', skillTitle: 'Identify central theme and supporting evidence', masteredCount: 5, developingCount: 2, reviewDueCount: 1, needsSupportCount: 0, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'e3', skillCode: 'ELA-6-C-3', skillTitle: 'Analyze poetic structures and figurative language', masteredCount: 4, developingCount: 2, reviewDueCount: 1, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'e4', skillCode: 'ELA-6-O-1', skillTitle: 'Participate actively in collaborative discussions', masteredCount: 3, developingCount: 4, reviewDueCount: 1, needsSupportCount: 0, notStartedCount: 0, totalStudents: 8 },
+  ] : ctx.subjectSlug === 'math' ? [
+    { skillId: 'm1', skillCode: 'MAT-6-N-1', skillTitle: 'Understand ratios and use ratio language', masteredCount: 5, developingCount: 2, reviewDueCount: 0, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'm2', skillCode: 'MAT-6-A-2', skillTitle: 'Evaluate expressions involving variables', masteredCount: 3, developingCount: 3, reviewDueCount: 1, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'm3', skillCode: 'MAT-6-G-1', skillTitle: 'Find the area of right triangles', masteredCount: 2, developingCount: 3, reviewDueCount: 2, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+    { skillId: 'm4', skillCode: 'MAT-6-SP-3', skillTitle: 'Analyze measures of center and variability', masteredCount: 4, developingCount: 1, reviewDueCount: 2, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
+  ] : [
     { skillId: 's1', skillCode: 'SCI-7-IE-1', skillTitle: 'Identify biotic and abiotic factors', masteredCount: 6, developingCount: 1, reviewDueCount: 0, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
     { skillId: 's2', skillCode: 'SCI-7-IE-2', skillTitle: 'Describe energy flow in food webs', masteredCount: 5, developingCount: 2, reviewDueCount: 1, needsSupportCount: 0, notStartedCount: 0, totalStudents: 8 },
     { skillId: 's3', skillCode: 'SCI-7-PF-1', skillTitle: 'Explain photosynthesis requirements', masteredCount: 4, developingCount: 2, reviewDueCount: 1, needsSupportCount: 1, notStartedCount: 0, totalStudents: 8 },
