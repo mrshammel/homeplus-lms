@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CheckCircle, AlertTriangle, ArrowUpCircle, AlertCircle, BarChart2, Award, Clock, ClipboardList, Star } from 'lucide-react';
 import styles from './teacher.module.css';
 import { getStudentsWithPacing, getOverviewMetrics, getUnitProgress, getClassMasteryOverview } from '@/lib/teacher-data';
 import { getAcademicPacingStyle, getEngagementStyle, formatDaysSinceActive } from '@/lib/pacing';
@@ -38,21 +39,21 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
     <>
       {/* Summary Metric Cards */}
       <div className={styles.metricsGrid}>
-        <MetricCard icon="✅" label="On Pace" value={metrics.onPace} bg="#d1fae5" />
-        <MetricCard icon="⚠️" label="Behind Pace" value={metrics.behind} bg="#fef3c7" />
-        <MetricCard icon="" label="Ahead" value={metrics.ahead} bg="#dbeafe" />
-        <MetricCard icon="" label="Needs Attention" value={metrics.needsAttention} bg="#fee2e2" />
-        <MetricCard icon="Chart:" label="Avg Progress" value={`${Math.round(metrics.avgProgress)}%`} bg="#ede9fe" />
-        <MetricCard icon="" label="Avg Mastery" value={`${classMastery.avgMasteryPercent}%`} bg="#d1fae5" />
-        <MetricCard icon="" label="Review Due" value={classMastery.studentsWithReviewDue} bg="#fef3c7" />
-        <MetricCard icon="" label="Pending Reviews" value={metrics.pendingReviews} bg="#fce7f3" />
+        <MetricCard icon={<CheckCircle size={20} color="#059669" />} label="On Pace" value={metrics.onPace} bg="#d1fae5" />
+        <MetricCard icon={<AlertTriangle size={20} color="#d97706" />} label="Behind Pace" value={metrics.behind} bg="#fef3c7" />
+        <MetricCard icon={<ArrowUpCircle size={20} color="#2563eb" />} label="Ahead" value={metrics.ahead} bg="#dbeafe" />
+        <MetricCard icon={<AlertCircle size={20} color="#dc2626" />} label="Needs Attention" value={metrics.needsAttention} bg="#fee2e2" />
+        <MetricCard icon={<BarChart2 size={20} color="#7c3aed" />} label="Avg Progress" value={`${Math.round(metrics.avgProgress)}%`} bg="#ede9fe" />
+        <MetricCard icon={<Award size={20} color="#059669" />} label="Avg Mastery" value={`${classMastery.avgMasteryPercent}%`} bg="#d1fae5" />
+        <MetricCard icon={<Clock size={20} color="#d97706" />} label="Review Due" value={classMastery.studentsWithReviewDue} bg="#fef3c7" />
+        <MetricCard icon={<ClipboardList size={20} color="#ec4899" />} label="Pending Reviews" value={metrics.pendingReviews} bg="#fce7f3" />
       </div>
 
       {/* Split: Attention + Celebrate/Unit Progress */}
       <div className={styles.splitLayout}>
         {/* Needs Attention */}
         <div className={styles.dashCard}>
-          <h3 className={styles.cardTitle}> Needs Attention</h3>
+          <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><AlertCircle size={20} /> Needs Attention</h3>
           {needsAttention.length === 0 ? (
             <div className={styles.emptyState}>
               <div className={styles.emptyIcon}></div>
@@ -99,7 +100,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
         <div>
           {/* Students to Celebrate */}
           <div className={styles.dashCard} style={{ marginBottom: 24 }}>
-            <h3 className={styles.cardTitle}> Students to Celebrate</h3>
+            <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Star size={20} /> Students to Celebrate</h3>
             {celebrate.length === 0 ? (
               <div className={styles.emptyState}>
                 <div className={styles.emptyIcon}></div>
@@ -128,7 +129,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
 
           {/* Unit Progress */}
           <div className={styles.dashCard}>
-            <h3 className={styles.cardTitle}>Chart: {ctx.subjectName} Progress by Unit</h3>
+            <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><BarChart2 size={20} /> {ctx.subjectName} Progress by Unit</h3>
             {unitProgress.map((u) => (
               <div key={u.unitId} className={styles.unitProgressItem}>
                 <div className={styles.unitProgressHeader}>
@@ -153,7 +154,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
       {/* Mastery Alerts */}
       {classMastery.studentsWithSupport > 0 && (
         <div className={styles.dashCard} style={{ marginTop: 24 }}>
-          <h3 className={styles.cardTitle}> Mastery Alerts</h3>
+          <h3 className={styles.cardTitle} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Award size={20} /> Mastery Alerts</h3>
           {classMastery.studentSummaries
             .filter((s) => s.needsSupportCount > 0)
             .sort((a, b) => b.needsSupportCount - a.needsSupportCount)
@@ -189,7 +190,7 @@ export default async function TeacherOverview({ searchParams }: PageProps) {
   );
 }
 
-function MetricCard({ icon, label, value, bg }: { icon: string; label: string; value: string | number; bg: string }) {
+function MetricCard({ icon, label, value, bg }: { icon: React.ReactNode; label: string; value: string | number; bg: string }) {
   return (
     <div className={styles.metricCard}>
       <div className={styles.metricIcon} style={{ background: bg }}>{icon}</div>

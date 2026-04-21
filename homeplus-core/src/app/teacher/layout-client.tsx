@@ -8,17 +8,19 @@ import { signOut } from 'next-auth/react';
 import styles from './teacher.module.css';
 import type { AvailableContext } from '@/lib/teacher-context';
 
+import { LayoutDashboard, Users, Clock, Award, Inbox, UserPlus, ClipboardList, BookOpen } from 'lucide-react';
+
 // ---------- Constants ----------
 
 const NAV_ITEMS = [
-  { href: '/teacher', icon: 'Chart:', label: 'Overview' },
-  { href: '/teacher/students', icon: '', label: 'Students' },
-  { href: '/teacher/pacing', icon: '⏱️', label: 'Pacing' },
-  { href: '/teacher/mastery', icon: '', label: 'Mastery' },
-  { href: '/teacher/submissions', icon: '', label: 'Submissions' },
-  { href: '/teacher/onboarding', icon: 'Student:', label: 'Onboarding' },
-  { href: '/teacher/notes', icon: 'Form:', label: 'Notes' },
-  { href: '/teacher/courses', icon: 'Books:', label: 'Course Builder' },
+  { href: '/teacher', icon: <LayoutDashboard size={18} />, label: 'Overview' },
+  { href: '/teacher/students', icon: <Users size={18} />, label: 'Students' },
+  { href: '/teacher/pacing', icon: <Clock size={18} />, label: 'Pacing' },
+  { href: '/teacher/mastery', icon: <Award size={18} />, label: 'Mastery' },
+  { href: '/teacher/submissions', icon: <Inbox size={18} />, label: 'Submissions' },
+  { href: '/teacher/onboarding', icon: <UserPlus size={18} />, label: 'Onboarding' },
+  { href: '/teacher/notes', icon: <ClipboardList size={18} />, label: 'Notes' },
+  { href: '/teacher/courses', icon: <BookOpen size={18} />, label: 'Course Builder' },
 ];
 
 // ---------- Props ----------
@@ -176,7 +178,7 @@ export default function TeacherLayoutClient({ children, assignedContexts, pendin
         {/* Context Selector Bar */}
         <div className={styles.contextBar}>
           <div className={styles.contextLeft}>
-            <span className={styles.contextIcon}>{activeContext?.subjectIcon || 'Books:'}</span>
+            <span className={styles.contextIcon}>{activeContext?.subjectIcon || <BookOpen size={20} />}</span>
             <span className={styles.contextLabel}>{contextLabel}</span>
           </div>
           <div className={styles.contextSelectors}>
