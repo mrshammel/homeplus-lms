@@ -312,7 +312,7 @@ export default function MultimodalWarmUp({ content, lessonId, subjectMode, grade
         </div>
       )}
 
-// Custom AI Feedback render inline to prevent background polling API requirements
+      {/* AI Feedback View */}
       {submitted && (
         <div style={{ marginTop: 20 }}>
           {!feedbackData && !submitting ? (

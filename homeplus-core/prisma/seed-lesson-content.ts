@@ -35,6 +35,7 @@ async function main() {
       warmUpConfig: {
         type: 'prediction',
         prompt: 'Look at the image below. What do you think would happen to this pond ecosystem if all the sunlight was blocked for a month?',
+        imageUrl: 'https://images.unsplash.com/photo-1549488344-c7820ad51baf?q=80&w=800&auto=format&fit=crop',
         options: [
           { label: 'Nothing would change', value: 'a', correct: false },
           { label: 'Plants would die first, then animals', value: 'b', correct: true },
