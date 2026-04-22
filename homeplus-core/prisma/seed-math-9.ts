@@ -90,7 +90,7 @@ export async function seedMath9(prisma: PrismaClient) {
   for (const block of l1Content) {
     await prisma.lessonBlock.upsert({
       where: { id: block.id },
-      update: { content: block.content },
+      update: { content: block.content, blockType: block.blockType, section: block.section, order: block.order },
       create: block,
     });
   }
