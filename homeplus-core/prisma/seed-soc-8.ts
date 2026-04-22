@@ -40,12 +40,27 @@ export async function seedSocial8(prisma: PrismaClient) {
       content: { html: '<h2>What was the Renaissance?</h2><p>The Renaissance (meaning "rebirth") was a period of cultural, artistic, political, and economic rebirth following the Middle Ages. It was a time of great curiosity, exploration, and new ways of thinking about the world and human potential.</p><p><em>Source: Our Worldviews, Chapter 1, Pages 14-15</em></p>' }
     },
     {
-      id: 'soc-8-u1-l1-b3', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
-      content: { videoId: 'Vufba_ZcoR0', title: 'The Renaissance: Was it a Thing?' }
+      id: 'soc-8-u1-l1-b2b', lessonId: 'g8-soc-u1-l1', section: 'PRACTICE' as const, blockType: 'MATCHING' as const, order: 3,
+      content: {
+        instruction: 'Match the terms to their definitions:',
+        pairs: [
+          { left: 'Renaissance', right: 'Rebirth of culture and art' },
+          { left: 'Middle Ages', right: 'The period before the Renaissance' },
+          { left: 'Worldview', right: 'A collection of beliefs about life and the universe' }
+        ]
+      }
     },
     {
-      id: 'soc-8-u1-l1-b4', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 4,
+      id: 'soc-8-u1-l1-b3', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 4,
+      content: { url: 'https://www.youtube.com/watch?v=Vufba_ZcoR0', title: 'The Renaissance: Was it a Thing?' }
+    },
+    {
+      id: 'soc-8-u1-l1-b4', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 5,
       content: { prompt: 'Imagine you are a peasant during the Middle Ages. Suddenly, new ideas and trade begin flowing into your town. How might your worldview change?' }
+    },
+    {
+      id: 'soc-8-u1-l1-b5', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'DRAWING' as const, order: 6,
+      content: { prompt: 'Draw an object or symbol that represents the idea of "rebirth" or "new ideas flowing in".' }
     }
   ];
 
@@ -136,7 +151,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l5-b3', lessonId: 'g8-soc-u1-l5', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
-      content: { videoId: '04pOSA4cGTE', title: 'The Printing Press and the Renaissance' }
+      content: { url: 'https://www.youtube.com/watch?v=04pOSA4cGTE', title: 'The Printing Press and the Renaissance' }
     },
     {
       id: 'soc-8-u1-l5-b4', lessonId: 'g8-soc-u1-l5', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 4,
@@ -194,7 +209,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u2-l2-b3', lessonId: 'g8-soc-u2-l2', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
-      content: { videoId: 'rjhIzemLdos', title: 'The Spanish Empire, Silver, & Runaway Inflation' }
+      content: { url: 'https://www.youtube.com/watch?v=rjhIzemLdos', title: 'The Spanish Empire, Silver, & Runaway Inflation' }
     },
     {
       id: 'soc-8-u2-l2-b4', lessonId: 'g8-soc-u2-l2', section: 'CHECK' as const, blockType: 'MATCHING' as const, order: 4,
@@ -254,7 +269,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u3-l2-b3', lessonId: 'g8-soc-u3-l2', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
-      content: { videoId: 'Nosq94oCl_M', title: 'Samurai, Daimyo, Matthew Perry, and Nationalism' }
+      content: { url: 'https://www.youtube.com/watch?v=Nosq94oCl_M', title: 'Samurai, Daimyo, Matthew Perry, and Nationalism' }
     },
     {
       id: 'soc-8-u3-l2-b4', lessonId: 'g8-soc-u3-l2', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 4,
