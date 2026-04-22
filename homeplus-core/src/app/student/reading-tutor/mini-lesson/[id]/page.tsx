@@ -154,8 +154,8 @@ export default function MiniLessonPage() {
       speak("Perfect spelling!");
       setTimeout(advanceEncode, 2000);
     } else {
-      setEncodeFeedback(\`Not quite! The word was \${target}.\`);
-      speak(\`Not quite! The word was \${target}.\`);
+      setEncodeFeedback(`Not quite! The word was ${target}.`);
+      speak(`Not quite! The word was ${target}.`);
     }
   };
 

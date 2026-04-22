@@ -174,8 +174,8 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
   // Calculate Linguistic Stats
   const hasReadingData = readingSessions.length > 0;
   const latestSession = hasReadingData ? readingSessions[0] : null;
-  const avgWPM = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.wpm || 0), 0) / readingSessions.length) : 0;
-  const avgReadingAcc = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.accuracy || 0), 0) / readingSessions.length) : 0;
+  const avgWPM = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.wordsPerMinute || 0), 0) / readingSessions.length) : 0;
+  const avgReadingAcc = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.accuracyRate || 0), 0) / readingSessions.length) : 0;
   
   const pendingGaps = phonicsGaps.filter(g => g.status === 'PENDING');
   const resolvedGaps = phonicsGaps.filter(g => g.status === 'RESOLVED');
@@ -451,7 +451,7 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
             {hasReadingData ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
                 <div style={{ background: '#f8fafc', padding: 12, borderRadius: 8, textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--hp-primary)' }}>{latestSession?.lexileLevel || '-'}L</div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--hp-primary)' }}>{latestSession?.lexileEstimate || '-'}L</div>
                   <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Current Level</div>
                 </div>
                 <div style={{ background: '#f8fafc', padding: 12, borderRadius: 8, textAlign: 'center' }}>

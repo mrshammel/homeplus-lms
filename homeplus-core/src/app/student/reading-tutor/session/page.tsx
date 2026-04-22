@@ -653,6 +653,7 @@ export default function ReadingSessionPage() {
     const avgComprehension =
       totalQuestions > 0 ? Math.round(comprehensionScore / totalQuestions) : 0;
 
+    try {
       const miscuesList = analysis?.wordResults
             ?.filter((w) => w.status === 'SUBSTITUTION' || w.status === 'OMISSION')
             .map((w) => w.expected) || [];
