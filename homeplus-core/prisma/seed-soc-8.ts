@@ -33,7 +33,7 @@ export async function seedSocial8(prisma: PrismaClient) {
   const l1Content = [
     {
       id: 'soc-8-u1-l1-b1', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'IMAGE' as const, order: 1,
-      content: { url: '/artifacts/renaissance_market_1776880295378.png', caption: 'A vibrant market in a Renaissance city-state.' }
+      content: { url: '/artifacts/renaissance_market_1776885608449.png', caption: 'A vibrant market in a Renaissance city-state.' }
     },
     {
       id: 'soc-8-u1-l1-b2', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
@@ -60,7 +60,7 @@ export async function seedSocial8(prisma: PrismaClient) {
   const l2Content = [
     {
       id: 'soc-8-u1-l2-b1', lessonId: 'g8-soc-u1-l2', section: 'LEARN' as const, blockType: 'IMAGE' as const, order: 1,
-      content: { url: '/artifacts/silk_road_caravan_1776880307939.png', caption: 'A caravan of merchants crossing the vast Silk Road.' }
+      content: { url: '/artifacts/silk_road_caravan_1776885620897.png', caption: 'A caravan of merchants crossing the vast Silk Road.' }
     },
     {
       id: 'soc-8-u1-l2-b2', lessonId: 'g8-soc-u1-l2', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
@@ -88,7 +88,7 @@ export async function seedSocial8(prisma: PrismaClient) {
   const l3Content = [
     {
       id: 'soc-8-u1-l3-b1', lessonId: 'g8-soc-u1-l3', section: 'LEARN' as const, blockType: 'IMAGE' as const, order: 1,
-      content: { url: '/artifacts/venice_port_1776880324449.png', caption: 'The bustling port of Venice brought immense wealth.' }
+      content: { url: '/artifacts/venice_port_1776885632947.png', caption: 'The bustling port of Venice brought immense wealth.' }
     },
     {
       id: 'soc-8-u1-l3-b2', lessonId: 'g8-soc-u1-l3', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
