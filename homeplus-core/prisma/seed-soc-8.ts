@@ -155,7 +155,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l5-b2', lessonId: 'g8-soc-u1-l5', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>The Spread of Ideas</h2><p>Before the Renaissance, books were copied by hand, making them incredibly expensive and rare. Johannes Gutenberg invented the mechanical printing press around 1440. This allowed humanist ideas, scientific discoveries, and new worldviews to spread rapidly across Europe, fundamentally changing society.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1pMcuOmYHS5b8FZYMHX1-HE_kwTmKes-a/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 4</a></p>' }
+      content: { html: '<h2>The Spread of Ideas</h2><p>Before the Renaissance, books were copied by hand, making them incredibly expensive and rare. Johannes Gutenberg invented the mechanical printing press around 1440. This allowed humanist ideas, scientific discoveries, and new worldviews to spread rapidly across Europe, fundamentally changing society.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1NPjiws8EGsTbuhU3GrXWJh4tWTLN5fa8/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 2</a></p>' }
     },
     {
       id: 'soc-8-u1-l5-b3', lessonId: 'g8-soc-u1-l5', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
@@ -255,7 +255,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u3-l1-b2', lessonId: 'g8-soc-u3-l1', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>Edo Period Isolation</h2><p>For over 200 years, the Tokugawa shogunate enacted a policy of isolation called <strong>sakoku</strong>. To maintain peace and control, the government strictly limited foreign contact and maintained a rigid social hierarchy system.</p><p><em>Source: Our Worldviews, Chapter 12</em></p>' }
+      content: { html: '<h2>Edo Period Isolation</h2><p>For over 200 years, the Tokugawa shogunate enacted a policy of isolation called <strong>sakoku</strong>. To maintain peace and control, the government strictly limited foreign contact and maintained a rigid social hierarchy system.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1pMcuOmYHS5b8FZYMHX1-HE_kwTmKes-a/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 4</a></p>' }
     },
     {
       id: 'soc-8-u3-l1-b3', lessonId: 'g8-soc-u3-l1', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 3,
@@ -273,7 +273,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u3-l2-b2', lessonId: 'g8-soc-u3-l2', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>Meiji Restoration</h2><p>When American ships arrived demanding trade, Japan realized it was technologically behind the Western powers. Rather than be colonized, Japan rapidly modernized and industrialized its economy, military, and education system during the Meiji Restoration.</p><p><em>Source: Our Worldviews, Chapter 14</em></p>' }
+      content: { html: '<h2>Meiji Restoration</h2><p>When American ships arrived demanding trade, Japan realized it was technologically behind the Western powers. Rather than be colonized, Japan rapidly modernized and industrialized its economy, military, and education system during the Meiji Restoration.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1ZDdyZkancyctL-dfV1L5uhhIBHDENfYz/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 6</a></p>' }
     },
     {
       id: 'soc-8-u3-l2-b3', lessonId: 'g8-soc-u3-l2', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
