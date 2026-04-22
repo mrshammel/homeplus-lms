@@ -753,8 +753,34 @@ function MatchingBlock({ content, onAnswer, readOnly, lessonId, blockId }: {
           <p style={{ fontSize: '0.85rem', fontWeight: 700, margin: 0, color: correctCount === total ? '#059669' : '#92400e' }}>
             {correctCount === total
               ? ' All correct!'
-              : `${correctCount}/${total} correct - check the answers marked ✗ above.`}
+              : `${correctCount}/${total} correct — review the feedback below.`}
           </p>
+          {/* Per-pair feedback for incorrect answers */}
+          {correctCount < total && (
+            <div style={{ marginTop: 10 }}>
+              {(content.pairs || []).filter(p => results[p.left] === false).map((p, i) => (
+                <div key={i} style={{
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  marginBottom: 6,
+                  fontSize: '0.82rem',
+                  lineHeight: 1.5,
+                }}>
+                  <p style={{ margin: 0, color: '#991b1b', fontWeight: 600 }}>
+                    ✗ <strong>{p.left}</strong> → You selected: <em>{matches[p.left]}</em>
+                  </p>
+                  <p style={{ margin: '4px 0 0', color: '#059669', fontWeight: 600 }}>
+                    ✓ Correct answer: <strong>{p.right}</strong>
+                  </p>
+                  <p style={{ margin: '4px 0 0', color: '#475569', fontStyle: 'italic' }}>
+                    💡 Think about it: &quot;{p.left}&quot; connects to &quot;{p.right}&quot; — try to remember this pairing for next time!
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

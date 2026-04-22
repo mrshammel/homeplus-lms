@@ -52,7 +52,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l1-b3', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 4,
-      content: { url: 'https://www.youtube.com/watch?v=Vufba_ZcoR0', title: 'The Renaissance: Was it a Thing?' }
+      content: { url: 'https://www.youtube.com/watch?v=Vufba_ZcoR0', title: 'The Renaissance: Was it a Thing?', aiSummary: 'This video explains that the Renaissance was a cultural movement beginning in Italy around the 1400s. It was not a sudden event but a gradual shift where Europeans began valuing human achievement, art, science, and classical Greek/Roman ideas over strict medieval religious thinking. Key points: (1) The Renaissance started in wealthy Italian city-states like Florence, (2) It was fuelled by trade and wealth, (3) Thinkers began focusing on what humans could achieve in THIS life, not just the afterlife, and (4) It spread across Europe thanks to the printing press and trade routes.' }
     },
     {
       id: 'soc-8-u1-l1-b3b', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'AI_SUMMARY' as const, order: 5,
