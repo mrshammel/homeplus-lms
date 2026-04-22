@@ -37,7 +37,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l1-b2', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>What was the Renaissance?</h2><p>The Renaissance (meaning "rebirth") was a period of cultural, artistic, political, and economic rebirth following the Middle Ages. It was a time of great curiosity, exploration, and new ways of thinking about the world and human potential.</p><p><strong>Digital Textbook:</strong> <a href="#" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 1, Pages 14-15</a></p>' }
+      content: { html: '<h2>What was the Renaissance?</h2><p>The Renaissance (meaning "rebirth") was a period of cultural, artistic, political, and economic rebirth following the Middle Ages. It was a time of great curiosity, exploration, and new ways of thinking about the world and human potential.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1XafqjjOwYXY3iNu48KZ_cF4Oo5KKopkz/view?usp=drive_link" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 1, Pages 14-15</a></p>' }
     },
     {
       id: 'soc-8-u1-l1-b2b', lessonId: 'g8-soc-u1-l1', section: 'PRACTICE' as const, blockType: 'MATCHING' as const, order: 3,
@@ -87,7 +87,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l2-b2', lessonId: 'g8-soc-u1-l2', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>The Crossroads of Ideas</h2><p>Imagine you are a trader crossing the deserts of Asia. You are carrying not just silk and spices, but new ideas, mathematics, and science from the Islamic Empire. The Islamic Empire preserved ancient knowledge that would eventually spark the Renaissance in Europe.</p><p><em>Source: Our Worldviews, Chapter 1, Pages 16-18</em></p>' }
+      content: { html: '<h2>The Crossroads of Ideas</h2><p>Imagine you are a trader crossing the deserts of Asia. You are carrying not just silk and spices, but new ideas, mathematics, and science from the Islamic Empire. The Islamic Empire preserved ancient knowledge that would eventually spark the Renaissance in Europe.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1XafqjjOwYXY3iNu48KZ_cF4Oo5KKopkz/view?usp=drive_link" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 1, Pages 16-18</a></p>' }
     },
     {
       id: 'soc-8-u1-l2-b3', lessonId: 'g8-soc-u1-l2', section: 'PRACTICE' as const, blockType: 'MATCHING' as const, order: 3,
@@ -115,7 +115,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l3-b2', lessonId: 'g8-soc-u1-l3', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>City-States and Trade</h2><p>Because of their location on the Mediterranean Sea, Italian city-states like Florence, Venice, and Genoa grew incredibly wealthy. This wealth funded artists, architects, and thinkers.</p><p><em>Source: Our Worldviews, Chapter 1, Pages 22-25</em></p>' }
+      content: { html: '<h2>City-States and Trade</h2><p>Because of their location on the Mediterranean Sea, Italian city-states like Florence, Venice, and Genoa grew incredibly wealthy. This wealth funded artists, architects, and thinkers.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1XafqjjOwYXY3iNu48KZ_cF4Oo5KKopkz/view?usp=drive_link" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 1, Pages 22-25</a></p>' }
     },
     {
       id: 'soc-8-u1-l3-b3', lessonId: 'g8-soc-u1-l3', section: 'CHECK' as const, blockType: 'DRAWING' as const, order: 3,
@@ -133,7 +133,7 @@ export async function seedSocial8(prisma: PrismaClient) {
   const l4Content = [
     {
       id: 'soc-8-u1-l4-b1', lessonId: 'g8-soc-u1-l4', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 1,
-      content: { html: '<h2>The Rise of Humanism</h2><p>A new way of thinking called <strong>humanism</strong> emerged during the Renaissance. Thinkers believed in the potential and value of human beings, shifting focus away from the strict religious views of the Middle Ages.</p><p><em>Source: Our Worldviews, Chapter 3</em></p>' }
+      content: { html: '<h2>The Rise of Humanism</h2><p>A new way of thinking called <strong>humanism</strong> emerged during the Renaissance. Thinkers believed in the potential and value of human beings, shifting focus away from the strict religious views of the Middle Ages.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1t_JWPGiH4_FEz15e5OCUyp9TMxgsK6oF/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 3</a></p>' }
     },
     {
       id: 'soc-8-u1-l4-b2', lessonId: 'g8-soc-u1-l4', section: 'PRACTICE' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 2,
@@ -155,7 +155,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l5-b2', lessonId: 'g8-soc-u1-l5', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>The Spread of Ideas</h2><p>Before the Renaissance, books were copied by hand, making them incredibly expensive and rare. Johannes Gutenberg invented the mechanical printing press around 1440. This allowed humanist ideas, scientific discoveries, and new worldviews to spread rapidly across Europe, fundamentally changing society.</p><p><em>Source: Our Worldviews, Chapter 4</em></p>' }
+      content: { html: '<h2>The Spread of Ideas</h2><p>Before the Renaissance, books were copied by hand, making them incredibly expensive and rare. Johannes Gutenberg invented the mechanical printing press around 1440. This allowed humanist ideas, scientific discoveries, and new worldviews to spread rapidly across Europe, fundamentally changing society.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1pMcuOmYHS5b8FZYMHX1-HE_kwTmKes-a/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 4</a></p>' }
     },
     {
       id: 'soc-8-u1-l5-b3', lessonId: 'g8-soc-u1-l5', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
@@ -195,7 +195,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u2-l1-b2', lessonId: 'g8-soc-u2-l1', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>The Aztec Empire</h2><p>The Aztecs built a vast and powerful empire in central Mexico. Their worldview was deeply tied to their religion, believing that the gods required human sacrifice to keep the universe in balance. They were also brilliant engineers and fierce warriors.</p><p><em>Source: Our Worldviews, Chapter 7</em></p>' }
+      content: { html: '<h2>The Aztec Empire</h2><p>The Aztecs built a vast and powerful empire in central Mexico. Their worldview was deeply tied to their religion, believing that the gods required human sacrifice to keep the universe in balance. They were also brilliant engineers and fierce warriors.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1MCcgcwL3fHGvuxq8Oa8uNXuHWdfU_o9I/view?usp=drive_link" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 7</a></p>' }
     },
     {
       id: 'soc-8-u2-l1-b3', lessonId: 'g8-soc-u2-l1', section: 'PRACTICE' as const, blockType: 'DRAWING' as const, order: 3,
@@ -213,7 +213,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u2-l2-b2', lessonId: 'g8-soc-u2-l2', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>The Spanish Empire</h2><p>Following the Reconquista, Spain emerged as a unified and powerful nation. Driven by a desire for wealth, national prestige, and the spread of Catholicism ("Gold, Glory, and God"), Spain embarked on a massive campaign of exploration and conquest across the ocean.</p><p><em>Source: Our Worldviews, Chapter 8</em></p>' }
+      content: { html: '<h2>The Spanish Empire</h2><p>Following the Reconquista, Spain emerged as a unified and powerful nation. Driven by a desire for wealth, national prestige, and the spread of Catholicism ("Gold, Glory, and God"), Spain embarked on a massive campaign of exploration and conquest across the ocean.</p><p><strong>Digital Textbook:</strong> <a href="https://drive.google.com/file/d/1ekTbAPnjYfc7ROEomB7ig-xlSxGdTuDa/view?usp=sharing" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 8</a></p>' }
     },
     {
       id: 'soc-8-u2-l2-b3', lessonId: 'g8-soc-u2-l2', section: 'LEARN' as const, blockType: 'VIDEO' as const, order: 3,
