@@ -37,7 +37,7 @@ export async function seedSocial8(prisma: PrismaClient) {
     },
     {
       id: 'soc-8-u1-l1-b2', lessonId: 'g8-soc-u1-l1', section: 'LEARN' as const, blockType: 'TEXT' as const, order: 2,
-      content: { html: '<h2>What was the Renaissance?</h2><p>The Renaissance (meaning "rebirth") was a period of cultural, artistic, political, and economic rebirth following the Middle Ages. It was a time of great curiosity, exploration, and new ways of thinking about the world and human potential.</p><p><em>Source: Our Worldviews, Chapter 1, Pages 14-15</em></p>' }
+      content: { html: '<h2>What was the Renaissance?</h2><p>The Renaissance (meaning "rebirth") was a period of cultural, artistic, political, and economic rebirth following the Middle Ages. It was a time of great curiosity, exploration, and new ways of thinking about the world and human potential.</p><p><strong>Digital Textbook:</strong> <a href="#" target="_blank" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Open Our Worldviews, Chapter 1, Pages 14-15</a></p>' }
     },
     {
       id: 'soc-8-u1-l1-b2b', lessonId: 'g8-soc-u1-l1', section: 'PRACTICE' as const, blockType: 'MATCHING' as const, order: 3,
@@ -55,19 +55,27 @@ export async function seedSocial8(prisma: PrismaClient) {
       content: { url: 'https://www.youtube.com/watch?v=Vufba_ZcoR0', title: 'The Renaissance: Was it a Thing?' }
     },
     {
-      id: 'soc-8-u1-l1-b4', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 5,
-      content: { prompt: 'Imagine you are a peasant during the Middle Ages. Suddenly, new ideas and trade begin flowing into your town. How might your worldview change?' }
+      id: 'soc-8-u1-l1-b3b', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'AI_SUMMARY' as const, order: 5,
+      content: { summary: 'What you should know before you start the Mastery Check: You should understand what the Renaissance was (a rebirth), when it occurred (after the Middle Ages), and how it shifted the medieval worldview toward human potential.' }
     },
     {
-      id: 'soc-8-u1-l1-b5', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'DRAWING' as const, order: 6,
+      id: 'soc-8-u1-l1-b4', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'CONSTRUCTED_RESPONSE' as const, order: 6,
+      content: { 
+        prompt: 'Imagine you are a peasant during the Middle Ages. Suddenly, new ideas and trade begin flowing into your town. How might your worldview change?',
+        rubricHint: 'Mention how strict rules from the Middle Ages might be questioned, and how human potential and new discoveries might become more important to you.',
+        minLength: 15
+      }
+    },
+    {
+      id: 'soc-8-u1-l1-b5', lessonId: 'g8-soc-u1-l1', section: 'CHECK' as const, blockType: 'DRAWING' as const, order: 7,
       content: { prompt: 'Draw an object or symbol that represents the idea of "rebirth" or "new ideas flowing in".' }
     }
   ];
 
   await prisma.lesson.upsert({
     where: { id: 'g8-soc-u1-l1' },
-    update: { title: 'The Dawn of the Renaissance', subtitle: 'What was the Renaissance and why did it happen?' },
-    create: { id: 'g8-soc-u1-l1', unitId: unit1.id, title: 'The Dawn of the Renaissance', subtitle: 'What was the Renaissance and why did it happen?', order: 1 },
+    update: { title: 'The Dawn of the Renaissance', subtitle: 'What was the Renaissance and why did it happen?', materials: 'Notebook, Pen, Digital Textbook' },
+    create: { id: 'g8-soc-u1-l1', unitId: unit1.id, title: 'The Dawn of the Renaissance', subtitle: 'What was the Renaissance and why did it happen?', order: 1, materials: 'Notebook, Pen, Digital Textbook' },
   });
 
   for (const block of l1Content) { await prisma.lessonBlock.upsert({ where: { id: block.id }, update: { content: block.content, blockType: block.blockType, section: block.section, order: block.order }, create: block }); }
