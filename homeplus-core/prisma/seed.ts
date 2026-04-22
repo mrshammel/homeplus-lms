@@ -856,6 +856,15 @@ async function main() {
   }
   console.log(`✅ Teacher Notes: ${noteData.length}`);
 
+  // ╔═══════════════════════════════════════════╗
+  // ║ NEW COURSES: Math 9 and Social 8           ║
+  // ╚═══════════════════════════════════════════╝
+  const { seedMath9 } = await import('./seed-math-9');
+  await seedMath9(prisma);
+
+  const { seedSocial8 } = await import('./seed-soc-8');
+  await seedSocial8(prisma);
+
   console.log('\n🎉 Seed complete!');
   console.log('   1 teacher, 8 students, 1 subject, 3 units, 4 lessons');
   console.log('   4 activities, 5 outcomes, 7 submissions (4 need review)');
