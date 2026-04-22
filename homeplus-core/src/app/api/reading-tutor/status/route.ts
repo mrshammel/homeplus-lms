@@ -26,6 +26,12 @@ export async function GET() {
       where: { studentId: userId },
     });
 
+    // Check pending phonics gaps
+    const pendingGaps = await prisma.phonicsGap.findMany({
+      where: { studentId: userId, status: 'PENDING' },
+      orderBy: { identifiedAt: 'asc' },
+    });
+
     // Recent sessions
     const recentSessions = await prisma.readingSession.findMany({
       where: { studentId: userId, completedAt: { not: null } },
@@ -82,6 +88,11 @@ export async function GET() {
         sessionsCount: allSessions.length,
         lexileLevel: lastLexile,
       },
+      pendingGaps: pendingGaps.map(g => ({
+        id: g.id,
+        conceptCode: g.conceptCode,
+        conceptName: g.conceptName,
+      })),
     });
   } catch (error) {
     console.error('[API /reading-tutor/status]', error);
@@ -89,6 +100,7 @@ export async function GET() {
       isCalibrated: false,
       recentSessions: [],
       stats: { streak: 0, avgAccuracy: 0, sessionsCount: 0, lexileLevel: 0 },
+      pendingGaps: [],
     });
   }
 }

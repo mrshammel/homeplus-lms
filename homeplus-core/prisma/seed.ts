@@ -109,85 +109,97 @@ async function main() {
 
   const lesson2 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l2' },
-    update: { title: 'Producers, Consumers, & Decomposers', subtitle: 'Classify organisms by their role and trace energy through food chains.' },
+    update: { title: 'Producers & Consumers', subtitle: 'Classify organisms by how they get their energy.' },
     create: {
       id: 'g7-sci-ua-l2',
       unitId: unitA.id,
-      title: 'Producers, Consumers, & Decomposers',
-      subtitle: 'Classify organisms by their role and trace energy through food chains.',
+      title: 'Producers & Consumers',
+      subtitle: 'Classify organisms by how they get their energy.',
       order: 2,
     },
   });
 
-  const lesson2a = await prisma.lesson.upsert({
+  const lesson2b = await prisma.lesson.upsert({
+    where: { id: 'g7-sci-ua-l2b' },
+    update: { title: 'Decomposers & Energy Flow', subtitle: 'How energy passes through food chains and nutrients recycle.' },
+    create: {
+      id: 'g7-sci-ua-l2b',
+      unitId: unitA.id,
+      title: 'Decomposers & Energy Flow',
+      subtitle: 'How energy passes through food chains and nutrients recycle.',
+      order: 3,
+    },
+  });
+
+  const lesson3 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l3' },
-    update: { title: 'Food Webs: When One Thing Changes', subtitle: 'Construct food webs and predict cascade effects when populations change.' },
+    update: { title: 'Food Webs: When One Thing Changes', subtitle: 'Construct food webs and predict cascade effects when populations change.', order: 4 },
     create: {
       id: 'g7-sci-ua-l3',
       unitId: unitA.id,
       title: 'Food Webs: When One Thing Changes',
       subtitle: 'Construct food webs and predict cascade effects when populations change.',
-      order: 3,
+      order: 4,
     },
   });
 
-  const lesson2b = await prisma.lesson.upsert({
+  const lesson4 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l4' },
-    update: { title: 'Cycles: Water and Carbon', subtitle: 'Trace how water and carbon cycle through ecosystems and how human activity disrupts them.' },
+    update: { title: 'Cycles: Water and Carbon', subtitle: 'Trace how water and carbon cycle through ecosystems and how human activity disrupts them.', order: 5 },
     create: {
       id: 'g7-sci-ua-l4',
       unitId: unitA.id,
       title: 'Cycles: Water and Carbon',
       subtitle: 'Trace how water and carbon cycle through ecosystems and how human activity disrupts them.',
-      order: 4,
+      order: 5,
     },
   });
 
   const lesson5 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l5' },
-    update: { title: 'Monitoring My Backyard', subtitle: 'Design and conduct a mini field study of a local ecosystem.' },
+    update: { title: 'Monitoring My Backyard', subtitle: 'Design and conduct a mini field study of a local ecosystem.', order: 6 },
     create: {
       id: 'g7-sci-ua-l5',
       unitId: unitA.id,
       title: 'Monitoring My Backyard',
       subtitle: 'Design and conduct a mini field study of a local ecosystem.',
-      order: 5,
+      order: 6,
     },
   });
 
   const lesson6 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l6' },
-    update: { title: 'Succession: How Ecosystems Recover', subtitle: 'Describe the stages of ecological succession and identify signs in Alberta ecosystems.' },
+    update: { title: 'Succession: How Ecosystems Recover', subtitle: 'Describe the stages of ecological succession and identify signs in Alberta ecosystems.', order: 7 },
     create: {
       id: 'g7-sci-ua-l6',
       unitId: unitA.id,
       title: 'Succession: How Ecosystems Recover',
       subtitle: 'Describe the stages of ecological succession and identify signs in Alberta ecosystems.',
-      order: 6,
+      order: 7,
     },
   });
 
   const lesson7 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l7' },
-    update: { title: 'Human Impacts: Intended & Unintended', subtitle: 'Analyze environmental issues from multiple perspectives and write an evidence-based position.' },
+    update: { title: 'Human Impacts: Intended & Unintended', subtitle: 'Analyze environmental issues from multiple perspectives and write an evidence-based position.', order: 8 },
     create: {
       id: 'g7-sci-ua-l7',
       unitId: unitA.id,
       title: 'Human Impacts: Intended & Unintended',
       subtitle: 'Analyze environmental issues from multiple perspectives and write an evidence-based position.',
-      order: 7,
+      order: 8,
     },
   });
 
   const lesson8 = await prisma.lesson.upsert({
     where: { id: 'g7-sci-ua-l8' },
-    update: { title: 'Synthesis: Ecosystem Action Plan', subtitle: 'Apply everything you have learned to design a conservation action plan for an Alberta ecosystem.' },
+    update: { title: 'Synthesis: Ecosystem Action Plan', subtitle: 'Apply everything you have learned to design a conservation action plan for an Alberta ecosystem.', order: 9 },
     create: {
       id: 'g7-sci-ua-l8',
       unitId: unitA.id,
       title: 'Synthesis: Ecosystem Action Plan',
       subtitle: 'Apply everything you have learned to design a conservation action plan for an Alberta ecosystem.',
-      order: 8,
+      order: 9,
     },
   });
 
@@ -653,8 +665,8 @@ async function main() {
 
   const progressData = [
     // Ava — strong, ahead
-    { studentId: 'student-1', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-20') },
-    { studentId: 'student-1', lessonId: lesson2.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-28') },
+    { studentId: 'student-1', lessonId: lesson1.id, status: 'MASTERED' as const, completedAt: new Date('2025-09-20'), /* masteryScore: 95 */ },
+    { studentId: 'student-1', lessonId: lesson2.id, status: 'MASTERED' as const, completedAt: new Date('2025-09-28'), /* masteryScore: 88 */ },
     { studentId: 'student-1', lessonId: 'g7-sci-ub-l1', status: 'IN_PROGRESS' as const },
     // Liam — on pace
     { studentId: 'student-2', lessonId: lesson1.id, status: 'COMPLETE' as const, completedAt: new Date('2025-09-22') },

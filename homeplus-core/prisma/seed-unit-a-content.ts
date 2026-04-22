@@ -23,20 +23,24 @@ const prisma = new PrismaClient({ adapter });
 // ║  LESSON 2: Producers, Consumers, & Decomposers           ║
 // ╚═══════════════════════════════════════════════════════════╝
 
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║  LESSON 2: Producers & Consumers                         ║
+// ╚═══════════════════════════════════════════════════════════╝
+
 async function seedLesson2() {
   const LESSON_ID = 'g7-sci-ua-l2';
-  console.log('\n📗 Seeding Lesson 2: Producers, Consumers, & Decomposers...');
+  console.log('\n📗 Seeding Lesson 2: Producers & Consumers...');
 
-  // 1. Update lesson metadata
   await prisma.lesson.update({
     where: { id: LESSON_ID },
     data: {
       subjectMode: 'SCIENCE',
-      estimatedMinutes: 40,
-      learningGoal: 'Classify organisms as producers, consumers, or decomposers and trace the flow of energy through food chains.',
-      successCriteria: 'I can sort organisms by their role and build a food chain that shows how energy moves from one organism to another.',
-      materials: 'Science notebook, coloured pencils, cut-out organism cards (optional)',
-      reflectionPrompt: 'Think about a meal you ate today. Can you trace the energy in that meal all the way back to the sun?',
+      estimatedMinutes: 30,
+      learningGoal: 'Classify organisms as producers or consumers.',
+      successCriteria: 'I can sort organisms by their role in an ecosystem based on how they get energy.',
+      materials: 'Science notebook',
+      reflectionPrompt: 'Think of 3 things you ate today. Which ones came from producers and which from consumers?',
       warmUpConfig: {
         type: 'retrieval',
         prompt: 'From last lesson: What is the difference between a biotic factor and an abiotic factor? Give one example of each.',
@@ -56,11 +60,9 @@ async function seedLesson2() {
     },
   });
 
-  // 2. Clear existing blocks and questions
   await prisma.lessonBlock.deleteMany({ where: { lessonId: LESSON_ID } });
   await prisma.quizQuestion.deleteMany({ where: { lessonId: LESSON_ID } });
 
-  // 3. LEARN blocks — chunked content segments
   const learnBlocks = [
     {
       id: 'l2-learn-1',
@@ -72,13 +74,7 @@ async function seedLesson2() {
           <h2>🌱 Where Does Energy Come From?</h2>
           <p>All life needs <strong>energy</strong> to survive. But where does that energy actually come from?</p>
           <p>The answer: <strong>the sun</strong>. Almost all energy in an ecosystem starts with sunlight. But animals can't use sunlight directly — they need organisms that can convert it into food.</p>
-          <p>Scientists group organisms by <em>how they get their energy</em>. There are three main roles:</p>
-          <ol>
-            <li><strong>Producers</strong> — make their own food</li>
-            <li><strong>Consumers</strong> — eat other organisms</li>
-            <li><strong>Decomposers</strong> — break down dead material</li>
-          </ol>
-          <p>Let's look at each role in detail.</p>
+          <p>Scientists group organisms by <em>how they get their energy</em>.</p>
         `,
       },
     },
@@ -92,7 +88,6 @@ async function seedLesson2() {
           <h3>🌿 Producers</h3>
           <p><strong>Producers</strong> are organisms that make their own food using energy from the sun through a process called <strong>photosynthesis</strong>. They are the foundation of every food chain.</p>
           <p><strong>Examples:</strong> grasses, trees, algae, phytoplankton, moss</p>
-          <p>Without producers, no other organisms could survive — they are the starting point for all energy in an ecosystem.</p>
         `,
       },
     },
@@ -116,84 +111,36 @@ async function seedLesson2() {
       },
     },
     {
-      id: 'l2-learn-2c',
-      section: 'LEARN' as const,
-      blockType: 'TEXT' as const,
-      order: 4,
-      content: {
-        html: `
-          <h3>🍂 Decomposers</h3>
-          <p><strong>Decomposers</strong> break down dead organisms and waste, returning nutrients to the soil. Without them, dead material would pile up and nutrients would never be recycled.</p>
-          <p><strong>Examples:</strong> mushrooms, bacteria, earthworms, mold</p>
-          <p><strong>Key idea:</strong> Decomposers complete the cycle — they connect death back to new life by making nutrients available for producers to use again.</p>
-        `,
-      },
-    },
-    {
       id: 'l2-learn-3',
       section: 'LEARN' as const,
       blockType: 'VOCABULARY' as const,
-      order: 5,
+      order: 4,
       content: {
         terms: [
           { term: 'Producer', definition: 'An organism that makes its own food from sunlight (photosynthesis).', example: 'Grass, oak trees, algae in a pond.' },
           { term: 'Consumer', definition: 'An organism that gets energy by eating other organisms.', example: 'A deer (primary), a wolf (secondary).' },
-          { term: 'Decomposer', definition: 'An organism that breaks down dead material, recycling nutrients.', example: 'Mushrooms growing on a fallen log.' },
           { term: 'Herbivore', definition: 'An animal that eats only plants (a primary consumer).', example: 'Rabbits, grasshoppers, caterpillars.' },
-          { term: 'Food chain', definition: 'A diagram that shows how energy flows from one organism to another.', example: 'Sun → Grass → Rabbit → Fox → Hawk.' },
           { term: 'Photosynthesis', definition: 'The process plants use to convert sunlight, water, and CO₂ into food (glucose) and oxygen.', example: 'A leaf absorbing sunlight to produce sugar.' },
         ],
-      },
-    },
-    {
-      id: 'l2-learn-4',
-      section: 'LEARN' as const,
-      blockType: 'VIDEO' as const,
-      order: 6,
-      content: {
-        url: 'https://www.youtube.com/embed/MuKs9o1s8h8',
-        title: 'Food Chains & Food Webs — Crash Course Kids',
-        transcript: 'This video explains how energy flows through food chains and food webs, using examples from grassland and ocean ecosystems. It covers producers, primary consumers, secondary consumers, and decomposers.',
-        aiSummary: 'A food chain shows how energy moves from one organism to the next in a straight line. It always starts with a producer (like grass), which captures energy from the sun through photosynthesis. That energy passes to a primary consumer (herbivore, like a rabbit), then to a secondary consumer (carnivore, like a fox), and sometimes to a tertiary consumer (top predator, like an eagle). Decomposers (like fungi and bacteria) break down dead organisms at every level, recycling nutrients back into the soil. A food web is more realistic than a single food chain — it shows how multiple food chains in an ecosystem are interconnected because most organisms eat more than one thing and are eaten by more than one predator.',
-      },
-    },
-    {
-      id: 'l2-learn-5',
-      section: 'LEARN' as const,
-      blockType: 'TEXT' as const,
-      order: 7,
-      content: {
-        html: `
-          <h3>⛓️ Food Chains: Tracing Energy Flow</h3>
-          <p>A <strong>food chain</strong> shows the path of energy from one organism to the next. Energy always flows in one direction — from producers to consumers.</p>
-          <p>Here's an example from a grassland ecosystem:</p>
-          <div style="background:#f0fdf4; padding:16px; border-radius:12px; text-align:center; font-size:1.1rem; margin:12px 0;">
-            ☀️ Sun → 🌾 Grass → 🐇 Rabbit → 🦊 Fox → 🦅 Hawk
-          </div>
-          <p><strong>Important:</strong> At each step, some energy is used up (for movement, body heat, growth). That's why food chains rarely have more than 4–5 links — there isn't enough energy left to support more levels.</p>
-          <p><strong>What about decomposers?</strong> Decomposers connect to EVERY level. When any organism dies — whether it's a plant, rabbit, or hawk — decomposers break it down and return nutrients to the soil for producers.</p>
-        `,
       },
     },
     {
       id: 'l2-learn-mc1',
       section: 'LEARN' as const,
       blockType: 'MICRO_CHECK' as const,
-      order: 8,
+      order: 5,
       content: {
-        question: 'In the food chain: Sun → Grass → Rabbit → Fox, which organism is the secondary consumer?',
+        question: 'If a rabbit eats grass, and a fox eats the rabbit, which organism is the primary consumer?',
         options: [
           { label: 'Grass', value: 'a' },
-          { label: 'Rabbit', value: 'b' },
-          { label: 'Fox', value: 'c', correct: true },
-          { label: 'Sun', value: 'd' },
+          { label: 'Rabbit', value: 'b', correct: true },
+          { label: 'Fox', value: 'c' },
         ],
-        explanation: 'The fox eats the rabbit (a primary consumer), which makes the fox a secondary consumer. The grass is the producer and the rabbit is the primary consumer.',
+        explanation: 'The rabbit eats the producer (grass), making it the primary consumer.',
       },
     },
   ];
 
-  // 4. PRACTICE blocks — varied interaction
   const practiceBlocks = [
     {
       id: 'l2-practice-1',
@@ -201,15 +148,13 @@ async function seedLesson2() {
       blockType: 'MATCHING' as const,
       order: 1,
       content: {
-        instruction: 'Match each organism to its correct role in an ecosystem:',
+        instruction: 'Match each organism to its correct role based on what you learned:',
         pairs: [
           { left: 'Oak tree', right: 'Producer' },
           { left: 'Grasshopper', right: 'Primary consumer' },
-          { left: 'Frog', right: 'Secondary consumer' },
-          { left: 'Mushroom', right: 'Decomposer' },
+          { left: 'Lion', right: 'Secondary consumer' },
           { left: 'Algae', right: 'Producer' },
           { left: 'Eagle', right: 'Tertiary consumer' },
-          { left: 'Earthworm', right: 'Decomposer' },
           { left: 'Deer', right: 'Primary consumer' },
         ],
       },
@@ -223,40 +168,13 @@ async function seedLesson2() {
         prompt: 'Complete the sentences using what you learned:',
         blanks: [
           { id: 'b1', correctAnswer: 'producers', hint: 'Organisms that make their own food from sunlight are called _____.' },
-          { id: 'b2', correctAnswer: 'decomposers', hint: 'Organisms that break down dead material and return nutrients to the soil are called _____.' },
-          { id: 'b3', correctAnswer: 'food chain', hint: 'A _____ _____ shows the path of energy from one organism to the next.' },
+          { id: 'b2', correctAnswer: 'consumers', hint: 'Organisms that must eat other organisms for energy are called _____.' },
           { id: 'b4', correctAnswer: 'photosynthesis', hint: 'The process producers use to convert sunlight into food is called _____.' },
         ],
       },
     },
-    {
-      id: 'l2-practice-3',
-      section: 'PRACTICE' as const,
-      blockType: 'DRAWING' as const,
-      order: 3,
-      content: {
-        instruction: 'Draw a food chain from a POND ecosystem. Include at least 4 organisms and label each one as producer, primary consumer, secondary consumer, or decomposer. Draw arrows showing the direction energy flows.',
-      },
-    },
-    {
-      id: 'l2-practice-4',
-      section: 'PRACTICE' as const,
-      blockType: 'MULTIPLE_CHOICE' as const,
-      order: 4,
-      content: {
-        question: 'In the Crash Course Kids video you just watched, the narrator explained why food chains rarely have more than 5 links. Which of the following BEST explains why?',
-        options: [
-          { label: 'There aren\'t enough different species', value: 'a' },
-          { label: 'Energy is lost at each level, so there isn\'t enough to support more levels', value: 'b', correct: true },
-          { label: 'Predators at the top eat too much', value: 'c' },
-          { label: 'Decomposers take all the energy', value: 'd' },
-        ],
-        explanation: 'At each level of a food chain, organisms use up energy for movement, body heat, and growth. Only about 10% of the energy passes to the next level, which is why chains are usually short.',
-      },
-    },
   ];
 
-  // 5. REFLECT block — lesson-specific, process-aware
   const reflectBlocks = [
     {
       id: 'l2-reflect-1',
@@ -264,31 +182,21 @@ async function seedLesson2() {
       blockType: 'CONSTRUCTED_RESPONSE' as const,
       order: 1,
       content: {
-        prompt: 'Look at the food chain you drew during Guided Practice. Now imagine that ALL the decomposers in that ecosystem suddenly disappeared. Using the specific organisms from YOUR food chain, explain:\n\n1. What would happen to dead organisms in that ecosystem?\n2. How would the producers eventually be affected?\n3. What would happen to the consumers?\n\nUse at least 2 vocabulary terms from this lesson in your answer.',
-        minLength: 80,
-        rubricHint: 'References their own food chain drawing. Uses vocabulary (producer, consumer, decomposer, nutrients, food chain). Explains the ripple effect of removing decomposers. Shows understanding of nutrient cycling.',
+        prompt: 'Explain what would eventually happen to all the consumers in an ecosystem if all the producers disappeared overnight.',
+        minLength: 30,
+        rubricHint: 'Explains that consumers rely on producers for energy via photosynthesis. If producers disappear, primary consumers starve, leading to a collapse of other consumers.',
         teacherReviewRequired: false,
       },
     },
   ];
 
-  // 6. Create all blocks
   const allBlocks = [...learnBlocks, ...practiceBlocks, ...reflectBlocks];
   for (const block of allBlocks) {
     await prisma.lessonBlock.create({
-      data: {
-        id: block.id,
-        lessonId: LESSON_ID,
-        section: block.section,
-        blockType: block.blockType,
-        content: block.content,
-        order: block.order,
-      },
+      data: { id: block.id, lessonId: LESSON_ID, section: block.section, blockType: block.blockType, content: block.content, order: block.order, },
     });
   }
-  console.log(`  ✅ Created ${allBlocks.length} lesson blocks`);
 
-  // 7. Quiz questions for Mastery Check
   const questions = [
     {
       id: 'l2-q1',
@@ -301,112 +209,22 @@ async function seedLesson2() {
         { label: 'Hawk', value: 'd' },
       ],
       correctAnswer: 'c',
-      explanation: 'Algae is a producer because it makes its own food through photosynthesis. Rabbits and hawks are consumers, and mushrooms are decomposers.',
+      explanation: 'Algae makes its own food through photosynthesis. Rabbits and hawks are consumers, and mushrooms are decomposers.',
       outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
     {
       id: 'l2-q2',
-      questionText: 'In this food chain: Sun → Phytoplankton → Small fish → Tuna → Shark, what role does the small fish play?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'Producer', value: 'a' },
-        { label: 'Primary consumer', value: 'b', correct: true },
-        { label: 'Secondary consumer', value: 'c' },
-        { label: 'Decomposer', value: 'd' },
-      ],
-      correctAnswer: 'b',
-      explanation: 'The small fish eats phytoplankton (the producer), making it the primary consumer — the first organism in the chain that eats rather than makes food.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 2,
-    },
-    {
-      id: 'l2-q3',
-      questionText: 'Why are decomposers essential for an ecosystem to survive?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'They produce oxygen for animals', value: 'a' },
-        { label: 'They break down dead organisms and return nutrients to the soil for producers', value: 'b', correct: true },
-        { label: 'They provide food for all consumers', value: 'c' },
-        { label: 'They control the temperature of the ecosystem', value: 'd' },
-      ],
-      correctAnswer: 'b',
-      explanation: 'Decomposers break down dead material (plants, animals, waste) and release nutrients back into the soil. Producers then use those nutrients to grow, restarting the cycle.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 2,
-    },
-    {
-      id: 'l2-q4',
-      questionText: 'Energy flows through a food chain in one direction. At each level, what happens to the energy?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'It increases at each level', value: 'a' },
-        { label: 'It stays exactly the same', value: 'b' },
-        { label: 'Some energy is used up, so less is available at the next level', value: 'c', correct: true },
-        { label: 'It is stored and never used', value: 'd' },
-      ],
-      correctAnswer: 'c',
-      explanation: 'At each level, organisms use energy for movement, growth, and body heat. Only about 10% of the energy passes to the next consumer, which is why food chains are usually short.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 2,
-    },
-    {
-      id: 'l2-q5',
-      questionText: 'A student observes a garden ecosystem. They see flowers, bees, a spider eating a fly, and mushrooms growing on a stump. Which organism is the DECOMPOSER?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'Flower', value: 'a' },
-        { label: 'Bee', value: 'b' },
-        { label: 'Spider', value: 'c' },
-        { label: 'Mushroom', value: 'd', correct: true },
-      ],
-      correctAnswer: 'd',
-      explanation: 'The mushroom is growing on dead wood (the stump), breaking it down and releasing nutrients — that\'s exactly what decomposers do.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 1,
-    },
-    {
-      id: 'l2-q6',
-      questionText: 'Algae in a lake use sunlight to produce food. What role do the algae play in this ecosystem?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'Decomposer', value: 'a' },
-        { label: 'Consumer', value: 'b' },
-        { label: 'Producer', value: 'c', correct: true },
-        { label: 'Predator', value: 'd' },
-      ],
-      correctAnswer: 'c',
-      explanation: 'Algae make their own food from sunlight through photosynthesis, just like land plants. That makes them producers — the base of aquatic food chains.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 1,
-    },
-    {
-      id: 'l2-q7',
-      questionText: 'In a food chain, an arrow (→) represents:',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'The direction the animal moves', value: 'a' },
-        { label: 'The direction energy flows from one organism to the next', value: 'b', correct: true },
-        { label: 'Which organism is bigger', value: 'c' },
-        { label: 'Which organism lives longer', value: 'd' },
-      ],
-      correctAnswer: 'b',
-      explanation: 'Arrows in food chains always point in the direction energy flows: from the organism being eaten to the organism doing the eating.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 1,
-    },
-    {
-      id: 'l2-q8',
       questionText: 'A bear eats salmon, berries, and insects. What type of consumer is a bear?',
       questionType: 'MULTIPLE_CHOICE' as const,
       options: [
         { label: 'Herbivore', value: 'a' },
         { label: 'Carnivore', value: 'b' },
         { label: 'Omnivore', value: 'c', correct: true },
-        { label: 'Decomposer', value: 'd' },
+        { label: 'Producer', value: 'd' },
       ],
       correctAnswer: 'c',
-      explanation: 'Bears eat both plants (berries) and animals (salmon, insects), making them omnivores. Omnivores can feed at multiple levels of a food chain.',
+      explanation: 'Bears eat both plants and animals, making them omnivores.',
       outcomeCode: 'SCI.7.A.K.1',
       difficulty: 1,
     },
@@ -415,28 +233,13 @@ async function seedLesson2() {
       questionText: 'If a disease killed all the producers in an ecosystem, which organisms would be affected FIRST?',
       questionType: 'MULTIPLE_CHOICE' as const,
       options: [
-        { label: 'Tertiary consumers (top predators)', value: 'a' },
-        { label: 'Primary consumers (herbivores) because they eat producers directly', value: 'b', correct: true },
-        { label: 'Decomposers', value: 'c' },
+        { label: 'Tertiary consumers', value: 'a' },
+        { label: 'Primary consumers because they eat producers directly', value: 'b', correct: true },
+        { label: 'It would not affect anything', value: 'c' },
         { label: 'No organisms would be affected', value: 'd' },
       ],
       correctAnswer: 'b',
-      explanation: 'Primary consumers eat producers directly, so they lose their food source first. The effect then ripples up: secondary consumers lose food, then tertiary consumers.',
-      outcomeCode: 'SCI.7.A.K.1',
-      difficulty: 2,
-    },
-    {
-      id: 'l2-q10',
-      questionText: 'Why can\'t a food chain have 10 links (levels)?',
-      questionType: 'MULTIPLE_CHOICE' as const,
-      options: [
-        { label: 'There are not enough species on Earth', value: 'a' },
-        { label: 'Energy is lost as heat at each level, leaving too little to support more levels', value: 'b', correct: true },
-        { label: 'Decomposers absorb all the energy after 5 levels', value: 'c' },
-        { label: 'Top predators prevent more levels from forming', value: 'd' },
-      ],
-      correctAnswer: 'b',
-      explanation: 'About 90% of energy is lost as heat at each trophic level. After 4-5 levels, there simply is not enough energy left to support another level of consumers.',
+      explanation: 'Primary consumers eat producers directly, so they lose their food source first.',
       outcomeCode: 'SCI.7.A.K.1',
       difficulty: 2,
     },
@@ -444,25 +247,203 @@ async function seedLesson2() {
 
   for (const q of questions) {
     await prisma.quizQuestion.create({
-      data: {
-        id: q.id,
-        lessonId: LESSON_ID,
-        questionText: q.questionText,
-        questionType: q.questionType,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        outcomeCode: q.outcomeCode,
-        difficulty: q.difficulty,
-      },
+      data: { id: q.id, lessonId: LESSON_ID, questionText: q.questionText, questionType: q.questionType, options: q.options, correctAnswer: q.correctAnswer, explanation: q.explanation, outcomeCode: q.outcomeCode, difficulty: q.difficulty, },
     });
   }
-  console.log(`  ✅ Created ${questions.length} quiz questions`);
 }
 
 // ╔═══════════════════════════════════════════════════════════╗
-// ║  LESSON 3: Relationships in Ecosystems                   ║
+// ║  LESSON 2b: Decomposers & Energy Flow                    ║
 // ╚═══════════════════════════════════════════════════════════╝
+
+async function seedLesson2b() {
+  const LESSON_ID = 'g7-sci-ua-l2b';
+  console.log('\n📗 Seeding Lesson 2b: Decomposers & Energy Flow...');
+
+  await prisma.lesson.update({
+    where: { id: LESSON_ID },
+    data: {
+      subjectMode: 'SCIENCE',
+      estimatedMinutes: 35,
+      learningGoal: 'Explain the role of decomposers and trace energy through food chains.',
+      successCriteria: 'I can draw a food chain showing how energy moves, and explain why decomposers are necessary for life.',
+      materials: 'Science notebook, coloured pencils',
+      reflectionPrompt: 'Imagine a world without decomposers. What would it look like?',
+      warmUpConfig: {
+        type: 'retrieval',
+        prompt: 'From the last lesson: Describe what a primary consumer is and give one example of an organism that fits this role.',
+      },
+      masteryConfig: {
+        passPercent: 80,
+        maxRetries: 5,
+        reteachEnabled: true,
+        immediateCorrectiveFeedback: false,
+      },
+    },
+  });
+
+  await prisma.lessonBlock.deleteMany({ where: { lessonId: LESSON_ID } });
+  await prisma.quizQuestion.deleteMany({ where: { lessonId: LESSON_ID } });
+
+  const learnBlocks = [
+    {
+      id: 'l2b-learn-2c',
+      section: 'LEARN' as const,
+      blockType: 'TEXT' as const,
+      order: 1,
+      content: {
+        html: `
+          <h3>🍂 Decomposers</h3>
+          <p><strong>Decomposers</strong> break down dead organisms and waste, returning nutrients to the soil. Without them, dead material would pile up and nutrients would never be recycled.</p>
+          <p><strong>Examples:</strong> mushrooms, bacteria, earthworms, mold</p>
+          <p><strong>Key idea:</strong> Decomposers complete the cycle — they connect death back to new life by making nutrients available for producers to use again.</p>
+        `,
+      },
+    },
+    {
+      id: 'l2b-learn-4',
+      section: 'LEARN' as const,
+      blockType: 'VIDEO' as const,
+      order: 2,
+      content: {
+        url: 'https://www.youtube.com/embed/MuKs9o1s8h8',
+        title: 'Food Chains & Food Webs — Crash Course Kids',
+        transcript: 'This video explains how energy flows through food chains and food webs...',
+        aiSummary: 'A food chain shows how energy moves from one organism to the next in a straight line...',
+      },
+    },
+    {
+      id: 'l2b-learn-5',
+      section: 'LEARN' as const,
+      blockType: 'TEXT' as const,
+      order: 3,
+      content: {
+        html: `
+          <h3>⛓️ Food Chains: Tracing Energy Flow</h3>
+          <p>A <strong>food chain</strong> shows the path of energy from one organism to the next. Energy always flows in one direction — from producers to consumers.</p>
+          <p>Here's an example from a grassland ecosystem:</p>
+          <div style="background:#f0fdf4; padding:16px; border-radius:12px; text-align:center; font-size:1.1rem; margin:12px 0;">
+            ☀️ Sun → 🌾 Grass → 🐇 Rabbit → 🦊 Fox → 🦅 Hawk
+          </div>
+          <p><strong>Important:</strong> At each step, some energy is used up (for movement, body heat, growth). That's why food chains rarely have more than 4–5 links — there isn't enough energy left to support more levels.</p>
+        `,
+      },
+    },
+  ];
+
+  const practiceBlocks = [
+    {
+      id: 'l2b-practice-2',
+      section: 'PRACTICE' as const,
+      blockType: 'FILL_IN_BLANK' as const,
+      order: 1,
+      content: {
+        prompt: 'Complete the sentences using what you learned:',
+        blanks: [
+          { id: 'b2', correctAnswer: 'decomposers', hint: 'Organisms that break down dead material and return nutrients to the soil are called _____.' },
+          { id: 'b3', correctAnswer: 'food chain', hint: 'A _____ _____ shows the path of energy from one organism to the next.' },
+        ],
+      },
+    },
+    {
+      id: 'l2b-practice-3',
+      section: 'PRACTICE' as const,
+      blockType: 'DRAWING' as const,
+      order: 2,
+      content: {
+        instruction: 'Draw a food chain from a POND ecosystem. Include at least 4 organisms and label each one. Draw arrows showing the direction energy flows.',
+      },
+    },
+    {
+      id: 'l2b-practice-4',
+      section: 'PRACTICE' as const,
+      blockType: 'MULTIPLE_CHOICE' as const,
+      order: 3,
+      content: {
+        question: 'In the Crash Course Kids video you just watched, the narrator explained why food chains rarely have more than 5 links. Which of the following BEST explains why?',
+        options: [
+          { label: 'There aren\'t enough different species', value: 'a' },
+          { label: 'Energy is lost at each level, so there isn\'t enough to support more levels', value: 'b', correct: true },
+          { label: 'Predators at the top eat too much', value: 'c' },
+        ],
+        explanation: 'At each level of a food chain, organisms use up energy for movement, body heat, and growth. Only about 10% of the energy passes to the next level.',
+      },
+    },
+  ];
+
+  const reflectBlocks = [
+    {
+      id: 'l2b-reflect-1',
+      section: 'REFLECT' as const,
+      blockType: 'CONSTRUCTED_RESPONSE' as const,
+      order: 1,
+      content: {
+        prompt: 'Look at the food chain you drew during Guided Practice. Now imagine that ALL the decomposers in that ecosystem suddenly disappeared. Using the specific organisms from YOUR food chain, explain:\n\n1. What would happen to dead organisms?\n2. How would producers eventually be affected?',
+        minLength: 50,
+        rubricHint: 'References their own food chain drawing. Uses vocabulary (producer, consumer, decomposer). Explains the ripple effect of removing decomposers.',
+        teacherReviewRequired: false,
+      },
+    },
+  ];
+
+  const allBlocks = [...learnBlocks, ...practiceBlocks, ...reflectBlocks];
+  for (const block of allBlocks) {
+    await prisma.lessonBlock.create({
+      data: { id: block.id, lessonId: LESSON_ID, section: block.section, blockType: block.blockType, content: block.content, order: block.order, },
+    });
+  }
+
+  const questions = [
+    {
+      id: 'l2b-q3',
+      questionText: 'Why are decomposers essential for an ecosystem to survive?',
+      questionType: 'MULTIPLE_CHOICE' as const,
+      options: [
+        { label: 'They produce oxygen for animals', value: 'a' },
+        { label: 'They break down dead organisms and return nutrients to the soil for producers', value: 'b', correct: true },
+        { label: 'They provide food for all consumers', value: 'c' },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Decomposers break down dead material and release nutrients back into the soil for producers.',
+      outcomeCode: 'SCI.7.A.K.1',
+      difficulty: 2,
+    },
+    {
+      id: 'l2b-q4',
+      questionText: 'Energy flows through a food chain in one direction. At each level, what happens to the energy?',
+      questionType: 'MULTIPLE_CHOICE' as const,
+      options: [
+        { label: 'It increases at each level', value: 'a' },
+        { label: 'It stays exactly the same', value: 'b' },
+        { label: 'Some energy is used up, so less is available at the next level', value: 'c', correct: true },
+      ],
+      correctAnswer: 'c',
+      explanation: 'At each level, organisms use energy for movement, growth, and body heat.',
+      outcomeCode: 'SCI.7.A.K.1',
+      difficulty: 2,
+    },
+    {
+      id: 'l2b-q7',
+      questionText: 'In a food chain, an arrow (→) represents:',
+      questionType: 'MULTIPLE_CHOICE' as const,
+      options: [
+        { label: 'The direction the animal moves', value: 'a' },
+        { label: 'The direction energy flows from one organism to the next', value: 'b', correct: true },
+        { label: 'Which organism is bigger', value: 'c' },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Arrows in food chains always point in the direction energy flows.',
+      outcomeCode: 'SCI.7.A.K.1',
+      difficulty: 1,
+    },
+  ];
+
+  for (const q of questions) {
+    await prisma.quizQuestion.create({
+      data: { id: q.id, lessonId: LESSON_ID, questionText: q.questionText, questionType: q.questionType, options: q.options, correctAnswer: q.correctAnswer, explanation: q.explanation, outcomeCode: q.outcomeCode, difficulty: q.difficulty, },
+    });
+  }
+}
 
 async function seedLesson3() {
   const LESSON_ID = 'g7-sci-ua-l3';
@@ -1283,6 +1264,7 @@ async function main() {
   console.log('🌱 Seeding Unit A content (Lessons 2, 3, 4)...\n');
 
   await seedLesson2();
+  await seedLesson2b();
   await seedLesson3();
   await seedLesson4();
 

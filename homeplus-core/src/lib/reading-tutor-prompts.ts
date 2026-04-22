@@ -224,17 +224,19 @@ ${wordPairs}
 FREE RESPONSE transcript:
 "${freeResponse}"
 
-Identify any CONSISTENT speech patterns (NOT reading errors). Look for:
-- Phoneme substitutions (e.g., /θ/ -> /f/, /r/ -> /w/)
-- Articulation patterns that appear in BOTH the repeat-after-me AND free response
-- Only flag patterns that appear at least twice
+Identify any CONSISTENT speech patterns, accents, or lisps (NOT reading errors). Look for:
+- Phoneme substitutions (e.g., /θ/ -> /f/ as in think->fink, /r/ -> /w/ as in red->wed, /s/ -> /θ/ as in sip->thip)
+- Accented vowel shifts or dropped consonants (e.g., dropping the 'g' in '-ing', dropping ending 't's or 'd's)
+- Voicing differences (e.g., /th/ -> /d/ as in that->dat, /v/ -> /b/ as in very->berry)
+- Articulation patterns that appear in BOTH the repeat-after-me AND free response.
+- Only flag patterns that appear consistently (at least twice).
 
 Respond as JSON (no markdown, no code blocks):
 {
   "speechPatterns": [
     {
-      "target": "the sound or letter pattern",
-      "actual": "what the student produces",
+      "target": "the sound or letter pattern (e.g. 'th')",
+      "actual": "what the student produces (e.g. 'f' or 'd')",
       "examples": ["expected->actual", "expected->actual"]
     }
   ],
@@ -242,4 +244,63 @@ Respond as JSON (no markdown, no code blocks):
 }
 
 If no consistent patterns are detected, return an empty speechPatterns array - most students won't have any patterns.`;
+}
+
+/**
+ * System prompt to analyze a student's reading miscues and identify UFLI phonics gaps.
+ */
+export function buildGapAnalysisPrompt(
+  miscueWords: string[],
+  gradeLevel: number
+): string {
+  return `You are an expert reading specialist trained in the Science of Reading and UFLI Foundations.
+A Grade ${gradeLevel} student just finished reading a passage. They misread or struggled with the following words:
+[ ${miscueWords.join(', ')} ]
+
+Analyze these miscues. Is there a CONSISTENT phonics pattern they are struggling with?
+Look for common UFLI concepts:
+- CVC words (short vowels)
+- Digraphs (sh, ch, th, ph, wh)
+- VCe / Magic E
+- Vowel Teams (ea, ee, ai, ay, oa, oe)
+- R-controlled vowels (ar, er, ir, or, ur)
+- Diphthongs (ou, ow, oi, oy, au, aw)
+- Consonant blends
+- Suffixes (-ing, -ed, -s, -es, -tion)
+
+Respond as JSON only:
+{
+  "hasGap": true/false,
+  "conceptCode": "A short code for the concept, e.g. VOWEL_TEAM_AW",
+  "conceptName": "A user-friendly name, e.g. Vowel Teams (aw/au)",
+  "explanation": "Brief 1-sentence explanation of why this gap was identified based on the miscues."
+}
+
+If the miscues are random sight words or there is no clear pattern, return "hasGap": false.`;
+}
+
+/**
+ * System prompt to generate words and sentences for a UFLI mini-lesson.
+ */
+export function buildMiniLessonGenerationPrompt(
+  conceptName: string,
+  gradeLevel: number
+): string {
+  return `You are generating content for a UFLI-aligned phonics mini-lesson.
+The target concept is: "${conceptName}"
+The student is in Grade ${gradeLevel}.
+
+Generate:
+1. A brief, kid-friendly explanation of the rule/pattern in Mrs. Hammel's voice.
+2. A list of 5 decodable words that follow this exact pattern (for the student to read).
+3. A list of 3 decodable words that follow this exact pattern (for dictation/encoding practice).
+
+The words MUST explicitly contain the target phonics pattern. Keep vocabulary appropriate for Grade ${gradeLevel}.
+
+Respond as JSON only:
+{
+  "explanation": "Mrs. Hammel's 1-2 sentence explanation of the pattern.",
+  "decodeWords": ["word1", "word2", "word3", "word4", "word5"],
+  "encodeWords": ["word1", "word2", "word3"]
+}`;
 }

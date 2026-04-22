@@ -653,7 +653,10 @@ export default function ReadingSessionPage() {
     const avgComprehension =
       totalQuestions > 0 ? Math.round(comprehensionScore / totalQuestions) : 0;
 
-    try {
+      const miscuesList = analysis?.wordResults
+            ?.filter((w) => w.status === 'SUBSTITUTION' || w.status === 'OMISSION')
+            .map((w) => w.expected) || [];
+
       const res = await fetch('/api/reading-tutor/summary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -663,9 +666,7 @@ export default function ReadingSessionPage() {
           accuracyRate: analysis?.adjustedAccuracy,
           wpm: analysis?.wordsPerMinute,
           comprehensionScore: avgComprehension,
-          miscues: analysis?.wordResults
-            ?.filter((w) => w.status === 'SUBSTITUTION' || w.status === 'OMISSION')
-            .map((w) => w.expected) || [],
+          miscues: miscuesList,
           transcript,
           durationSeconds: timer,
         }),
@@ -677,6 +678,18 @@ export default function ReadingSessionPage() {
         setCelebrationLevel(data.celebrationLevel || 'star');
       } else {
         setSessionSummary('Great job today! You showed up and that takes courage. See you tomorrow! ');
+      }
+
+      // Run gap analysis in the background
+      if (miscuesList.length > 0) {
+        fetch('/api/reading-tutor/gap-analysis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            miscueWords: miscuesList,
+            gradeLevel: passage?.gradeLevel,
+          }),
+        }).catch(err => console.error('Gap analysis failed:', err));
       }
     } catch {
       setSessionSummary('Awesome work today! Every time you read, your brain gets stronger. See you tomorrow! ');

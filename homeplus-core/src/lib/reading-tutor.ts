@@ -345,6 +345,20 @@ const EQUIVALENCE_GROUPS: string[][] = [
   ['she is', "she's"],
   ['it is', "it's"],
   ['like', 'likes'],  // common inflection difference
+  // Added common accent / STT artifact equivalences:
+  ['is', 'his', 'as'],
+  ['has', 'as'],
+  ['have', 'half'],
+  ['of', 'off'],
+  ['with', 'wif'],
+  ['think', 'fink'],
+  ['brother', 'bruvver'],
+  ['that', 'dat'],
+  ['this', 'dis'],
+  ['then', 'den'],
+  ['they', 'day'],
+  ['those', 'doze'],
+  ['these', 'deez'],
 ];
 
 /** Build a quick-lookup map from each word -> its equivalence group */
@@ -433,9 +447,9 @@ function wordsMatch(expected: string, actual: string): boolean {
   if (maxLen <= 3) {
     return dist <= 1; // short words: allow 1 edit (e.g., "a"/"ah", "it"/"is" etc.)
   } else if (maxLen <= 6) {
-    return dist <= 1; // medium words: allow 1 edit
+    return dist <= 2; // medium words: allow 2 edits (increased to be more forgiving)
   } else {
-    return dist <= 2; // long words: allow 2 edits
+    return dist <= 3; // long words: allow 3 edits (increased to be more forgiving)
   }
 }
 
@@ -459,7 +473,7 @@ function alignWords(expected: string[], rawSpoken: string[]): AlignedWord[] {
 
   // Scoring
   const MATCH_SCORE = 0;
-  const MISMATCH_SCORE = 2; // cost of substitution
+  const MISMATCH_SCORE = 1.5; // cost of substitution (less than 2, so it prefers substitution over gap+gap)
   const GAP_SCORE = 1;      // cost of omission or insertion
 
   // DP table

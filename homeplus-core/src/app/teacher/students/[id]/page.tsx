@@ -63,6 +63,8 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
     lastEvent,
     submissions,
     notes,
+    readingSessions,
+    phonicsGaps,
   ] = await Promise.all([
     getStudentWrittenResponses(id, teacherId, ctx),
     getStudentArtifacts(id, teacherId, ctx),
@@ -71,6 +73,8 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
     getLastAcademicEvent(id, teacherId, ctx),
     getStudentSubmissions(id, teacherId, ctx),
     getStudentNotes(id, teacherId),
+    prisma.readingSession.findMany({ where: { studentId: id }, orderBy: { completedAt: 'desc' }, take: 10 }),
+    prisma.phonicsGap.findMany({ where: { studentId: id }, orderBy: { identifiedAt: 'desc' } }),
   ]);
 
   // Fetch skill mastery summary for the mastery state grid
@@ -166,6 +170,15 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
   if (weakOutcomes.length > 0) {
     interventionReasons.push(`${weakOutcomes.length} outcome${weakOutcomes.length !== 1 ? 's' : ''} need${weakOutcomes.length === 1 ? 's' : ''} stronger evidence`);
   }
+
+  // Calculate Linguistic Stats
+  const hasReadingData = readingSessions.length > 0;
+  const latestSession = hasReadingData ? readingSessions[0] : null;
+  const avgWPM = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.wpm || 0), 0) / readingSessions.length) : 0;
+  const avgReadingAcc = hasReadingData ? Math.round(readingSessions.reduce((sum, s) => sum + (s.accuracy || 0), 0) / readingSessions.length) : 0;
+  
+  const pendingGaps = phonicsGaps.filter(g => g.status === 'PENDING');
+  const resolvedGaps = phonicsGaps.filter(g => g.status === 'RESOLVED');
 
   return (
     <>
@@ -430,6 +443,50 @@ export default async function StudentDetailPage({ params, searchParams }: PagePr
             })}
           </div>
         </div>
+
+          {/* ===== 8. LINGUISTIC ABILITIES (PHONICS & READING) ===== */}
+          <div className={styles.dashCard} style={{ marginBottom: 24 }}>
+            <h3 className={styles.cardTitle}>🗣️ Linguistic Abilities & Phonics</h3>
+            
+            {hasReadingData ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
+                <div style={{ background: '#f8fafc', padding: 12, borderRadius: 8, textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--hp-primary)' }}>{latestSession?.lexileLevel || '-'}L</div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Current Level</div>
+                </div>
+                <div style={{ background: '#f8fafc', padding: 12, borderRadius: 8, textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--hp-primary)' }}>{avgWPM}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Avg WPM</div>
+                </div>
+                <div style={{ background: '#f8fafc', padding: 12, borderRadius: 8, textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--hp-primary)' }}>{avgReadingAcc}%</div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Avg Accuracy</div>
+                </div>
+              </div>
+            ) : (
+              <div style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: 20 }}>No reading sessions recorded yet.</div>
+            )}
+
+            <h4 style={{ fontSize: '0.9rem', marginBottom: 12, color: 'var(--hp-text)' }}>UFLI Phonics Gaps</h4>
+            {phonicsGaps.length === 0 ? (
+              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>No phonics gaps identified.</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {pendingGaps.map(g => (
+                  <div key={g.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#fef2f2', borderLeft: '3px solid #ef4444', borderRadius: '0 4px 4px 0' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{g.conceptName}</span>
+                    <span style={{ fontSize: '0.75rem', color: '#ef4444', fontWeight: 600 }}>Needs Practice</span>
+                  </div>
+                ))}
+                {resolvedGaps.map(g => (
+                  <div key={g.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#f0fdf4', borderLeft: '3px solid #22c55e', borderRadius: '0 4px 4px 0', opacity: 0.8 }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{g.conceptName}</span>
+                    <span style={{ fontSize: '0.75rem', color: '#22c55e', fontWeight: 600 }}>Resolved</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
         {/* ===== RIGHT COLUMN ===== */}
         <div>

@@ -54,12 +54,9 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
       return <VocabularyBlock content={content as VocabularyBlockContent} />;
     case 'WORKED_EXAMPLE':
       return <WorkedExampleBlock content={content as WorkedExampleBlockContent} />;
-    case 'FILL_IN_BLANK':
-      return <FillInBlankBlock content={content as FillInBlankBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
-    case 'MATCHING':
-      return <MatchingBlock content={content as MatchingBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
-    case 'MULTIPLE_CHOICE':
-      return <MultipleChoiceBlock content={content as MultipleChoiceBlockContent} onAnswer={onAnswer} readOnly={readOnly} />;
+      case 'FILL_IN_BLANK': return <FillInBlankBlock content={content} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
+      case 'MATCHING': return <MatchingBlock content={content} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
+      case 'MULTIPLE_CHOICE': return <MultipleChoiceBlock content={content} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
     case 'CONSTRUCTED_RESPONSE':
       return <ConstructedResponseBlock content={content as ConstructedResponseBlockContent} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} subjectMode={subjectMode} gradeLevel={gradeLevel} />;
     case 'DRAWING':
@@ -84,21 +81,34 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
 // Returns null controls when speechSynthesis is unavailable.
 
 const TTS_RATE_KEY = 'hpln-tts-rate';
+const TTS_VOICE_KEY = 'hpln-tts-voice';
 
 function useReadAloud() {
   const [speaking, setSpeaking] = useState(false);
   const [rate, setRate] = useState(0.9);
-  const [showRateSlider, setShowRateSlider] = useState(false);
+  const [voiceURI, setVoiceURI] = useState<string | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [showSettings, setShowSettings] = useState(false);
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window;
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // Load saved rate on mount
+  // Load saved rate and voice on mount, and initialize voices list
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const saved = localStorage.getItem(TTS_RATE_KEY);
-    if (saved) {
-      const parsed = parseFloat(saved);
+    const savedRate = localStorage.getItem(TTS_RATE_KEY);
+    if (savedRate) {
+      const parsed = parseFloat(savedRate);
       if (!isNaN(parsed) && parsed >= 0.5 && parsed <= 1.5) setRate(parsed);
+    }
+    const savedVoice = localStorage.getItem(TTS_VOICE_KEY);
+    if (savedVoice) setVoiceURI(savedVoice);
+
+    const updateVoices = () => {
+      setVoices(window.speechSynthesis.getVoices());
+    };
+    updateVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = updateVoices;
     }
   }, []);
 
@@ -106,6 +116,13 @@ function useReadAloud() {
     setRate(newRate);
     if (typeof window !== 'undefined') {
       localStorage.setItem(TTS_RATE_KEY, String(newRate));
+    }
+  }, []);
+
+  const updateVoice = useCallback((newVoiceURI: string) => {
+    setVoiceURI(newVoiceURI);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(TTS_VOICE_KEY, newVoiceURI);
     }
   }, []);
 
@@ -117,12 +134,19 @@ function useReadAloud() {
     const utt = new SpeechSynthesisUtterance(text);
     utt.rate = rate;
     utt.pitch = 1;
+    
+    // Apply selected voice if valid
+    if (voiceURI) {
+      const selectedVoice = voices.find(v => v.voiceURI === voiceURI);
+      if (selectedVoice) utt.voice = selectedVoice;
+    }
+
     utt.onend = () => setSpeaking(false);
     utt.onerror = () => setSpeaking(false);
     utteranceRef.current = utt;
     setSpeaking(true);
     window.speechSynthesis.speak(utt);
-  }, [supported, rate]);
+  }, [supported, rate, voiceURI, voices]);
 
   const stop = useCallback(() => {
     if (!supported) return;
@@ -137,12 +161,12 @@ function useReadAloud() {
     };
   }, [supported]);
 
-  return { supported, speaking, speak, stop, rate, updateRate, showRateSlider, setShowRateSlider };
+  return { supported, speaking, speak, stop, rate, updateRate, voiceURI, updateVoice, voices, showSettings, setShowSettings };
 }
 
-/** Read Aloud button + rate slider, shared by TEXT and VOCABULARY blocks */
+/** Read Aloud button + settings popup (rate & voice), shared by TEXT and VOCABULARY blocks */
 function ReadAloudButton({ getText }: { getText: () => string }) {
-  const { supported, speaking, speak, stop, rate, updateRate, showRateSlider, setShowRateSlider } = useReadAloud();
+  const { supported, speaking, speak, stop, rate, updateRate, voiceURI, updateVoice, voices, showSettings, setShowSettings } = useReadAloud();
   if (!supported) return null;
 
   return (
@@ -193,9 +217,9 @@ function ReadAloudButton({ getText }: { getText: () => string }) {
         </button>
       )}
       <button
-        onClick={() => setShowRateSlider(!showRateSlider)}
-        aria-label="Adjust reading speed"
-        title="Adjust reading speed"
+        onClick={() => setShowSettings(!showSettings)}
+        aria-label="Adjust voice settings"
+        title="Adjust voice settings"
         style={{
           background: 'transparent',
           border: 'none',
@@ -207,7 +231,7 @@ function ReadAloudButton({ getText }: { getText: () => string }) {
       >
         ⚙️
       </button>
-      {showRateSlider && (
+      {showSettings && (
         <div style={{
           position: 'absolute',
           top: '100%',
@@ -216,26 +240,56 @@ function ReadAloudButton({ getText }: { getText: () => string }) {
           background: '#fff',
           border: '1px solid #e2e8f0',
           borderRadius: 10,
-          padding: '10px 14px',
+          padding: '14px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-          width: 200,
+          width: 260,
           zIndex: 10,
         }}>
-          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '0 0 6px', fontWeight: 600 }}>
-            Reading speed: {rate.toFixed(1)}×
-          </p>
-          <input
-            type="range"
-            min="0.5"
-            max="1.5"
-            step="0.1"
-            value={rate}
-            onChange={(e) => updateRate(parseFloat(e.target.value))}
-            style={{ width: '100%', accentColor: '#2563eb' }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8' }}>
-            <span>Slower</span>
-            <span>Faster</span>
+          {/* Voice Selection */}
+          <div style={{ marginBottom: 14 }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', margin: '0 0 6px', fontWeight: 600 }}>
+              Voice Selection
+            </label>
+            <select 
+              value={voiceURI || ''} 
+              onChange={(e) => updateVoice(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '6px 8px',
+                borderRadius: 6,
+                border: '1px solid #cbd5e1',
+                fontSize: '0.8rem',
+                color: '#334155',
+                outline: 'none'
+              }}
+            >
+              <option value="">System Default</option>
+              {voices.filter(v => v.lang.startsWith('en')).map(v => (
+                <option key={v.voiceURI} value={v.voiceURI}>
+                  {v.name.replace(/English|United States|United Kingdom/g, '').trim()} ({v.lang})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Reading Speed */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.75rem', color: '#64748b', margin: '0 0 6px', fontWeight: 600 }}>
+              Reading speed: {rate.toFixed(1)}×
+            </label>
+            <input
+              type="range"
+              min="0.5"
+              max="1.5"
+              step="0.1"
+              value={rate}
+              onChange={(e) => updateRate(parseFloat(e.target.value))}
+              style={{ width: '100%', accentColor: '#2563eb' }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#94a3b8' }}>
+              <span>Slower</span>
+              <span>Faster</span>
+            </div>
           </div>
         </div>
       )}
@@ -391,19 +445,33 @@ function WorkedExampleBlock({ content }: { content: WorkedExampleBlockContent })
 }
 
 // ---- Fill in the Blank Block (AUTO_AI) ----
-function FillInBlankBlock({ content, onAnswer, readOnly }: {
+function FillInBlankBlock({ content, onAnswer, readOnly, lessonId, blockId }: {
   content: FillInBlankBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
+  lessonId?: string;
+  blockId?: string;
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState(false);
   const [results, setResults] = useState<Record<string, boolean>>({});
 
+  useEffect(() => {
+    if (lessonId && blockId) {
+      const saved = localStorage.getItem(`hpln_fill_${lessonId}_${blockId}`);
+      if (saved) {
+        try { setAnswers(JSON.parse(saved)); } catch (e) {}
+      }
+    }
+  }, [lessonId, blockId]);
+
   const handleChange = (id: string, val: string) => {
     if (checked) return;
     const next = { ...answers, [id]: val };
     setAnswers(next);
+    if (lessonId && blockId) {
+      localStorage.setItem(`hpln_fill_${lessonId}_${blockId}`, JSON.stringify(next));
+    }
   };
 
   const allFilled = (content.blanks || []).every((b) => (answers[b.id] || '').trim().length > 0);
@@ -496,24 +564,43 @@ function FillInBlankBlock({ content, onAnswer, readOnly }: {
 }
 
 // ---- Matching Block (AUTO_AI) ----
-function MatchingBlock({ content, onAnswer, readOnly }: {
+function MatchingBlock({ content, onAnswer, readOnly, lessonId, blockId }: {
   content: MatchingBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
+  lessonId?: string;
+  blockId?: string;
 }) {
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState(false);
   const [results, setResults] = useState<Record<string, boolean>>({});
-  // Memoize the shuffled right-side options so they don't reshuffle on every render
-  const rights = useMemo(
-    () => (content.pairs || []).map((p) => p.right).sort(() => Math.random() - 0.5),
-    [content.pairs],
-  );
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [rights, setRights] = useState<string[]>([]);
+  
+  useEffect(() => {
+    if (lessonId && blockId) {
+      const saved = localStorage.getItem(`hpln_match_${lessonId}_${blockId}`);
+      if (saved) {
+        try { setMatches(JSON.parse(saved)); } catch (e) {}
+      }
+    }
+    const uniqueRights = Array.from(new Set((content.pairs || []).map((p) => p.right)));
+    setRights(uniqueRights.sort(() => Math.random() - 0.5));
+  }, [content.pairs, lessonId, blockId]);
 
   const handleSelect = (left: string, right: string) => {
     if (readOnly || checked) return;
     const next = { ...matches, [left]: right };
     setMatches(next);
+    if (lessonId && blockId) {
+      localStorage.setItem(`hpln_match_${lessonId}_${blockId}`, JSON.stringify(next));
+    }
+    
+    if (results[left] === false) {
+      const newResults = { ...results };
+      delete newResults[left];
+      setResults(newResults);
+    }
   };
 
   const allMatched = (content.pairs || []).every((p) => matches[p.left]);
@@ -524,9 +611,40 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
       res[p.left] = matches[p.left] === p.right;
     }
     setResults(res);
-    setChecked(true);
+    
     const correctCount = Object.values(res).filter(Boolean).length;
-    onAnswer?.({ matches, results: res, score: correctCount, total: (content.pairs || []).length });
+    const total = (content.pairs || []).length;
+    
+    if (correctCount === total) {
+      setChecked(true);
+      onAnswer?.({ matches, results: res, score: correctCount, total });
+    } else {
+      setFailedAttempts(prev => prev + 1);
+    }
+  };
+
+  const handleHint = () => {
+    // Find first incorrect or missing match
+    const target = (content.pairs || []).find(p => matches[p.left] !== p.right);
+    if (target) {
+      const next = { ...matches, [target.left]: target.right };
+      setMatches(next);
+      const newRes = { ...results, [target.left]: true };
+      setResults(newRes);
+    }
+  };
+
+  const handleSkip = () => {
+    const perfect: Record<string, string> = {};
+    const res: Record<string, boolean> = {};
+    for (const p of content.pairs || []) {
+      perfect[p.left] = p.right;
+      res[p.left] = true;
+    }
+    setMatches(perfect);
+    setResults(res);
+    setChecked(true);
+    onAnswer?.({ matches: perfect, results: res, score: 0, skipped: true, total: (content.pairs || []).length });
   };
 
   const correctCount = Object.values(results).filter(Boolean).length;
@@ -535,56 +653,96 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
   return (
     <div className={styles.interactiveBlock}>
       <p className={styles.interactivePrompt}>{content.instruction || 'Match the items:'}</p>
-      {(content.pairs || []).map((p, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
-          <span style={{ flex: '1 1 150px', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b' }}>{p.left}</span>
-          <span style={{ color: '#94a3b8' }}>&rarr;</span>
-          <select
-            value={matches[p.left] || ''}
-            onChange={(e) => handleSelect(p.left, e.target.value)}
-            disabled={readOnly || checked}
-            style={{
-              flex: '1 1 150px',
-              padding: '6px 10px',
-              fontSize: '0.85rem',
-              borderRadius: 8,
-              border: `1.5px solid ${checked ? (results[p.left] ? '#22c55e' : '#ef4444') : '#e2e8f0'}`,
-              background: checked ? (results[p.left] ? '#f0fdf4' : '#fef2f2') : '#fff',
-            }}
-          >
-            <option value="">Select...</option>
-            {rights.map((r, j) => <option key={j} value={r}>{r}</option>)}
-          </select>
-          {checked && (
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, minWidth: 20 }}>
-              {results[p.left]
-                ? <span style={{ color: '#059669' }}>✓</span>
-                : <span style={{ color: '#dc2626' }}>✗</span>
-              }
-            </span>
-          )}
-          {checked && !results[p.left] && (
-            <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>&rarr; {p.right}</span>
-          )}
-        </div>
-      ))}
+      {(content.pairs || []).map((p, i) => {
+        const hasResult = results[p.left] !== undefined;
+        const isCorrect = results[p.left];
+        return (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
+            <span style={{ flex: '1 1 150px', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b' }}>{p.left}</span>
+            <span style={{ color: '#94a3b8' }}>&rarr;</span>
+            <select
+              value={matches[p.left] || ''}
+              onChange={(e) => handleSelect(p.left, e.target.value)}
+              disabled={readOnly || checked || isCorrect} // Disable if they got it right, or if fully done
+              style={{
+                flex: '1 1 150px',
+                padding: '6px 10px',
+                fontSize: '0.85rem',
+                borderRadius: 8,
+                border: `1.5px solid ${hasResult ? (isCorrect ? '#22c55e' : '#ef4444') : '#e2e8f0'}`,
+                background: hasResult ? (isCorrect ? '#f0fdf4' : '#fef2f2') : '#fff',
+              }}
+            >
+              <option value="">Select...</option>
+              {rights.map((r, j) => <option key={j} value={r}>{r}</option>)}
+            </select>
+            {hasResult && (
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, minWidth: 20 }}>
+                {isCorrect
+                  ? <span style={{ color: '#059669' }}>✓</span>
+                  : <span style={{ color: '#dc2626' }}>✗</span>
+                }
+              </span>
+            )}
+            {checked && !isCorrect && (
+              <span style={{ fontSize: '0.75rem', color: '#6366f1', fontStyle: 'italic' }}>&rarr; {p.right}</span>
+            )}
+          </div>
+        );
+      })}
 
       {!checked && (
-        <button
-          onClick={handleCheck}
-          disabled={!allMatched}
-          className={styles.btnPrimary}
-          style={{
-            marginTop: 14,
-            background: allMatched ? '#2563eb' : '#cbd5e1',
-            cursor: allMatched ? 'pointer' : 'not-allowed',
-          }}
-        >
-          ✓ Check Answers
-        </button>
+        <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
+          <button
+            onClick={handleCheck}
+            disabled={!allMatched}
+            className={styles.btnPrimary}
+            style={{
+              flex: 1,
+              background: allMatched ? '#2563eb' : '#cbd5e1',
+              cursor: allMatched ? 'pointer' : 'not-allowed',
+            }}
+          >
+            ✓ Check Answers
+          </button>
+          {failedAttempts >= 2 && (
+            <button
+              onClick={handleHint}
+              style={{
+                padding: '10px 16px',
+                borderRadius: 8,
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                border: '1px solid #eab308',
+                background: '#fef08a',
+                color: '#854d0e',
+                cursor: 'pointer',
+              }}
+            >
+              💡 Hint
+            </button>
+          )}
+          {failedAttempts >= 4 && (
+            <button
+              onClick={handleSkip}
+              style={{
+                padding: '10px 16px',
+                borderRadius: 8,
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                border: '1px solid #cbd5e1',
+                background: '#f1f5f9',
+                color: '#64748b',
+                cursor: 'pointer',
+              }}
+            >
+              ⏭️ Skip
+            </button>
+          )}
+        </div>
       )}
 
-      {checked && (
+      {(checked || failedAttempts > 0) && (
         <div style={{
           marginTop: 12,
           padding: '10px 14px',
@@ -604,17 +762,29 @@ function MatchingBlock({ content, onAnswer, readOnly }: {
 }
 
 // ---- Multiple Choice Block (AUTO_AI) ----
-function MultipleChoiceBlock({ content, onAnswer, readOnly }: {
+function MultipleChoiceBlock({ content, onAnswer, readOnly, lessonId, blockId }: {
   content: MultipleChoiceBlockContent;
   onAnswer?: (value: any) => void;
   readOnly?: boolean;
+  lessonId?: string;
+  blockId?: string;
 }) {
   const [selected, setSelected] = useState<string>('');
   const [checked, setChecked] = useState(false);
 
+  useEffect(() => {
+    if (lessonId && blockId) {
+      const saved = localStorage.getItem(`hpln_mc_${lessonId}_${blockId}`);
+      if (saved) setSelected(saved);
+    }
+  }, [lessonId, blockId]);
+
   const handleSelect = (val: string) => {
     if (readOnly || checked) return;
     setSelected(val);
+    if (lessonId && blockId) {
+      localStorage.setItem(`hpln_mc_${lessonId}_${blockId}`, val);
+    }
   };
 
   const handleCheck = () => {
@@ -704,6 +874,20 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
   const [submitted, setSubmitted] = useState(false);
   const [isPasted, setIsPasted] = useState(false);
 
+  useEffect(() => {
+    if (lessonId && blockId) {
+      const saved = localStorage.getItem(`hpln_essay_${lessonId}_${blockId}`);
+      if (saved) setText(saved);
+    }
+  }, [lessonId, blockId]);
+
+  const handleTextChange = (val: string) => {
+    setText(val);
+    if (lessonId && blockId) {
+      localStorage.setItem(`hpln_essay_${lessonId}_${blockId}`, val);
+    }
+  };
+
   const minLen = content.minLength || 20;
   const isLongEnough = text.trim().split(/\s+/).filter(Boolean).length >= Math.max(Math.floor(minLen * 0.15), 3);
 
@@ -775,7 +959,7 @@ export function ConstructedResponseBlock({ content, onAnswer, readOnly, lessonId
       <textarea
         className={styles.textArea}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => handleTextChange(e.target.value)}
         onPaste={() => setIsPasted(true)}
         disabled={readOnly || submitted}
         placeholder="Write your response..."

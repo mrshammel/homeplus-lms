@@ -63,6 +63,7 @@ export default function MasteryCheck({
     explanation: string | null;
     outcomeCode: string | null;
   } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Scoring accumulators
   const [correctCount, setCorrectCount] = useState(0);
@@ -87,7 +88,9 @@ export default function MasteryCheck({
 
   // Handle answer submission for current question
   const handleSubmitAnswer = useCallback(async () => {
-    if (!selected) return;
+    if (!selected || submitting || phase !== 'active') return;
+    setSubmitting(true);
+
     const q = quizQuestions[currentIndex];
     if (!q) return;
 
@@ -140,7 +143,8 @@ export default function MasteryCheck({
     }
 
     setPhase('feedback');
-  }, [selected, quizQuestions, currentIndex, correctCount, outcomeMisses, lessonId]);
+    setSubmitting(false);
+  }, [selected, quizQuestions, currentIndex, correctCount, outcomeMisses, lessonId, submitting, phase]);
 
   // Advance to next question or show results
   const handleNext = useCallback(() => {
@@ -384,10 +388,10 @@ export default function MasteryCheck({
         <button
           className={styles.btnPrimary}
           onClick={handleSubmitAnswer}
-          disabled={!selected}
-          style={{ marginTop: 16, background: '#d97706' }}
+          disabled={!selected || submitting}
+          style={{ marginTop: 16, background: '#d97706', opacity: submitting ? 0.7 : 1 }}
         >
-          Submit Answer
+          {submitting ? 'Checking...' : 'Submit Answer'}
         </button>
       )}
 

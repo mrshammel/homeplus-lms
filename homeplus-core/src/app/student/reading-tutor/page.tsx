@@ -14,6 +14,12 @@ interface SessionSummary {
   comprehension: number;
 }
 
+interface PhonicsGap {
+  id: string;
+  conceptCode: string;
+  conceptName: string;
+}
+
 // ---------- Component ----------
 export default function ReadingTutorHome() {
   const [isCalibrated, setIsCalibrated] = useState(false);
@@ -24,6 +30,7 @@ export default function ReadingTutorHome() {
     sessionsCount: 0,
     lexileLevel: 0,
   });
+  const [pendingGaps, setPendingGaps] = useState<PhonicsGap[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,6 +42,7 @@ export default function ReadingTutorHome() {
           setIsCalibrated(data.isCalibrated);
           setSessions(data.recentSessions || []);
           setStats(data.stats || stats);
+          setPendingGaps(data.pendingGaps || []);
         }
       } catch {
         // Use defaults on error
@@ -67,17 +75,23 @@ export default function ReadingTutorHome() {
         <div className={styles.heroContent}>
           <h2>Hi there! I&apos;m Mrs. Hammel&apos;s Reading Buddy </h2>
           <p>
-            {isCalibrated
-              ? "Ready for today's reading session? You got this! "
-              : "Before we start reading together, let's help me learn your voice. It only takes a couple of minutes!"}
+            {!isCalibrated
+              ? "Before we start reading together, let's help me learn your voice. It only takes a couple of minutes!"
+              : pendingGaps.length > 0
+                ? "I noticed a tricky reading pattern in your last session. Let's do a quick mini-lesson before we read our next passage!"
+                : "Ready for today's reading session? You got this! "}
           </p>
-          {isCalibrated ? (
-            <Link href="/student/reading-tutor/session" className={styles.heroBtn}>
-              ▶ Start Today&apos;s Reading
-            </Link>
-          ) : (
+          {!isCalibrated ? (
             <Link href="/student/reading-tutor/calibrate" className={styles.heroBtn}>
                Set Up My Voice
+            </Link>
+          ) : pendingGaps.length > 0 ? (
+            <Link href={`/student/reading-tutor/mini-lesson/${pendingGaps[0].id}`} className={styles.heroBtn}>
+              ✨ Start Mini-Lesson: {pendingGaps[0].conceptName}
+            </Link>
+          ) : (
+            <Link href="/student/reading-tutor/session" className={styles.heroBtn}>
+              ▶ Start Today&apos;s Reading
             </Link>
           )}
         </div>
@@ -121,9 +135,13 @@ export default function ReadingTutorHome() {
                 ? "Start your first reading session and your history will show up here."
                 : "Set up your voice profile first, then start your daily reading!"}
             </p>
-            {isCalibrated ? (
+            {isCalibrated && pendingGaps.length === 0 ? (
               <Link href="/student/reading-tutor/session" className={styles.btnPrimary}>
                 Start Reading &rarr;
+              </Link>
+            ) : isCalibrated && pendingGaps.length > 0 ? (
+              <Link href={`/student/reading-tutor/mini-lesson/${pendingGaps[0].id}`} className={styles.btnPrimary}>
+                Start Mini-Lesson &rarr;
               </Link>
             ) : (
               <Link href="/student/reading-tutor/calibrate" className={styles.btnPrimary}>

@@ -32,6 +32,7 @@ model User {
   students            User[]                   @relation("TeacherStudents")
   voiceProfile        VoiceProfile?
   subjectEnrollments  SubjectEnrollment[]
+  phonicsGaps         PhonicsGap[]
 
   @@map("users")
 }
@@ -320,6 +321,21 @@ model VoiceProfile {
   student          User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@map("voice_profiles")
+}
+
+/// Tracks phonics concepts a student struggles with, identified via reading sessions
+model PhonicsGap {
+  id             String    @id @default(cuid())
+  studentId      String    @map("student_id")
+  conceptCode    String    @map("concept_code") // e.g., "VOWEL_TEAM_AW"
+  conceptName    String    @map("concept_name") // e.g., "Vowel Teams (aw/au)"
+  identifiedAt   DateTime  @default(now()) @map("identified_at")
+  status         GapStatus @default(PENDING)
+  resolvedAt     DateTime? @map("resolved_at")
+  student        User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, status])
+  @@map("phonics_gaps")
 }
 
 /// A single daily reading session — tracks read-aloud performance
@@ -732,4 +748,9 @@ enum ReviewStatus {
   COMPLETED
   SKIPPED
   EXPIRED
+}
+
+enum GapStatus {
+  PENDING
+  RESOLVED
 }

@@ -484,12 +484,14 @@ FEEDBACK PHILOSOPHY:
 - ${tone.style}
 
 ANTI-PATTERNS - do NOT do these:
-- Do NOT give 40+ to a response that does not address the prompt
-- Do NOT list "You attempted the response" as a strength - that is not a strength
-- Do NOT inflate scores because the student wrote many words
-- Do NOT deflate scores for short responses IF they are accurate, specific, and complete
-- Do NOT give vague feedback like "good job" - reference specific words the student used
-- Do NOT be overly generous - a mediocre response should score 45-60, not 70+
+- Do NOT contradict yourself (e.g. do not praise 'idea development' as a strength while citing it as a weakness).
+- Do NOT evaluate length based on word counts; evaluate the quality and depth of the ideas.
+- Do NOT give 40+ to a response that does not address the prompt.
+- Do NOT list "You attempted the response" as a strength - that is not a strength.
+- Do NOT inflate scores because the student wrote many words.
+- Do NOT deflate scores for short responses IF they are accurate, specific, and complete.
+- Do NOT give vague feedback like "good job" - reference specific words the student used.
+- Do NOT be overly generous - a mediocre response should score 45-60, not 70+.
 
 SUBJECT PRIORITIES FOR ${subjectName.toUpperCase()}:
 ${cal.priorities.map((p) => `- ${p}`).join('\n')}
