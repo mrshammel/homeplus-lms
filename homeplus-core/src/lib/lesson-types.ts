@@ -271,6 +271,7 @@ export interface MasteryConfig {
   maxRetries: number;      // max quiz attempts before soft-lock
   reteachEnabled: boolean; // science = true
   immediateCorrectiveFeedback: boolean; // math = true
+  maxAttemptsBeforeSafetyValve: number; // 0 = no safety valve, 2 = proceed as Developing after 2 fails
 }
 
 export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
@@ -279,30 +280,35 @@ export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
     maxRetries: 3,
     reteachEnabled: false,
     immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 0,
   },
   SCIENCE: {
     passPercent: 80,
     maxRetries: 5,
     reteachEnabled: true,
     immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 2,
   },
   ELA: {
     passPercent: 0, // not quiz-gated - uses completion/review
     maxRetries: 0,
     reteachEnabled: false,
     immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 0,
   },
   MATH: {
     passPercent: 70,
     maxRetries: 5,
     reteachEnabled: false,
     immediateCorrectiveFeedback: true,
+    maxAttemptsBeforeSafetyValve: 2,
   },
   SOCIAL_STUDIES: {
-    passPercent: 0, // not quiz-gated - uses response/reflection
-    maxRetries: 0,
-    reteachEnabled: false,
+    passPercent: 80,
+    maxRetries: 5,
+    reteachEnabled: true,
     immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 2,
   },
 };
 
@@ -320,6 +326,7 @@ export type ProgressStatus =
   | 'NOT_STARTED'
   | 'IN_PROGRESS'
   | 'COMPLETE'
+  | 'DEVELOPING'
   | 'MASTERED'
   | 'NEEDS_RETEACH';
 
@@ -359,6 +366,7 @@ export interface MasteryResult {
   reteachOutcome?: string;  // specific outcome to reteach
   feedback: string;
   canRetry: boolean;
+  developing?: boolean; // true when student uses safety valve to proceed
 }
 
 export interface MasteryEngine {

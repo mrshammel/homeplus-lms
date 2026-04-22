@@ -250,6 +250,25 @@ export default function LessonFrame({
         } catch (e) {
           console.error('Progress update failed:', e);
         }
+      } else if (result.developing) {
+        // Safety valve: student proceeds as DEVELOPING
+        setOverallStatus('DEVELOPING');
+        const nextSections = { ...sectionsCompleted, check: true };
+        setSectionsCompleted(nextSections);
+
+        try {
+          await fetch(`/api/lesson/${lessonId}/progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sectionsData: nextSections,
+              status: 'DEVELOPING',
+              masteryScore: result.score,
+            }),
+          });
+        } catch (e) {
+          console.error('Progress update failed:', e);
+        }
       } else if (result.needsReteach && result.reteachOutcome) {
         setReteachOutcome(result.reteachOutcome);
         setOverallStatus('NEEDS_RETEACH');
@@ -328,6 +347,7 @@ export default function LessonFrame({
     reflectionSaved && (
       overallStatus === 'MASTERED' ||
       overallStatus === 'COMPLETE' ||
+      overallStatus === 'DEVELOPING' ||
       // ELA/SS can continue after completing sections
       ((subjectMode === 'ELA' || subjectMode === 'SOCIAL_STUDIES') &&
         (masteryResult?.passed || sectionsCompleted.check))

@@ -20,6 +20,7 @@ export type PersistedStatus =
   | 'NOT_STARTED'
   | 'IN_PROGRESS'
   | 'COMPLETE'
+  | 'DEVELOPING'
   | 'MASTERED'
   | 'NEEDS_RETEACH';
 
@@ -29,6 +30,7 @@ export type LessonDisplayState =
   | 'AVAILABLE'
   | 'IN_PROGRESS'
   | 'COMPLETED'
+  | 'DEVELOPING'
   | 'MASTERED'
   | 'NEEDS_RETEACH';
 
@@ -38,7 +40,7 @@ export type LessonDisplayState =
  * only COMPLETE and MASTERED.  NEEDS_RETEACH is explicitly excluded.
  */
 export function isLessonDone(status: string | null | undefined): boolean {
-  return status === 'COMPLETE' || status === 'MASTERED';
+  return status === 'COMPLETE' || status === 'MASTERED' || status === 'DEVELOPING';
 }
 
 // ---------- B. isLessonUnlocked ----------
@@ -58,16 +60,16 @@ export function isLessonUnlocked(
 
   switch (subjectMode) {
     case 'SCIENCE':
-      // Science requires strict mastery - COMPLETE alone is insufficient
-      return prevStatus === 'MASTERED';
+      // Science requires mastery OR developing (safety valve) to proceed
+      return prevStatus === 'MASTERED' || prevStatus === 'DEVELOPING';
 
     case 'MATH':
     case 'ELA':
     case 'SOCIAL_STUDIES':
     case 'GENERAL':
     default:
-      // These subjects accept either COMPLETE or MASTERED
-      return prevStatus === 'COMPLETE' || prevStatus === 'MASTERED';
+      // These subjects accept COMPLETE, MASTERED, or DEVELOPING
+      return prevStatus === 'COMPLETE' || prevStatus === 'MASTERED' || prevStatus === 'DEVELOPING';
   }
 }
 
@@ -87,6 +89,7 @@ export function getLessonDisplayState(
     // return to it.
     if (status === 'IN_PROGRESS') return 'IN_PROGRESS';
     if (status === 'NEEDS_RETEACH') return 'NEEDS_RETEACH';
+    if (status === 'DEVELOPING') return 'DEVELOPING';
     if (status === 'COMPLETE') return 'COMPLETED';
     if (status === 'MASTERED') return 'MASTERED';
     return 'LOCKED';
@@ -99,6 +102,8 @@ export function getLessonDisplayState(
       return 'COMPLETED';
     case 'NEEDS_RETEACH':
       return 'NEEDS_RETEACH';
+    case 'DEVELOPING':
+      return 'DEVELOPING';
     case 'IN_PROGRESS':
       return 'IN_PROGRESS';
     default:
@@ -169,6 +174,8 @@ export function getLessonStateUI(state: LessonDisplayState): LessonStateUI {
       return { badge: '✅ Complete', color: '#059669', bg: '#f0fdf4', cta: 'Review', clickable: true };
     case 'MASTERED':
       return { badge: 'Tip: Mastered', color: '#059669', bg: '#f0fdf4', cta: 'Review', clickable: true };
+    case 'DEVELOPING':
+      return { badge: '📈 Developing', color: '#d97706', bg: '#fffbeb', cta: 'Review', clickable: true };
     default:
       return { badge: '⬜ Not Started', color: '#94a3b8', bg: '#ffffff', cta: 'Start Lesson', clickable: true };
   }

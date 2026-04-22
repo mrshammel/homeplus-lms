@@ -71,6 +71,17 @@ export default function MasteryCheck({
   const [reteachTriggered, setReteachTriggered] = useState<string | null>(null);
   const [finalResult, setFinalResult] = useState<MasteryResult | null>(null);
 
+  // Attempt tracking for safety valve (persisted per lesson)
+  const storageKey = `hpln_mastery_attempts_${lessonId}`;
+  const [attemptCount, setAttemptCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem(storageKey) || '0', 10);
+    }
+    return 0;
+  });
+  const safetyValveEnabled = config.maxAttemptsBeforeSafetyValve > 0;
+  const safetyValveReached = safetyValveEnabled && attemptCount >= config.maxAttemptsBeforeSafetyValve;
+
   // Select random questions for this attempt
   const startQuiz = useCallback(() => {
     const count = Math.min(QUESTIONS_PER_ATTEMPT, questions.length);
@@ -84,7 +95,14 @@ export default function MasteryCheck({
     setSelected('');
     setLastFeedback(null);
     setPhase('active');
-  }, [questions]);
+
+    // Increment attempt count
+    const newCount = attemptCount + 1;
+    setAttemptCount(newCount);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(storageKey, String(newCount));
+    }
+  }, [questions, attemptCount, storageKey]);
 
   // Handle answer submission for current question
   const handleSubmitAnswer = useCallback(async () => {
@@ -286,13 +304,37 @@ export default function MasteryCheck({
         </p>
         <p className={styles.masteryFeedback}>{finalResult.feedback}</p>
         {finalResult.canRetry && (
-          <button
-            className={styles.btnPrimary}
-            style={{ background: '#d97706' }}
-            onClick={startQuiz}
-          >
-             Try Again (New Questions)
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', marginTop: 4 }}>
+            <button
+              className={styles.btnPrimary}
+              style={{ background: '#d97706' }}
+              onClick={startQuiz}
+            >
+               Try Again (New Questions)
+            </button>
+            {safetyValveReached && (
+              <>
+                <button
+                  className={styles.btnPrimary}
+                  style={{ background: '#2563eb' }}
+                  onClick={() => {
+                    const devResult: MasteryResult = {
+                      ...finalResult,
+                      developing: true,
+                      feedback: `You're moving forward as "Developing". Your teacher has been notified, and you can come back to retry for full mastery anytime.`,
+                    };
+                    setFinalResult(devResult);
+                    onComplete(devResult);
+                  }}
+                >
+                  Continue as Developing →
+                </button>
+                <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, textAlign: 'center', lineHeight: 1.5 }}>
+                  ℹ️ Your teacher will be notified. This lesson will show as &quot;Developing&quot; and you can retry for full mastery anytime.
+                </p>
+              </>
+            )}
+          </div>
         )}
       </div>
     );
