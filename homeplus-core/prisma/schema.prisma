@@ -7,43 +7,50 @@ datasource db {
 }
 
 model User {
-  id                String                   @id @default(cuid())
-  name              String
-  email             String                   @unique
-  googleId          String?                  @unique @map("google_id")
-  role              Role                     @default(STUDENT)
-  gradeLevel        Int?                     @map("grade_level")
-  avatar            String?
-  enrolledAt        DateTime?                @map("enrolled_at")
-  createdAt         DateTime                 @default(now()) @map("created_at")
-  assignedTeacherId String?                  @map("assigned_teacher_id")
-  onboardingStatus  OnboardingStatus         @default(NOT_STARTED) @map("onboarding_status")
-  onboardingStep    Int                      @default(1) @map("onboarding_step")
-  readingSessions     ReadingSession[]
-  dashboardSummary    StudentDashboardSummary?
-  progress            StudentProgress[]
-  skillMastery        StudentSkillMastery[]
-  unitAccess          StudentUnitAccess[]      @relation("StudentUnitAccess")
-  unitOverrides       StudentUnitAccess[]      @relation("TeacherUnitOverrides")
-  submissions         Submission[]
-  notes               TeacherNote[]            @relation("StudentNotes")
-  authoredNotes       TeacherNote[]            @relation("AuthorNotes")
-  assignedTeacher     User?                    @relation("TeacherStudents", fields: [assignedTeacherId], references: [id])
-  students            User[]                   @relation("TeacherStudents")
-  voiceProfile        VoiceProfile?
-  subjectEnrollments  SubjectEnrollment[]
-  phonicsGaps         PhonicsGap[]
+  id                    String                   @id @default(cuid())
+  name                  String
+  email                 String                   @unique
+  googleId              String?                  @unique @map("google_id")
+  role                  Role                     @default(STUDENT)
+  gradeLevel            Int?                     @map("grade_level")
+  avatar                String?
+  enrolledAt            DateTime?                @map("enrolled_at")
+  createdAt             DateTime                 @default(now()) @map("created_at")
+  assignedTeacherId     String?                  @map("assigned_teacher_id")
+  onboardingStatus      OnboardingStatus         @default(NOT_STARTED) @map("onboarding_status")
+  onboardingStep        Int                      @default(1) @map("onboarding_step")
+  readingSessions       ReadingSession[]
+  dashboardSummary      StudentDashboardSummary?
+  progress              StudentProgress[]
+  skillMastery          StudentSkillMastery[]
+  unitAccess            StudentUnitAccess[]      @relation("StudentUnitAccess")
+  unitOverrides         StudentUnitAccess[]      @relation("TeacherUnitOverrides")
+  submissions           Submission[]
+  notes                 TeacherNote[]            @relation("StudentNotes")
+  authoredNotes         TeacherNote[]            @relation("AuthorNotes")
+  assignedTeacher       User?                    @relation("TeacherStudents", fields: [assignedTeacherId], references: [id])
+  students              User[]                   @relation("TeacherStudents")
+  voiceProfile          VoiceProfile?
+  subjectEnrollments    SubjectEnrollment[]
+  phonicsGaps           PhonicsGap[]
+  phonicsMastery        PhonicsMastery[]
+  approvedContentItems  ContentLibraryItem[]
+  requiresDecodableText Boolean                  @default(true) @map("requires_decodable_text")
+  studentAgeBand        String                   @default("early_primary") @map("student_age_band")
+  spacedReviewItems     SpacedReviewItem[]
+  studentMasteries      StudentMastery[]
+  phonicsProfile        PhonicsProfile?
 
   @@map("users")
 }
 
 model Subject {
-  id                 String               @id @default(cuid())
-  gradeLevel         Int                  @map("grade_level")
+  id                 String              @id @default(cuid())
+  gradeLevel         Int                 @map("grade_level")
   name               String
-  icon               String               @default("📚")
-  order              Int                  @default(0)
-  active             Boolean              @default(false)
+  icon               String              @default("📚")
+  order              Int                 @default(0)
+  active             Boolean             @default(false)
   units              Unit[]
   subjectEnrollments SubjectEnrollment[]
 
@@ -80,30 +87,44 @@ model Unit {
 }
 
 model Lesson {
-  id                String            @id @default(cuid())
-  unitId            String            @map("unit_id")
-  title             String
-  subtitle          String?
-  order             Int               @default(0)
-  externalUrl       String?           @map("external_url")
-  estimatedMinutes  Int?              @map("estimated_minutes")
-  learningGoal      String?           @map("learning_goal")
-  successCriteria   String?           @map("success_criteria")
-  materials         String?
-  subjectMode       SubjectMode       @default(GENERAL) @map("subject_mode")
-  warmUpConfig      Json?             @map("warm_up_config")
-  reflectionPrompt  String?           @map("reflection_prompt")
-  masteryConfig     Json?             @map("mastery_config")
-  activities        Activity[]
-  blocks            LessonBlock[]
-  lessonSkills      LessonSkill[]
-  unit              Unit              @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  masteryAttempts   MasteryAttempt[]
-  masteryEvidence   MasteryEvidence[]
-  quizQuestions     QuizQuestion[]
-  reflectionEntries ReflectionEntry[]
-  reteachSessions   ReteachSession[]
-  progress          StudentProgress[]
+  id                      String               @id @default(cuid())
+  unitId                  String               @map("unit_id")
+  title                   String
+  subtitle                String?
+  description             String?
+  category                String?
+  targetSkill             String?              @map("target_skill")
+  keyword                 String?
+  masteryDecodingAccuracy Float?               @map("mastery_decoding_accuracy")
+  masteryEncodingAccuracy Float?               @map("mastery_encoding_accuracy")
+  masterySessionsRequired Int?                 @map("mastery_sessions_required")
+  order                   Int                  @default(0)
+  externalUrl             String?              @map("external_url")
+  estimatedMinutes        Int?                 @map("estimated_minutes")
+  contentStatus           String               @default("active") @map("content_status")
+  learningGoal            String?              @map("learning_goal")
+  successCriteria         String?              @map("success_criteria")
+  materials               String?
+  subjectMode             SubjectMode          @default(GENERAL) @map("subject_mode")
+  warmUpConfig            Json?                @map("warm_up_config")
+  reflectionPrompt        String?              @map("reflection_prompt")
+  masteryConfig           Json?                @map("mastery_config")
+  activities              Activity[]
+  blocks                  LessonBlock[]
+  lessonSkills            LessonSkill[]
+  unit                    Unit                 @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  masteryAttempts         MasteryAttempt[]
+  masteryEvidence         MasteryEvidence[]
+  quizQuestions           QuizQuestion[]
+  reflectionEntries       ReflectionEntry[]
+  reteachSessions         ReteachSession[]
+  progress                StudentProgress[]
+  lessonGraphemes         LessonGrapheme[]
+  introducedWords         Word[]               @relation("LessonWords")
+  contentLibraryItems     ContentLibraryItem[]
+  phonicsAssessment       PhonicsAssessment?
+  phonicsMastery          PhonicsMastery[]
+  studentMasteries        StudentMastery[]
 
   @@map("lessons")
 }
@@ -325,14 +346,14 @@ model VoiceProfile {
 
 /// Tracks phonics concepts a student struggles with, identified via reading sessions
 model PhonicsGap {
-  id             String    @id @default(cuid())
-  studentId      String    @map("student_id")
-  conceptCode    String    @map("concept_code") // e.g., "VOWEL_TEAM_AW"
-  conceptName    String    @map("concept_name") // e.g., "Vowel Teams (aw/au)"
-  identifiedAt   DateTime  @default(now()) @map("identified_at")
-  status         GapStatus @default(PENDING)
-  resolvedAt     DateTime? @map("resolved_at")
-  student        User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  id           String    @id @default(cuid())
+  studentId    String    @map("student_id")
+  conceptCode  String    @map("concept_code") // e.g., "VOWEL_TEAM_AW"
+  conceptName  String    @map("concept_name") // e.g., "Vowel Teams (aw/au)"
+  identifiedAt DateTime  @default(now()) @map("identified_at")
+  status       GapStatus @default(PENDING)
+  resolvedAt   DateTime? @map("resolved_at")
+  student      User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId, status])
   @@map("phonics_gaps")
@@ -626,6 +647,7 @@ enum SubjectMode {
   ELA
   MATH
   SOCIAL_STUDIES
+  PHONICS
 }
 
 enum LessonSection {
@@ -654,6 +676,14 @@ enum BlockType {
   TAKE_VIDEO
   FILE_UPLOAD
   MICRO_CHECK
+  PHONEME_AWARENESS
+  VISUAL_DRILL
+  AUDITORY_DRILL
+  NEW_GRAPHEME_INTRODUCTION
+  WORD_WORK
+  HEART_WORDS
+  DECODABLE_TEXT
+  ENCODING
 }
 
 enum QuestionType {
@@ -754,4 +784,156 @@ enum ReviewStatus {
 enum GapStatus {
   PENDING
   RESOLVED
+}
+
+model Grapheme {
+  id                        String           @id @default(cuid())
+  grapheme                  String           @unique
+  phoneme                   String?
+  placementTags             String[]         @map("placement_tags") // e.g. "beginning", "middle", "end"
+  articulatoryGestureScript String?          @map("articulatory_gesture_script")
+  secretStoryScript         String?          @map("secret_story_script")
+  soundWallCategory         String?          @map("sound_wall_category")
+  instructionalVideoUrl     String?          @map("instructional_video_url")
+  posterImageUrl            String?          @map("poster_image_url")
+  lessonGraphemes           LessonGrapheme[]
+  wordGraphemes             WordGrapheme[]
+
+  @@map("graphemes")
+}
+
+model LessonGrapheme {
+  lessonId   String   @map("lesson_id")
+  graphemeId String   @map("grapheme_id")
+  lesson     Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  grapheme   Grapheme @relation(fields: [graphemeId], references: [id], onDelete: Cascade)
+
+  @@id([lessonId, graphemeId])
+  @@map("lesson_graphemes")
+}
+
+model Word {
+  id                 String         @id @default(cuid())
+  word               String         @unique
+  isHeartWord        Boolean        @default(false) @map("is_heart_word")
+  heartWordSource    String?        @map("heart_word_source")
+  introducedLessonId String?        @map("introduced_lesson_id")
+  graphemeBreakdown  String[]       @map("grapheme_breakdown")
+  introducedLesson   Lesson?        @relation("LessonWords", fields: [introducedLessonId], references: [id])
+  wordGraphemes      WordGrapheme[]
+
+  @@map("words")
+}
+
+model WordGrapheme {
+  wordId     String   @map("word_id")
+  graphemeId String   @map("grapheme_id")
+  word       Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  grapheme   Grapheme @relation(fields: [graphemeId], references: [id], onDelete: Cascade)
+
+  @@id([wordId, graphemeId])
+  @@map("word_graphemes")
+}
+
+model ContentLibraryItem {
+  id             String    @id @default(cuid())
+  lessonId       String    @map("lesson_id")
+  contentType    String    @map("content_type") // 'sentence', 'passage', 'comprehension_question'
+  textContent    String    @map("text_content")
+  approvalStatus String    @default("pending") @map("approval_status")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  approvedById   String?   @map("approved_by_id")
+  approvedAt     DateTime? @map("approved_at")
+  lesson         Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  approvedBy     User?     @relation(fields: [approvedById], references: [id])
+
+  @@map("content_library_items")
+}
+
+model PhonicsAssessment {
+  id               String   @id @default(cuid())
+  lessonId         String   @unique @map("lesson_id")
+  regularWords     String[] @map("regular_words")
+  irregularWords   String[] @map("irregular_words")
+  sentences        String[] @map("sentences")
+  newConceptPoints Int      @map("new_concept_points")
+  totalPoints      Int      @map("total_points")
+  lesson           Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("phonics_assessments")
+}
+
+model PhonicsMastery {
+  id                            String    @id @default(cuid())
+  studentId                     String    @map("student_id")
+  lessonId                      String    @map("lesson_id")
+  status                        String    @map("status") // e.g. "not_started", "mastered", "struggling"
+  courseCompletionStatus        String?   @map("course_completion_status")
+  attempts                      Int       @default(0)
+  lastAssessmentNewConceptScore Int?      @map("last_assessment_new_concept_score")
+  lastAssessmentTotalScore      Int?      @map("last_assessment_total_score")
+  masteredDate                  DateTime? @map("mastered_date")
+  teacherNotes                  String?   @map("teacher_notes")
+  consecutiveFailures           Int       @default(0) @map("consecutive_failures")
+
+  student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson  Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, lessonId])
+  @@map("phonics_mastery")
+}
+
+model SpacedReviewItem {
+  id                   String   @id @default(cuid())
+  studentId            String   @map("student_id")
+  itemId               String   @map("item_id")
+  itemType             String   @map("item_type") // e.g., "pattern", "heart_word"
+  currentIntervalIndex Int      @default(0) @map("current_interval_index")
+  nextReviewDate       DateTime @default(now()) @map("next_review_date")
+  consecutiveFailures  Int      @default(0) @map("consecutive_failures")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, itemId, itemType])
+  @@index([studentId, nextReviewDate])
+  @@map("spaced_review_items")
+}
+
+model StudentMastery {
+  id                   String   @id @default(cuid())
+  studentId            String   @map("student_id")
+  lessonId             String   @map("lesson_id")
+  status               String   @map("status") // "in_progress", "mastered", "struggling", "teacher_override"
+  attempts             Int      @default(0)
+  lastDecodingAccuracy Float?   @map("last_decoding_accuracy")
+  lastEncodingAccuracy Float?   @map("last_encoding_accuracy")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson  Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, lessonId])
+  @@map("student_masteries")
+}
+
+model PhonicsProfile {
+  id        String @id @default(cuid())
+  studentId String @unique @map("student_id")
+
+  // Placement
+  initialPlacementLessonId String? @map("initial_placement_lesson_id")
+  currentLessonId          String? @map("current_lesson_id")
+
+  // Flags
+  comprehensionGapSuspected    Boolean @default(false) @map("comprehension_gap_suspected")
+  placementMismatchSuspected   Boolean @default(false) @map("placement_mismatch_suspected")
+  placementUnderMatchSuspected Boolean @default(false) @map("placement_under_match_suspected")
+
+  // Status
+  courseStatus String @default("active") // "active", "completed", "paused"
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("phonics_profiles")
 }

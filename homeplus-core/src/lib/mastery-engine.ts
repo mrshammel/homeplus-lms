@@ -241,6 +241,78 @@ export const SocialStudiesMasteryEngine: MasteryEngine = {
   },
 };
 
+// ============ PHONICS MASTERY ENGINE ============
+// Specific thresholds for decoding and encoding.
+// Excludes Steps 1-3 (Warm-ups) from calculation.
+
+export const PhonicsMasteryEngine: MasteryEngine = {
+  subjectMode: 'PHONICS',
+  evaluate(answers, questions, _previousAttempts, _config) {
+    // We expect the outcomeCode or questionType to indicate the type of step
+    // e.g., "DECODING_STEP4", "ENCODING_STEP8", "WARMUP_STEP1"
+    
+    let decodingTotal = 0;
+    let decodingCorrect = 0;
+    
+    let encodingTotal = 0;
+    let encodingCorrect = 0;
+
+    const { results } = scoreAnswers(answers, questions);
+
+    for (const r of results) {
+      const q = questions.find(qq => qq.id === r.questionId);
+      if (!q) continue;
+
+      const code = (q.outcomeCode || '').toUpperCase();
+      
+      // Exclude Steps 1-3
+      if (code.includes('STEP1') || code.includes('STEP2') || code.includes('STEP3') || code.includes('WARMUP')) {
+        continue;
+      }
+
+      if (code.includes('DECODING') || code.includes('STEP4') || code.includes('STEP7') || (code.includes('STEP5') && code.includes('DEC'))) {
+        decodingTotal++;
+        if (r.correct) decodingCorrect++;
+      } else if (code.includes('ENCODING') || code.includes('STEP8') || (code.includes('STEP5') && code.includes('ENC'))) {
+        encodingTotal++;
+        if (r.correct) encodingCorrect++;
+      }
+    }
+
+    const decodingAccuracy = decodingTotal > 0 ? (decodingCorrect / decodingTotal) : 1.0;
+    const encodingAccuracy = encodingTotal > 0 ? (encodingCorrect / encodingTotal) : 1.0;
+
+    // Both thresholds must be met in the same session
+    const passed = (decodingAccuracy >= 0.90) && (encodingAccuracy >= 0.85);
+
+    let feedback: string;
+    if (passed) {
+      feedback = `✓ Mastered! Decoding: ${Math.round(decodingAccuracy * 100)}%, Encoding: ${Math.round(encodingAccuracy * 100)}%`;
+    } else {
+      feedback = `Keep practicing. You need 90% decoding and 85% encoding to pass. (Your score: Decoding ${Math.round(decodingAccuracy * 100)}%, Encoding ${Math.round(encodingAccuracy * 100)}%)`;
+    }
+
+    // The overall score could be a weighted average, but the thresholds dictate passing
+    const overallScore = Math.round(((decodingAccuracy + encodingAccuracy) / 2) * 100);
+
+    const attemptCount = Math.max(..._previousAttempts.map((a) => a.attemptNumber), 0) + 1;
+    // 3-Strike Rule: 3 consecutive failures halts progression and flags teacher (needsReteach)
+    const needsReteach = !passed && attemptCount >= 3;
+    const canRetry = !passed && !needsReteach;
+
+    return {
+      passed,
+      score: overallScore,
+      totalQuestions: decodingTotal + encodingTotal,
+      correctCount: decodingCorrect + encodingCorrect,
+      missedOutcomes: [],
+      needsReteach,
+      feedback,
+      canRetry,
+    };
+  },
+};
+
 // ---------- Engine Registry ----------
 
 export function getMasteryEngine(subjectMode: string): MasteryEngine {
@@ -253,6 +325,8 @@ export function getMasteryEngine(subjectMode: string): MasteryEngine {
       return MathMasteryEngine;
     case 'SOCIAL_STUDIES':
       return SocialStudiesMasteryEngine;
+    case 'PHONICS':
+      return PhonicsMasteryEngine;
     default:
       return ELAMasteryEngine; // GENERAL uses ELA's soft model
   }

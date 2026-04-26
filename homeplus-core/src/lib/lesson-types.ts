@@ -55,7 +55,15 @@ export type BlockType =
   | 'VIDEO_UPLOAD'
   | 'TAKE_VIDEO'
   | 'FILE_UPLOAD'
-  | 'MICRO_CHECK';
+  | 'MICRO_CHECK'
+  | 'PHONEME_AWARENESS'
+  | 'VISUAL_DRILL'
+  | 'AUDITORY_DRILL'
+  | 'NEW_GRAPHEME_INTRODUCTION'
+  | 'WORD_WORK'
+  | 'HEART_WORDS'
+  | 'DECODABLE_TEXT'
+  | 'ENCODING';
 
 export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   TEXT: 'Text',
@@ -75,6 +83,14 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   TAKE_VIDEO: 'Take Video',
   FILE_UPLOAD: 'File Upload',
   MICRO_CHECK: 'Micro Check',
+  PHONEME_AWARENESS: 'Phonemic Awareness',
+  VISUAL_DRILL: 'Visual Drill',
+  AUDITORY_DRILL: 'Auditory Drill',
+  NEW_GRAPHEME_INTRODUCTION: 'New Concept Intro',
+  WORD_WORK: 'Word Work',
+  HEART_WORDS: 'Heart Words',
+  DECODABLE_TEXT: 'Decodable Text',
+  ENCODING: 'Encoding (Spelling)',
 };
 
 export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
@@ -95,6 +111,14 @@ export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
   TAKE_VIDEO: '',
   FILE_UPLOAD: '',
   MICRO_CHECK: '❓',
+  PHONEME_AWARENESS: '🗣️',
+  VISUAL_DRILL: '👁️',
+  AUDITORY_DRILL: '👂',
+  NEW_GRAPHEME_INTRODUCTION: '✨',
+  WORD_WORK: '🧩',
+  HEART_WORDS: '❤️',
+  DECODABLE_TEXT: '📖',
+  ENCODING: '📝',
 };
 
 // ---------- Block Content Interfaces ----------

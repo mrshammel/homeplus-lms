@@ -13,6 +13,7 @@ import { getMasteryEngine } from '@/lib/mastery-engine';
 import { DEFAULT_MASTERY_CONFIG, resolveSubjectMode } from '@/lib/lesson-types';
 import { recordEvidence, getSkillsForLesson } from '@/lib/unified-mastery-engine';
 import { refreshStudentDashboardSummary } from '@/lib/summary-service';
+import { updatePhonicsProfileEdgeCases } from '@/lib/phonics-profile';
 
 interface RouteParams {
   params: Promise<{ lessonId: string }>;
@@ -268,5 +269,9 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     },
   });
 
+  // Evaluate Phonics Edge Cases (Comprehension Gap, Over-placement, Under-placement)
+  await updatePhonicsProfileEdgeCases(userId, lessonId, subjectMode, result.passed, result.score);
+
   return NextResponse.json(result);
 }
+

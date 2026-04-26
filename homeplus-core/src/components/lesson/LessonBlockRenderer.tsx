@@ -24,6 +24,7 @@ import type {
   UploadBlockContent,
   MicroCheckBlockContent,
 } from '@/lib/lesson-types';
+import { BLOCK_TYPE_ICONS, BLOCK_TYPE_LABELS } from '@/lib/lesson-types';
 
 // Lazy-load DrawingCanvas - it's large and only needed for DRAWING blocks
 const DrawingCanvas = dynamic(() => import('./DrawingCanvas'), { ssr: false });
@@ -71,6 +72,15 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
       return <UploadBlock content={content as UploadBlockContent} type="file" onAnswer={onAnswer} />;
     case 'MICRO_CHECK':
       return <MicroCheckBlock content={content as MicroCheckBlockContent} onAnswer={onAnswer} />;
+    case 'PHONEME_AWARENESS':
+    case 'VISUAL_DRILL':
+    case 'AUDITORY_DRILL':
+    case 'NEW_GRAPHEME_INTRODUCTION':
+    case 'WORD_WORK':
+    case 'HEART_WORDS':
+    case 'DECODABLE_TEXT':
+    case 'ENCODING':
+      return <PhonicsBlock blockType={blockType} content={content} onAnswer={onAnswer} readOnly={readOnly} />;
     default:
       return <div className={styles.blockCard}><p>Unsupported block type: {blockType}</p></div>;
   }
@@ -1262,6 +1272,89 @@ function MicroCheckBlock({ content, onAnswer }: {
         <p style={{ fontSize: '0.82rem', color: '#475569', marginTop: 10, padding: '8px 12px', background: '#faf5ff', borderRadius: 8 }}>
            {content.explanation}
         </p>
+      )}
+    </div>
+  );
+}
+
+// ---- Phonics Block (UFLI 8-Step Routine) ----
+function PhonicsBlock({ blockType, content, onAnswer, readOnly }: {
+  blockType: BlockType;
+  content: any;
+  onAnswer?: (value: any) => void;
+  readOnly?: boolean;
+}) {
+  const [step, setStep] = useState<'I_DO' | 'WE_DO' | 'YOU_DO' | 'CHECK'>('I_DO');
+  const [errorCorrectionActive, setErrorCorrectionActive] = useState(false);
+  const [correctionStep, setCorrectionStep] = useState<'MODEL' | 'ECHO' | 'APPLY'>('MODEL');
+
+  const handleStudentResponse = (correct: boolean) => {
+    if (correct) {
+      setErrorCorrectionActive(false);
+      onAnswer?.({ correct: true, step });
+    } else {
+      // Trigger Strict Error Correction Protocol
+      setErrorCorrectionActive(true);
+      setCorrectionStep('MODEL');
+    }
+  };
+
+  return (
+    <div className={styles.interactiveBlock} style={{ borderLeft: '4px solid #f59e0b', background: '#fffbeb' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+        <span style={{ fontSize: '1.5rem' }}>{BLOCK_TYPE_ICONS[blockType]}</span>
+        <h3 style={{ margin: 0, color: '#92400e', fontSize: '1.1rem' }}>{BLOCK_TYPE_LABELS[blockType]}</h3>
+      </div>
+      
+      {/* Explicit Instruction Cycle Indicator */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        {['I_DO', 'WE_DO', 'YOU_DO', 'CHECK'].map((s) => (
+          <div key={s} style={{
+            padding: '4px 8px',
+            borderRadius: 4,
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            background: step === s ? '#f59e0b' : '#fef3c7',
+            color: step === s ? '#fff' : '#b45309'
+          }}>
+            {s.replace('_', ' ')}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ padding: '12px', background: '#fff', borderRadius: 8, border: '1px solid #fde68a' }}>
+        {content?.instruction && <p style={{ fontSize: '0.9rem', marginBottom: 12 }}><strong>Teacher Script:</strong> {content.instruction}</p>}
+        {content?.text && <p style={{ fontSize: '1.2rem', textAlign: 'center', margin: '20px 0' }}>{content.text}</p>}
+        
+        {/* Placeholder for Interactive Elements */}
+        {!readOnly && (
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 20 }}>
+            <button onClick={() => handleStudentResponse(true)} className={styles.btnPrimary} style={{ background: '#22c55e' }}>Student Correct</button>
+            <button onClick={() => handleStudentResponse(false)} className={styles.btnPrimary} style={{ background: '#ef4444' }}>Student Error</button>
+          </div>
+        )}
+      </div>
+
+      {/* Error Correction Protocol UI */}
+      {errorCorrectionActive && (
+        <div style={{ marginTop: 16, padding: 12, background: '#fee2e2', borderRadius: 8, border: '1px solid #fca5a5' }}>
+          <h4 style={{ margin: '0 0 8px', color: '#b91c1c' }}>🚨 Error Correction Protocol Active</h4>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <span style={{ fontWeight: correctionStep === 'MODEL' ? 700 : 400 }}>1. Model</span> ➔
+            <span style={{ fontWeight: correctionStep === 'ECHO' ? 700 : 400 }}>2. Echo</span> ➔
+            <span style={{ fontWeight: correctionStep === 'APPLY' ? 700 : 400 }}>3. Apply</span>
+          </div>
+          <button 
+            style={{ marginTop: 12, padding: '6px 12px', background: '#b91c1c', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+            onClick={() => {
+              if (correctionStep === 'MODEL') setCorrectionStep('ECHO');
+              else if (correctionStep === 'ECHO') setCorrectionStep('APPLY');
+              else setErrorCorrectionActive(false);
+            }}
+          >
+            Advance Correction Step
+          </button>
+        </div>
       )}
     </div>
   );
