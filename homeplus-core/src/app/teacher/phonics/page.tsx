@@ -22,6 +22,15 @@ export default async function PhonicsDashboardPage() {
     include: { student: true }
   });
 
+  const studentsOnPlaceholders = await prisma.phonicsProfile.findMany({
+    where: {
+      currentLesson: {
+        contentStatus: 'placeholder_seed'
+      }
+    },
+    include: { student: true, currentLesson: true }
+  });
+
   const alerts = allMastery.filter(m => m.status === 'struggling');
   const inProgress = allMastery.filter(m => m.status === 'in_progress');
   const mastered = allMastery.filter(m => m.status === 'mastered');
@@ -41,10 +50,23 @@ export default async function PhonicsDashboardPage() {
           <h2 style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#b91c1c' }}>
             🚨 Action Required: Mastery Stalls
           </h2>
-          {alerts.length === 0 && profilesWithAlerts.length === 0 ? (
+          {alerts.length === 0 && profilesWithAlerts.length === 0 && studentsOnPlaceholders.length === 0 ? (
             <p style={{ color: '#64748b' }}>No students are currently flagged for mastery stalls or edge cases.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {/* Placeholder Alerts */}
+              {studentsOnPlaceholders.map(p => (
+                <div key={p.id} style={{ background: '#fefce8', border: '1px solid #fde047', padding: 16, borderRadius: 8 }}>
+                  <h3 style={{ margin: '0 0 8px', color: '#854d0e' }}>{p.student.name} - Waiting for Content</h3>
+                  <p style={{ margin: 0, fontSize: '0.9rem' }}>
+                    <strong>Stuck on Placeholder:</strong> {p.currentLesson?.title || 'Unknown Lesson'}
+                  </p>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: '#a16207' }}>
+                    This student has reached a lesson that has not been fully authored yet.
+                  </p>
+                </div>
+              ))}
+
               {/* Mastery Stalls */}
               {alerts.map(a => (
                 <div key={a.id} style={{ background: '#fef2f2', border: '1px solid #fca5a5', padding: 16, borderRadius: 8 }}>

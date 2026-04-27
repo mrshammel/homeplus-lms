@@ -127,6 +127,10 @@ export default async function UnitDetailPage({ params }: Props) {
               const isComplete = isMastered || lesson.displayState === 'COMPLETED';
               const isReteach = lesson.displayState === 'NEEDS_RETEACH';
               const isCurrent = lesson.isNextLesson;
+              const isPast = lesson.isPastLesson;
+
+              // If it's a past lesson, maybe skip showing it in the sidebar to keep it clean, or show it slightly faded
+              if (isPast) return null;
 
               // Number circle class
               const numClass = isMastered ? styles.lessonSidebarNumMastered
@@ -267,8 +271,92 @@ export default async function UnitDetailPage({ params }: Props) {
           {/* ===== LESSON CARDS ===== */}
           <section aria-label="Unit lessons">
             <h3 className={styles.sectionHeading}>Books: Lessons</h3>
+            
+            {lessons.filter(l => l.isPastLesson).length > 0 && (
+              <details style={{ marginBottom: 16, border: '1px solid #e2e8f0', borderRadius: 8, padding: 8 }}>
+                <summary style={{ cursor: 'pointer', fontWeight: 600, color: '#64748b', padding: 8 }}>
+                  View Past Lessons ({lessons.filter(l => l.isPastLesson).length})
+                </summary>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
+                  {lessons.filter(l => l.isPastLesson).map((lesson, i) => {
+                    const ui = getLessonStateUI(lesson.displayState);
+                    const isLocked = lesson.displayState === 'LOCKED';
+                    const isNext = lesson.isNextLesson;
+                    const isComplete = lesson.displayState === 'MASTERED' || lesson.displayState === 'COMPLETED';
+
+                    const statusCls = isComplete ? styles.statusComplete
+                      : lesson.displayState === 'IN_PROGRESS' || lesson.displayState === 'AVAILABLE' ? styles.statusInProgress
+                      : lesson.displayState === 'NEEDS_RETEACH' ? styles.statusReview
+                      : styles.statusLocked;
+
+                    const CardContent = (
+                      <div className={`${styles.lessonCard} ${isLocked ? styles.lessonCardLocked : ''}`}>
+                        {isNext && <div className={styles.nextBadge}>▶ NEXT</div>}
+
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                          {/* Lesson number */}
+                          <div style={{
+                            width: 40, height: 40, borderRadius: '50%',
+                            background: isLocked ? '#e2e8f0' : isComplete ? '#059669' : 'var(--subject-primary)',
+                            color: '#fff',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontWeight: 700, fontSize: '0.9rem', flexShrink: 0,
+                          }}>
+                            {lesson.displayState === 'MASTERED' ? 'Tip:'
+                              : isComplete ? '✓'
+                              : isLocked ? ''
+                              : lesson.order}
+                          </div>
+
+                          {/* Content */}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+                              <h4 style={{
+                                fontSize: '1rem', fontWeight: 700, margin: 0,
+                                color: isLocked ? '#94a3b8' : isComplete ? '#059669' : '#1a2137',
+                              }}>
+                                {lesson.title}
+                              </h4>
+                              <span className={`${styles.statusChip} ${statusCls}`}>
+                                {ui.badge}
+                              </span>
+                            </div>
+
+                            {lesson.contentStatus === 'placeholder_seed' && (
+                              <div style={{ marginTop: 8, display: 'inline-block', padding: '4px 8px', background: '#fef3c7', color: '#b45309', fontSize: '0.75rem', fontWeight: 700, borderRadius: 4 }}>
+                                🚧 Coming Soon
+                              </div>
+                            )}
+
+                            {lesson.subtitle && (
+                              <p style={{ fontSize: '0.84rem', color: isLocked ? '#cbd5e1' : '#5c6478', margin: '4px 0 0', lineHeight: 1.5 }}>
+                                {lesson.subtitle}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+
+                    if (isLocked) return <div key={lesson.id}>{CardContent}</div>;
+                    return (
+                      <Link
+                        key={lesson.id}
+                        href={lesson.externalUrl || `/student/courses/${courseId}/units/${unitId}/lessons/${lesson.id}`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                        {...(lesson.externalUrl ? { target: '_blank' } : {})}
+                      >
+                        {CardContent}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </details>
+            )}
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {lessons.map((lesson, i) => {
+              {lessons.filter(l => !l.isPastLesson).map((lesson, index) => {
+                const i = lesson.order - 1;
                 const ui = getLessonStateUI(lesson.displayState);
                 const isLocked = lesson.displayState === 'LOCKED';
                 const isNext = lesson.isNextLesson;
@@ -311,6 +399,12 @@ export default async function UnitDetailPage({ params }: Props) {
                             {ui.badge}
                           </span>
                         </div>
+
+                        {lesson.contentStatus === 'placeholder_seed' && (
+                          <div style={{ marginTop: 8, display: 'inline-block', padding: '4px 8px', background: '#fef3c7', color: '#b45309', fontSize: '0.75rem', fontWeight: 700, borderRadius: 4 }}>
+                            🚧 Coming Soon
+                          </div>
+                        )}
 
                         {lesson.subtitle && (
                           <p style={{ fontSize: '0.84rem', color: isLocked ? '#cbd5e1' : '#5c6478', margin: '4px 0 0', lineHeight: 1.5 }}>

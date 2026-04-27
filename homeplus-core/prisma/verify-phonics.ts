@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-config({ path: '.env.local' });
+config({ path: '.env.local', override: true });
 
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';

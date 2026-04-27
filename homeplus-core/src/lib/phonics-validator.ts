@@ -19,7 +19,7 @@ export async function validateContentIsDecodable(
   if (uniqueWords.length === 0) return { isDecodable: true, invalidWords: [] };
 
   // 2. Fetch the set of grapheme IDs the student has learned
-  const studentMastery = await prisma.phonicsMastery.findMany({
+  const studentMastery = await prisma.studentMastery.findMany({
     where: { studentId: studentId },
     select: { lessonId: true, status: true }
   });

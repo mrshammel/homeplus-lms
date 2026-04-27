@@ -37,8 +37,11 @@ export interface LessonItem {
   activityCount: number;
   completedActivities: number;
   isNextLesson: boolean;
+  isPastLesson?: boolean;
   /** If set, lesson links to this static page URL instead of internal route */
   externalUrl: string | null;
+  contentStatus: string | null;
+  contentStatus?: string | null;
   activities: {
     id: string;
     type: string;
@@ -137,6 +140,20 @@ export async function getUnitDetail(
     : [];
   const submissionMap = new Map(submissions.map((s) => [s.activityId, s]));
 
+  // Handle Phonics Placement Point
+  let currentPlacementLessonId: string | null = null;
+  if (subjectMode === 'PHONICS') {
+    const profile = await prisma.phonicsProfile.findUnique({
+      where: { studentId: userId },
+      select: { currentLessonId: true }
+    });
+    if (profile?.currentLessonId) {
+      currentPlacementLessonId = profile.currentLessonId;
+    }
+  }
+
+  let foundPlacement = !currentPlacementLessonId; // If no placement point, we don't treat anything as 'past'
+
   // Build lessons with gating
   const lessons: LessonItem[] = unit.lessons.map((lesson, i) => {
     const progress = progressMap.get(lesson.id);
@@ -160,6 +177,11 @@ export async function getUnitDetail(
       };
     });
 
+    if (currentPlacementLessonId === lesson.id) {
+      foundPlacement = true;
+    }
+    const isPastLesson = subjectMode === 'PHONICS' ? !foundPlacement : false;
+
     return {
       id: lesson.id,
       title: lesson.title,
@@ -172,6 +194,7 @@ export async function getUnitDetail(
       activityCount: activities.length,
       completedActivities: activities.filter((a) => a.submitted).length,
       isNextLesson: false, // set below
+      isPastLesson,
       externalUrl: lesson.externalUrl ?? null,
       activities,
     };

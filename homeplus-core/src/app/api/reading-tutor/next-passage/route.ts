@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/db';
 import { authOptions } from '@/lib/auth';
 import { selectNextPassageLevel } from '@/lib/reading-tutor';
+import { validateContentIsDecodable } from '@/lib/phonics-validator';
+import { generateDecodableTextFallback } from '@/lib/phonics-generator';
 
 /**
  * GET /api/reading-tutor/next-passage
@@ -72,6 +74,24 @@ export async function GET() {
 
     if (!fallback) {
       return NextResponse.json({ error: 'No passages available' }, { status: 404 });
+    }
+
+    if (userId) {
+      const isDecodable = await validateContentIsDecodable(fallback.text, userId);
+      if (!isDecodable.isDecodable) {
+        // Fallback to LLM Generation
+        const generated = await generateDecodableTextFallback(userId, fallback.title);
+        return NextResponse.json({
+          passage: {
+            id: `generated_${Date.now()}`,
+            title: `Custom: ${fallback.title}`,
+            text: generated.text,
+            wordCount: generated.text.split(/\s+/).length,
+            lexileLevel: fallback.lexileLevel,
+            gradeLevel: fallback.gradeLevel,
+          },
+        });
+      }
     }
 
     return NextResponse.json({
