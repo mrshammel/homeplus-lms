@@ -8,12 +8,13 @@
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
-    "db:migrate": "npx prisma migrate dev",
-    "db:seed": "npx tsx prisma/seed.ts",
-    "db:seed:science": "npx tsx prisma/run-science-seeds.ts",
-    "db:seed:enrollments": "npx tsx prisma/seed-enrollments.ts",
-    "db:studio": "npx prisma studio",
-    "db:push": "npx prisma db push"
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed:science": "tsx prisma/run-science-seeds.ts",
+    "db:seed:enrollments": "tsx prisma/seed-enrollments.ts",
+    "db:seed:phonics": "tsx prisma/seed-phonics.ts",
+    "db:studio": "prisma studio",
+    "db:push": "prisma db push"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
