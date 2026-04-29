@@ -33,55 +33,20 @@ export async function buildDecodableTextPrompt(
   if (ageBand === 'upper_primary') ageConstraint = 'upper primary readers (Grade 4-6) with slightly more mature themes';
   if (ageBand === 'middle') ageConstraint = 'middle school readers (Grade 7-9) with engaging, mature themes appropriate for older students';
 
-  // 2. Fetch student mastery (no PII) and enforce pre-teaching gate
-  const studentMastery = await prisma.phonicsMastery.findMany({
-    where: { studentId: studentId },
+  // 2. Fetch student mastery using StudentMastery model
+  const studentMastery = await prisma.studentMastery.findMany({
+    where: { studentId },
     select: { lessonId: true, status: true }
   });
-  
-  const fullyMasteredIds = studentMastery
-    .filter(sm => ['MASTERED', 'COMPLETE', 'mastered', 'complete'].includes(sm.status))
-    .map(sm => sm.lessonId);
-    
-  const inProgressIds = studentMastery
-    .filter(sm => ['IN_PROGRESS', 'in_progress'].includes(sm.status))
+
+  const masteredLessonIds = studentMastery
+    .filter(sm => ['mastered', 'complete'].includes(sm.status.toLowerCase()))
     .map(sm => sm.lessonId);
 
-  const validInProgressIds: string[] = [];
-  if (inProgressIds.length > 0) {
-    const progressRecords = await prisma.studentProgress.findMany({
-      where: {
-        studentId: studentId,
-        lessonId: { in: inProgressIds }
-      },
-      select: { lessonId: true, sectionsData: true }
-    });
-    
-    for (const record of progressRecords) {
-      const data = record.sectionsData as any;
-      if (data && data.learn) {
-        validInProgressIds.push(record.lessonId);
-      }
-    }
-  }
-
-  const effectiveLessonIds = [...fullyMasteredIds, ...validInProgressIds];
-
-  // 3. Get mastered graphemes
-  const learnedGraphemes = await prisma.lessonGrapheme.findMany({
-    where: { lessonId: { in: effectiveLessonIds } },
-    include: { grapheme: true }
-  });
-  const allowedGraphemes = [...new Set(learnedGraphemes.map(lg => lg.grapheme.grapheme))];
-
-  // 4. Get mastered heart words
-  const learnedHeartWords = await prisma.word.findMany({
-    where: {
-      isHeartWord: true,
-      introducedLessonId: { in: effectiveLessonIds }
-    }
-  });
-  const allowedHeartWords = learnedHeartWords.map(hw => hw.word);
+  // 3. Grapheme/heart word lookups are stubs until curriculum models are built
+  // TODO: Add LessonGrapheme and Word (HeartWord) models to schema
+  const allowedGraphemes: string[] = [];
+  const allowedHeartWords: string[] = [];
 
   // 4. Build prompt
   const prompt = `
@@ -89,13 +54,12 @@ You are an expert reading tutor generator.
 Generate a short decodable text (approx. 50-70 words) about: "${topic}".
 
 STRICT CONSTRAINTS:
-1. ONLY use words that can be decoded using the following graphemes:
-   [ ${allowedGraphemes.join(', ')} ]
-2. You may ALSO use the following pre-taught sight words (Heart Words):
-   [ ${allowedHeartWords.join(', ')} ]
-3. DO NOT use any other graphemes or sight words.
-4. Enforce Canadian English spelling (e.g., "colour", "centre").
-5. The text should be age-appropriate for ${ageConstraint}.
+1. ONLY use common CVC and CCVC patterns appropriate for ${ageConstraint}.
+2. Enforce Canadian English spelling (e.g., "colour", "centre").
+3. The text should be age-appropriate for ${ageConstraint}.
+4. Student has mastered ${masteredLessonIds.length} phonics lessons.
+${allowedGraphemes.length > 0 ? `5. Prefer graphemes: [ ${allowedGraphemes.join(', ')} ]` : ''}
+${allowedHeartWords.length > 0 ? `6. Sight words available: [ ${allowedHeartWords.join(', ')} ]` : ''}
   `.trim();
 
   return prompt;

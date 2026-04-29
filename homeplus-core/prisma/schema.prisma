@@ -19,6 +19,8 @@ model User {
   assignedTeacherId String?                  @map("assigned_teacher_id")
   onboardingStatus  OnboardingStatus         @default(NOT_STARTED) @map("onboarding_status")
   onboardingStep    Int                      @default(1) @map("onboarding_step")
+  studentAgeBand    String?                  @map("student_age_band")
+  requiresDecodableText Boolean              @default(false) @map("requires_decodable_text")
   readingSessions     ReadingSession[]
   dashboardSummary    StudentDashboardSummary?
   progress            StudentProgress[]
