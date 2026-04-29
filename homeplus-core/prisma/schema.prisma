@@ -631,6 +631,7 @@ enum SubjectMode {
   ELA
   MATH
   SOCIAL_STUDIES
+  PHONICS
 }
 
 enum LessonSection {
