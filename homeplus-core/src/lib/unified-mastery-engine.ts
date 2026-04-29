@@ -89,6 +89,18 @@ export const SUBJECT_MASTERY_CONFIGS: Record<SubjectMode, SubjectMasteryConfig> 
     requiresLaterRetrieval: true,
     minEvidenceForMastery: 2,
   },
+  PHONICS: {
+    passPercent: 90,
+    maxRetries: 3,
+    reteachEnabled: true,
+    immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 0,
+    evidenceWeights: { MASTERY_CHECK: 0.50, RETRIEVAL: 0.20, MIXED_PRACTICE: 0.10, GUIDED_PRACTICE: 0.10, ASSIGNMENT: 0.05, TEACHER_OBSERVATION: 0.05 },
+    masteryThresholds: { practicing: 0.50, developing: 0.70, mastered: 0.90 },
+    requiresHighWeightEvidence: true,
+    requiresLaterRetrieval: false,
+    minEvidenceForMastery: 1,
+  },
 };
 
 export function getSubjectConfig(mode: SubjectMode): SubjectMasteryConfig {
