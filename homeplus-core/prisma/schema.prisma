@@ -99,6 +99,13 @@ model Lesson {
   reflectionPrompt  String?           @map("reflection_prompt")
   masteryConfig     Json?             @map("mastery_config")
   contentStatus     String            @default("active") @map("content_status")
+  description       String?
+  category          String?
+  targetSkill       String?           @map("target_skill")
+  keyword           String?
+  masteryDecodingAccuracy  Float?     @map("mastery_decoding_accuracy")
+  masteryEncodingAccuracy  Float?     @map("mastery_encoding_accuracy")
+  masterySessionsRequired  Int?       @map("mastery_sessions_required")
   activities        Activity[]
   blocks            LessonBlock[]
   lessonSkills      LessonSkill[]
@@ -111,6 +118,9 @@ model Lesson {
   progress          StudentProgress[]
   phonicsProfiles   PhonicsProfile[]
   studentMastery    StudentMastery[]
+  lessonGraphemes   LessonGrapheme[]
+  introducedWords   Word[]
+  phonicsAssessment PhonicsAssessment?
 
   @@map("lessons")
 }
@@ -810,3 +820,63 @@ model SpacedReviewItem {
   @@map("spaced_review_items")
 }
 
+model Grapheme {
+  id                        String           @id @default(cuid())
+  grapheme                  String           @unique
+  phoneme                   String
+  placementTags             Json             @default("[]") @map("placement_tags")
+  articulatoryGestureScript String?          @map("articulatory_gesture_script")
+  secretStoryScript         String?          @map("secret_story_script")
+  soundWallCategory         String?          @map("sound_wall_category")
+  lessonGraphemes           LessonGrapheme[]
+  wordGraphemes             WordGrapheme[]
+
+  @@map("graphemes")
+}
+
+model LessonGrapheme {
+  id         String   @id @default(cuid())
+  lessonId   String   @map("lesson_id")
+  graphemeId String   @map("grapheme_id")
+  lesson     Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  grapheme   Grapheme @relation(fields: [graphemeId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, graphemeId])
+  @@map("lesson_graphemes")
+}
+
+model Word {
+  id                String        @id @default(cuid())
+  word              String        @unique
+  isHeartWord       Boolean       @default(false) @map("is_heart_word")
+  heartWordSource   String?       @map("heart_word_source")
+  introducedLessonId String?      @map("introduced_lesson_id")
+  introducedLesson  Lesson?       @relation(fields: [introducedLessonId], references: [id])
+  wordGraphemes     WordGrapheme[]
+
+  @@map("words")
+}
+
+model WordGrapheme {
+  id         String   @id @default(cuid())
+  wordId     String   @map("word_id")
+  graphemeId String   @map("grapheme_id")
+  word       Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  grapheme   Grapheme @relation(fields: [graphemeId], references: [id], onDelete: Cascade)
+
+  @@unique([wordId, graphemeId])
+  @@map("word_graphemes")
+}
+
+model PhonicsAssessment {
+  id                String   @id @default(cuid())
+  lessonId          String   @unique @map("lesson_id")
+  regularWords      Json     @default("[]") @map("regular_words")
+  irregularWords    Json     @default("[]") @map("irregular_words")
+  sentences         Json     @default("[]") @map("sentences")
+  newConceptPoints  Int      @default(0) @map("new_concept_points")
+  totalPoints       Int      @default(0) @map("total_points")
+  lesson            Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("phonics_assessments")
+}

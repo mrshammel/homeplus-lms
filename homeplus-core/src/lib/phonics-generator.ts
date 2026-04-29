@@ -1,8 +1,5 @@
 import { prisma } from './db';
 
-/**
- * Interface for the generated decodable text
- */
 export interface GeneratedDecodableText {
   text: string;
   isCanadianEnglish: boolean;
@@ -13,16 +10,12 @@ export interface GeneratedDecodableText {
 /**
  * Builds a prompt for an LLM to generate a decodable text based on the student's mastery.
  * Ensures zero PII is included and enforces Canadian English spelling.
- * 
- * @param studentId The student's ID (used ONLY to fetch mastery, never sent to LLM)
- * @param topic An optional generic topic (e.g., "Write about a cat")
- * @returns The prompt to send to the LLM
  */
 export async function buildDecodableTextPrompt(
   studentId: string,
   topic: string = 'a fun story'
 ): Promise<string> {
-  // 1. Fetch student's age band from User model
+  // 1. Fetch student's age band
   const user = await prisma.user.findUnique({
     where: { id: studentId },
     select: { studentAgeBand: true }
@@ -30,59 +23,87 @@ export async function buildDecodableTextPrompt(
   const ageBand = user?.studentAgeBand || 'early_primary';
 
   let ageConstraint = 'early readers (Grade 1-3)';
-  if (ageBand === 'upper_primary') ageConstraint = 'upper primary readers (Grade 4-6) with slightly more mature themes';
-  if (ageBand === 'middle') ageConstraint = 'middle school readers (Grade 7-9) with engaging, mature themes appropriate for older students';
+  if (ageBand === 'upper_primary') ageConstraint = 'upper primary readers (Grade 4-6)';
+  if (ageBand === 'middle') ageConstraint = 'middle school readers (Grade 7-9)';
 
-  // 2. Fetch student mastery using StudentMastery model
+  // 2. Fetch mastered + valid in-progress lessons
   const studentMastery = await prisma.studentMastery.findMany({
     where: { studentId },
     select: { lessonId: true, status: true }
   });
 
-  const masteredLessonIds = studentMastery
+  const fullyMasteredIds = studentMastery
     .filter(sm => ['mastered', 'complete'].includes(sm.status.toLowerCase()))
     .map(sm => sm.lessonId);
 
-  // 3. Grapheme/heart word lookups are stubs until curriculum models are built
-  // TODO: Add LessonGrapheme and Word (HeartWord) models to schema
-  const allowedGraphemes: string[] = [];
-  const allowedHeartWords: string[] = [];
+  const inProgressIds = studentMastery
+    .filter(sm => sm.status.toLowerCase() === 'in_progress')
+    .map(sm => sm.lessonId);
 
-  // 4. Build prompt
+  const validInProgressIds: string[] = [];
+  if (inProgressIds.length > 0) {
+    const progressRecords = await prisma.studentProgress.findMany({
+      where: { studentId, lessonId: { in: inProgressIds } },
+      select: { lessonId: true, sectionsData: true }
+    });
+    for (const record of progressRecords) {
+      const data = record.sectionsData as any;
+      if (data?.learn) validInProgressIds.push(record.lessonId);
+    }
+  }
+
+  const effectiveLessonIds = [...fullyMasteredIds, ...validInProgressIds];
+
+  // 3. Get mastered graphemes
+  const learnedGraphemes = await prisma.lessonGrapheme.findMany({
+    where: { lessonId: { in: effectiveLessonIds } },
+    include: { grapheme: { select: { grapheme: true } } }
+  });
+  const allowedGraphemes = [...new Set(learnedGraphemes.map(lg => lg.grapheme.grapheme))];
+
+  // 4. Get mastered heart words
+  const learnedHeartWords = await prisma.word.findMany({
+    where: {
+      isHeartWord: true,
+      introducedLessonId: { in: effectiveLessonIds }
+    },
+    select: { word: true }
+  });
+  const allowedHeartWords = learnedHeartWords.map(hw => hw.word);
+
+  // 5. Build prompt
   const prompt = `
-You are an expert reading tutor generator. 
+You are an expert reading tutor generator.
 Generate a short decodable text (approx. 50-70 words) about: "${topic}".
 
 STRICT CONSTRAINTS:
-1. ONLY use common CVC and CCVC patterns appropriate for ${ageConstraint}.
-2. Enforce Canadian English spelling (e.g., "colour", "centre").
-3. The text should be age-appropriate for ${ageConstraint}.
-4. Student has mastered ${masteredLessonIds.length} phonics lessons.
-${allowedGraphemes.length > 0 ? `5. Prefer graphemes: [ ${allowedGraphemes.join(', ')} ]` : ''}
-${allowedHeartWords.length > 0 ? `6. Sight words available: [ ${allowedHeartWords.join(', ')} ]` : ''}
+1. ONLY use words that can be decoded using these graphemes: [ ${allowedGraphemes.join(', ')} ]
+2. You may ALSO use these pre-taught sight words (Heart Words): [ ${allowedHeartWords.join(', ')} ]
+3. DO NOT use any other graphemes or sight words.
+4. Enforce Canadian English spelling (e.g., "colour", "centre").
+5. The text should be age-appropriate for ${ageConstraint}.
+6. Keep sentences short and simple.
   `.trim();
 
   return prompt;
 }
 
 /**
- * Mock function to represent the LLM generation call.
- * In a real environment, this would call OpenAI, Anthropic, or Gemini.
+ * Fallback generation (no LLM) — returns a static decodable text appropriate
+ * for the student's mastered grapheme set.
  */
 export async function generateDecodableTextFallback(
   studentId: string,
   topic: string = 'a fun story'
 ): Promise<GeneratedDecodableText> {
   const prompt = await buildDecodableTextPrompt(studentId, topic);
-  
-  // NOTE: This is where the actual LLM call would happen.
-  // For now, we simulate a response.
-  // console.log("Sending prompt to LLM:", prompt);
 
+  // TODO: Replace with actual LLM call (Gemini, OpenAI, etc.)
+  // For now, return a simple CVC passage as placeholder
   return {
     text: "The cat sat on the mat. The cat is fat. I am at the mat.",
     isCanadianEnglish: true,
     usedGraphemes: ['c', 'a', 't', 's', 'o', 'n', 'h', 'e', 'm', 'i', 'f'],
-    usedHeartWords: ['the', 'I', 'am']
+    usedHeartWords: ['the', 'I', 'am', 'is', 'on']
   };
 }
