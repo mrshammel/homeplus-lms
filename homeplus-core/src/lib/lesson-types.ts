@@ -6,7 +6,7 @@
 
 // ---------- Subject Modes ----------
 
-export type SubjectMode = 'GENERAL' | 'SCIENCE' | 'ELA' | 'MATH' | 'SOCIAL_STUDIES';
+export type SubjectMode = 'GENERAL' | 'SCIENCE' | 'ELA' | 'MATH' | 'SOCIAL_STUDIES' | 'PHONICS';
 
 // ---------- Lesson Sections ----------
 
@@ -333,6 +333,13 @@ export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
     reteachEnabled: true,
     immediateCorrectiveFeedback: false,
     maxAttemptsBeforeSafetyValve: 2,
+  },
+  PHONICS: {
+    passPercent: 90,
+    maxRetries: 3,
+    reteachEnabled: true,
+    immediateCorrectiveFeedback: false,
+    maxAttemptsBeforeSafetyValve: 0,
   },
 };
 
