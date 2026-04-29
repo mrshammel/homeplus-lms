@@ -40,7 +40,6 @@ export interface LessonItem {
   isPastLesson?: boolean;
   /** If set, lesson links to this static page URL instead of internal route */
   externalUrl: string | null;
-  contentStatus: string | null;
   contentStatus?: string | null;
   activities: {
     id: string;
@@ -421,6 +420,7 @@ function getDemoUnitDetail(courseId: string, unitId: string): UnitPageData | nul
     completedActivities: 0,
     isNextLesson: i === 0,
     externalUrl: null,
+    contentStatus: null,
     activities: l.activities.map((a, j) => ({
       id: `${unitId}-l${i}-a${j}`,
       type: a.type,
