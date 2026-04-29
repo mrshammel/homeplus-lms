@@ -34,6 +34,7 @@ model User {
   subjectEnrollments  SubjectEnrollment[]
   phonicsGaps         PhonicsGap[]
   phonicsProfile      PhonicsProfile?
+  studentMastery      StudentMastery[]
 
   @@map("users")
 }
@@ -95,6 +96,7 @@ model Lesson {
   warmUpConfig      Json?             @map("warm_up_config")
   reflectionPrompt  String?           @map("reflection_prompt")
   masteryConfig     Json?             @map("mastery_config")
+  contentStatus     String            @default("active") @map("content_status")
   activities        Activity[]
   blocks            LessonBlock[]
   lessonSkills      LessonSkill[]
@@ -106,6 +108,7 @@ model Lesson {
   reteachSessions   ReteachSession[]
   progress          StudentProgress[]
   phonicsProfiles   PhonicsProfile[]
+  studentMastery    StudentMastery[]
 
   @@map("lessons")
 }
@@ -783,6 +786,8 @@ model StudentMastery {
   lastEncodingAccuracy Float?   @map("last_encoding_accuracy")
   createdAt            DateTime @default(now()) @map("created_at")
   updatedAt            DateTime @updatedAt @map("updated_at")
+  student              User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson               Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, lessonId])
   @@map("student_mastery")
