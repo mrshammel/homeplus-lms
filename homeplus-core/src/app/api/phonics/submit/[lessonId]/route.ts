@@ -6,13 +6,13 @@ import { PhonicsMasteryEngine } from '@/lib/mastery-engine';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: Promise<{ lessonId: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const userId = (session.user as any).id as string;
-  const { lessonId } = params;
+  const { lessonId } = await params;
 
   const { decodingCorrect, decodingTotal, encodingCorrect, encodingTotal } = await request.json();
 

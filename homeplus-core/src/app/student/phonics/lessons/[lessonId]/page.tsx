@@ -5,7 +5,7 @@ import { prisma } from '@/lib/db';
 import { PhonicsLessonClient } from './phonics-lesson-client';
 
 interface Props {
-  params: { lessonId: string };
+  params: Promise<{ lessonId: string }>;
 }
 
 export default async function PhonicsLessonPage({ params }: Props) {
@@ -13,7 +13,7 @@ export default async function PhonicsLessonPage({ params }: Props) {
   if (!session?.user) redirect('/');
 
   const userId = (session.user as any).id as string;
-  const { lessonId } = params;
+  const { lessonId } = await params;
 
   // Fetch lesson with grapheme data
   const lesson = await prisma.lesson.findUnique({
@@ -107,8 +107,9 @@ export default async function PhonicsLessonPage({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props) {
+  const { lessonId } = await params;
   const lesson = await prisma.lesson.findUnique({
-    where: { id: params.lessonId },
+    where: { id: lessonId },
     select: { title: true, targetSkill: true },
   });
   return {
