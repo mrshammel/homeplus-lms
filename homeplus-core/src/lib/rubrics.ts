@@ -386,6 +386,17 @@ const SUBJECT_CALIBRATIONS: Record<SubjectMode, SubjectCalibration> = {
     reasoningExpectation: 'Explains thinking clearly. Shows understanding of the topic.',
     evidenceExpectation: 'References specific content from the lesson.',
   },
+  PHONICS: {
+    priorities: [
+      'Decoding accuracy',
+      'Encoding accuracy',
+      'Application of grapheme-phoneme correspondences',
+      'Heart word recognition',
+    ],
+    vocabularyExpectations: 'Uses phonics terminology accurately (grapheme, phoneme, digraph, blend, heart word).',
+    reasoningExpectation: 'Demonstrates understanding of sound-symbol relationships and decoding strategies.',
+    evidenceExpectation: 'Shows application of taught grapheme patterns in reading and spelling.',
+  },
 };
 
 export function getSubjectCalibration(subject: SubjectMode): SubjectCalibration {
@@ -458,7 +469,7 @@ export function buildAIPrompt(opts: {
 
   const subjectName = {
     SCIENCE: 'Science', MATH: 'Math', ELA: 'English Language Arts',
-    SOCIAL_STUDIES: 'Social Studies', GENERAL: 'the subject',
+    SOCIAL_STUDIES: 'Social Studies', GENERAL: 'the subject', PHONICS: 'Phonics',
   }[subject];
 
   const criteriaText = template.criteria
@@ -573,6 +584,11 @@ const SUBJECT_VOCAB: Record<SubjectMode, string[]> = {
   GENERAL: [
     'explain', 'describe', 'compare', 'contrast', 'analyze',
     'evidence', 'example', 'support', 'reason', 'conclude',
+  ],
+  PHONICS: [
+    'grapheme', 'phoneme', 'decoding', 'encoding', 'digraph',
+    'blend', 'vowel', 'consonant', 'heart word', 'syllable',
+    'onset', 'rime', 'segmenting', 'blending', 'decodable',
   ],
 };
 
