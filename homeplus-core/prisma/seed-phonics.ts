@@ -1,5 +1,17 @@
-import { config } from 'dotenv';
-config({ path: '.env.local' });
+import { readFileSync } from 'fs';
+
+// Load .env.local without dotenv (avoids npx module resolution issues)
+try {
+  const raw = readFileSync('.env.local', 'utf-8');
+  for (const line of raw.split('\n')) {
+    const match = line.match(/^([^#=\s][^=]*)=(.*)$/);
+    if (match) {
+      const key = match[1].trim();
+      const val = match[2].trim().replace(/^["']|["']$/g, '');
+      if (!process.env[key]) process.env[key] = val;
+    }
+  }
+} catch { /* rely on env vars already set */ }
 
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
