@@ -19,20 +19,21 @@ model User {
   assignedTeacherId String?                  @map("assigned_teacher_id")
   onboardingStatus  OnboardingStatus         @default(NOT_STARTED) @map("onboarding_status")
   onboardingStep    Int                      @default(1) @map("onboarding_step")
-  studentAgeBand    String?                  @map("student_age_band")
-  requiresDecodableText Boolean              @default(false) @map("requires_decodable_text")
   readingSessions     ReadingSession[]
-  assignedTeacher   User?                    @relation("TeacherStudents", fields: [assignedTeacherId], references: [id])
-  students          User[]                   @relation("TeacherStudents")
-  voiceProfile      VoiceProfile?
-  subjectEnrollments SubjectEnrollment[]
-  phonicsGaps       PhonicsGap[]
-  phonicsProfile    PhonicsProfile?
-  dashboardSummary  StudentDashboardSummary?
-  lessonProgress    LessonProgress[]
-  progress          StudentProgress[]
-  skillMastery      StudentSkillMastery[]
-  unitAccess        StudentUnitAccess[]
+  dashboardSummary    StudentDashboardSummary?
+  progress            StudentProgress[]
+  skillMastery        StudentSkillMastery[]
+  unitAccess          StudentUnitAccess[]      @relation("StudentUnitAccess")
+  unitOverrides       StudentUnitAccess[]      @relation("TeacherUnitOverrides")
+  submissions         Submission[]
+  notes               TeacherNote[]            @relation("StudentNotes")
+  authoredNotes       TeacherNote[]            @relation("AuthorNotes")
+  assignedTeacher     User?                    @relation("TeacherStudents", fields: [assignedTeacherId], references: [id])
+  students            User[]                   @relation("TeacherStudents")
+  voiceProfile        VoiceProfile?
+  subjectEnrollments  SubjectEnrollment[]
+  phonicsGaps         PhonicsGap[]
+  phonicsProfile      PhonicsProfile?
 
   @@map("users")
 }
@@ -41,7 +42,7 @@ model Subject {
   id                 String               @id @default(cuid())
   gradeLevel         Int                  @map("grade_level")
   name               String
-  icon               String               @default("book")
+  icon               String               @default("📚")
   order              Int                  @default(0)
   active             Boolean              @default(false)
   units              Unit[]
@@ -63,6 +64,7 @@ model SubjectEnrollment {
   @@index([studentId])
   @@map("subject_enrollments")
 }
+
 model Unit {
   id            String              @id @default(cuid())
   subjectId     String              @map("subject_id")
@@ -72,228 +74,539 @@ model Unit {
   order         Int                 @default(0)
   lessons       Lesson[]
   pacingTargets PacingTarget?
+  unitAccess    StudentUnitAccess[]
   subject       Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  studentAccess StudentUnitAccess[]
-  unitMasterySummaries UnitMasterySummary[]
 
-  @@index([subjectId])
   @@map("units")
 }
 
 model Lesson {
-  id                  String                  @id @default(cuid())
-  unitId              String                  @map("unit_id")
-  title               String
-  description         String?
-  order               Int                     @default(0)
-  content             Json
-  contentStatus       String                  @default("DRAFT") @map("content_status")
-  duration            Int?
-  unit                Unit                    @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  progress            LessonProgress[]
-  pacingTargets       PacingTarget[]
-  studentSkillMastery StudentSkillMastery[]
-  masteryEvidence     MasteryEvidence[]
-  reflectionEntries   ReflectionEntry[]
-  phonicsProfiles     PhonicsProfile[]
+  id                String            @id @default(cuid())
+  unitId            String            @map("unit_id")
+  title             String
+  subtitle          String?
+  order             Int               @default(0)
+  externalUrl       String?           @map("external_url")
+  estimatedMinutes  Int?              @map("estimated_minutes")
+  learningGoal      String?           @map("learning_goal")
+  successCriteria   String?           @map("success_criteria")
+  materials         String?
+  subjectMode       SubjectMode       @default(GENERAL) @map("subject_mode")
+  warmUpConfig      Json?             @map("warm_up_config")
+  reflectionPrompt  String?           @map("reflection_prompt")
+  masteryConfig     Json?             @map("mastery_config")
+  activities        Activity[]
+  blocks            LessonBlock[]
+  lessonSkills      LessonSkill[]
+  unit              Unit              @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  masteryAttempts   MasteryAttempt[]
+  masteryEvidence   MasteryEvidence[]
+  quizQuestions     QuizQuestion[]
+  reflectionEntries ReflectionEntry[]
+  reteachSessions   ReteachSession[]
+  progress          StudentProgress[]
 
-  @@index([unitId])
   @@map("lessons")
 }
-model LessonSectionProgress {
-  id               String         @id @default(cuid())
-  lessonProgressId String         @map("lesson_progress_id")
-  section          LessonSection
-  status           ProgressStatus @default(NOT_STARTED)
-  completedAt      DateTime?      @map("completed_at")
-  lessonProgress   LessonProgress @relation(fields: [lessonProgressId], references: [id], onDelete: Cascade)
 
-  @@unique([lessonProgressId, section])
-  @@map("lesson_section_progress")
+model LessonBlock {
+  id        String        @id @default(cuid())
+  lessonId  String        @map("lesson_id")
+  section   LessonSection
+  blockType BlockType     @map("block_type")
+  content   Json
+  order     Int           @default(0)
+  lesson    Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("lesson_blocks")
 }
 
-model LessonProgress {
-  id              String                  @id @default(cuid())
-  studentId       String                  @map("student_id")
-  lessonId        String                  @map("lesson_id")
-  status          ProgressStatus          @default(NOT_STARTED)
-  lastAccessed    DateTime                @default(now()) @map("last_accessed")
-  completedAt     DateTime?               @map("completed_at")
-  currentSection  LessonSection           @default(WARM_UP) @map("current_section")
-  lesson          Lesson                  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  student         User                    @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  sectionProgress LessonSectionProgress[]
+model QuizQuestion {
+  id              String           @id @default(cuid())
+  lessonId        String           @map("lesson_id")
+  outcomeCode     String?          @map("outcome_code")
+  questionText    String           @map("question_text")
+  questionType    QuestionType     @default(MULTIPLE_CHOICE) @map("question_type")
+  options         Json?
+  correctAnswer   String?          @map("correct_answer")
+  explanation     String?
+  difficulty      Int              @default(1)
+  order           Int              @default(0)
+  masteryAttempts MasteryAttempt[]
+  lesson          Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId, outcomeCode])
+  @@index([outcomeCode])
+  @@map("quiz_questions")
+}
+
+model MasteryAttempt {
+  id            String       @id @default(cuid())
+  studentId     String       @map("student_id")
+  lessonId      String       @map("lesson_id")
+  questionId    String       @map("question_id")
+  response      String
+  correct       Boolean
+  attemptNumber Int          @default(1) @map("attempt_number")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  lesson        Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question      QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("mastery_attempts")
+}
+
+model ReteachSession {
+  id            String        @id @default(cuid())
+  studentId     String        @map("student_id")
+  lessonId      String        @map("lesson_id")
+  outcomeCode   String        @map("outcome_code")
+  status        ReteachStatus @default(ACTIVE)
+  correctStreak Int           @default(0) @map("correct_streak")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  lesson        Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("reteach_sessions")
+}
+
+model Activity {
+  id             String          @id @default(cuid())
+  lessonId       String          @map("lesson_id")
+  type           ActivityType
+  title          String
+  content        Json?
+  points         Int             @default(0)
+  order          Int             @default(0)
+  lesson         Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  activitySkills ActivitySkill[]
+  submissions    Submission[]
+
+  @@map("activities")
+}
+
+model Submission {
+  id                    String            @id @default(cuid())
+  studentId             String            @map("student_id")
+  activityId            String            @map("activity_id")
+  response              Json?
+  writtenResponse       String?           @map("written_response")
+  fileUrl               String?           @map("file_url")
+  fileName              String?           @map("file_name")
+  submissionType        SubmissionType    @default(QUIZ_RESPONSE) @map("submission_type")
+  score                 Float?
+  maxScore              Float?            @map("max_score")
+  reviewed              Boolean           @default(false)
+  reviewedAt            DateTime?         @map("reviewed_at")
+  reviewedBy            String?           @map("reviewed_by")
+  teacherFeedback       String?           @map("teacher_feedback")
+  submittedAt           DateTime          @default(now()) @map("submitted_at")
+  aiStatus              AiStatus          @default(NONE) @map("ai_status")
+  aiFeedback            String?           @map("ai_feedback")
+  aiStrengths           String?           @map("ai_strengths")
+  aiAreasForImprovement String?           @map("ai_areas_for_improvement")
+  aiNextSteps           String?           @map("ai_next_steps")
+  aiProvisionalScore    Float?            @map("ai_provisional_score")
+  aiPerformanceLevel    String?           @map("ai_performance_level")
+  aiGeneratedAt         DateTime?         @map("ai_generated_at")
+  aiModelVersion        String?           @map("ai_model_version")
+  aiErrorMessage        String?           @map("ai_error_message")
+  finalizedByTeacher    Boolean           @default(false) @map("finalized_by_teacher")
+  isPasted              Boolean           @default(false) @map("is_pasted")
+  masteryJudgments      MasteryJudgment[]
+  activity              Activity          @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  student               User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, submittedAt])
+  @@index([studentId, reviewed])
+  @@map("submissions")
+}
+
+model StudentProgress {
+  id           String         @id @default(cuid())
+  studentId    String         @map("student_id")
+  lessonId     String         @map("lesson_id")
+  status       ProgressStatus @default(NOT_STARTED)
+  sectionsData Json?          @map("sections_data")
+  masteryScore Float?         @map("mastery_score")
+  completedAt  DateTime?      @map("completed_at")
+  lesson       Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  student      User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, lessonId])
-  @@index([studentId])
-  @@map("lesson_progress")
+  @@index([studentId, status])
+  @@map("student_progress")
+}
+
+model LearningOutcome {
+  id               String            @id @default(cuid())
+  code             String            @unique
+  description      String
+  subjectArea      String            @map("subject_area")
+  gradeLevel       Int               @map("grade_level")
+  unitContext      String?           @map("unit_context")
+  masteryJudgments MasteryJudgment[]
+
+  @@map("learning_outcomes")
+}
+
+model MasteryJudgment {
+  id           String          @id @default(cuid())
+  outcomeId    String          @map("outcome_id")
+  submissionId String?         @map("submission_id")
+  studentId    String          @map("student_id")
+  teacherId    String          @map("teacher_id")
+  masteryLevel MasteryLevel    @default(NOT_YET_ASSESSED) @map("mastery_level")
+  teacherNote  String?         @map("teacher_note")
+  assessedAt   DateTime        @default(now()) @map("assessed_at")
+  outcome      LearningOutcome @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+  submission   Submission?     @relation(fields: [submissionId], references: [id])
+
+  @@map("mastery_judgments")
 }
 
 model PacingTarget {
   id              String   @id @default(cuid())
   unitId          String   @unique @map("unit_id")
-  lessonId        String?  @map("lesson_id")
-  targetDate      DateTime @map("target_date")
-  lessonsPerWeek  Float    @map("lessons_per_week")
+  expectedWeek    Int      @map("expected_week")
+  schoolYearStart DateTime @default(dbgenerated("'2025-09-01 00:00:00'::timestamp without time zone")) @map("school_year_start")
+  schoolYearEnd   DateTime @default(dbgenerated("'2026-06-01 00:00:00'::timestamp without time zone")) @map("school_year_end")
   unit            Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  suggestedLesson Lesson?  @relation(fields: [lessonId], references: [id])
 
   @@map("pacing_targets")
+}
+
+model TeacherNote {
+  id         String    @id @default(cuid())
+  studentId  String    @map("student_id")
+  teacherId  String    @map("teacher_id")
+  tag        String    @default("General")
+  content    String
+  reviewed   Boolean   @default(false)
+  reviewedAt DateTime? @map("reviewed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  student    User      @relation("StudentNotes", fields: [studentId], references: [id], onDelete: Cascade)
+  teacher    User      @relation("AuthorNotes", fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@map("teacher_notes")
 }
 
 model StudentUnitAccess {
   id            String            @id @default(cuid())
   studentId     String            @map("student_id")
   unitId        String            @map("unit_id")
-  overrideState UnitOverrideState @default(NONE) @map("override_state")
-  unlockedAt    DateTime?         @map("unlocked_at")
-  student       User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  overrideState UnitOverrideState @default(NONE)
+  note          String?
+  teacherId     String            @map("teacher_id")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+  student       User              @relation("StudentUnitAccess", fields: [studentId], references: [id], onDelete: Cascade)
+  teacher       User              @relation("TeacherUnitOverrides", fields: [teacherId], references: [id])
   unit          Unit              @relation(fields: [unitId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, unitId])
   @@map("student_unit_access")
 }
-model Skill {
-  id                  String                @id @default(cuid())
-  name                String
-  description         String?
-  category            String?
-  level               Int                   @default(1)
-  order               Int                   @default(0)
-  studentSkillMastery StudentSkillMastery[]
-  masteryEvidence     MasteryEvidence[]
 
-  @@map("skills")
-}
-
-model StudentSkillMastery {
-  id          String        @id @default(cuid())
-  studentId   String        @map("student_id")
-  skillId     String        @map("skill_id")
-  lessonId    String?       @map("lesson_id")
-  status      MasteryStatus @default(NOT_STARTED)
-  lastTested  DateTime?     @map("last_tested")
-  masteredAt  DateTime?     @map("mastered_at")
-  student     User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  skill       Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  lesson      Lesson?       @relation(fields: [lessonId], references: [id])
-
-  @@unique([studentId, skillId])
-  @@index([studentId])
-  @@map("student_skill_mastery")
-}
-
-model MasteryEvidence {
-  id              String   @id @default(cuid())
-  studentId       String   @map("student_id")
-  skillId         String   @map("skill_id")
-  lessonId        String   @map("lesson_id")
-  score           Float
-  notes           String?
-  capturedAt      DateTime @default(now()) @map("captured_at")
-  skill           Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  lesson          Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  @@index([studentId, skillId])
-  @@map("mastery_evidence")
-}
-
-model ReflectionEntry {
-  id          String   @id @default(cuid())
-  studentId   String   @map("student_id")
-  lessonId    String   @map("lesson_id")
-  content     String
-  mood        String?
-  submittedAt DateTime @default(now()) @map("submitted_at")
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  @@index([studentId, lessonId])
-  @@map("reflection_entries")
-}
-model ReadingSession {
-  id          String    @id @default(cuid())
-  studentId   String    @map("student_id")
-  bookId      String?   @map("book_id")
-  duration    Int
-  pagesRead   Int?      @map("pages_read")
-  summary     String?
-  completedAt DateTime  @default(now()) @map("completed_at")
-  student     User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  @@index([studentId])
-  @@map("reading_sessions")
-}
-
+/// Student voice calibration profile — filters speech patterns from reading errors
 model VoiceProfile {
-  id        String   @id @default(cuid())
-  userId    String   @unique @map("user_id")
-  sampleUrl String   @map("sample_url")
-  settings  Json?
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String    @id @default(cuid())
+  studentId        String    @unique @map("student_id")
+  isCalibrated     Boolean   @default(false)
+  /// JSON: detected speech patterns e.g. [{"target":"/θ/","actual":"/f/","examples":["think→fink"]}]
+  speechPatterns   Json      @default("[]") @map("speech_patterns")
+  /// JSON: words used in calibration and how they were pronounced
+  calibrationWords Json      @default("[]") @map("calibration_words")
+  sampleCount      Int       @default(0) @map("sample_count")
+  calibratedAt     DateTime? @map("calibrated_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  student          User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@map("voice_profiles")
 }
 
+/// Tracks phonics concepts a student struggles with, identified via reading sessions
 model PhonicsGap {
-  id         String   @id @default(cuid())
-  studentId  String   @map("student_id")
-  skillId    String?  @map("skill_id")
-  notes      String?
-  detectedAt DateTime @default(now()) @map("detected_at")
-  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  id             String    @id @default(cuid())
+  studentId      String    @map("student_id")
+  conceptCode    String    @map("concept_code") // e.g., "VOWEL_TEAM_AW"
+  conceptName    String    @map("concept_name") // e.g., "Vowel Teams (aw/au)"
+  identifiedAt   DateTime  @default(now()) @map("identified_at")
+  status         GapStatus @default(PENDING)
+  resolvedAt     DateTime? @map("resolved_at")
+  student        User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
-  @@index([studentId])
+  @@index([studentId, status])
   @@map("phonics_gaps")
 }
 
-model PhonicsProfile {
-  id                           String   @id @default(cuid())
-  studentId                    String   @unique @map("student_id")
-  currentLessonId              String?  @map("current_lesson_id")
-  placementMismatchSuspected   Boolean  @default(false) @map("placement_mismatch_suspected")
-  placementUnderMatchSuspected Boolean  @default(false) @map("placement_under_match_suspected")
-  comprehensionGapSuspected    Boolean  @default(false) @map("comprehension_gap_suspected")
-  student                      User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  currentLesson                Lesson?  @relation(fields: [currentLessonId], references: [id])
+/// A single daily reading session — tracks read-aloud performance
+model ReadingSession {
+  id                  String         @id @default(cuid())
+  studentId           String         @map("student_id")
+  passageId           String         @map("passage_id")
+  sessionDate         DateTime       @default(now()) @map("session_date")
+  /// The raw transcript from speech-to-text
+  transcript          String         @default("")
+  /// Accuracy rate adjusted for voice profile (0-100)
+  accuracyRate        Float?         @map("accuracy_rate")
+  /// Words per minute
+  wordsPerMinute      Float?         @map("words_per_minute")
+  /// JSON: [{"word":"cat","expected":"can","type":"SUBSTITUTION","position":5}]
+  miscues             Json           @default("[]") @map("miscues")
+  /// Comprehension score (0-100)
+  comprehensionScore  Float?         @map("comprehension_score")
+  /// JSON: [{"question":"...","answer":"...","correct":true}]
+  comprehensionDetail Json           @default("[]") @map("comprehension_detail")
+  /// Estimated Lexile level based on this session
+  lexileEstimate      Int?           @map("lexile_estimate")
+  /// AI tutor summary feedback for this session
+  aiTutorFeedback     String?        @map("ai_tutor_feedback")
+  /// Duration in seconds
+  durationSeconds     Int?           @map("duration_seconds")
+  completedAt         DateTime?      @map("completed_at")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  passage             ReadingPassage @relation(fields: [passageId], references: [id])
+  student             User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
-  @@map("phonics_profiles")
+  @@map("reading_sessions")
 }
+
+/// Leveled reading passages for the AI tutor
+model ReadingPassage {
+  id                     String           @id @default(cuid())
+  title                  String
+  text                   String
+  wordCount              Int              @map("word_count")
+  /// Lexile level (e.g. 200, 450, 650)
+  lexileLevel            Int              @map("lexile_level")
+  /// Approximate grade level (1-6)
+  gradeLevel             Int              @map("grade_level")
+  /// JSON: [{"question":"...","options":["a","b","c"],"correct":0,"type":"literal"}]
+  comprehensionQuestions Json             @default("[]") @map("comprehension_questions")
+  /// JSON: ["word1","word2"] — key vocabulary in this passage
+  keyVocabulary          Json             @default("[]") @map("key_vocabulary")
+  /// Genre/topic tag for variety
+  genre                  String           @default("fiction")
+  isActive               Boolean          @default(true) @map("is_active")
+  createdAt              DateTime         @default(now()) @map("created_at")
+  sessions               ReadingSession[]
+
+  @@map("reading_passages")
+}
+
+model Skill {
+  id                    String                @id @default(cuid())
+  code                  String                @unique
+  title                 String
+  description           String?
+  subject               String
+  gradeLevel            Int                   @map("grade_level")
+  strand                String?
+  curriculumOutcomeCode String?               @map("curriculum_outcome_code")
+  parentSkillId         String?               @map("parent_skill_id")
+  isCorePrerequisite    Boolean               @default(false) @map("is_core_prerequisite")
+  createdAt             DateTime              @default(now()) @map("created_at")
+  updatedAt             DateTime              @updatedAt @map("updated_at")
+  activitySkills        ActivitySkill[]
+  lessonSkills          LessonSkill[]
+  evidence              MasteryEvidence[]
+  reviewItems           ReviewQueueItem[]
+  parent                Skill?                @relation("SkillHierarchy", fields: [parentSkillId], references: [id])
+  children              Skill[]               @relation("SkillHierarchy")
+  studentMastery        StudentSkillMastery[]
+
+  @@map("skills")
+}
+
+model LessonSkill {
+  id               String            @id @default(cuid())
+  lessonId         String            @map("lesson_id")
+  skillId          String            @map("skill_id")
+  relationshipType SkillRelationship @map("relationship_type")
+  lesson           Lesson            @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  skill            Skill             @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, skillId, relationshipType])
+  @@index([skillId])
+  @@index([lessonId, relationshipType])
+  @@map("lesson_skills")
+}
+
+model ActivitySkill {
+  id         String   @id @default(cuid())
+  activityId String   @map("activity_id")
+  skillId    String   @map("skill_id")
+  weight     Float    @default(1.0)
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  skill      Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, skillId])
+  @@map("activity_skills")
+}
+
+model StudentSkillMastery {
+  id                      String            @id @default(cuid())
+  studentId               String            @map("student_id")
+  skillId                 String            @map("skill_id")
+  masteryState            SkillMasteryState @default(NOT_INTRODUCED) @map("mastery_state")
+  masteryScore            Float             @default(0) @map("mastery_score")
+  confidenceScore         Float?            @map("confidence_score")
+  independenceScore       Float?            @map("independence_score")
+  lastEvidenceAt          DateTime?         @map("last_evidence_at")
+  lastReviewedAt          DateTime?         @map("last_reviewed_at")
+  nextReviewAt            DateTime?         @map("next_review_at")
+  consecutiveSuccessCount Int               @default(0) @map("consecutive_success_count")
+  failedRetrievalCount    Int               @default(0) @map("failed_retrieval_count")
+  helpRequestedCount      Int               @default(0) @map("help_requested_count")
+  needsTeacherReview      Boolean           @default(false) @map("needs_teacher_review")
+  createdAt               DateTime          @default(now()) @map("created_at")
+  updatedAt               DateTime          @updatedAt @map("updated_at")
+  skill                   Skill             @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  student                 User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, skillId])
+  @@index([nextReviewAt])
+  @@index([masteryState])
+  @@index([studentId, masteryState])
+  @@map("student_skill_mastery")
+}
+
+model MasteryEvidence {
+  id               String         @id @default(cuid())
+  studentId        String         @map("student_id")
+  skillId          String         @map("skill_id")
+  sourceType       EvidenceSource @map("source_type")
+  sourceId         String?        @map("source_id")
+  lessonId         String?        @map("lesson_id")
+  score            Float
+  maxScore         Float          @map("max_score")
+  normalizedScore  Float          @map("normalized_score")
+  confidenceAtTime Float?         @map("confidence_at_time")
+  submittedAt      DateTime       @default(now()) @map("submitted_at")
+  lesson           Lesson?        @relation(fields: [lessonId], references: [id])
+  skill            Skill          @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, skillId, submittedAt])
+  @@map("mastery_evidence")
+}
+
+model ReviewQueueItem {
+  id             String       @id @default(cuid())
+  studentId      String       @map("student_id")
+  skillId        String       @map("skill_id")
+  sourceLessonId String?      @map("source_lesson_id")
+  dueDate        DateTime     @map("due_date")
+  priority       Int          @default(5)
+  status         ReviewStatus @default(DUE)
+  generatedAt    DateTime     @default(now()) @map("generated_at")
+  completedAt    DateTime?    @map("completed_at")
+  skill          Skill        @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, dueDate, status])
+  @@map("review_queue_items")
+}
+
+model ReflectionEntry {
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  lessonId         String   @map("lesson_id")
+  activityId       String?  @map("activity_id")
+  confidenceBefore Int?     @map("confidence_before")
+  confidenceAfter  Int?     @map("confidence_after")
+  reflectionText   String?  @map("reflection_text")
+  helpRequested    Boolean  @default(false) @map("help_requested")
+  createdAt        DateTime @default(now()) @map("created_at")
+  lesson           Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, lessonId])
+  @@index([studentId, helpRequested])
+  @@map("reflection_entries")
+}
+
 model StudentDashboardSummary {
-  id               String    @id @default(cuid())
-  studentId        String    @unique @map("student_id")
-  totalLessons     Int       @default(0) @map("total_lessons")
-  completedLessons Int       @default(0) @map("completed_lessons")
-  masteredSkills   Int       @default(0) @map("mastered_skills")
-  lastActivity     DateTime? @map("last_activity")
-  student          User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  id                   String   @id @default(cuid())
+  studentId            String   @unique @map("student_id")
+  masteredCount        Int      @default(0) @map("mastered_count")
+  developingCount      Int      @default(0) @map("developing_count")
+  reviewDueCount       Int      @default(0) @map("review_due_count")
+  needsSupportCount    Int      @default(0) @map("needs_support_count")
+  reviewCompletedToday Int      @default(0) @map("review_completed_today")
+  reviewStreak         Int      @default(0) @map("review_streak")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+  student              User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@map("student_dashboard_summaries")
 }
 
-model StudentProgress {
-  id              String   @id @default(cuid())
-  studentId       String   @map("student_id")
-  courseId        String?  @map("course_id")
-  percentComplete Float    @default(0) @map("percent_complete")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  student         User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+model CourseMasterySummary {
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  subjectId        String   @map("subject_id")
+  masteredSkills   Int      @default(0) @map("mastered_skills")
+  developingSkills Int      @default(0) @map("developing_skills")
+  reviewDue        Int      @default(0) @map("review_due")
+  needsSupport     Int      @default(0) @map("needs_support")
+  totalSkills      Int      @default(0) @map("total_skills")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
-  @@unique([studentId, courseId])
-  @@map("student_progress")
+  @@unique([studentId, subjectId])
+  @@map("course_mastery_summaries")
 }
 
 model UnitMasterySummary {
-  id             String   @id @default(cuid())
-  studentId      String   @map("student_id")
-  unitId         String   @map("unit_id")
-  masteredSkills Int      @default(0) @map("mastered_skills")
-  totalSkills    Int      @default(0) @map("total_skills")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  unit           Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  id               String   @id @default(cuid())
+  studentId        String   @map("student_id")
+  unitId           String   @map("unit_id")
+  masteredSkills   Int      @default(0) @map("mastered_skills")
+  developingSkills Int      @default(0) @map("developing_skills")
+  reviewDue        Int      @default(0) @map("review_due")
+  needsSupport     Int      @default(0) @map("needs_support")
+  totalSkills      Int      @default(0) @map("total_skills")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@unique([studentId, unitId])
   @@map("unit_mastery_summaries")
+}
+
+model TeacherAlertSummary {
+  id                 String   @id @default(cuid())
+  studentId          String   @map("student_id")
+  teacherId          String   @map("teacher_id")
+  mismatchCount      Int      @default(0) @map("mismatch_count")
+  helpRequestCount   Int      @default(0) @map("help_request_count")
+  overdueReviewCount Int      @default(0) @map("overdue_review_count")
+  needsSupportCount  Int      @default(0) @map("needs_support_count")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, teacherId])
+  @@map("teacher_alert_summaries")
+}
+
+model DiagnosticAssessment {
+  id          String               @id @default(cuid())
+  title       String
+  gradeLevel  Int                  @map("grade_level")
+  subjectMode SubjectMode
+  isActive    Boolean              @default(true) @map("is_active")
+  questions   DiagnosticQuestion[]
+
+  @@map("diagnostic_assessments")
+}
+
+model DiagnosticQuestion {
+  id            String               @id @default(cuid())
+  assessmentId  String               @map("assessment_id")
+  questionText  String               @map("question_text")
+  questionType  QuestionType         @default(MULTIPLE_CHOICE) @map("question_type")
+  options       Json?
+  correctAnswer String?              @map("correct_answer")
+  explanation   String?
+  targetOutcome String?              @map("target_outcome")
+  order         Int                  @default(0)
+  assessment    DiagnosticAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId])
+  @@map("diagnostic_questions")
 }
 
 enum Role {
@@ -308,29 +621,183 @@ enum OnboardingStatus {
   COMPLETED
 }
 
-enum ProgressStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
+enum SubjectMode {
+  GENERAL
+  SCIENCE
+  ELA
+  MATH
+  SOCIAL_STUDIES
 }
 
 enum LessonSection {
   WARM_UP
-  INSTRUCTION
+  LEARN
   PRACTICE
-  ASSESSMENT
+  CHECK
+  REFLECT
+}
+
+enum BlockType {
+  TEXT
+  VIDEO
+  IMAGE
+  AI_SUMMARY
+  VOCABULARY
+  WORKED_EXAMPLE
+  FILL_IN_BLANK
+  MATCHING
+  MULTIPLE_CHOICE
+  CONSTRUCTED_RESPONSE
+  DRAWING
+  PHOTO_UPLOAD
+  TAKE_PHOTO
+  VIDEO_UPLOAD
+  TAKE_VIDEO
+  FILE_UPLOAD
+  MICRO_CHECK
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  FILL_IN_BLANK
+  SHORT_ANSWER
+  TRUE_FALSE
+}
+
+enum ReteachStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+enum ActivityType {
+  QUIZ
+  ASSIGNMENT
   REFLECTION
+  ACTIVITY
+}
+
+enum AiStatus {
+  NONE
+  PENDING
+  COMPLETE
+  FAILED
+}
+
+enum SubmissionType {
+  QUIZ_RESPONSE
+  SHORT_ANSWER
+  PARAGRAPH_RESPONSE
+  ESSAY
+  REFLECTION
+  UPLOADED_WORKSHEET
+  IMAGE_ARTIFACT
+  PROJECT_FILE
+  PORTFOLIO_EVIDENCE
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETE
+  DEVELOPING
+  MASTERED
+  NEEDS_RETEACH
+}
+
+enum MasteryLevel {
+  NOT_YET_ASSESSED
+  EMERGING
+  APPROACHING
+  MEETING
+  EXCEEDING
 }
 
 enum UnitOverrideState {
   NONE
-  LOCKED
   UNLOCKED
+  COMPLETED
+  EXEMPT
 }
 
-enum MasteryStatus {
-  NOT_STARTED
-  INTRODUCED
-  PRACTICING
-  MASTERED
+enum SkillRelationship {
+  TARGET
+  PREREQUISITE
+  REVIEW
+  TRANSFER
 }
+
+enum SkillMasteryState {
+  NOT_INTRODUCED
+  PRACTICING
+  DEVELOPING
+  MASTERED
+  REVIEW_DUE
+  NEEDS_SUPPORT
+}
+
+enum EvidenceSource {
+  RETRIEVAL
+  GUIDED_PRACTICE
+  MIXED_PRACTICE
+  MASTERY_CHECK
+  ASSIGNMENT
+  TEACHER_OBSERVATION
+}
+
+enum ReviewStatus {
+  DUE
+  COMPLETED
+  SKIPPED
+  EXPIRED
+}
+
+enum GapStatus {
+  PENDING
+  RESOLVED
+}
+
+model PhonicsProfile {
+  id                           String   @id @default(cuid())
+  studentId                    String   @unique @map("student_id")
+  currentLessonId              String?  @map("current_lesson_id")
+  placementMismatchSuspected   Boolean  @default(false) @map("placement_mismatch_suspected")
+  placementUnderMatchSuspected Boolean  @default(false) @map("placement_under_match_suspected")
+  comprehensionGapSuspected    Boolean  @default(false) @map("comprehension_gap_suspected")
+  createdAt                    DateTime @default(now()) @map("created_at")
+  updatedAt                    DateTime @updatedAt @map("updated_at")
+  student                      User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  currentLesson                Lesson?  @relation(fields: [currentLessonId], references: [id])
+
+  @@map("phonics_profiles")
+}
+
+model StudentMastery {
+  id                   String   @id @default(cuid())
+  studentId            String   @map("student_id")
+  lessonId             String   @map("lesson_id")
+  status               String   @default("in_progress")
+  attempts             Int      @default(0)
+  lastDecodingAccuracy Float?   @map("last_decoding_accuracy")
+  lastEncodingAccuracy Float?   @map("last_encoding_accuracy")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, lessonId])
+  @@map("student_mastery")
+}
+
+model SpacedReviewItem {
+  id                   String   @id @default(cuid())
+  studentId            String   @map("student_id")
+  itemId               String   @map("item_id")
+  itemType             String   @map("item_type")
+  currentIntervalIndex Int      @default(0) @map("current_interval_index")
+  nextReviewDate       DateTime @map("next_review_date")
+  consecutiveFailures  Int      @default(0) @map("consecutive_failures")
+  createdAt            DateTime @default(now()) @map("created_at")
+
+  @@unique([studentId, itemId, itemType])
+  @@map("spaced_review_items")
+}
+
