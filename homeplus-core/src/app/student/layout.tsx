@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -27,15 +27,25 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  // Redirect to onboarding if not yet completed.
-  // Only act once session is confirmed - never redirect while loading.
+  // Only redirect to onboarding if status is PENDING (never if SKIPPED or COMPLETED)
   if (status === 'authenticated' && session?.user) {
     const user = session.user as any;
     const isOnboardingPage = pathname.startsWith('/student/onboarding');
-    if (user.onboardingStatus !== 'COMPLETED' && !isOnboardingPage) {
+    const isPending = user.onboardingStatus !== 'COMPLETED' && user.onboardingStatus !== 'SKIPPED';
+    if (isPending && !isOnboardingPage) {
       router.replace('/student/onboarding');
     }
   }
+
+  // Due-date reminder for skipped onboarding
+  const [skipDueDate, setSkipDueDate] = useState<string | null>(null);
+  useEffect(() => {
+    const stored = localStorage.getItem('onboarding_skipped_until');
+    if (stored) {
+      const date = new Date(stored);
+      setSkipDueDate(date.toLocaleDateString('en-CA', { month: 'long', day: 'numeric' }));
+    }
+  }, []);
 
   const isOnboarding = pathname.startsWith('/student/onboarding');
 
@@ -138,6 +148,18 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
         </div>
 
         <div className={styles.pageContent}>
+          {skipDueDate && !pathname.startsWith('/student/onboarding') && (
+            <div style={{
+              background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: '8px',
+              padding: '10px 16px', marginBottom: '16px', display: 'flex',
+              alignItems: 'center', justifyContent: 'space-between', fontSize: '0.875rem'
+            }}>
+              <span>⚠️ <strong>Onboarding incomplete</strong> — your teacher needs this by <strong>{skipDueDate}</strong>.</span>
+              <Link href="/student/onboarding" style={{ color: '#b45309', fontWeight: 600, marginLeft: '12px' }}>
+                Complete now →
+              </Link>
+            </div>
+          )}
           {children}
         </div>
       </main>

@@ -17,6 +17,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import styles from './onboarding.module.css';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -200,6 +201,7 @@ function SectionShell({ title, icon, progress, total, onBack, children }: {
 
 export default function OnboardingHub() {
   const router = useRouter();
+  const { update } = useSession();
   const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const [sections, setSections] = useState<Record<SectionId, SectionState>>({
     about:   { done: false, data: {} },
@@ -245,11 +247,30 @@ export default function OnboardingHub() {
           allSections: sections,
         }),
       });
-      // Hard navigate so session re-checks from scratch on the dashboard
+      // Clear any skip flag, force session refresh before navigating
+      localStorage.removeItem('onboarding_skipped_until');
+      await update();  // refreshes the JWT so onboardingStatus = COMPLETED
       window.location.href = '/student/dashboard';
     } catch {
       setFinishing(false);
     }
+  };
+
+  // ─ Skip for now ─
+  const handleSkip = async () => {
+    try {
+      await fetch('/api/onboarding/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ step: 0, status: 'SKIPPED' }),
+      });
+      // Store due date: 7 days from now
+      const dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + 7);
+      localStorage.setItem('onboarding_skipped_until', dueDate.toISOString());
+      await update();
+      window.location.href = '/student/dashboard';
+    } catch { /* non-blocking */ }
   };
 
   // ─── Hub View ───────────────────────────────────────────────────────────
@@ -308,10 +329,23 @@ export default function OnboardingHub() {
               </button>
             </div>
           ) : (
-            <p className={styles.notDoneYet}>
-              Complete all 4 sections above to unlock your courses.
-            </p>
+            <div className={styles.finishArea}>
+              <p className={styles.notDoneYet}>
+                Complete all 4 sections above to unlock your courses.
+              </p>
+              <button
+                className={styles.btnSkip}
+                onClick={handleSkip}
+                type="button"
+              >
+                Skip for now — I&apos;ll finish by{' '}
+                {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-CA', {
+                  month: 'long', day: 'numeric'
+                })}
+              </button>
+            </div>
           )}
+
         </div>
       </div>
     );
