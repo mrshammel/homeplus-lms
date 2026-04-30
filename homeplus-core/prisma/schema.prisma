@@ -50,6 +50,7 @@ model Subject {
   active             Boolean              @default(false)
   units              Unit[]
   subjectEnrollments SubjectEnrollment[]
+  categoryWeightings CategoryWeighting[]
 
   @@map("subjects")
 }
@@ -66,6 +67,22 @@ model SubjectEnrollment {
   @@unique([studentId, subjectId])
   @@index([studentId])
   @@map("subject_enrollments")
+}
+
+model CategoryWeighting {
+  id            String       @id @default(cuid())
+  subjectId     String       @map("subject_id")
+  activityType  ActivityType @map("activity_type")
+  displayName   String?      @map("display_name")
+  weightPercent Float        @map("weight_percent")
+  displayOrder  Int          @default(0) @map("display_order")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  subject       Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([subjectId, activityType])
+  @@index([subjectId])
+  @@map("category_weightings")
 }
 
 model Unit {
@@ -634,6 +651,7 @@ enum Role {
 enum OnboardingStatus {
   NOT_STARTED
   IN_PROGRESS
+  SKIPPED
   COMPLETED
 }
 

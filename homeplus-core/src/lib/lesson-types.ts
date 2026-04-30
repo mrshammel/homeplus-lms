@@ -8,6 +8,7 @@
 
 export type SubjectMode = 'GENERAL' | 'SCIENCE' | 'ELA' | 'MATH' | 'SOCIAL_STUDIES' | 'PHONICS';
 
+
 // ---------- Lesson Sections ----------
 
 export type LessonSectionType = 'WARM_UP' | 'LEARN' | 'PRACTICE' | 'CHECK' | 'REFLECT';
@@ -334,11 +335,14 @@ export const DEFAULT_MASTERY_CONFIG: Record<SubjectMode, MasteryConfig> = {
     immediateCorrectiveFeedback: false,
     maxAttemptsBeforeSafetyValve: 2,
   },
+  // Phonics uses dual-threshold mastery (decoding ≥90%, encoding ≥85%) via PhonicsMasteryEngine.
+  // passPercent:0 signals that the general engine defers to PhonicsMasteryEngine for evaluation.
+  // maxAttemptsBeforeSafetyValve:0 = NO auto-advance; teacher override required after 3-strike stall.
   PHONICS: {
-    passPercent: 90,
-    maxRetries: 3,
+    passPercent: 0,
+    maxRetries: 99,
     reteachEnabled: true,
-    immediateCorrectiveFeedback: false,
+    immediateCorrectiveFeedback: true,
     maxAttemptsBeforeSafetyValve: 0,
   },
 };

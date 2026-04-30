@@ -83,7 +83,26 @@ export async function calculateGrades(
   let weightedTotal = 0;
   let weightSum = 0;
 
-  for (const [type, config] of Object.entries(weights)) {
+  // Determine which weights to use
+  let activeWeights = weights;
+  if (subjectId) {
+    const customWeights = await prisma.categoryWeighting.findMany({
+      where: { subjectId }
+    });
+    
+    if (customWeights.length > 0) {
+      activeWeights = {} as Record<string, { weight: number; label: string }>;
+      for (const cw of customWeights) {
+        // Convert weightPercent (e.g. 30) back to 0.3 for calculation
+        activeWeights[cw.activityType] = {
+          weight: cw.weightPercent / 100,
+          label: cw.displayName || cw.activityType.toString()
+        };
+      }
+    }
+  }
+
+  for (const [type, config] of Object.entries(activeWeights)) {
     const typeSubs = submissions.filter(s => s.activity.type === type);
 
     const category: CategoryGrade = {

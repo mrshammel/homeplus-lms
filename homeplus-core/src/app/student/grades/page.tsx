@@ -1,5 +1,7 @@
 import styles from '../student.module.css';
 import { getStudentDashboardData } from '@/lib/student-data';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 function getMasteryColor(state: string): string {
   switch (state) {
@@ -62,7 +64,13 @@ export default async function GradesPage() {
       <section className={styles.dashCard}>
         <h3 className={styles.cardTitle}>Grades by Course</h3>
         {enrollments.map((course, i) => (
-          <div key={course.subjectId} className={styles.courseDetailRow} style={i > 0 ? { borderTop: '1px solid #f1f5f9', paddingTop: 16, marginTop: 16 } : undefined}>
+          <Link 
+            key={course.subjectId} 
+            href={`/student/grades/${course.subjectId}`}
+            className={styles.courseDetailRow} 
+            style={i > 0 ? { borderTop: '1px solid #f1f5f9', marginTop: 16 } : undefined}
+            aria-label={`View detailed grades for ${course.subjectName}`}
+          >
             <div className={styles.courseDetailHeader}>
               <span className={styles.courseDetailIcon}>{course.subjectIcon}</span>
               <div className={styles.courseDetailName}>{course.subjectName}</div>
@@ -75,6 +83,9 @@ export default async function GradesPage() {
               >
                 {course.gradeLabel}
               </span>
+              <div className={styles.courseDetailChevronWrap}>
+                <ChevronRight size={20} className={styles.courseDetailRowChevron} />
+              </div>
             </div>
 
             <div className={styles.courseDetailGrid}>
@@ -111,7 +122,7 @@ export default async function GradesPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </section>
 

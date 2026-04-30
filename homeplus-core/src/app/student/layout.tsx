@@ -27,6 +27,15 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
+  // Guard: redirect teachers/admins away from student routes immediately
+  if (status === 'authenticated' && session?.user) {
+    const role = (session.user as any).role;
+    if (role === 'TEACHER' || role === 'ADMIN') {
+      router.replace('/teacher');
+      return null;
+    }
+  }
+
   // Only redirect to onboarding if status is PENDING (never if SKIPPED or COMPLETED)
   if (status === 'authenticated' && session?.user) {
     const user = session.user as any;

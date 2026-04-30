@@ -20,10 +20,10 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const role = credentials?.role;
         if (role === 'TEACHER') {
-          return { id: 'teacher-1', name: 'Mrs. Shammel', email: 'shammel@hpln.ca', image: null };
+          return { id: 'teacher-1', name: 'Mrs. Shammel', email: 'shammel@hpln.ca', image: null, role: 'TEACHER' } as any;
         }
         if (role === 'STUDENT') {
-          return { id: 'student-1', name: 'Ava Chen', email: 'ava.chen@student.hpln.ca', image: null };
+          return { id: 'student-1', name: 'Ava Chen', email: 'ava.chen@student.hpln.ca', image: null, role: 'STUDENT' } as any;
         }
         return null;
       },
@@ -42,17 +42,18 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!existingUser) {
-          // Create new student account
+          // Create new account — use role from authorize() response if available
+          const newRole = (user as any).role || 'STUDENT';
           await prisma.user.create({
             data: {
               name: user.name || 'Student',
               email: user.email,
               googleId: account?.providerAccountId,
-              role: 'STUDENT',
+              role: newRole,
               avatar: user.image,
             },
           });
-          console.log(`[Auth] Created new student: ${user.email}`);
+          console.log(`[Auth] Created new user: ${user.email} (${newRole})`);
         } else {
           // Update Google ID and avatar if not set
           if (!existingUser.googleId && account?.providerAccountId) {

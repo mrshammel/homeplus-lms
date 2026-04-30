@@ -1290,7 +1290,32 @@
 
 /* ========== Course Detail Row ========== */
 .courseDetailRow {
-  padding-bottom: 4px;
+  display: block;
+  text-decoration: none;
+  padding: 16px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+}
+
+.courseDetailRow:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+}
+
+.courseDetailRowChevron {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+}
+
+.courseDetailRow:hover .courseDetailRowChevron {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .courseDetailHeader {
@@ -1309,6 +1334,15 @@
   font-weight: 700;
   color: var(--text-primary);
   flex: 1;
+}
+
+.courseDetailChevronWrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
 
 .courseDetailGrid {

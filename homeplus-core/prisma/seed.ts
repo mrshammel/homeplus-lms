@@ -18,11 +18,14 @@ async function main() {
   // ║ 1. TEACHER                                ║
   // ╚═══════════════════════════════════════════╝
 
+  // Look up teacher first if exists to get actual ID (e.g. from OAuth)
+  const existingTeacher = await prisma.user.findUnique({ where: { email: 'shammel@hpln.ca' }, select: { id: true } });
+  
   const teacher = await prisma.user.upsert({
-    where: { id: 'teacher-1' },
+    where: { email: 'shammel@hpln.ca' },
     update: {},
     create: {
-      id: 'teacher-1',
+      id: existingTeacher?.id ?? 'teacher-1',
       name: 'Mrs. Shammel',
       email: 'shammel@hpln.ca',
       role: 'TEACHER',
@@ -46,12 +49,17 @@ async function main() {
     { id: 'student-8', name: 'Ethan Williams', email: 'ethan.williams@student.hpln.ca', enrolledAt: new Date('2025-09-03') },
   ];
 
+  const studentMap = new Map<string, string>(); // hardcoded id -> actual db id
+
   for (const s of studentData) {
-    await prisma.user.upsert({
-      where: { id: s.id },
+    // Look up student actual ID if exists
+    const existingStudent = await prisma.user.findUnique({ where: { email: s.email }, select: { id: true } });
+
+    const upsertedStudent = await prisma.user.upsert({
+      where: { email: s.email },
       update: {},
       create: {
-        id: s.id,
+        id: existingStudent?.id ?? s.id,
         name: s.name,
         email: s.email,
         role: 'STUDENT',
@@ -60,7 +68,9 @@ async function main() {
         assignedTeacherId: teacher.id,
       },
     });
-    console.log(`✅ Student: ${s.name}`);
+    
+    studentMap.set(s.id, upsertedStudent.id);
+    console.log(`✅ Student: ${upsertedStudent.name}`);
   }
 
   // ╔═══════════════════════════════════════════╗
@@ -687,11 +697,13 @@ async function main() {
   ];
 
   for (const p of progressData) {
-    const key = { studentId: p.studentId, lessonId: p.lessonId };
+    const actualStudentId = studentMap.get(p.studentId);
+    if (!actualStudentId) continue;
+    const key = { studentId: actualStudentId, lessonId: p.lessonId };
     await prisma.studentProgress.upsert({
       where: { studentId_lessonId: key },
       update: {},
-      create: { ...p },
+      create: { ...p, studentId: actualStudentId },
     });
   }
   console.log(`✅ Student Progress: ${progressData.length} records`);
@@ -796,12 +808,13 @@ async function main() {
   ];
 
   for (const s of submissionData) {
+    const actualStudentId = studentMap.get(s.studentId) || s.studentId;
     await prisma.submission.upsert({
       where: { id: s.id },
       update: {},
       create: {
         id: s.id,
-        studentId: s.studentId,
+        studentId: actualStudentId,
         activityId: s.activityId,
         submissionType: s.submissionType,
         writtenResponse: (s as Record<string, unknown>).writtenResponse as string || null,
@@ -830,10 +843,11 @@ async function main() {
   ];
 
   for (const m of masteryData) {
+    const actualStudentId = studentMap.get(m.studentId) || m.studentId;
     await prisma.masteryJudgment.upsert({
       where: { id: m.id },
       update: {},
-      create: m,
+      create: { ...m, studentId: actualStudentId },
     });
   }
   console.log(`✅ Mastery Judgments: ${masteryData.length}`);
@@ -848,10 +862,11 @@ async function main() {
   ];
 
   for (const n of noteData) {
+    const actualStudentId = studentMap.get(n.studentId) || n.studentId;
     await prisma.teacherNote.upsert({
       where: { id: n.id },
       update: {},
-      create: n,
+      create: { ...n, studentId: actualStudentId },
     });
   }
   console.log(`✅ Teacher Notes: ${noteData.length}`);

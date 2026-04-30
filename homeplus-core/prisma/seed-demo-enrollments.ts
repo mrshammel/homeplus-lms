@@ -65,27 +65,27 @@ async function main() {
 
   // ─── 1. Ensure teacher exists ───
   await prisma.user.upsert({
-    where: { id: DEMO_TEACHER.id },
-    update: {},
+    where: { email: DEMO_TEACHER.email },
+    update: { onboardingStatus: 'COMPLETED' },
     create: {
       id: DEMO_TEACHER.id,
       name: DEMO_TEACHER.name,
       email: DEMO_TEACHER.email,
       role: 'TEACHER',
       gradeLevel: 7,
-      onboardingStatus: 'COMPLETE',
+      onboardingStatus: 'COMPLETED',
     },
   });
   console.log(`✅ Teacher: ${DEMO_TEACHER.name}`);
 
   // ─── 2. Ensure Ava Chen (demo student) exists ───
+  // Look up teacher ID from DB (may differ from hardcoded if created via OAuth)
+  const teacherRecord = await prisma.user.findUnique({ where: { email: DEMO_TEACHER.email }, select: { id: true } });
+  const teacherId = teacherRecord?.id ?? DEMO_TEACHER.id;
+
   await prisma.user.upsert({
-    where: { id: DEMO_STUDENT.id },
-    update: {
-      // Keep her onboarding complete so she never hits the wizard
-      onboardingStatus: 'COMPLETE',
-      onboardingStep: null,
-    },
+    where: { email: DEMO_STUDENT.email },
+    update: { onboardingStatus: 'COMPLETED' },
     create: {
       id: DEMO_STUDENT.id,
       name: DEMO_STUDENT.name,
@@ -93,13 +93,16 @@ async function main() {
       role: 'STUDENT',
       gradeLevel: 7,
       enrolledAt: new Date('2025-09-03'),
-      assignedTeacherId: DEMO_TEACHER.id,
-      onboardingStatus: 'COMPLETE',
-      onboardingStep: null,
+      assignedTeacherId: teacherId,
+      onboardingStatus: 'COMPLETED',
       studentAgeBand: 'middle',
     },
   });
-  console.log(`✅ Student: ${DEMO_STUDENT.name} (onboarding: COMPLETE)`);
+  console.log(`✅ Student: ${DEMO_STUDENT.name} (onboarding: COMPLETED)`);
+
+  // Resolve actual DB id (may differ from hardcoded if created via OAuth)
+  const studentRecord = await prisma.user.findUnique({ where: { email: DEMO_STUDENT.email }, select: { id: true } });
+  const studentId = studentRecord?.id ?? DEMO_STUDENT.id;
 
   // ─── 3. Verify which subjects exist in the DB ───
   console.log('\n🔍 Checking subjects...');
@@ -119,7 +122,7 @@ async function main() {
   }
 
   // ─── 4. Enroll Ava in all found subjects ───
-  console.log('\n📚 Enrolling Ava Chen in all demo subjects...');
+  console.log(`\n📚 Enrolling ${DEMO_STUDENT.name} (db id: ${studentId}) in all demo subjects...`);
   let enrolled = 0;
   let skipped = 0;
 
@@ -133,13 +136,13 @@ async function main() {
     await prisma.subjectEnrollment.upsert({
       where: {
         studentId_subjectId: {
-          studentId: DEMO_STUDENT.id,
+          studentId,
           subjectId,
         },
       },
       update: {},
       create: {
-        studentId: DEMO_STUDENT.id,
+        studentId,
         subjectId,
       },
     });

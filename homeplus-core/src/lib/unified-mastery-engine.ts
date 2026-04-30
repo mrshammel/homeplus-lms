@@ -89,17 +89,20 @@ export const SUBJECT_MASTERY_CONFIGS: Record<SubjectMode, SubjectMasteryConfig> 
     requiresLaterRetrieval: true,
     minEvidenceForMastery: 2,
   },
+  // Phonics: dual-threshold (decoding ≥90%, encoding ≥85%) evaluated by PhonicsMasteryEngine.
+  // passPercent:0 = general engine defers to PhonicsMasteryEngine.
+  // maxAttemptsBeforeSafetyValve:0 = NO auto-advance; teacher override required after 3-strike stall.
   PHONICS: {
-    passPercent: 90,
-    maxRetries: 3,
+    passPercent: 0,
+    maxRetries: 99,
     reteachEnabled: true,
-    immediateCorrectiveFeedback: false,
+    immediateCorrectiveFeedback: true,
     maxAttemptsBeforeSafetyValve: 0,
-    evidenceWeights: { MASTERY_CHECK: 0.50, RETRIEVAL: 0.20, MIXED_PRACTICE: 0.10, GUIDED_PRACTICE: 0.10, ASSIGNMENT: 0.05, TEACHER_OBSERVATION: 0.05 },
+    evidenceWeights: { MASTERY_CHECK: 0.50, RETRIEVAL: 0.25, MIXED_PRACTICE: 0.10, GUIDED_PRACTICE: 0.10, ASSIGNMENT: 0.04, TEACHER_OBSERVATION: 0.01 },
     masteryThresholds: { practicing: 0.50, developing: 0.70, mastered: 0.90 },
     requiresHighWeightEvidence: true,
-    requiresLaterRetrieval: false,
-    minEvidenceForMastery: 1,
+    requiresLaterRetrieval: true,
+    minEvidenceForMastery: 2,
   },
 };
 
