@@ -7,7 +7,9 @@ try {
     const match = line.match(/^([^#=\s][^=]*)=(.*)$/);
     if (match) {
       const key = match[1].trim();
-      const val = match[2].trim().replace(/^["']|["']$/g, '');
+      const val = match[2].trim()
+        .replace(/^["']|["']$/g, '')
+        .replace(/\\[nrt]/g, '');  // strip Vercel CLI literal escape sequences
       if (!process.env[key]) process.env[key] = val;
     }
   }
