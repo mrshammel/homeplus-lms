@@ -20,6 +20,7 @@ export const DEFAULT_WEIGHTS: Record<ActivityType, { weight: number; label: stri
 export interface CategoryGrade {
   type: ActivityType;
   label: string;
+  description?: string | null;
   weight: number;
   average: number | null;   // 0-100, null if no submissions
   count: number;
@@ -91,12 +92,13 @@ export async function calculateGrades(
     });
     
     if (customWeights.length > 0) {
-      activeWeights = {} as Record<string, { weight: number; label: string }>;
+      activeWeights = {} as Record<string, { weight: number; label: string; description?: string | null }>;
       for (const cw of customWeights) {
         // Convert weightPercent (e.g. 30) back to 0.3 for calculation
         activeWeights[cw.activityType] = {
           weight: cw.weightPercent / 100,
-          label: cw.displayName || cw.activityType.toString()
+          label: cw.displayName || cw.activityType.toString(),
+          description: cw.description
         };
       }
     }
@@ -108,6 +110,7 @@ export async function calculateGrades(
     const category: CategoryGrade = {
       type: type as ActivityType,
       label: config.label,
+      description: (config as any).description,
       weight: config.weight,
       average: null,
       count: typeSubs.length,

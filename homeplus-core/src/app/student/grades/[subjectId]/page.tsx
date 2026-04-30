@@ -122,10 +122,13 @@ export default async function SubjectGradePage({ params }: { params: Promise<{ s
               return (
                 <div key={cat.type}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '4px' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>{cat.label}</span>
+                    <span style={{ color: 'var(--text-secondary)' }}>
+                      {cat.label}
+                      {cat.description && <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 400, color: 'var(--text-muted)', marginTop: '2px' }}>{cat.description}</span>}
+                    </span>
                     <span style={{ color: 'var(--text-primary)' }}>{Math.round(cat.weight * 100)}%</span>
                   </div>
-                  <div style={{ width: '100%', height: '8px', background: '#e8ecf1', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '8px', background: '#e8ecf1', borderRadius: '4px', overflow: 'hidden', marginTop: '6px' }}>
                     <div style={{ width: `${Math.round(cat.weight * 100)}%`, height: '100%', background: color, borderRadius: '4px' }} />
                   </div>
                 </div>

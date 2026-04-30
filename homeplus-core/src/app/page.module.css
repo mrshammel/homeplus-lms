@@ -165,10 +165,10 @@
 }
 
 .heroLogo {
-  height: 120px;
+  height: 150px;
   width: auto;
   object-fit: contain;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   align-self: flex-start;
 }
 
@@ -770,7 +770,7 @@
 /* Breakpoints */
 @media (max-width: 1024px) {
   .builtGrid { grid-template-columns: 1fr; }
-  .heroLogo { height: 96px; }
+  .heroLogo { height: 120px; }
 }
 
 @media (max-width: 768px) {

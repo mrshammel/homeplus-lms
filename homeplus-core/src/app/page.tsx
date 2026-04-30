@@ -77,8 +77,8 @@ export default function HomePage() {
             <Image
               src="/images/hpln-logo.png"
               alt="Home Plus"
-              width={384}
-              height={120}
+              width={480}
+              height={150}
               className={styles.heroLogo}
               priority
             />

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../../teacher.module.css';
+import WeightingEditor from './WeightingEditor';
 
 interface Unit {
   id: string;
@@ -217,6 +218,9 @@ export default function CourseEditorPage() {
           {saveMsg && <span style={{ fontSize: '0.82rem', color: saveMsg.includes('✓') ? '#059669' : '#dc2626', fontWeight: 600 }}>{saveMsg}</span>}
         </div>
       </div>
+
+      {/* ===== Category Weighting Editor ===== */}
+      <WeightingEditor courseId={courseId} />
 
       {/* ===== Units Section ===== */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
