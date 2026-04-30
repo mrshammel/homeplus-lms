@@ -388,14 +388,14 @@ const SUBJECT_CALIBRATIONS: Record<SubjectMode, SubjectCalibration> = {
   },
   PHONICS: {
     priorities: [
-      'Decoding accuracy',
-      'Encoding accuracy',
-      'Application of grapheme-phoneme correspondences',
-      'Heart word recognition',
+      'Accurate decoding of target grapheme-phoneme patterns',
+      'Correct encoding (spelling) of taught words',
+      'Fluency with heart words',
+      'Application of phonics knowledge in context',
     ],
-    vocabularyExpectations: 'Uses phonics terminology accurately (grapheme, phoneme, digraph, blend, heart word).',
-    reasoningExpectation: 'Demonstrates understanding of sound-symbol relationships and decoding strategies.',
-    evidenceExpectation: 'Shows application of taught grapheme patterns in reading and spelling.',
+    vocabularyExpectations: 'Uses correct phonics terminology (grapheme, phoneme, blend, digraph) as appropriate.',
+    reasoningExpectation: 'Can explain the sound-letter relationship for the target concept.',
+    evidenceExpectation: 'Demonstrates accurate reading and spelling of words containing the target grapheme.',
   },
 };
 
@@ -467,10 +467,10 @@ export function buildAIPrompt(opts: {
   const cal = getSubjectCalibration(subject);
   const tone = getGradeTone(gradeLevel);
 
-  const subjectName = {
+  const subjectName = ({
     SCIENCE: 'Science', MATH: 'Math', ELA: 'English Language Arts',
     SOCIAL_STUDIES: 'Social Studies', GENERAL: 'the subject', PHONICS: 'Phonics',
-  }[subject];
+  } as Record<SubjectMode, string>)[subject] ?? 'the subject';
 
   const criteriaText = template.criteria
     .map((c) => `- ${c.name} (${c.weight}%): ${c.description}. Strong = ${c.indicators.strong}. Weak = ${c.indicators.weak}.`)
@@ -586,9 +586,9 @@ const SUBJECT_VOCAB: Record<SubjectMode, string[]> = {
     'evidence', 'example', 'support', 'reason', 'conclude',
   ],
   PHONICS: [
-    'grapheme', 'phoneme', 'decoding', 'encoding', 'digraph',
-    'blend', 'vowel', 'consonant', 'heart word', 'syllable',
-    'onset', 'rime', 'segmenting', 'blending', 'decodable',
+    'grapheme', 'phoneme', 'blend', 'digraph', 'decode', 'encode',
+    'heart word', 'sight word', 'syllable', 'vowel', 'consonant',
+    'short vowel', 'long vowel', 'digraph', 'diphthong', 'schwa',
   ],
 };
 
