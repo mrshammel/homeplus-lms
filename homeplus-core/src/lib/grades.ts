@@ -10,7 +10,7 @@ import { ActivityType } from '@prisma/client';
  */
 
 // Default category weights (must sum to 1.0)
-export const DEFAULT_WEIGHTS: Record<ActivityType, { weight: number; label: string }> = {
+export const DEFAULT_WEIGHTS: Record<ActivityType, { weight: number; label: string; description?: string | null }> = {
   QUIZ:       { weight: 0.30, label: 'Quizzes' },
   ASSIGNMENT: { weight: 0.30, label: 'Assignments' },
   REFLECTION: { weight: 0.15, label: 'Reflections' },
@@ -42,7 +42,7 @@ export interface GradeReport {
 export async function calculateGrades(
   studentId: string,
   subjectId?: string,
-  weights: Record<string, { weight: number; label: string }> = DEFAULT_WEIGHTS
+  weights: Record<string, { weight: number; label: string; description?: string | null }> = DEFAULT_WEIGHTS
 ): Promise<GradeReport> {
   // Fetch student
   const student = await prisma.user.findUnique({
