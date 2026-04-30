@@ -1,468 +1,363 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import styles from "./page.module.css";
-import { BarChart2, BookOpen, Compass, Users, Star, GraduationCap, Home, ClipboardList, Phone, Mail, User } from "lucide-react";
+import { BookOpen, BarChart2, Home } from "lucide-react";
+
+// Inline SVGs for the Brand Pillars
+const LearnIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#1A8B95' }}>
+    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+    <path d="M8 7h6"/>
+    <path d="M8 11h8"/>
+  </svg>
+);
+
+const GrowIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#1D9E75' }}>
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+    <polyline points="16 7 22 7 22 13"/>
+  </svg>
+);
+
+const SucceedIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#5A40B8' }}>
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+);
 
 export default function HomePage() {
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const { data: session, status } = useSession();
-
-  // Auth state helpers
-  const isLoading = status === "loading";
-  const isSignedIn = status === "authenticated" && !!session?.user;
-  const userName = session?.user?.name || "";
-  const userImage = session?.user?.image || null;
-  const userRole = (session?.user as any)?.role as string | undefined;
-  const isTeacher = userRole === "TEACHER" || userRole === "ADMIN";
-
-  // Personalized hero copy for signed-in users
-  const heroGreeting = isTeacher
-    ? "Welcome back - review progress and activity"
-    : "Welcome back - continue your learning";
-
   return (
     <div className={styles.page}>
-      {/* ===== HEADER / NAVIGATION ===== */}
+      {/* 1. STICKY NAVIGATION */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <a href="/" className={styles.headerBrand}>
+          <a href="/">
             <Image
               src="/images/hpln-logo.png"
               alt="Home Plus Online Learning"
-              width={180}
-              height={56}
+              width={160}
+              height={44}
               className={styles.headerLogo}
               priority
             />
           </a>
 
-          {/* Desktop nav */}
-          <nav className={styles.headerNav}>
+          <nav className={styles.navCenter}>
             <a href="#about" className={styles.navLink}>About</a>
-            <a href="#how-it-works" className={styles.navLink}>How It Works</a>
+            <a href="#how-it-works" className={styles.navLink}>How it works</a>
             <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.navLink} target="_blank" rel="noopener noreferrer">Register</a>
-            <div className={styles.navDivider} />
-
-            {/* Auth-aware CTAs */}
-            {!isLoading && isSignedIn ? (
-              <>
-                <a href="/dashboard" className={styles.navSignIn}>
-                  Go to Dashboard &rarr;
-                </a>
-                {userImage ? (
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className={styles.avatarBtn}
-                    aria-label={`Sign out ${userName}`}
-                    title={`Signed in as ${userName}\nClick to sign out`}
-                  >
-                    <Image
-                      src={userImage}
-                      alt={userName}
-                      width={32}
-                      height={32}
-                      className={styles.avatarImg}
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className={styles.navSignOutSmall}
-                    title="Sign out"
-                  >
-                    Sign Out
-                  </button>
-                )}
-              </>
-            ) : !isLoading ? (
-              <>
-                <button
-                  onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
-                  className={styles.navSignIn}
-                >
-                  Student Sign In
-                </button>
-                <button
-                  onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
-                  className={styles.navSignInTeacher}
-                >
-                  Teacher Sign In
-                </button>
-              </>
-            ) : null}
           </nav>
 
-          {/* Mobile hamburger */}
-          <button
-            className={styles.hamburger}
-            onClick={() => setMobileNavOpen(!mobileNavOpen)}
-            aria-label="Toggle menu"
-          >
-            <span className={`${styles.hamburgerLine} ${mobileNavOpen ? styles.open : ""}`} />
-            <span className={`${styles.hamburgerLine} ${mobileNavOpen ? styles.open : ""}`} />
-            <span className={`${styles.hamburgerLine} ${mobileNavOpen ? styles.open : ""}`} />
-          </button>
-        </div>
-
-        {/* Mobile nav panel */}
-        {mobileNavOpen && (
-          <div className={styles.mobileNav}>
-            <a href="#about" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>About</a>
-            <a href="#how-it-works" className={styles.mobileNavLink} onClick={() => setMobileNavOpen(false)}>How It Works</a>
-            <a href="https://www.myprps.com/home-plus-forms-and-registration" className={styles.mobileNavLink} target="_blank" rel="noopener noreferrer" onClick={() => setMobileNavOpen(false)}>Register &rarr;</a>
-            <div className={styles.mobileNavDivider} />
-
-            {/* Mobile auth-aware CTAs */}
-            {isLoading ? null : isSignedIn ? (
-              <>
-                <a
-                  href="/dashboard"
-                  className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
-                >
-                  <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
-                </a>
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className={`${styles.ctaBtn} ${styles.ctaTeacher} ${styles.mobileNavBtn}`}
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => { signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
-                  className={`${styles.ctaBtn} ${styles.ctaStudent} ${styles.mobileNavBtn}`}
-                >
-                  <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
-                </button>
-                <button
-                  onClick={() => { signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' }); setMobileNavOpen(false); }}
-                  className={`${styles.ctaBtn} ${styles.ctaTeacher} ${styles.mobileNavBtn}`}
-                >
-                  <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
-                </button>
-              </>
-            )}
+          <div className={styles.navRight}>
+            <button 
+              onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })} 
+              className={`${styles.pillBtn} ${styles.pillGradient}`}
+            >
+              Student sign in
+            </button>
+            <button 
+              onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })} 
+              className={`${styles.pillBtn} ${styles.pillOutline}`}
+            >
+              Teacher sign in
+            </button>
           </div>
-        )}
+        </div>
       </header>
 
-      {/* ===== HERO SECTION ===== */}
+      {/* 2. HERO SECTION */}
       <section className={styles.hero} id="about">
         <div className={styles.heroInner}>
-          {/* Top branded row: Logo + Pillars side by side */}
-          <div className={`${styles.heroBrandRow} animate-in`}>
+          {/* Left Column */}
+          <div className={styles.heroLeft}>
             <Image
               src="/images/hpln-logo.png"
-              alt="Home Plus Online Learning"
-              width={400}
-              height={125}
-              className={styles.heroBrandLogo}
+              alt="Home Plus"
+              width={384}
+              height={120}
+              className={styles.heroLogo}
               priority
             />
-            <Image
-              src="/images/pillars-lgs.png"
-              alt="Learn. Grow. Succeed."
-              width={340}
-              height={145}
-              className={styles.heroPillars}
-            />
-          </div>
-
-          {/* Full-width content below */}
-          <div className={styles.heroContent}>
-            <div className={`${styles.heroBadge} animate-in delay-1`}>
-              Alberta Curriculum - Grades 1-9
+            
+            <div className={styles.eyebrow}>
+              <div className={styles.pulseDot} />
+              Alberta Curriculum · Grades 1–9
             </div>
 
-            {/* Auth-aware hero heading */}
-            {isSignedIn ? (
-              <>
-                <h1 className={`${styles.heroTagline} animate-in delay-1`}>
-                  {heroGreeting},{" "}
-                  <span className={styles.heroTaglineAccent}>
-                    {userName.split(" ")[0] || ""}
-                  </span>
-                </h1>
-                <p className={`${styles.heroDesc} animate-in delay-2`}>
-                  Pick up where you left off - your learning journey continues
-                  with clear direction and teacher support.
-                </p>
-                <div className={`${styles.heroCta} animate-in delay-2`}>
-                  <a
-                    href="/dashboard"
-                    className={`${styles.ctaBtn} ${styles.ctaStudent}`}
-                  >
-                    <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
-                  </a>
-                </div>
-              </>
-            ) : (
-              <>
-                <h1 className={`${styles.heroTagline} animate-in delay-1`}>
-                  Structured learning at home,{" "}
-                  <span className={styles.heroTaglineAccent}>
-                    supported every step of the way
-                  </span>
-                </h1>
-                <p className={`${styles.heroDesc} animate-in delay-2`}>
-                  Home Plus is a flexible, asynchronous learning program that
-                  supports students in building strong academic skills through
-                  guided independent learning at home - offering families greater
-                  choice with clear direction and teacher support.
-                </p>
-                <div className={`${styles.heroCta} animate-in delay-2`}>
-                  <button
-                    onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
-                    className={`${styles.ctaBtn} ${styles.ctaStudent}`}
-                  >
-                    <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
-                  </button>
-                  <button
-                    onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
-                    className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
-                  >
-                    <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
+            <h1 className={styles.heroH1}>
+              Learning that fits your <span className={styles.gradientText}>family&apos;s life</span>
+            </h1>
 
-      {/* ===== HOW IT WORKS ===== */}
-      <section className={styles.howItWorks} id="how-it-works">
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionLabel}>Our Approach</div>
-          <h2 className={styles.sectionTitle}>How Home Plus Works</h2>
-          <p className={styles.sectionSubtitle}>
-            A structured, supportive approach to learning at home - designed
-            for real families and real students.
-          </p>
+            <p className={styles.heroSub}>
+              A flexible, asynchronous learning program that supports students in building strong academic skills through guided independent learning at home.
+            </p>
 
-          <div className={styles.featureGrid}>
-            <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}><BookOpen size={32} /></div>
-              <h3 className={styles.featureTitle}>Flexible Learning</h3>
-              <p className={styles.featureDesc}>
-                Students learn at their own pace with structured lessons they
-                can access anytime, anywhere - designed for home learning that
-                fits family schedules.
-              </p>
-            </div>
-
-            <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}><Compass size={32} /></div>
-              <h3 className={styles.featureTitle}>Clear Direction</h3>
-              <p className={styles.featureDesc}>
-                Every lesson has defined learning targets, step-by-step
-                guidance, and built-in checkpoints so students always know
-                where they are and what to do next.
-              </p>
-            </div>
-
-            <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconTeal}`}><Users size={32} /></div>
-              <h3 className={styles.featureTitle}>Teacher Support</h3>
-              <p className={styles.featureDesc}>
-                Teachers monitor progress, provide feedback, and offer
-                intervention when needed - students are never learning alone.
-              </p>
-            </div>
-
-            <div className={styles.feature}>
-              <div className={`${styles.featureIcon} ${styles.featureIconAmber}`}><Star size={32} /></div>
-              <h3 className={styles.featureTitle}>Quality Curriculum</h3>
-              <p className={styles.featureDesc}>
-                Aligned to the Alberta curriculum with engaging activities,
-                videos, quizzes, and meaningful assessments that build mastery.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== AUDIENCE CARDS ===== */}
-      <section className={styles.audience}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionLabel}>Who It&apos;s For</div>
-          <h2 className={styles.sectionTitle}>Built for Everyone</h2>
-          <p className={styles.sectionSubtitle}>
-            Whether you&apos;re a student, teacher, or family - Home Plus is
-            designed with you in mind.
-          </p>
-
-          <div className={styles.audienceGrid}>
-            <div className={`${styles.audienceCard} ${styles.studentCard}`}>
-              <div className={styles.audienceIcon}><GraduationCap size={32} /></div>
-              <h3 className={styles.audienceTitle}>For Students</h3>
-              <p className={styles.audienceDesc}>
-                Learn at your own speed with engaging lessons, interactive
-                activities, and clear progress tracking. You&apos;ll always
-                know what to work on next.
-              </p>
-              <ul className={styles.audienceList}>
-                <li>Interactive lessons with videos and activities</li>
-                <li>Progress bars and mastery tracking</li>
-                <li>Self-paced learning that fits your schedule</li>
-              </ul>
-            </div>
-
-            <div className={`${styles.audienceCard} ${styles.teacherCard}`}>
-              <div className={styles.audienceIcon}><Users size={32} /></div>
-              <h3 className={styles.audienceTitle}>For Teachers</h3>
-              <p className={styles.audienceDesc}>
-                Monitor student progress in real time, access grade reports,
-                and identify students who need support - all from one dashboard.
-              </p>
-              <ul className={styles.audienceList}>
-                <li>Real-time student progress dashboard</li>
-                <li>Grade reports and CSV export</li>
-                <li>Intervention alerts and analytics</li>
-              </ul>
-            </div>
-
-            <div className={`${styles.audienceCard} ${styles.familyCard}`}>
-              <div className={styles.audienceIcon}><Home size={32} /></div>
-              <h3 className={styles.audienceTitle}>For Families</h3>
-              <p className={styles.audienceDesc}>
-                Home Plus gives families the flexibility to support their
-                child&apos;s learning at home while following a proven,
-                structured curriculum.
-              </p>
-              <ul className={styles.audienceList}>
-                <li>Aligned to Alberta curriculum standards</li>
-                <li>Visible progress and completion tracking</li>
-                <li>Meaningful, guided independent learning</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== REGISTER CTA ===== */}
-      <section className={styles.ctaBanner} id="register">
-        <div className={styles.sectionContainer}>
-          <h2 className={styles.ctaBannerTitle}>
-            Ready to join Home Plus?
-          </h2>
-          <p className={styles.ctaBannerDesc}>
-            Register through Prairie Rose Public Schools to get started, or
-            sign in if you&apos;re already enrolled.
-          </p>
-          <div className={styles.ctaBannerActions}>
-            <a
-              href="https://www.myprps.com/home-plus-forms-and-registration"
-              className={`${styles.ctaBtn} ${styles.ctaRegister}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ClipboardList size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Register with PRPS
-            </a>
-            {isSignedIn ? (
-              <a
-                href="/dashboard"
-                className={`${styles.ctaBtn} ${styles.ctaStudent}`}
+            <div className={styles.heroActions}>
+              <a 
+                href="https://www.myprps.com/home-plus-forms-and-registration" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={`${styles.pillBtn} ${styles.pillGradient}`}
               >
-                <BarChart2 size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Go to Dashboard
+                Register today
               </a>
-            ) : (
-              <>
-                <button
-                  onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}
-                  className={`${styles.ctaBtn} ${styles.ctaStudent}`}
-                >
-                  <User size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Student Sign In
-                </button>
-                <button
-                  onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}
-                  className={`${styles.ctaBtn} ${styles.ctaTeacher}`}
-                >
-                  <Users size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> Teacher Sign In
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CONTACT SECTION ===== */}
-      <section className={styles.contact} id="contact">
-        <div className={styles.sectionContainer}>
-          <div className={styles.contactInner}>
-            <div className={styles.contactText}>
-              <h2 className={styles.contactTitle}>Let&apos;s Talk...</h2>
-              <p className={styles.contactDesc}>
-                If you are interested in having a conversation about your home
-                education, shared responsibility, or at-home learning
-                opportunities, please contact:
-              </p>
+              <a href="#how-it-works" className={`${styles.pillBtn} ${styles.pillOutline}`}>
+                Learn more
+              </a>
             </div>
-            <div className={styles.contactCard}>
-              <div className={styles.contactOrg}>Home Plus Learning Network</div>
-              <div className={styles.contactName}>Jenn LaDouceur</div>
-              <div className={styles.contactDetails}>
-                <a href="tel:403-526-3186" className={styles.contactLink}>
-                  <Phone size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> 403-526-3186
-                </a>
-                <a href="mailto:jennladouceur@prrd8.ca" className={styles.contactLink}>
-                  <Mail size={18} style={{ marginRight: "8px", verticalAlign: "middle", marginBottom: "2px" }} /> jennladouceur@prrd8.ca
-                </a>
+          </div>
+
+          {/* Right Column: Pillars Visual */}
+          <div className={styles.heroRight}>
+            <div className={styles.pillarCards}>
+              <div className={styles.pillarCard}>
+                <div className={`${styles.pillarIconWrap} ${styles.c1}`}>
+                  <LearnIcon />
+                </div>
+                <div className={`${styles.pillarLabel} ${styles.c1}`}>Learn</div>
+                <p className={styles.pillarDesc}>High-quality curriculum delivered flexibly</p>
+              </div>
+
+              <div className={styles.pillarCard}>
+                <div className={`${styles.pillarIconWrap} ${styles.c2}`}>
+                  <GrowIcon />
+                </div>
+                <div className={`${styles.pillarLabel} ${styles.c2}`}>Grow</div>
+                <p className={styles.pillarDesc}>Teacher support every step of the way</p>
+              </div>
+
+              <div className={styles.pillarCard}>
+                <div className={`${styles.pillarIconWrap} ${styles.c4}`}>
+                  <SucceedIcon />
+                </div>
+                <div className={`${styles.pillarLabel} ${styles.c4}`}>Succeed</div>
+                <p className={styles.pillarDesc}>Mastery based progression</p>
+              </div>
+            </div>
+
+            <div className={styles.statsBanner}>
+              <div className={styles.statCol}>
+                <div className={styles.statNumber}>1–9</div>
+                <div className={styles.statLabel}>Grade levels</div>
+              </div>
+              <div className={styles.statCol}>
+                <div className={styles.statNumber}>4</div>
+                <div className={styles.statLabel}>Core subjects</div>
+              </div>
+              <div className={styles.statCol}>
+                <div className={styles.statNumber}>100%</div>
+                <div className={styles.statLabel}>Alberta aligned</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== FOOTER ===== */}
+      {/* 3. TRUST BAR */}
+      <section className={styles.trustBar}>
+        <div className={styles.trustItem}>
+          <div className={styles.trustDot} />
+          Aligned to Alberta curriculum
+        </div>
+        <div className={styles.trustItem}>
+          <div className={styles.trustDot} />
+          Asynchronous — learn anytime
+        </div>
+        <div className={styles.trustItem}>
+          <div className={styles.trustDot} />
+          Teacher-monitored progress
+        </div>
+        <div className={styles.trustItem}>
+          <div className={styles.trustDot} />
+          Works on any device
+        </div>
+      </section>
+
+      {/* 4. HOW IT WORKS */}
+      <section className={styles.howItWorks} id="how-it-works">
+        <div className={styles.sectionHeader}>
+          <h2>Structure that supports, freedom that inspires</h2>
+        </div>
+
+        <div className={styles.stepGrid}>
+          <div className={styles.stepCard}>
+            <div className={styles.stepGradientTop} style={{ background: 'linear-gradient(90deg, var(--c1), var(--c2))' }} />
+            <div className={styles.stepNumber}>01</div>
+            <div className={styles.stepTitle}>Flexible learning</div>
+            <p className={styles.stepDesc}>Students learn at their own pace with structured lessons they can access anytime, fitting perfectly into family schedules.</p>
+          </div>
+
+          <div className={styles.stepCard}>
+            <div className={styles.stepGradientTop} style={{ background: 'linear-gradient(90deg, var(--c2), var(--c3))' }} />
+            <div className={styles.stepNumber}>02</div>
+            <div className={styles.stepTitle}>Clear direction</div>
+            <p className={styles.stepDesc}>Every lesson provides defined targets and checkpoints so students always know exactly what to do next.</p>
+          </div>
+
+          <div className={styles.stepCard}>
+            <div className={styles.stepGradientTop} style={{ background: 'linear-gradient(90deg, var(--c3), var(--c4))' }} />
+            <div className={styles.stepNumber}>03</div>
+            <div className={styles.stepTitle}>Teacher support</div>
+            <p className={styles.stepDesc}>Alberta-certified teachers monitor progress and provide feedback—students are never learning alone.</p>
+          </div>
+
+          <div className={styles.stepCard}>
+            <div className={styles.stepGradientTop} style={{ background: 'linear-gradient(90deg, var(--c4), var(--c1))' }} />
+            <div className={styles.stepNumber}>04</div>
+            <div className={styles.stepTitle}>Quality curriculum</div>
+            <p className={styles.stepDesc}>Engaging activities, videos, and mastery-based assessments ensure deep understanding of core concepts.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. BUILT FOR EVERYONE */}
+      <section className={styles.builtFor}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionTag}>Built for everyone</div>
+          <h2>Designed with you in mind</h2>
+        </div>
+
+        <div className={styles.builtGrid}>
+          <div className={styles.builtCard}>
+            <div className={`${styles.builtIconWrap} ${styles.c1}`}>
+              <BookOpen size={28} />
+            </div>
+            <h3 className={styles.builtTitle}>For students</h3>
+            <p className={styles.builtDesc}>Learn at your own speed with engaging lessons and clear progress tracking.</p>
+            <ul className={styles.builtList}>
+              <li>Interactive lessons with videos</li>
+              <li>Clear mastery tracking</li>
+              <li>Self-paced independent learning</li>
+            </ul>
+          </div>
+
+          <div className={styles.builtCard}>
+            <div className={`${styles.builtIconWrap} ${styles.c3}`}>
+              <BarChart2 size={28} />
+            </div>
+            <h3 className={styles.builtTitle}>For teachers</h3>
+            <p className={styles.builtDesc}>Monitor progress in real time, identify needs, and offer targeted support.</p>
+            <ul className={styles.builtList}>
+              <li>Real-time progress dashboard</li>
+              <li>Automated grading & reports</li>
+              <li>Intervention alerts</li>
+            </ul>
+          </div>
+
+          <div className={styles.builtCard}>
+            <div className={`${styles.builtIconWrap} ${styles.c4}`}>
+              <Home size={28} />
+            </div>
+            <h3 className={styles.builtTitle}>For families</h3>
+            <p className={styles.builtDesc}>Support your child's learning at home with a proven, structured curriculum.</p>
+            <ul className={styles.builtList}>
+              <li>Alberta curriculum standards</li>
+              <li>Visible completion tracking</li>
+              <li>Guided independent learning</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA SECTION */}
+      <section className={styles.ctaSection}>
+        <div className={styles.ctaGlow} />
+        <div className={styles.ctaInner}>
+          <div className={styles.ctaTag}>Ready to begin?</div>
+          <h2 className={styles.ctaHeading}>Join <span>Home Plus</span> today</h2>
+          <p className={styles.ctaSub}>
+            Register through Prairie Rose Public Schools to get started, or sign in if you are already enrolled.
+          </p>
+          
+          <div className={styles.ctaActions}>
+            <a 
+              href="https://www.myprps.com/home-plus-forms-and-registration" 
+              className={`${styles.pillBtn} ${styles.pillWhite}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Register with PRPS
+            </a>
+            <button 
+              onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })} 
+              className={`${styles.pillBtn} ${styles.pillGhost}`}
+            >
+              Student sign in
+            </button>
+            <button 
+              onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })} 
+              className={`${styles.pillBtn} ${styles.pillGhost}`}
+            >
+              Teacher sign in
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CONTACT SECTION */}
+      <section className={styles.contactSection}>
+        <div className={styles.sectionHeader} style={{ marginBottom: '2.5rem' }}>
+          <div className={styles.sectionTag}>Let's talk</div>
+          <h2>Interested in Home Plus?</h2>
+        </div>
+
+        <div className={styles.contactCard}>
+          <div className={styles.contactGradientTop} />
+          <h3 className={styles.contactName}>Jenn LaDouceur</h3>
+          <div className={styles.contactRole}>Home Plus Learning Network · Prairie Rose Public Schools</div>
+          
+          <div className={styles.contactActions}>
+            <a href="tel:403-526-3186" className={`${styles.contactPillBtn} ${styles.contactPillBlue}`}>
+              403-526-3186
+            </a>
+            <a href="mailto:jennladouceur@prrd8.ca" className={`${styles.contactPillBtn} ${styles.contactPillGradient}`}>
+              jennladouceur@prrd8.ca
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FOOTER */}
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
-            <Image
-              src="/images/hpln-logo.png"
-              alt="Home Plus"
-              width={150}
-              height={47}
-              className={styles.footerLogoImg}
-            />
-            <p className={styles.footerTagline}>
-              Learn. Grow. Succeed.
-            </p>
+            <Link href="/">
+              <Image
+                src="/images/hpln-logo.png"
+                alt="Home Plus"
+                width={160}
+                height={50}
+                className={styles.footerBrandLogo}
+              />
+            </Link>
+            <div className={styles.footerTagline}>Learn. Grow. Succeed.</div>
           </div>
 
-          <div className={styles.footerLinks}>
-            <div className={styles.footerCol}>
-              <h4>Platform</h4>
-              {isSignedIn ? (
-                <a href="/dashboard">Go to Dashboard</a>
-              ) : (
-                <>
-                  <button onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })} className={styles.footerSignInBtn}>Student Sign In</button>
-                  <button onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })} className={styles.footerSignInBtn}>Teacher Sign In</button>
-                </>
-              )}
-              <a href="https://www.myprps.com/home-plus-forms-and-registration" target="_blank" rel="noopener noreferrer">Register</a>
-            </div>
-            <div className={styles.footerCol}>
-              <h4>Contact</h4>
-              <a href="tel:403-526-3186">403-526-3186</a>
-              <a href="mailto:jennladouceur@prrd8.ca">jennladouceur@prrd8.ca</a>
-            </div>
-            <div className={styles.footerCol}>
-              <h4>Legal</h4>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Use</a>
-            </div>
+          <div className={styles.footerCol}>
+            <h4>Platform</h4>
+            <button onClick={() => signIn('demo', { role: 'STUDENT', callbackUrl: '/dashboard' })}>Student sign in</button>
+            <button onClick={() => signIn('demo', { role: 'TEACHER', callbackUrl: '/dashboard' })}>Teacher sign in</button>
+            <a href="https://www.myprps.com/home-plus-forms-and-registration" target="_blank" rel="noopener noreferrer">Register</a>
           </div>
 
-          <div className={styles.footerBottom}>
-            <p>(c) {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.</p>
+          <div className={styles.footerCol}>
+            <h4>Contact</h4>
+            <a href="tel:403-526-3186">403-526-3186</a>
+            <a href="mailto:jennladouceur@prrd8.ca">jennladouceur@prrd8.ca</a>
           </div>
+
+          <div className={styles.footerCol}>
+            <h4>Legal</h4>
+            <a href="#">Privacy policy</a>
+            <a href="#">Terms of use</a>
+          </div>
+        </div>
+
+        <div className={styles.footerBottom}>
+          © {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.
         </div>
       </footer>
     </div>
