@@ -13,6 +13,7 @@
     "db:seed:science": "npx tsx prisma/run-science-seeds.ts",
     "db:seed:enrollments": "npx tsx prisma/seed-enrollments.ts",
     "db:seed:phonics": "npx tsx prisma/seed-phonics.ts",
+    "db:seed:demo": "npx tsx prisma/seed-demo-enrollments.ts",
     "db:studio": "npx prisma studio",
     "db:push": "npx prisma db push"
   },
