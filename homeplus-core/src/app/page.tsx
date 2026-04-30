@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import styles from "./page.module.css";
 import { BookOpen, BarChart2, Home } from "lucide-react";
