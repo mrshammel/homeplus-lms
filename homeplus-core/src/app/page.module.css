@@ -99,6 +99,7 @@
   background: transparent;
   color: var(--dark);
   border: 1.5px solid var(--border);
+  border-radius: 100px;
 }
 
 .pillOutline:hover {
@@ -108,9 +109,10 @@
 }
 
 .pillGradient {
-  background: var(--grad);
+  background: var(--grad90);
   color: #fff;
   border: none;
+  border-radius: 100px;
 }
 
 .pillGradient:hover {
@@ -121,6 +123,7 @@
   background: transparent;
   color: #fff;
   border: 1.5px solid rgba(255,255,255,0.28);
+  border-radius: 100px;
 }
 
 .pillGhost:hover {
@@ -131,6 +134,7 @@
   background: #fff;
   color: var(--c3);
   border: none;
+  border-radius: 100px;
 }
 
 .pillWhite:hover {
@@ -659,6 +663,7 @@
   background: var(--gradbg);
   color: var(--c3);
   border: 1px solid var(--border);
+  border-radius: 100px;
 }
 .contactPillBlue:hover {
   box-shadow: 0 4px 12px rgba(26, 111, 196, 0.15);
@@ -669,6 +674,7 @@
   background: var(--grad90);
   color: #fff;
   border: none;
+  border-radius: 100px;
 }
 .contactPillGradient:hover {
   box-shadow: 0 4px 12px rgba(107, 79, 200, 0.25);
