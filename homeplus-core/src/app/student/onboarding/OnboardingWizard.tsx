@@ -247,9 +247,9 @@ export default function OnboardingHub() {
           allSections: sections,
         }),
       });
-      // Clear any skip flag, force session refresh before navigating
+      // Set bypass flag synchronously before navigation so layout never redirects
       localStorage.removeItem('onboarding_skipped_until');
-      await update();  // refreshes the JWT so onboardingStatus = COMPLETED
+      localStorage.setItem('onboarding_skip_bypass', '1');
       window.location.href = '/student/dashboard';
     } catch {
       setFinishing(false);
@@ -258,19 +258,19 @@ export default function OnboardingHub() {
 
   // ─ Skip for now ─
   const handleSkip = async () => {
-    try {
-      await fetch('/api/onboarding/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ step: 0, status: 'SKIPPED' }),
-      });
-      // Store due date: 7 days from now
-      const dueDate = new Date();
-      dueDate.setDate(dueDate.getDate() + 7);
-      localStorage.setItem('onboarding_skipped_until', dueDate.toISOString());
-      await update();
-      window.location.href = '/student/dashboard';
-    } catch { /* non-blocking */ }
+    // Set bypass flag FIRST (synchronous) — before any async operations
+    // This ensures the layout doesn't redirect even if the session is stale
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 7);
+    localStorage.setItem('onboarding_skip_bypass', '1');
+    localStorage.setItem('onboarding_skipped_until', dueDate.toISOString());
+    // Fire-and-forget the API call — don't await so bypass flag is already set
+    fetch('/api/onboarding/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ step: 0, status: 'SKIPPED' }),
+    }).catch(() => {});
+    window.location.href = '/student/dashboard';
   };
 
   // ─── Hub View ───────────────────────────────────────────────────────────

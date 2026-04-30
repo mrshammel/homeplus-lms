@@ -32,8 +32,17 @@ export default function StudentLayout({ children }: { children: ReactNode }) {
     const user = session.user as any;
     const isOnboardingPage = pathname.startsWith('/student/onboarding');
     const isPending = user.onboardingStatus !== 'COMPLETED' && user.onboardingStatus !== 'SKIPPED';
-    if (isPending && !isOnboardingPage) {
-      router.replace('/student/onboarding');
+
+    if (!isPending) {
+      // Session confirmed non-pending — safe to clear the bypass flag
+      if (typeof window !== 'undefined') localStorage.removeItem('onboarding_skip_bypass');
+    } else if (!isOnboardingPage) {
+      // Check for bypass flag set synchronously before navigation (prevents race condition)
+      const bypassRedirect = typeof window !== 'undefined' &&
+        localStorage.getItem('onboarding_skip_bypass') === '1';
+      if (!bypassRedirect) {
+        router.replace('/student/onboarding');
+      }
     }
   }
 
