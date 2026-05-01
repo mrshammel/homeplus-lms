@@ -540,6 +540,27 @@
 .passageInstructions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 .passageInstructions p { font-size: 14px; color: #475569; margin: 0; }
 
+.errorBox {
+  background: #fef2f2;
+  border: 2px solid #fca5a5;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  color: #991b1b;
+}
+
+.errorBox h3 { margin: 0 0 12px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+.errorBox p { margin: 0 0 12px; line-height: 1.5; font-size: 15px; }
+
+.invalidWordsList {
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px dashed #f87171;
+  font-family: monospace;
+  margin-bottom: 0 !important;
+}
+
 /* ─── Comprehension ─── */
 .comprehensionQuestion { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 .comprehensionQuestion label { font-weight: 700; color: #374151; font-size: 15px; }

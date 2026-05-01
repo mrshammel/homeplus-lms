@@ -1,6 +1,7 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
+import path from 'path';
 
-// Load .env.local without dotenv (avoids npx module resolution issues)
+// Load .env.local without dotenv
 try {
   const raw = readFileSync('.env.local', 'utf-8');
   for (const line of raw.split('\n')) {
@@ -9,7 +10,7 @@ try {
       const key = match[1].trim();
       const val = match[2].trim()
         .replace(/^["']|["']$/g, '')
-        .replace(/\\[nrt]/g, '');  // strip Vercel CLI literal escape sequences
+        .replace(/\\[nrt]/g, '');
       if (!process.env[key]) process.env[key] = val;
     }
   }
@@ -23,8 +24,84 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool as any);
 const prisma = new PrismaClient({ adapter });
 
+const graphemeMetadata: Record<string, { articulatoryGestureScript: string | null, secretStoryScript: string | null, soundWallCategory: string }> = {
+  'a': {
+    articulatoryGestureScript: 'To make the short A /ă/ sound, open your mouth wide. Your voice is on. /ă/ — like "apple".',
+    secretStoryScript: 'Superhero A is in his short and lazy disguise... he just sits around eating apples all day saying /ă/-/ă/-apple!',
+    soundWallCategory: 'Short Vowels',
+  },
+  'm': {
+    articulatoryGestureScript: 'Put your lips together and hum. All air comes out your nose. /mmm/ — like "mouse".',
+    secretStoryScript: null,
+    soundWallCategory: 'Nasals',
+  },
+  's': {
+    articulatoryGestureScript: 'Put your tongue just behind your top front teeth and blow air. /ssss/ — like a hissing snake.',
+    secretStoryScript: null,
+    soundWallCategory: 'Fricatives',
+  },
+  't': {
+    articulatoryGestureScript: 'Tap your tongue just behind your top front teeth. Keep your voice off. /t/ — like "tiger".',
+    secretStoryScript: null,
+    soundWallCategory: 'Stops',
+  },
+  'i': {
+    articulatoryGestureScript: 'Smile slightly and say /ĭ/. Your voice is on. /ĭ/ — like "igloo".',
+    secretStoryScript: 'Itsy-bitsy I always feels itchy — /ĭ/-/ĭ/-itch!',
+    soundWallCategory: 'Short Vowels',
+  },
+  'n': {
+    articulatoryGestureScript: 'Put the tip of your tongue behind your top front teeth and hum. /nnn/ — like "nose".',
+    secretStoryScript: null,
+    soundWallCategory: 'Nasals',
+  },
+  'p': {
+    articulatoryGestureScript: 'Press your lips together and pop them open. Keep your voice off. /p/ — like "pop".',
+    secretStoryScript: null,
+    soundWallCategory: 'Stops',
+  },
+  'b': {
+    articulatoryGestureScript: 'Press your lips together and pop them open. Turn your voice on. /b/ — like "ball".',
+    secretStoryScript: null,
+    soundWallCategory: 'Stops',
+  },
+  'c': {
+    articulatoryGestureScript: 'Pull the back of your tongue down quickly. Keep your voice off. /k/ — like "cat".',
+    secretStoryScript: null,
+    soundWallCategory: 'Stops',
+  },
+  'f': {
+    articulatoryGestureScript: 'Bite your bottom lip gently and blow air. Keep your voice off. /f/ — like "fish".',
+    secretStoryScript: null,
+    soundWallCategory: 'Fricatives',
+  }
+};
+
 async function main() {
-  console.log('🌱 Starting Phonics (UFLI) Seeding...');
+  console.log('🌱 Starting Phonics (UFLI) Seeding from JSON...');
+
+  // Check for the full 128 lesson JSON, otherwise fall back to the 20 lesson template
+  const fullPath = 'c:\\\\Users\\\\AmandaHammel\\\\Downloads\\\\ufli_lessons_full.json';
+  const templatePath = 'c:\\\\Users\\\\AmandaHammel\\\\Downloads\\\\ufli_lessons_template.json';
+  
+  let targetPath = templatePath;
+  if (existsSync(fullPath)) {
+    console.log(`Found full 128 lesson file at ${fullPath}. Using this as the source of truth.`);
+    targetPath = fullPath;
+  } else {
+    console.warn(`\n⚠️ WARNING: ufli_lessons_full.json not found. Falling back to the 20-lesson template at ${templatePath}.`);
+    console.warn(`Seeding only 20 lessons is insufficient for real student use. Please provide the full 128-lesson file.\n`);
+  }
+
+  let rawData: string;
+  try {
+    rawData = readFileSync(targetPath, 'utf-8');
+  } catch (e) {
+    console.error(`Error reading JSON file at ${targetPath}:`, e);
+    process.exit(1);
+  }
+  
+  const template = JSON.parse(rawData);
 
   // ─── 1. Subject ───
   const phonicsSubject = await prisma.subject.upsert({
@@ -48,391 +125,175 @@ async function main() {
     create: {
       id: 'unit_phonics_alphabet',
       subjectId: phonicsSubject.id,
-      title: 'Alphabet — Cluster 1',
-      description: 'Short vowel /ă/, and common consonants m, s, t, i, n, p, b, c, f. Students learn phoneme-grapheme correspondences and build CVC decoding skills.',
+      title: 'UFLI Foundations',
+      description: 'Foundational phonics covering alphabet letter sounds, CVC blending, and advanced patterns.',
       order: 1,
     },
   });
   console.log('✅ Unit:', unit1.title);
 
-  // ─── 3. Graphemes ───
-  const graphemesData = [
-    {
-      id: 'g_a_short',
-      grapheme: 'a',
-      phoneme: '/ă/',
-      placementTags: ['beginning', 'middle'],
-      articulatoryGestureScript: 'To make the short A /ă/ sound, open your mouth wide. Your voice is on. /ă/ — like "apple".',
-      secretStoryScript: 'Superhero A is in his short and lazy disguise... he just sits around eating apples all day saying /ă/-/ă/-apple!',
-      soundWallCategory: 'Short Vowels',
-    },
-    {
-      id: 'g_m',
-      grapheme: 'm',
-      phoneme: '/m/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Put your lips together and hum. All air comes out your nose. /mmm/ — like "mouse".',
-      secretStoryScript: null,
-      soundWallCategory: 'Nasals',
-    },
-    {
-      id: 'g_s',
-      grapheme: 's',
-      phoneme: '/s/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Put your tongue just behind your top front teeth and blow air. /ssss/ — like a hissing snake.',
-      secretStoryScript: null,
-      soundWallCategory: 'Fricatives',
-    },
-    {
-      id: 'g_t',
-      grapheme: 't',
-      phoneme: '/t/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Tap your tongue just behind your top front teeth. Keep your voice off. /t/ — like "tiger".',
-      secretStoryScript: null,
-      soundWallCategory: 'Stops',
-    },
-    {
-      id: 'g_i_short',
-      grapheme: 'i',
-      phoneme: '/ĭ/',
-      placementTags: ['beginning', 'middle'],
-      articulatoryGestureScript: 'Smile slightly and say /ĭ/. Your voice is on. /ĭ/ — like "igloo".',
-      secretStoryScript: 'Itsy-bitsy I always feels itchy — /ĭ/-/ĭ/-itch!',
-      soundWallCategory: 'Short Vowels',
-    },
-    {
-      id: 'g_n',
-      grapheme: 'n',
-      phoneme: '/n/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Put the tip of your tongue behind your top front teeth and hum. /nnn/ — like "nose".',
-      secretStoryScript: null,
-      soundWallCategory: 'Nasals',
-    },
-    {
-      id: 'g_p',
-      grapheme: 'p',
-      phoneme: '/p/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Press your lips together and pop them open. Keep your voice off. /p/ — like "pop".',
-      secretStoryScript: null,
-      soundWallCategory: 'Stops',
-    },
-    {
-      id: 'g_b',
-      grapheme: 'b',
-      phoneme: '/b/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Press your lips together and pop them open. Turn your voice on. /b/ — like "ball".',
-      secretStoryScript: null,
-      soundWallCategory: 'Stops',
-    },
-    {
-      id: 'g_c',
-      grapheme: 'c',
-      phoneme: '/k/',
-      placementTags: ['beginning', 'end'],
-      articulatoryGestureScript: 'Pull the back of your tongue down quickly. Keep your voice off. /k/ — like "cat".',
-      secretStoryScript: null,
-      soundWallCategory: 'Stops',
-    },
-    {
-      id: 'g_f',
-      grapheme: 'f',
-      phoneme: '/f/',
-      placementTags: ['beginning', 'middle', 'end'],
-      articulatoryGestureScript: 'Bite your bottom lip gently and blow air. Keep your voice off. /f/ — like "fish".',
-      secretStoryScript: null,
-      soundWallCategory: 'Fricatives',
-    },
-  ];
+  // ─── 3. Lessons ───
+  let orderCounter = 1;
+  for (const lessonJson of template.lessons) {
+    const lId = lessonJson.lesson_id;
+    console.log(`Processing ${lId} - ${lessonJson.title}...`);
 
-  for (const g of graphemesData) {
-    await prisma.grapheme.upsert({
-      where: { grapheme: g.grapheme },
-      update: g,
-      create: g,
-    });
-  }
-  console.log(`✅ Graphemes: ${graphemesData.length} upserted`);
-
-  // ─── 4. Lessons (10) ───
-  const lessonsData = [
-    {
-      id: 'ufli-001',
-      title: 'a /ă/',
-      description: 'Introduce the short A sound and letter a. Students learn to segment and blend CVC words with /ă/.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: a /ă/',
-      keyword: 'apple',
-      graphemes: ['g_a_short'],
-      heartWords: [{ word: 'the', source: 'Dolch' }],
-      regularWords: [{ word: 'a', graphemes: ['g_a_short'] }],
-      decodablePassage: 'I see a. I see the mat. The mat is tan.',
-    },
-    {
-      id: 'ufli-002',
-      title: 'm /m/',
-      description: 'Introduce the /m/ sound. Students blend consonant + vowel and practice CVC words with a and m.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: m /m/',
-      keyword: 'mouse',
-      graphemes: ['g_m'],
-      heartWords: [{ word: 'I', source: 'Dolch' }],
-      regularWords: [
-        { word: 'am', graphemes: ['g_a_short', 'g_m'] },
-        { word: 'ma', graphemes: ['g_m', 'g_a_short'] },
-      ],
-      decodablePassage: 'I am. Ma is a mat. I am at the mat.',
-    },
-    {
-      id: 'ufli-003',
-      title: 's /s/',
-      description: 'Introduce the /s/ sound. Students read and spell 3-phoneme words using a, m, and s.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: s /s/',
-      keyword: 'sun',
-      graphemes: ['g_s'],
-      heartWords: [],
-      regularWords: [
-        { word: 'Sam', graphemes: ['g_s', 'g_a_short', 'g_m'] },
-        { word: 'mas', graphemes: ['g_m', 'g_a_short', 'g_s'] },
-      ],
-      decodablePassage: 'Sam is. I am Sam. Sam sat.',
-    },
-    {
-      id: 'ufli-004',
-      title: 't /t/',
-      description: 'Introduce the /t/ sound. Students decode CVC words and read decodable sentences.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: t /t/',
-      keyword: 'tiger',
-      graphemes: ['g_t'],
-      heartWords: [{ word: 'and', source: 'Dolch' }],
-      regularWords: [
-        { word: 'at', graphemes: ['g_a_short', 'g_t'] },
-        { word: 'sat', graphemes: ['g_s', 'g_a_short', 'g_t'] },
-        { word: 'mat', graphemes: ['g_m', 'g_a_short', 'g_t'] },
-        { word: 'tam', graphemes: ['g_t', 'g_a_short', 'g_m'] },
-      ],
-      decodablePassage: 'Sam sat at the mat. I sat and the mat sat.',
-    },
-    {
-      id: 'ufli-005',
-      title: 'i /ĭ/',
-      description: 'Introduce the short I sound. Students blend vowel-initial words and practice new CVC patterns.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: i /ĭ/',
-      keyword: 'igloo',
-      graphemes: ['g_i_short'],
-      heartWords: [{ word: 'is', source: 'Dolch' }],
-      regularWords: [
-        { word: 'it', graphemes: ['g_i_short', 'g_t'] },
-        { word: 'sit', graphemes: ['g_s', 'g_i_short', 'g_t'] },
-        { word: 'Tim', graphemes: ['g_t', 'g_i_short', 'g_m'] },
-        { word: 'mit', graphemes: ['g_m', 'g_i_short', 'g_t'] },
-      ],
-      decodablePassage: 'Tim sat. It is Tim. Sam is at it.',
-    },
-    {
-      id: 'ufli-006',
-      title: 'n /n/',
-      description: 'Introduce the /n/ sound. Students build more complex CVC words and practice encoding.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: n /n/',
-      keyword: 'nose',
-      graphemes: ['g_n'],
-      heartWords: [{ word: 'in', source: 'Dolch' }],
-      regularWords: [
-        { word: 'nap', graphemes: ['g_n', 'g_a_short', 'g_p'] },
-        { word: 'man', graphemes: ['g_m', 'g_a_short', 'g_n'] },
-        { word: 'tin', graphemes: ['g_t', 'g_i_short', 'g_n'] },
-        { word: 'tan', graphemes: ['g_t', 'g_a_short', 'g_n'] },
-        { word: 'sin', graphemes: ['g_s', 'g_i_short', 'g_n'] },
-      ],
-      decodablePassage: 'Tim is in. Sam and Tim sit. Man sat in it.',
-    },
-    {
-      id: 'ufli-007',
-      title: 'p /p/',
-      description: 'Introduce the /p/ sound. Students decode and encode new words with the /p/ phoneme.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: p /p/',
-      keyword: 'pop',
-      graphemes: ['g_p'],
-      heartWords: [],
-      regularWords: [
-        { word: 'pan', graphemes: ['g_p', 'g_a_short', 'g_n'] },
-        { word: 'pin', graphemes: ['g_p', 'g_i_short', 'g_n'] },
-        { word: 'sip', graphemes: ['g_s', 'g_i_short', 'g_p'] },
-        { word: 'tip', graphemes: ['g_t', 'g_i_short', 'g_p'] },
-        { word: 'pit', graphemes: ['g_p', 'g_i_short', 'g_t'] },
-      ],
-      decodablePassage: 'Sam has a pan. Tim has a pin. Sit in the pit.',
-    },
-    {
-      id: 'ufli-008',
-      title: 'b /b/',
-      description: 'Introduce the /b/ sound. Students contrast voiced /b/ with voiceless /p/ and decode CVC words.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: b /b/',
-      keyword: 'ball',
-      graphemes: ['g_b'],
-      heartWords: [],
-      regularWords: [
-        { word: 'bat', graphemes: ['g_b', 'g_a_short', 'g_t'] },
-        { word: 'bit', graphemes: ['g_b', 'g_i_short', 'g_t'] },
-        { word: 'ban', graphemes: ['g_b', 'g_a_short', 'g_n'] },
-        { word: 'bin', graphemes: ['g_b', 'g_i_short', 'g_n'] },
-        { word: 'tab', graphemes: ['g_t', 'g_a_short', 'g_b'] },
-      ],
-      decodablePassage: 'Tim sat in a bin. The bat is tan. Sam hit the bat.',
-    },
-    {
-      id: 'ufli-009',
-      title: 'c /k/',
-      description: 'Introduce the /k/ sound spelled with letter c. Students read and spell CVC words using c.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: c /k/',
-      keyword: 'cat',
-      graphemes: ['g_c'],
-      heartWords: [{ word: 'can', source: null }],
-      regularWords: [
-        { word: 'cap', graphemes: ['g_c', 'g_a_short', 'g_p'] },
-        { word: 'cat', graphemes: ['g_c', 'g_a_short', 'g_t'] },
-        { word: 'cit', graphemes: ['g_c', 'g_i_short', 'g_t'] },
-        { word: 'cab', graphemes: ['g_c', 'g_a_short', 'g_b'] },
-        { word: 'nip', graphemes: ['g_n', 'g_i_short', 'g_p'] },
-      ],
-      decodablePassage: 'The cat sat in a cab. Sam can nab the cap. Tim can sit.',
-    },
-    {
-      id: 'ufli-010',
-      title: 'f /f/',
-      description: 'Introduce the /f/ sound. Students decode and encode new CVC words using all graphemes from lessons 1-10.',
-      category: 'Alphabet',
-      targetSkill: 'Phoneme-Grapheme Correspondence: f /f/',
-      keyword: 'fish',
-      graphemes: ['g_f'],
-      heartWords: [],
-      regularWords: [
-        { word: 'fan', graphemes: ['g_f', 'g_a_short', 'g_n'] },
-        { word: 'fit', graphemes: ['g_f', 'g_i_short', 'g_t'] },
-        { word: 'fin', graphemes: ['g_f', 'g_i_short', 'g_n'] },
-        { word: 'fat', graphemes: ['g_f', 'g_a_short', 'g_t'] },
-        { word: 'nif', graphemes: ['g_n', 'g_i_short', 'g_f'] },
-      ],
-      decodablePassage: 'The cat is fat. Tim has a fan. Sam can fit in the bin.',
-    },
-  ];
-
-  let order = 1;
-  for (const l of lessonsData) {
-    // Create lesson
-    await prisma.lesson.upsert({
-      where: { id: l.id },
-      update: {
-        description: l.description,
-        category: l.category,
-        targetSkill: l.targetSkill,
-        keyword: l.keyword,
-        contentStatus: 'active',
-      },
-      create: {
-        id: l.id,
-        unitId: unit1.id,
-        title: l.title,
-        subtitle: l.targetSkill,
-        description: l.description,
-        order: order++,
-        subjectMode: SubjectMode.PHONICS,
-        category: l.category,
-        targetSkill: l.targetSkill,
-        keyword: l.keyword,
-        masteryDecodingAccuracy: 0.9,
-        masteryEncodingAccuracy: 0.85,
-        masterySessionsRequired: 1,
-        contentStatus: 'active',
-      },
-    });
-
-    // Link graphemes to lesson (upsert junction)
-    for (const gId of l.graphemes) {
-      const grapheme = await prisma.grapheme.findUnique({ where: { id: gId }, select: { id: true } });
-      if (!grapheme) continue;
-      await prisma.lessonGrapheme.upsert({
-        where: { lessonId_graphemeId: { lessonId: l.id, graphemeId: grapheme.id } },
-        update: {},
-        create: { lessonId: l.id, graphemeId: grapheme.id },
-      });
-    }
-
-    // Seed heart words
-    for (const hw of l.heartWords) {
-      await prisma.word.upsert({
-        where: { word: hw.word },
-        update: {},
-        create: {
-          word: hw.word,
-          isHeartWord: true,
-          heartWordSource: hw.source,
-          introducedLessonId: l.id,
-        },
-      });
-    }
-
-    // Seed regular (decodable) words
-    for (const rw of l.regularWords) {
-      const createdWord = await prisma.word.upsert({
-        where: { word: rw.word.toLowerCase() },
-        update: {},
-        create: {
-          word: rw.word.toLowerCase(),
-          isHeartWord: false,
-          introducedLessonId: l.id,
-        },
-      });
-
-      for (const gId of rw.graphemes) {
-        const grapheme = await prisma.grapheme.findUnique({ where: { id: gId }, select: { id: true } });
-        if (!grapheme) continue;
-        await prisma.wordGrapheme.upsert({
-          where: { wordId_graphemeId: { wordId: createdWord.id, graphemeId: grapheme.id } },
-          update: {},
-          create: { wordId: createdWord.id, graphemeId: grapheme.id },
+    // Graphemes
+    const graphemeIds: string[] = [];
+    if (lessonJson.target_graphemes) {
+      for (let i = 0; i < lessonJson.target_graphemes.length; i++) {
+        const char = lessonJson.target_graphemes[i];
+        const phoneme = (lessonJson.target_phonemes && lessonJson.target_phonemes.length > i) ? lessonJson.target_phonemes[i] : `/${char}/`;
+        
+        // Use explicitly approved metadata from early lessons, otherwise insert placeholder
+        const meta = graphemeMetadata[char] || { 
+          articulatoryGestureScript: `NEEDS_TEACHER_INPUT: articulatory gesture script not yet provided for ${phoneme}`, 
+          secretStoryScript: `NEEDS_TEACHER_INPUT: secret story script not yet provided for ${phoneme}`, 
+          soundWallCategory: 'Other' 
+        };
+        
+        const gRecord = await prisma.grapheme.upsert({
+          where: { grapheme: char },
+          update: {
+            phoneme,
+            articulatoryGestureScript: meta.articulatoryGestureScript,
+            secretStoryScript: meta.secretStoryScript,
+            soundWallCategory: meta.soundWallCategory
+          },
+          create: {
+            grapheme: char,
+            phoneme,
+            placementTags: ['beginning', 'middle', 'end'],
+            articulatoryGestureScript: meta.articulatoryGestureScript,
+            secretStoryScript: meta.secretStoryScript,
+            soundWallCategory: meta.soundWallCategory
+          }
         });
+        graphemeIds.push(gRecord.id);
       }
     }
 
-    // Seed PhonicsAssessment
-    await prisma.phonicsAssessment.upsert({
-      where: { lessonId: l.id },
-      update: {},
-      create: {
-        lessonId: l.id,
-        regularWords: l.regularWords.map(w => w.word.toLowerCase()),
-        irregularWords: l.heartWords.map(w => w.word),
-        sentences: [l.decodablePassage],
-        newConceptPoints: 10,
-        totalPoints: 10,
+    const targetSkill = lessonJson.target_skill || '';
+    let keyword = null;
+    if (lessonJson.example_words?.decodable?.length > 0) {
+      const cleanWord = lessonJson.example_words.decodable[0].split(' ')[0].replace(/[^a-z]/gi, '');
+      if (cleanWord.length > 0) keyword = cleanWord;
+    }
+
+    const lesson = await prisma.lesson.upsert({
+      where: { id: lId },
+      update: {
+        title: lessonJson.title,
+        description: lessonJson.teacher_notes || '',
+        category: lessonJson.category,
+        targetSkill,
+        keyword,
+        contentStatus: 'active',
       },
+      create: {
+        id: lId,
+        unitId: unit1.id,
+        title: lessonJson.title,
+        subtitle: targetSkill.slice(0, 50),
+        description: lessonJson.teacher_notes || '',
+        order: orderCounter++,
+        subjectMode: SubjectMode.PHONICS,
+        contentStatus: 'active',
+        category: lessonJson.category,
+        targetSkill,
+        keyword,
+      }
     });
 
-    console.log(`  ✅ Lesson ${l.id}: ${l.title}`);
+    // Link graphemes
+    for (const gid of graphemeIds) {
+      await prisma.lessonGrapheme.upsert({
+        where: {
+          lessonId_graphemeId: {
+            lessonId: lesson.id,
+            graphemeId: gid
+          }
+        },
+        update: {},
+        create: {
+          lessonId: lesson.id,
+          graphemeId: gid,
+        }
+      });
+    }
+
+    // Words
+    const allDecodable = [...(lessonJson.example_words?.decodable || []), ...(lessonJson.example_words?.encoding || [])];
+    const uniqueDecodable = Array.from(new Set(allDecodable.map(w => w.split(' ')[0].replace(/[^a-z]/gi, '')))).filter(w => w.length > 0);
+    
+    for (const wordStr of uniqueDecodable) {
+      await prisma.word.upsert({
+        where: { word: wordStr.toLowerCase() },
+        update: {},
+        create: {
+          word: wordStr.toLowerCase(),
+          isHeartWord: false,
+          introducedLessonId: lesson.id
+        }
+      });
+    }
+
+    const heartWords = Array.isArray(lessonJson.heart_words_introduced) 
+      ? lessonJson.heart_words_introduced 
+      : [
+          ...(lessonJson.heart_words_introduced?.temporarily_irregular || []),
+          ...(lessonJson.heart_words_introduced?.regular_hf || [])
+        ];
+    for (const hw of heartWords) {
+      await prisma.word.upsert({
+        where: { word: hw.toLowerCase() },
+        update: { isHeartWord: true },
+        create: {
+          word: hw.toLowerCase(),
+          isHeartWord: true,
+          introducedLessonId: lesson.id
+        }
+      });
+    }
+
+    // Phonics Assessment
+    if (lessonJson.decodable_sentences) {
+      const sentences = lessonJson.decodable_sentences;
+      const combinedPassage = sentences.join(' ');
+      
+      await prisma.phonicsAssessment.upsert({
+        where: { lessonId: lesson.id },
+        update: {
+          sentences: sentences
+        },
+        create: {
+          lessonId: lesson.id,
+          sentences: sentences,
+        }
+      });
+    }
   }
 
-  console.log('\n🎉 Phonics seeding completed!');
-  console.log(`   ${graphemesData.length} graphemes`);
-  console.log(`   ${lessonsData.length} lessons`);
-  console.log(`   ${lessonsData.reduce((sum, l) => sum + l.regularWords.length, 0)} decodable words`);
-  console.log(`   ${lessonsData.reduce((sum, l) => sum + l.heartWords.length, 0)} heart words`);
+  if (template.heart_words_bank && template.heart_words_bank.words) {
+    for (const hw of template.heart_words_bank.words) {
+      await prisma.word.upsert({
+        where: { word: hw.word.toLowerCase() },
+        update: { isHeartWord: true },
+        create: {
+          word: hw.word.toLowerCase(),
+          isHeartWord: true,
+          introducedLessonId: hw.introduced_in_lesson
+        }
+      });
+    }
+  }
+
+  console.log('✅ All phonics lessons seeded successfully!');
 }
 
 main()
-  .catch((e) => {
-    console.error('❌ Seeding error:', e);
+  .catch(e => {
+    console.error(e);
     process.exit(1);
   })
   .finally(async () => {

@@ -23,6 +23,8 @@ interface LessonData {
   keyword: string | null;
   description: string | null;
   decodablePassage: string | null;
+  isPassageDecodable: boolean;
+  invalidPassageWords: string[];
   newGrapheme: GraphemeCard | null;
   reviewGraphemes: GraphemeCard[];
   decodableWords: Word[];
@@ -182,7 +184,12 @@ export function PhonicsLessonClient({ lesson }: Props) {
           />
         )}
         {currentStep === 'decodable_text' && (
-          <StepDecodableText passage={lesson.decodablePassage} onNext={goNext} />
+          <StepDecodableText
+            passage={lesson.decodablePassage}
+            isDecodable={lesson.isPassageDecodable}
+            invalidWords={lesson.invalidPassageWords}
+            onNext={goNext}
+          />
         )}
         {currentStep === 'comprehension' && (
           <StepComprehension passage={lesson.decodablePassage} onNext={goNext} />
@@ -454,8 +461,38 @@ function StepEncoding({ words, answers, setAnswers, checked, setChecked, onNext 
   );
 }
 
-function StepDecodableText({ passage, onNext }: { passage: string | null; onNext: () => void }) {
+function StepDecodableText({
+  passage,
+  isDecodable,
+  invalidWords,
+  onNext
+}: {
+  passage: string | null;
+  isDecodable: boolean;
+  invalidWords: string[];
+  onNext: () => void;
+}) {
   const [read, setRead] = useState(false);
+
+  if (!isDecodable) {
+    return (
+      <div className={styles.stepCard}>
+        <div className={styles.stepHeader}>
+          <span className={styles.stepEmoji}>📚</span>
+          <div><h2>Step 7: Read the Passage</h2><p className={styles.stepSubtitle}>Content Blocked</p></div>
+        </div>
+        <div className={styles.errorBox}>
+          <h3>⚠️ Reading Blocked</h3>
+          <p>This passage contains words or sounds that have not been taught yet. In order to ensure you practice with only decodable text, this passage is temporarily hidden.</p>
+          <p className={styles.invalidWordsList}><strong>Untaught elements:</strong> {invalidWords.join(', ')}</p>
+        </div>
+        <button className={styles.readyBtn} onClick={() => { setRead(true); setTimeout(onNext, 300); }}>
+          Skip For Now →
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.stepCard}>
       <div className={styles.stepHeader}>

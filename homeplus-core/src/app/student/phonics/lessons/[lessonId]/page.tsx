@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { validateContentIsDecodable } from '@/lib/phonics-validator';
 import { PhonicsLessonClient } from './phonics-lesson-client';
 
 interface Props {
@@ -77,15 +78,28 @@ export default async function PhonicsLessonPage({ params }: Props) {
   // New grapheme for this lesson
   const newGrapheme = lesson.lessonGraphemes[0]?.grapheme ?? null;
 
+  // Validate the passage decodability
+  let isPassageDecodable = true;
+  let invalidPassageWords: string[] = [];
+  const rawPassage = lesson.phonicsAssessment?.sentences
+    ? (lesson.phonicsAssessment.sentences as string[])[0] ?? null
+    : null;
+
+  if (rawPassage) {
+    const validation = await validateContentIsDecodable(rawPassage, userId);
+    isPassageDecodable = validation.isDecodable;
+    invalidPassageWords = validation.invalidWords;
+  }
+
   const lessonData = {
     id: lesson.id,
     title: lesson.title,
     targetSkill: lesson.targetSkill,
     keyword: lesson.keyword,
     description: lesson.description,
-    decodablePassage: lesson.phonicsAssessment?.sentences
-      ? (lesson.phonicsAssessment.sentences as string[])[0] ?? null
-      : null,
+    decodablePassage: rawPassage,
+    isPassageDecodable,
+    invalidPassageWords,
     newGrapheme: newGrapheme ? {
       grapheme: newGrapheme.grapheme,
       phoneme: newGrapheme.phoneme,
