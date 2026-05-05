@@ -11,10 +11,10 @@ import { ActivityType } from '@prisma/client';
 
 // Default category weights (must sum to 1.0)
 export const DEFAULT_WEIGHTS: Record<ActivityType, { weight: number; label: string; description?: string | null }> = {
-  QUIZ:       { weight: 0.30, label: 'Quizzes' },
-  ASSIGNMENT: { weight: 0.30, label: 'Assignments' },
-  REFLECTION: { weight: 0.15, label: 'Reflections' },
-  ACTIVITY:   { weight: 0.25, label: 'Activities' },
+  QUIZ:       { weight: 0.30, label: 'Quizzes', description: null },
+  ASSIGNMENT: { weight: 0.30, label: 'Assignments', description: null },
+  REFLECTION: { weight: 0.15, label: 'Reflections', description: null },
+  ACTIVITY:   { weight: 0.25, label: 'Activities', description: null },
 };
 
 export interface CategoryGrade {
@@ -110,7 +110,7 @@ export async function calculateGrades(
     const category: CategoryGrade = {
       type: type as ActivityType,
       label: config.label,
-      description: (config as any).description,
+      description: config.description,
       weight: config.weight,
       average: null,
       count: typeSubs.length,
