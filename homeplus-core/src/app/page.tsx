@@ -85,7 +85,7 @@ export default function HomePage() {
             
             <div className={styles.eyebrow}>
               <div className={styles.pulseDot} />
-              Alberta Curriculum · Grades 1–9
+              Alberta Curriculum Â· Grades 1â9
             </div>
 
             <h1 className={styles.heroH1}>
@@ -141,7 +141,7 @@ export default function HomePage() {
 
             <div className={styles.statsBanner}>
               <div className={styles.statCol}>
-                <div className={styles.statNumber}>1–9</div>
+                <div className={styles.statNumber}>1â9</div>
                 <div className={styles.statLabel}>Grade levels</div>
               </div>
               <div className={styles.statCol}>
@@ -165,7 +165,7 @@ export default function HomePage() {
         </div>
         <div className={styles.trustItem}>
           <div className={styles.trustDot} />
-          Asynchronous — learn anytime
+          Asynchronous â learn anytime
         </div>
         <div className={styles.trustItem}>
           <div className={styles.trustDot} />
@@ -202,7 +202,7 @@ export default function HomePage() {
             <div className={styles.stepGradientTop} style={{ background: 'linear-gradient(90deg, var(--c3), var(--c4))' }} />
             <div className={styles.stepNumber}>03</div>
             <div className={styles.stepTitle}>Teacher support</div>
-            <p className={styles.stepDesc}>Alberta-certified teachers monitor progress and provide feedback—students are never learning alone.</p>
+            <p className={styles.stepDesc}>Alberta-certified teachers monitor progress and provide feedbackâstudents are never learning alone.</p>
           </div>
 
           <div className={styles.stepCard}>
@@ -308,7 +308,7 @@ export default function HomePage() {
         <div className={styles.contactCard}>
           <div className={styles.contactGradientTop} />
           <h3 className={styles.contactName}>Jenn LaDouceur</h3>
-          <div className={styles.contactRole}>Home Plus Learning Network · Prairie Rose Public Schools</div>
+          <div className={styles.contactRole}>Home Plus Learning Network Â· Prairie Rose Public Schools</div>
           
           <div className={styles.contactActions}>
             <a href="tel:403-526-3186" className={`${styles.contactPillBtn} ${styles.contactPillBlue}`}>
@@ -358,7 +358,7 @@ export default function HomePage() {
         </div>
 
         <div className={styles.footerBottom}>
-          © {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.
+          Â© {new Date().getFullYear()} Home Plus Online Learning. All rights reserved.
         </div>
       </footer>
     </div>
