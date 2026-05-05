@@ -8,13 +8,14 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCourseDetail } from '@/lib/course-detail-data';
 import { getUnitStateUI } from '@/lib/unit-progress';
-import { subjectColorVars } from '@/lib/subject-colors';
+import { subjectColorVars, getSubjectColors } from '@/lib/subject-colors';
 import { prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import styles from '../../student.module.css';
 
-const UNIT_COLORS = [
+// Rainbow colors used ONLY for Phonics unit cards
+const PHONICS_UNIT_COLORS = [
   { bg: '#fee2e2', primary: '#ef4444', gradient: 'linear-gradient(90deg, #f87171, #ef4444)' }, // Red
   { bg: '#ffedd5', primary: '#f97316', gradient: 'linear-gradient(90deg, #fb923c, #f97316)' }, // Orange
   { bg: '#fef3c7', primary: '#d97706', gradient: 'linear-gradient(90deg, #fbbf24, #f59e0b)' }, // Amber
@@ -194,7 +195,12 @@ export default async function CourseDetailPage({ params }: Props) {
               : unit.unitDisplayState === 'IN_PROGRESS' ? 'Continue ->'
               : 'Start Unit ->';
 
-            const colorTheme = UNIT_COLORS[(unit.order - 1) % UNIT_COLORS.length];
+            // Phonics gets rainbow unit cards; core subjects use their uniform subject color
+            const isPhonics = subjectName.toLowerCase().includes('phonics');
+            const subjectC = getSubjectColors(subjectName);
+            const colorTheme = isPhonics
+              ? PHONICS_UNIT_COLORS[(unit.order - 1) % PHONICS_UNIT_COLORS.length]
+              : { bg: subjectC.bg, primary: subjectC.primary, gradient: subjectC.gradient };
 
             const CardInner = (
               <div className={`${styles.unitCard} ${isLocked ? styles.unitCardLocked : ''}`}>
