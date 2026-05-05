@@ -9,6 +9,7 @@
 import { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './lesson.module.css';
+import { InteractiveHeartWord } from '@/components/phonics/InteractiveHeartWord';
 import type {
   BlockType,
   TextBlockContent,
@@ -77,10 +78,11 @@ export default function LessonBlockRenderer({ blockType, content, onAnswer, read
     case 'AUDITORY_DRILL':
     case 'NEW_GRAPHEME_INTRODUCTION':
     case 'WORD_WORK':
-    case 'HEART_WORDS':
     case 'DECODABLE_TEXT':
     case 'ENCODING':
       return <PhonicsBlock blockType={blockType} content={content} onAnswer={onAnswer} readOnly={readOnly} lessonId={lessonId} blockId={blockId} />;
+    case 'HEART_WORDS':
+      return <HeartWordsBlock content={content} onAnswer={onAnswer} readOnly={readOnly} />;
     default:
       return <div className={styles.blockCard}><p>Unsupported block type: {blockType}</p></div>;
   }
@@ -1424,6 +1426,54 @@ function PhonicsBlock({ blockType, content, onAnswer, readOnly, lessonId, blockI
               </>
             )}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---- Heart Words Block ----
+function HeartWordsBlock({ content, onAnswer, readOnly }: {
+  content: any;
+  onAnswer?: (value: any) => void;
+  readOnly?: boolean;
+}) {
+  const words = content.words_introduced || [];
+  
+  if (words.length === 0) {
+    return (
+      <div className={styles.interactiveBlock} style={{ borderLeft: '4px solid #ef4444' }}>
+        <h3 style={{ margin: '0 0 16px', color: '#b91c1c', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span>❤️</span> Heart Words Review
+        </h3>
+        <p>No new heart words in this lesson. Review previous words!</p>
+        {!readOnly && (
+          <button onClick={() => onAnswer?.({ completed: true })} className={styles.btnPrimary} style={{ marginTop: 24, background: '#ef4444' }}>
+            Mark as Complete
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.interactiveBlock} style={{ borderLeft: '4px solid #ef4444', padding: '24px' }}>
+      <h3 style={{ margin: '0 0 16px', color: '#b91c1c', fontSize: '1.4rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span>❤️</span> Heart Words
+      </h3>
+      {content.instruction && <p style={{ fontSize: '1.1rem', marginBottom: 24, color: '#334155' }}>{content.instruction}</p>}
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+        {words.map((hw: any, idx: number) => (
+          <InteractiveHeartWord key={idx} word={hw.word} teachingScript={hw.teaching_script} />
+        ))}
+      </div>
+      
+      {!readOnly && (
+        <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => onAnswer?.({ completed: true })} className={styles.btnPrimary} style={{ background: '#ef4444', padding: '12px 24px', fontSize: '1.1rem' }}>
+            Mark as Complete
+          </button>
         </div>
       )}
     </div>

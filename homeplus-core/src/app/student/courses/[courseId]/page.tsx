@@ -14,6 +14,17 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import styles from '../../student.module.css';
 
+const UNIT_COLORS = [
+  { bg: '#fee2e2', primary: '#ef4444', gradient: 'linear-gradient(90deg, #f87171, #ef4444)' }, // Red
+  { bg: '#ffedd5', primary: '#f97316', gradient: 'linear-gradient(90deg, #fb923c, #f97316)' }, // Orange
+  { bg: '#fef3c7', primary: '#d97706', gradient: 'linear-gradient(90deg, #fbbf24, #f59e0b)' }, // Amber
+  { bg: '#dcfce7', primary: '#10b981', gradient: 'linear-gradient(90deg, #34d399, #10b981)' }, // Emerald
+  { bg: '#e0f2fe', primary: '#0ea5e9', gradient: 'linear-gradient(90deg, #38bdf8, #0ea5e9)' }, // Light Blue
+  { bg: '#ede9fe', primary: '#8b5cf6', gradient: 'linear-gradient(90deg, #a78bfa, #8b5cf6)' }, // Violet
+  { bg: '#fae8ff', primary: '#d946ef', gradient: 'linear-gradient(90deg, #e879f9, #d946ef)' }, // Fuchsia
+  { bg: '#ffe4e6', primary: '#f43f5e', gradient: 'linear-gradient(90deg, #fb7185, #f43f5e)' }, // Rose
+];
+
 interface Props {
   params: Promise<{ courseId: string }>;
 }
@@ -183,24 +194,26 @@ export default async function CourseDetailPage({ params }: Props) {
               : unit.unitDisplayState === 'IN_PROGRESS' ? 'Continue ->'
               : 'Start Unit ->';
 
+            const colorTheme = UNIT_COLORS[(unit.order - 1) % UNIT_COLORS.length];
+
             const CardInner = (
               <div className={`${styles.unitCard} ${isLocked ? styles.unitCardLocked : ''}`}>
                 {unit.isNextUnit && (
                   <div className={styles.nextBadge}>▶ UP NEXT</div>
                 )}
-                <div className={styles.unitCardBand} />
+                <div className={styles.unitCardBand} style={{ background: colorTheme.gradient }} />
                 <div className={styles.unitCardBody}>
                   <div className={styles.unitCardHeader}>
-                    <div className={styles.unitCardIconWrap}>
-                      {isLocked ? '' : isComplete ? '✅' : (unit.icon || '')}
+                    <div className={styles.unitCardIconWrap} style={{ background: colorTheme.bg }}>
+                      {isComplete ? '✅' : (unit.icon || '')}
                     </div>
                     <div className={styles.unitCardTitleGroup}>
-                      <div className={styles.unitCardLabel}>
+                      <div className={styles.unitCardLabel} style={{ color: colorTheme.primary }}>
                         Unit {unit.order}
                       </div>
                       <h4 className={styles.unitCardTitle}>{unit.title}</h4>
                     </div>
-                    <span className={`${styles.statusChip} ${statusClass}`}>
+                    <span className={`${styles.statusChip} ${statusClass}`} style={{ background: colorTheme.bg, color: colorTheme.primary }}>
                       {ui.badge}
                     </span>
                   </div>
@@ -229,11 +242,11 @@ export default async function CourseDetailPage({ params }: Props) {
                   )}
 
                   {isLocked ? (
-                    <div className={styles.unitCardCta} style={{ opacity: 0.6, cursor: 'not-allowed' }}>
+                    <div className={styles.unitCardCta} style={{ opacity: 0.6, cursor: 'not-allowed', background: '#cbd5e1' }}>
                        Locked
                     </div>
                   ) : (
-                    <div className={styles.unitCardCta}>
+                    <div className={styles.unitCardCta} style={{ background: colorTheme.gradient }}>
                       {ctaLabel}
                     </div>
                   )}

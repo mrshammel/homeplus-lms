@@ -347,7 +347,7 @@ export default function MultimodalWarmUp({ content, lessonId, subjectMode, grade
               )}
 
               {feedbackData.improvements && feedbackData.improvements.length > 0 && (
-                <div style={{ background: '#fffbeb', borderRadius: 8, padding: '14px 16px', borderColor: '#fcd34d', borderLeft: '3px solid #f59e0b' }}>
+                <div style={{ background: '#fffbeb', borderRadius: 8, padding: '14px 16px', borderColor: '#fcd34d', borderLeft: '3px solid #f59e0b', marginBottom: 16 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#b45309', marginBottom: 6 }}>
                      What to improve
                   </div>
@@ -356,6 +356,28 @@ export default function MultimodalWarmUp({ content, lessonId, subjectMode, grade
                   </ul>
                 </div>
               )}
+              
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  style={{
+                    padding: '8px 20px',
+                    borderRadius: 8,
+                    border: '1px solid #cbd5e1',
+                    background: '#fff',
+                    color: '#475569',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  ✎ Revise Response
+                </button>
+              </div>
             </div>
           )}
         </div>

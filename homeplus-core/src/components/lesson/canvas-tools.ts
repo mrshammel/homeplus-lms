@@ -461,14 +461,14 @@ export function snapToAngle(start: Point, end: Point, shiftHeld: boolean): Point
 
 export const TOOL_DEFS: Record<ToolType, CanvasTool> = {
   pen: { name: 'pen', icon: '✏️', label: 'Pen', cursor: 'crosshair' },
-  eraser: { name: 'eraser', icon: '', label: 'Eraser', cursor: 'cell' },
-  highlighter: { name: 'highlighter', icon: '️', label: 'Highlighter', cursor: 'crosshair' },
+  eraser: { name: 'eraser', icon: '🧽', label: 'Eraser', cursor: 'cell' },
+  highlighter: { name: 'highlighter', icon: '🖍️', label: 'Highlighter', cursor: 'crosshair' },
   arrow: { name: 'arrow', icon: '➡️', label: 'Arrow', cursor: 'crosshair' },
-  text: { name: 'text', icon: '', label: 'Text', cursor: 'text' },
-  ruler: { name: 'ruler', icon: '', label: 'Line', cursor: 'crosshair' },
+  text: { name: 'text', icon: '📝', label: 'Text', cursor: 'text' },
+  ruler: { name: 'ruler', icon: '📏', label: 'Line', cursor: 'crosshair' },
   circle: { name: 'circle', icon: '⭕', label: 'Circle', cursor: 'crosshair' },
   shape: { name: 'shape', icon: '⬡', label: 'Shapes', cursor: 'crosshair' },
-  stamp: { name: 'stamp', icon: '', label: 'Stamp', cursor: 'pointer' },
+  stamp: { name: 'stamp', icon: '⭐', label: 'Stamp', cursor: 'pointer' },
 };
 
 // ─── Shape palette for the shapes sub-menu ───
@@ -486,19 +486,19 @@ export const SHAPE_OPTIONS: { type: ShapeType; icon: string; label: string }[] =
 export const STAMP_CATEGORIES: { label: string; stamps: string[] }[] = [
   {
     label: 'Science',
-    stamps: ['', '', '', '', '', '', '', '', '', '⚗️', '️', ''],
+    stamps: ['🔬', '🔭', '🧬', '🧪', '🧲', '🌡️', '⚖️', '🛰️', '🪐', '⚗️', '⚙️', '💡'],
   },
   {
     label: 'Animals',
-    stamps: ['', '', '', '', '', '', '', '', '', '', '', ''],
+    stamps: ['🐕', '🐈', '🐇', '🦊', '🐻', '🐘', '🦒', '🦓', '🐅', '🐆', '🐒', '🦅'],
   },
   {
     label: 'Nature',
-    stamps: ['☀️', '️', '❄️', '', '️', '', '', '', '', '⚡', '', ''],
+    stamps: ['☀️', '🌧️', '❄️', '🌲', '🌵', '🌻', '🍄', '🌊', '🌋', '⚡', '🌙', '⭐'],
   },
   {
     label: 'Labels',
-    stamps: ['⬆️', '⬇️', '⬅️', '➡️', 'Tip:', '❌', '✅', '❓', '❗', '', '', ''],
+    stamps: ['⬆️', '⬇️', '⬅️', '➡️', 'Tip:', '❌', '✅', '❓', '❗', '1️⃣', '2️⃣', '3️⃣'],
   },
 ];
 

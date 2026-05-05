@@ -96,6 +96,13 @@ const SUBJECT_COLOR_MAP: Record<string, SubjectColors> = {
     dark: '#4338ca',
     gradient: 'linear-gradient(135deg, #4f46e5, #6366f1)',
   },
+  phonics: {
+    primary: '#ec4899',
+    bg: 'linear-gradient(90deg, #ef4444, #f97316, #f59e0b, #10b981, #3b82f6, #a855f7)',
+    light: '#fbcfe8',
+    dark: '#be185d',
+    gradient: 'linear-gradient(90deg, #ef4444, #f97316, #f59e0b, #10b981, #3b82f6, #a855f7)',
+  },
 };
 
 /** Default colors for unrecognized subjects */

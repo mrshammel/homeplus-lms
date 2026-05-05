@@ -865,13 +865,20 @@ model LessonGrapheme {
 }
 
 model Word {
-  id                String        @id @default(cuid())
-  word              String        @unique
-  isHeartWord       Boolean       @default(false) @map("is_heart_word")
-  heartWordSource   String?       @map("heart_word_source")
-  introducedLessonId String?      @map("introduced_lesson_id")
-  introducedLesson  Lesson?       @relation(fields: [introducedLessonId], references: [id])
-  wordGraphemes     WordGrapheme[]
+  id                        String         @id @default(cuid())
+  word                      String         @unique
+  isHeartWord               Boolean        @default(false) @map("is_heart_word")
+  heartWordType             String?        @map("heart_word_type") // temporarily_irregular, permanently_irregular, regular_hf
+  irregularPart             String?        @map("irregular_part")
+  decodablePart             String?        @map("decodable_part")
+  listOrigin                String?        @map("list_origin") // dolch, fry, both
+  teachingScript            String?        @map("teaching_script")
+  becomesRegularAtLessonId  String?        @map("becomes_regular_at_lesson_id")
+  heartWordSource           String?        @map("heart_word_source")
+  introducedLessonId        String?        @map("introduced_lesson_id")
+  
+  introducedLesson          Lesson?        @relation(fields: [introducedLessonId], references: [id])
+  wordGraphemes             WordGrapheme[]
 
   @@map("words")
 }
