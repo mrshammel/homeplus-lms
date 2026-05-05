@@ -5,6 +5,14 @@ export async function GET() {
   try {
     const results: string[] = [];
 
+    // 0. Fix teacher role — ensure shammel@hpln.ca has role TEACHER in DB
+    await prisma.user.upsert({
+      where: { email: 'shammel@hpln.ca' },
+      update: { role: 'TEACHER' },
+      create: { id: 'teacher-1', name: 'Mrs. Shammel', email: 'shammel@hpln.ca', role: 'TEACHER', gradeLevel: 7 },
+    });
+    results.push('✅ Teacher role confirmed for shammel@hpln.ca');
+
     // 1. Fix Science 7 - Unit 1 - Lesson 1 (Heat and Temperature) Warm-up
     await prisma.lesson.update({
       where: { id: 'g7-sci-ua-l1' },
