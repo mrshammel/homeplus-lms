@@ -102,6 +102,24 @@ export async function GET() {
     }
     results.push('✅ Grade 9 Math restructured: 10 content units + Foundations');
 
+    // 5. Seed Unit 1 detailed lesson content (5 lessons with blocks)
+    const u1Lessons = [
+      { id: 'g9-math-u1-l1', title: 'Introduction to Rational Numbers', subtitle: 'What are rational numbers and where do they fit?', order: 1 },
+      { id: 'g9-math-u1-l2', title: 'Conversion Review', subtitle: 'Converting between fractions, decimals, and percents', order: 2 },
+      { id: 'g9-math-u1-l3', title: 'Integer & Decimal Operations', subtitle: 'Adding, subtracting, multiplying, and dividing integers and decimals', order: 3 },
+      { id: 'g9-math-u1-l4', title: 'Add, Subtract, Multiply & Divide Fractions', subtitle: 'All four operations with positive and negative fractions', order: 4 },
+      { id: 'g9-math-u1-l5', title: 'Rational Numbers Word Problems', subtitle: 'Applying rational number skills to real-world situations', order: 5 },
+    ];
+
+    for (const l of u1Lessons) {
+      await prisma.lesson.upsert({
+        where: { id: l.id },
+        update: { title: l.title, subtitle: l.subtitle, order: l.order },
+        create: { id: l.id, unitId: 'g9-math-u1', title: l.title, subtitle: l.subtitle, order: l.order },
+      });
+    }
+    results.push('✅ Math 9 Unit 1: 5 lessons seeded (Rational Numbers)');
+
     return NextResponse.json({ 
       success: true, 
       message: 'Database successfully synced!',
