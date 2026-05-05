@@ -76,11 +76,8 @@ const DEFAULT_CONTEXT: GradeSubjectContext = {
 // ---------- Fetch Available Contexts ----------
 
 export async function getAvailableContexts(teacherId: string): Promise<AvailableContext[]> {
-  if (isDemoMode()) {
-    return [
-      { grade: 7, subjectId: 'demo-science-7', subjectName: 'Science', subjectSlug: 'science', subjectIcon: '' },
-    ];
-  }
+  // In demo mode, still query the database for all active subjects
+  // so the teacher can toggle between all available grades/subjects
 
   try {
     // First, try to get subjects from the explicit SubjectEnrollment records
@@ -131,6 +128,13 @@ export async function getAvailableContexts(teacherId: string): Promise<Available
             });
         }
       }
+    }
+
+    // Final fallback: show ALL active subjects so teacher can see every grade
+    if (activeSubjects.length === 0) {
+      activeSubjects = await prisma.subject.findMany({
+        where: { active: true },
+      });
     }
 
     if (activeSubjects.length > 0) {
