@@ -39,30 +39,28 @@ async function generateLessonContent(lessonMeta: any, knownGraphemes: string[], 
 
   // Define the expected JSON schema for the LLM output
   const schemaProps: any = {
-    type: SchemaType.OBJECT,
-    properties: {
-      step_1_phoneme_awareness: {
-        type: SchemaType.OBJECT,
-        properties: {
-          purpose: { type: SchemaType.STRING },
-          instruction_to_student: { type: SchemaType.STRING },
-          task_type: { type: SchemaType.STRING },
+    step_1_phoneme_awareness: {
+      type: SchemaType.OBJECT,
+      properties: {
+        purpose: { type: SchemaType.STRING },
+        instruction_to_student: { type: SchemaType.STRING },
+        task_type: { type: SchemaType.STRING },
+        items: {
+          type: SchemaType.ARRAY,
           items: {
-            type: SchemaType.ARRAY,
-            items: {
-              type: SchemaType.OBJECT,
-              properties: {
-                spoken_word: { type: SchemaType.STRING },
-                answer: { type: SchemaType.BOOLEAN },
-                target_phoneme: { type: SchemaType.STRING }
-              },
-              required: ["spoken_word", "answer", "target_phoneme"]
-            }
+            type: SchemaType.OBJECT,
+            properties: {
+              spoken_word: { type: SchemaType.STRING },
+              answer: { type: SchemaType.BOOLEAN },
+              target_phoneme: { type: SchemaType.STRING }
+            },
+            required: ["spoken_word", "answer", "target_phoneme"]
           }
-        },
-        required: ["purpose", "instruction_to_student", "task_type", "items"]
-      }
-    };
+        }
+      },
+      required: ["purpose", "instruction_to_student", "task_type", "items"]
+    }
+  };
     
     if (hasNewGrapheme) {
       schemaProps.step_4_new_grapheme_introduction = {
