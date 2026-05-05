@@ -48,18 +48,18 @@ export async function GET() {
 
     // 3. Fix Phonics icon and name
     await prisma.subject.upsert({
-      where: { id: 'phonics' },
+      where: { id: 'subj_phonics_1' },
       update: {
-        name: 'Phonics',
-        description: 'Learn to read with our comprehensive Phonics program.',
+        name: 'Phonics (Foundations)',
         icon: '🔤',
         active: true
       },
       create: {
-        id: 'phonics',
-        name: 'Phonics',
-        description: 'Learn to read with our comprehensive Phonics program.',
+        id: 'subj_phonics_1',
+        name: 'Phonics (Foundations)',
+        gradeLevel: 1,
         icon: '🔤',
+        order: 1,
         active: true
       }
     });
