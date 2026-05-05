@@ -5,7 +5,7 @@ export async function seedMath9(prisma: PrismaClient) {
 
   const math9 = await prisma.subject.upsert({
     where: { id: 'g9-math' },
-    update: {},
+    update: { active: true, icon: '📐', name: 'Mathematics' },
     create: {
       id: 'g9-math',
       gradeLevel: 9,
@@ -16,10 +16,10 @@ export async function seedMath9(prisma: PrismaClient) {
     },
   });
 
-  // UNIT 0: Foundations
+  // ─── UNIT 0: Foundations (prerequisite warm-up) ───
   const unit0 = await prisma.unit.upsert({
     where: { id: 'g9-math-u0' },
-    update: {},
+    update: { title: 'Foundations', description: 'Refresh your memory on previous years concepts and skills, including math facts, integers, and fractions.', icon: '🧱', order: 0 },
     create: {
       id: 'g9-math-u0',
       subjectId: math9.id,
@@ -119,15 +119,15 @@ export async function seedMath9(prisma: PrismaClient) {
     },
   });
 
-  // UNIT 1: Number Sense
+  // ─── UNIT 1: Rational Numbers ───
   const unit1 = await prisma.unit.upsert({
     where: { id: 'g9-math-u1' },
-    update: {},
+    update: { title: 'Rational Numbers', description: 'Comparing, ordering, and performing operations on rational numbers in all forms.', icon: '🔢', order: 1 },
     create: {
       id: 'g9-math-u1',
       subjectId: math9.id,
-      title: 'Number Sense',
-      description: 'Powers, exponents, and rational numbers.',
+      title: 'Rational Numbers',
+      description: 'Comparing, ordering, and performing operations on rational numbers in all forms.',
       icon: '🔢',
       order: 1,
     },
@@ -135,95 +135,189 @@ export async function seedMath9(prisma: PrismaClient) {
 
   await prisma.lesson.upsert({
     where: { id: 'g9-math-u1-l1' },
-    update: {},
-    create: { id: 'g9-math-u1-l1', unitId: unit1.id, title: 'Powers and Exponents', subtitle: 'Understanding bases and exponents', order: 1 }
+    update: { title: 'Comparing & Ordering Rational Numbers', subtitle: 'Fractions, decimals, and number lines' },
+    create: { id: 'g9-math-u1-l1', unitId: unit1.id, title: 'Comparing & Ordering Rational Numbers', subtitle: 'Fractions, decimals, and number lines', order: 1 }
   });
 
-  await prisma.lesson.upsert({
-    where: { id: 'g9-math-u1-l2' },
-    update: {},
-    create: { id: 'g9-math-u1-l2', unitId: unit1.id, title: 'Exponent Laws', subtitle: 'Multiplying and dividing powers', order: 2 }
-  });
-
-  // UNIT 2: Patterns & Relations
+  // ─── UNIT 2: Order of Operations ───
   const unit2 = await prisma.unit.upsert({
     where: { id: 'g9-math-u2' },
-    update: {},
+    update: { title: 'Order of Operations', description: 'Applying BEDMAS/PEMDAS with rational numbers, exponents, and multi-step problems.', icon: '📋', order: 2 },
     create: {
       id: 'g9-math-u2',
       subjectId: math9.id,
-      title: 'Patterns & Relations',
-      description: 'Linear relations, equations, and inequalities.',
-      icon: '📈',
+      title: 'Order of Operations',
+      description: 'Applying BEDMAS/PEMDAS with rational numbers, exponents, and multi-step problems.',
+      icon: '📋',
       order: 2,
     },
   });
 
   await prisma.lesson.upsert({
     where: { id: 'g9-math-u2-l1' },
-    update: {},
-    create: { id: 'g9-math-u2-l1', unitId: unit2.id, title: 'Linear Relations', subtitle: 'Graphing and analyzing linear patterns', order: 1 }
+    update: { title: 'BEDMAS with Rational Numbers', subtitle: 'Multi-step problems using order of operations' },
+    create: { id: 'g9-math-u2-l1', unitId: unit2.id, title: 'BEDMAS with Rational Numbers', subtitle: 'Multi-step problems using order of operations', order: 1 }
   });
 
-  // UNIT 3: Polynomials
+  // ─── UNIT 3: Linear Relations ───
   const unit3 = await prisma.unit.upsert({
     where: { id: 'g9-math-u3' },
-    update: {},
+    update: { title: 'Linear Relations', description: 'Graphing, analyzing, and interpreting linear relationships using tables, equations, and graphs.', icon: '📈', order: 3 },
     create: {
       id: 'g9-math-u3',
       subjectId: math9.id,
-      title: 'Polynomials',
-      description: 'Introduction to polynomial expressions and operations.',
-      icon: '✖️',
+      title: 'Linear Relations',
+      description: 'Graphing, analyzing, and interpreting linear relationships using tables, equations, and graphs.',
+      icon: '📈',
       order: 3,
     },
   });
 
   await prisma.lesson.upsert({
     where: { id: 'g9-math-u3-l1' },
-    update: {},
-    create: { id: 'g9-math-u3-l1', unitId: unit3.id, title: 'Understanding Polynomials', subtitle: 'Terms, degrees, and coefficients', order: 1 }
+    update: { title: 'Graphing Linear Relations', subtitle: 'Tables of values, plotting points, and slope' },
+    create: { id: 'g9-math-u3-l1', unitId: unit3.id, title: 'Graphing Linear Relations', subtitle: 'Tables of values, plotting points, and slope', order: 1 }
   });
 
-  // UNIT 4: Shape and Space
+  // ─── UNIT 4: Polynomials ───
   const unit4 = await prisma.unit.upsert({
     where: { id: 'g9-math-u4' },
-    update: {},
+    update: { title: 'Polynomials', description: 'Identifying, classifying, and performing operations on polynomial expressions.', icon: '✖️', order: 4 },
     create: {
       id: 'g9-math-u4',
       subjectId: math9.id,
-      title: 'Shape and Space',
-      description: 'Circle properties, surface area, and transformations.',
-      icon: '🟢',
+      title: 'Polynomials',
+      description: 'Identifying, classifying, and performing operations on polynomial expressions.',
+      icon: '✖️',
       order: 4,
     },
   });
 
   await prisma.lesson.upsert({
     where: { id: 'g9-math-u4-l1' },
-    update: {},
-    create: { id: 'g9-math-u4-l1', unitId: unit4.id, title: 'Circle Properties', subtitle: 'Chords, angles, and tangents', order: 1 }
+    update: { title: 'Understanding Polynomials', subtitle: 'Terms, degrees, and coefficients' },
+    create: { id: 'g9-math-u4-l1', unitId: unit4.id, title: 'Understanding Polynomials', subtitle: 'Terms, degrees, and coefficients', order: 1 }
   });
 
-  // UNIT 5: Statistics and Probability
+  // ─── UNIT 5: Solving Equations ───
   const unit5 = await prisma.unit.upsert({
     where: { id: 'g9-math-u5' },
-    update: {},
+    update: { title: 'Solving Equations', description: 'Solving single-variable linear equations using inverse operations and verification.', icon: '⚖️', order: 5 },
     create: {
       id: 'g9-math-u5',
       subjectId: math9.id,
-      title: 'Statistics and Probability',
-      description: 'Data collection, bias, and probability in society.',
-      icon: '📊',
+      title: 'Solving Equations',
+      description: 'Solving single-variable linear equations using inverse operations and verification.',
+      icon: '⚖️',
       order: 5,
     },
   });
 
   await prisma.lesson.upsert({
     where: { id: 'g9-math-u5-l1' },
-    update: {},
-    create: { id: 'g9-math-u5-l1', unitId: unit5.id, title: 'Data Collection & Bias', subtitle: 'How data is gathered and interpreted', order: 1 }
+    update: { title: 'One-Step & Two-Step Equations', subtitle: 'Using inverse operations to isolate the variable' },
+    create: { id: 'g9-math-u5-l1', unitId: unit5.id, title: 'One-Step & Two-Step Equations', subtitle: 'Using inverse operations to isolate the variable', order: 1 }
   });
 
-  console.log('✅ Math 9 Seeded');
+  // ─── UNIT 6: Inequalities ───
+  const unit6 = await prisma.unit.upsert({
+    where: { id: 'g9-math-u6' },
+    update: { title: 'Inequalities', description: 'Solving and graphing single-variable linear inequalities on a number line.', icon: '↔️', order: 6 },
+    create: {
+      id: 'g9-math-u6',
+      subjectId: math9.id,
+      title: 'Inequalities',
+      description: 'Solving and graphing single-variable linear inequalities on a number line.',
+      icon: '↔️',
+      order: 6,
+    },
+  });
+
+  await prisma.lesson.upsert({
+    where: { id: 'g9-math-u6-l1' },
+    update: { title: 'Graphing Inequalities', subtitle: 'Number line representations and solution sets' },
+    create: { id: 'g9-math-u6-l1', unitId: unit6.id, title: 'Graphing Inequalities', subtitle: 'Number line representations and solution sets', order: 1 }
+  });
+
+  // ─── UNIT 7: Exponents ───
+  const unit7 = await prisma.unit.upsert({
+    where: { id: 'g9-math-u7' },
+    update: { title: 'Exponents', description: 'Powers, exponent laws, and operations with powers including negative exponents.', icon: '🔋', order: 7 },
+    create: {
+      id: 'g9-math-u7',
+      subjectId: math9.id,
+      title: 'Exponents',
+      description: 'Powers, exponent laws, and operations with powers including negative exponents.',
+      icon: '🔋',
+      order: 7,
+    },
+  });
+
+  await prisma.lesson.upsert({
+    where: { id: 'g9-math-u7-l1' },
+    update: { title: 'Powers and Exponent Laws', subtitle: 'Product, quotient, and power of a power rules' },
+    create: { id: 'g9-math-u7-l1', unitId: unit7.id, title: 'Powers and Exponent Laws', subtitle: 'Product, quotient, and power of a power rules', order: 1 }
+  });
+
+  // ─── UNIT 8: 2D and 3D Geometry ───
+  const unit8 = await prisma.unit.upsert({
+    where: { id: 'g9-math-u8' },
+    update: { title: '2D and 3D Geometry', description: 'Surface area and volume of 3D objects, composite shapes, and spatial reasoning.', icon: '📦', order: 8 },
+    create: {
+      id: 'g9-math-u8',
+      subjectId: math9.id,
+      title: '2D and 3D Geometry',
+      description: 'Surface area and volume of 3D objects, composite shapes, and spatial reasoning.',
+      icon: '📦',
+      order: 8,
+    },
+  });
+
+  await prisma.lesson.upsert({
+    where: { id: 'g9-math-u8-l1' },
+    update: { title: 'Surface Area & Volume', subtitle: 'Prisms, cylinders, and composite 3D shapes' },
+    create: { id: 'g9-math-u8-l1', unitId: unit8.id, title: 'Surface Area & Volume', subtitle: 'Prisms, cylinders, and composite 3D shapes', order: 1 }
+  });
+
+  // ─── UNIT 9: Circle Geometry ───
+  const unit9 = await prisma.unit.upsert({
+    where: { id: 'g9-math-u9' },
+    update: { title: 'Circle Geometry', description: 'Properties of circles including chords, central angles, inscribed angles, and tangent lines.', icon: '🟢', order: 9 },
+    create: {
+      id: 'g9-math-u9',
+      subjectId: math9.id,
+      title: 'Circle Geometry',
+      description: 'Properties of circles including chords, central angles, inscribed angles, and tangent lines.',
+      icon: '🟢',
+      order: 9,
+    },
+  });
+
+  await prisma.lesson.upsert({
+    where: { id: 'g9-math-u9-l1' },
+    update: { title: 'Circle Properties', subtitle: 'Chords, central angles, and inscribed angles' },
+    create: { id: 'g9-math-u9-l1', unitId: unit9.id, title: 'Circle Properties', subtitle: 'Chords, central angles, and inscribed angles', order: 1 }
+  });
+
+  // ─── UNIT 10: Statistics ───
+  const unit10 = await prisma.unit.upsert({
+    where: { id: 'g9-math-u10' },
+    update: { title: 'Statistics', description: 'Data collection methods, bias, sample vs. population, and interpreting statistical displays.', icon: '📊', order: 10 },
+    create: {
+      id: 'g9-math-u10',
+      subjectId: math9.id,
+      title: 'Statistics',
+      description: 'Data collection methods, bias, sample vs. population, and interpreting statistical displays.',
+      icon: '📊',
+      order: 10,
+    },
+  });
+
+  await prisma.lesson.upsert({
+    where: { id: 'g9-math-u10-l1' },
+    update: { title: 'Data Collection & Bias', subtitle: 'How data is gathered and interpreted' },
+    create: { id: 'g9-math-u10-l1', unitId: unit10.id, title: 'Data Collection & Bias', subtitle: 'How data is gathered and interpreted', order: 1 }
+  });
+
+  console.log('✅ Math 9 Seeded — Unit 0 (Foundations) + 10 content units');
 }
