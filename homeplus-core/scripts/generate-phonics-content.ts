@@ -268,6 +268,7 @@ async function main() {
 
     // Add this lesson's targets to the known list BEFORE generating
     // so the LLM can use the new grapheme/words in its passages
+    const hasNewGrapheme = lessonMeta.target_graphemes && lessonMeta.target_graphemes.length > 0;
     lessonMeta.target_graphemes?.forEach((g: string) => knownGraphemes.add(g.toLowerCase()));
     const newHws = [
       ...(lessonMeta.heart_words_introduced?.temporarily_irregular || []),
